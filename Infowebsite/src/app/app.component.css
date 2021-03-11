@@ -1,0 +1,26 @@
+header {
+    width: 100%;
+    height: 4rem;
+    background-color: #333333;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 2rem;
+    display: grid;
+    text-align: center;
+    align-items: center;
+}
+
+.main {
+    margin-top: 4em;
+}
+
+h2 {
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 2rem;
+}
+
+.card {
+    margin: 1rem;
+    min-height: 20rem;
+}
