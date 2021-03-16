@@ -1,0 +1,36 @@
+.chat {
+    position: relative;
+    max-height: calc(100% - 120px);
+    overflow-y: auto;
+}
+
+.card {
+    height: 50vh;
+    overflow-x: hidden;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    background-color: #333333;
+    margin: 0;
+    padding: 1rem 0 1rem 0;
+}
+
+.chatinput {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    width: 90%;
+    height: 2rem;
+    margin: 0.5rem;
+}
+
+.highlightuser {
+    background-color: lightblue;
+}
