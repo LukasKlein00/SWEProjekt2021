@@ -1,0 +1,17 @@
+<div class="container-fluid p-0">
+    <h2>Test: {{status}}</h2>
+    <div class="row m-0">
+        <div class="card shadow col-10 col-md-5 m-5 p-0">
+            <h2>Chat</h2>
+            <div class="chat">
+                <ng-container *ngFor="let c of chat"><span style="margin-right: 2rem;" [ngClass]="{'highlightuser':c.id === clientID}">{{c.id}}:</span>{{c.msg}}<br></ng-container>
+            </div>
+            <div class="chatinput"><input [(ngModel)]="text" (keypress)="allchat($event)"></div>
+        </div>
+        <div class="chat shadow col-10 col-md-5 m-5 p-0">
+            <h2>Aktion</h2>
+            <button  (click)="b2click()">action</button>
+            <ng-container *ngFor="let a of action"><p>{{a}}</p></ng-container>
+        </div>
+    </div>
+</div>
