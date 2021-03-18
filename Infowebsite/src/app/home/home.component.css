@@ -1,0 +1,23 @@
+
+
+.card {
+    margin: 1rem;
+    min-height: 20rem;
+}
+
+.infotext {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 2rem;
+}
+
+.download p {
+    width: max-content;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
