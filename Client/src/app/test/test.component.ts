@@ -15,8 +15,8 @@ selector: 'app-test',
 })
 export class TestComponent implements OnInit {
   socket: any;
-  readonly uri = 'ws://193.196.53.67:80';
-  //readonly uri = 'ws://localhost:8080';
+  readonly uri = 'ws://193.196.53.67:1187';
+  //readonly uri = 'ws://localhost:1187';
   text = '';
   chat = [];
   action = [];

@@ -29,7 +29,6 @@ export class AuthentificationService {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
-        window.location.reload()
         return user;
       }));
   }
