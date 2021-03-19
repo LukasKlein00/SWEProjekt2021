@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketBuilder } from 'websocket-ts';
-import { v4 as uuidv4 } from 'uuid';
+import { AuthentificationService } from '../services/authentification.service';
 
 export class PythonJSON {
   id: string;
@@ -9,29 +9,26 @@ export class PythonJSON {
 }
 
 @Component({
-  selector: 'app-test',
+selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
 export class TestComponent implements OnInit {
   socket: any;
   readonly uri = 'ws://193.196.53.67:80';
-  // readonly uri = 'ws://localhost:80';
-  clientID = uuidv4();
-  text = 'test';
-  chat = [{
-    id: 'TestUser',
-    msg: 'Test'
-  }];
-  action = ['testaction'];
+  //readonly uri = 'ws://localhost:8080';
+  text = '';
+  chat = [];
+  action = [];
   status = 'unknown';
+  currentUser = this.authentificationService.currentUserValue ?? { username: 'UNKNOWN'};
 
-  constructor() {
+  constructor(private authentificationService: AuthentificationService) {
     this.socket = new WebsocketBuilder(this.uri)
       .onOpen((i, ev) => { console.log('opened'); this.status = 'Online'; })
       .onClose((i, ev) => { console.log('closed'); this.status = 'Offline (closed)'; })
       .onError((i, ev) => { console.log('error'); this.status = 'Offline (error)'; })
-      .onMessage((i, ev) => { this.unloadData(ev.data); })
+      .onMessage((i, ev) => { this.unloadData(ev.data); console.log(i)})
       .onRetry((i, ev) => { console.log('retry'); })
       .build();
   }
@@ -58,7 +55,7 @@ export class TestComponent implements OnInit {
       console.log('allchat');
       if (this.text) {
         this.socket.send(JSON.stringify({
-          id: this.clientID,
+          id: this.currentUser.username,
           msg: this.text,
           method: 'allchat'
         }));
@@ -69,7 +66,7 @@ export class TestComponent implements OnInit {
 
   b2click() {
     this.socket.send(JSON.stringify({
-      id: this.clientID,
+      id: this.currentUser.username,
       msg: 'action zum Server',
       method: 'action'
     }));

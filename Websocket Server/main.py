@@ -29,7 +29,7 @@ async def server(websocket, path):
     finally:
         connected.remove(websocket)
 print('Starting WebsocketServer... \n')
-start_server = websockets.serve(server, '', 80)
+start_server = websockets.serve(server, '', 1187)
 print('Server is running!')
 
 asyncio.get_event_loop().run_until_complete(start_server)
