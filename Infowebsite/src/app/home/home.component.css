@@ -21,3 +21,8 @@ h2 {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.download {
+    max-height: 30vh;
+    overflow-y: auto;
+}
