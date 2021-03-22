@@ -3,13 +3,11 @@ import logging
 import json
 import databasemodul
 
-user = {
-    'id': '1',
-    'username': 'jd420',
-    'firstName': 'jack',
-    'lastName': 'domino',
-    'token': 'fake-jwt-token'
+login = {
+    'username': 'Testuser',
+    'password': 'testpassword'    
 }
+dummyData = json.dumps(login)
 
 class S(BaseHTTPRequestHandler):
     def _set_response(self):
@@ -27,7 +25,7 @@ class S(BaseHTTPRequestHandler):
 
     def do_GET(self):
         logging.info("GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
-        if (self.path == '/users/authenticate'):
+        if (self.path == '/users/authenticate'):           
             self._set_response()
             self.wfile.write(json.dumps(user).encode(encoding='utf_8'))
         
@@ -35,6 +33,12 @@ class S(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
+
+        if (self.path == '/login'):
+            pass
+
+
+
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                 str(self.path), str(self.headers), post_data.decode('utf-8'))
 

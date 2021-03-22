@@ -2,35 +2,64 @@ import asyncio
 import websockets
 import json
 
-connected = set()
+t = {
+    'method': 'chat',
+    'content': {
+        'content': 'hallo wie gehts',
+        'playerName': 'GüntherGrünschnabel',
+        'mapID': 2,
+        'receiver': 'dungeonchat',
+    }
+}
+dummyData = json.dumps(t)
 
+
+
+
+#Set, wo alle Verbunden Instanzen gespeichert werden
+allConnections = set()
+
+
+#Server
 async def server(websocket, path):
-    connected.add(websocket)
     try:
-        async for message in websocket:
-            data = json.loads(message)
+        #immer wenn eine Instanz eine Nachricht sendet...
+        async for msg in websocket:
+            data = json.loads(msg)
+            if data['methode'] == 'playerJoin':
+                playerJoinInfos = data['content']
+                allConnections.add({
+                    'socket': websocket,
+                    'mapID': playerJoinInfos['mapID'],
+                    'playerName': playerJoinInfos['playerName']
+                })
 
-            if data['method'] == 'allchat':
-                for conn in connected:
-                    reply = {
-                        'id': data['id'],
-                        'msg': data['msg'],
-                        'typ': 'chat'
-                    }
-                    await conn.send(json.dumps(reply))
-            
-            if data['method'] == 'action':
-                reply = {
-                        'id': data['id'],
-                        'msg': data['msg'],
-                        'typ': 'action'
-                    }
-                await websocket.send(json.dumps(reply))
+            if data['methode'] == 'chat':
+                message = data['content']
+
+                if message['receiver'] == 'dungeonchat':
+                    replyMessage= {
+                            'content': 'hallo wie gehts',
+                            'playerName': 'GüntherGrünschnabel',
+                            'mapID': 2,
+                            'receiver': 'dungeonchat',
+                        }
+                    for player in allConnections:
+                        if player['mapID'] == message['mapID']:
+                            #sendet Antwort an alle Spieler des Dungeons
+                            await player['socket'].send(json.dumps(replyMessage))
     finally:
-        connected.remove(websocket)
-print('Starting WebsocketServer... \n')
-start_server = websockets.serve(server, '', 1187)
-print('Server is running!')
+        #Beim Disconnecten trägt sich die Instanz aus dem Set aus
+        for player in allConnections:
+            if player['socket'] == websocket:
+                allConnections.discard(player)
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+
+
+#Main-Methode wird beim Starten der Datei ausgeführt
+if __name__ == '__main__':
+    print('Starting WebsocketServer... \n')
+    start_server = websockets.serve(server, '', 1187)
+    print('Server is running!')
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
