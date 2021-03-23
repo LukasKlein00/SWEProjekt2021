@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Map, Room } from 'Testfiles/models für Schnittstellen';
+import { Class, Map, Race, Room } from 'Testfiles/models für Schnittstellen';
 
 @Component({
   selector: 'app-builder',
@@ -11,7 +11,9 @@ export class BuilderComponent implements OnInit {
   mapSize = 11;
   Map: Map;
   Rooms: Room[][] = [];
-  selectedRoom: Room;;
+  selectedRoom: Room;
+  selectedRace: Race = this.newRace();
+  selectedClass: Class = this.newClass();
 
   constructor() { }
 
@@ -39,13 +41,60 @@ export class BuilderComponent implements OnInit {
       classes: [],
     }
   }
-
-  activateRoom(r: Room) {
-    r.isActive = true;
+  newClass() {
+    const x: Class = {
+      name: 'testClass',
+      bonusstats: {
+        maxHealth: 100,
+        maxMana: 100,
+        dodgeChance: 0,
+        armor: 0,
+        intelligence: 10,
+        strength: 10,
+      },
+      equipment: {
+        name: 'newWeapon',
+        damageTyp: 'normal',
+        baseDamage: 10,
+        value: 10,
+    }
+    }
+    return x
   }
 
-  deactivateRoom(r: Room) {
-    r.isActive = false;
+  addClass() {
+    this.Map.classes.push(this.selectedClass);
+    this.selectedClass = this.newClass()
+  }
+
+  editClass(c: Class) {
+    this.selectedClass = c;
+    this.Map.classes.splice(this.Map.classes.indexOf(c),1);
+  }
+
+  newRace() {
+    const x: Race = {
+      name: 'testRace',
+      bonusstats: {
+        maxHealth: 100,
+        maxMana: 100,
+        dodgeChance: 0,
+        armor: 0,
+        intelligence: 10,
+        strength: 10,
+      }
+    }
+    return x
+  }
+
+  addRace() {
+    this.Map.races.push(this.selectedRace);
+    this.selectedRace = this.newRace()
+  }
+
+  editRace(r: Race) {
+    this.selectedRace = r;
+    this.Map.races.splice(this.Map.races.indexOf(r),1);
   }
 
   toggleRoom(r: Room) {
@@ -75,7 +124,7 @@ export class BuilderComponent implements OnInit {
 
   newRoom(x, y) {
     return {
-      name: `NewRoom ${x} + ${y}`,
+      name: `NewRoom ${x} ${y}`,
       x: x,
       y: y,
       north: true,
@@ -87,7 +136,7 @@ export class BuilderComponent implements OnInit {
       players: [],
       isStartRoom: false,
       isActive: false,
-      description: `NewRoom ${x} + ${y} Description`,
+      description: `NewRoom ${x} ${y} Description`,
     }
   }
 }

@@ -1,6 +1,6 @@
 <div class="m-0 row">
-    <div class="mapDisplay">
-        <div class="map m-5">
+    <div class="mapDisplay m-5">
+        <div class="map">
             <div *ngFor="let row of Rooms" class="rowMap">
                 <div *ngFor="let room of row" class="room" [ngClass]="{
                     'activeRoom':room.isActive && !room.isStartRoom,
@@ -31,11 +31,35 @@
         Name: <input [(ngModel)]="Map.mapName"><br>
         Description: <textarea  [(ngModel)]="Map.mapDescription"></textarea><br>
         MaxPlayer: <input [(ngModel)]="Map.maxPlayers"><br>
+        Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}
+        </div><br>
+        Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}
+        </div><br>
+    </div>
+
+    <div *ngIf="Map" class="raceEditor m-5">
+        RaceName: <input [(ngModel)]="selectedRace.name"><br>
+        BonusHealth: <input [(ngModel)]="selectedRace.bonusstats.maxHealth"><br>
+        BonusMana: <input [(ngModel)]="selectedRace.bonusstats.maxMana"><br>
+        BonusDodgeChance: <input [(ngModel)]="selectedRace.bonusstats.dodgeChance"><br>
+        BonusArmor: <input [(ngModel)]="selectedRace.bonusstats.armor"><br>
+        BonusIntelligence: <input [(ngModel)]="selectedRace.bonusstats.intelligence"><br>
+        BonusStrength: <input [(ngModel)]="selectedRace.bonusstats.strength"><br>
+        <button (click)="addRace()">submit Race</button><br>
+    </div>
+
+    <div *ngIf="Map" class="classEditor m-5">
+        ClassName: <input [(ngModel)]="selectedClass.name"><br>
+        BonusHealth: <input [(ngModel)]="selectedClass.bonusstats.maxHealth"><br>
+        BonusMana: <input [(ngModel)]="selectedClass.bonusstats.maxMana"><br>
+        BonusDodgeChance: <input [(ngModel)]="selectedRace.bonusstats.dodgeChance"><br>
+        BonusArmor: <input [(ngModel)]="selectedClass.bonusstats.armor"><br>
+        BonusIntelligence: <input [(ngModel)]="selectedClass.bonusstats.intelligence"><br>
+        BonusStrength: <input [(ngModel)]="selectedClass.bonusstats.strength"><br>
+        Weapon: ... <br>
+        <button (click)="addClass()">submit Class</button><br>
     </div>
 </div>
 
-
-
-{{selectedRoom | json}}
 
 
