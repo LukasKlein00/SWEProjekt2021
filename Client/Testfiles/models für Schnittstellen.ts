@@ -8,6 +8,8 @@ export class Map {
     map?: Room[][];
     races?: Race[];
     classes?: Class[];
+    items?: Item[];
+    npcs?: Npc[];
 }
 
 export class Room {

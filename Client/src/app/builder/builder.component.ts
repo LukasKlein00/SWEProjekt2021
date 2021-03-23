@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Class, Map, Race, Room } from 'Testfiles/models für Schnittstellen';
+import { Class, Item, Map, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
 
 @Component({
   selector: 'app-builder',
@@ -14,6 +14,8 @@ export class BuilderComponent implements OnInit {
   selectedRoom: Room;
   selectedRace: Race = this.newRace();
   selectedClass: Class = this.newClass();
+  selectedItem: Item = this.newItem();
+  selectedNpc: Npc = this.newNpc();
 
   constructor() { }
 
@@ -39,6 +41,8 @@ export class BuilderComponent implements OnInit {
       map: this.Rooms,
       races: [],
       classes: [],
+      items: [],
+      npcs: [],
     }
   }
   newClass() {
@@ -96,6 +100,56 @@ export class BuilderComponent implements OnInit {
     this.selectedRace = r;
     this.Map.races.splice(this.Map.races.indexOf(r),1);
   }
+
+  newItem() {
+    const x: Item = {
+      name: 'newItem',
+      damageTyp: 'normal',
+      baseDamage: 10,
+      value: 10,
+    }
+    return x
+  }
+
+  addItem() {
+    this.Map.items.push(this.selectedItem);
+    this.selectedItem = this.newItem()
+  }
+
+  editItem(i: Item) {
+    this.selectedItem = i;
+    this.Map.items.splice(this.Map.items.indexOf(i),1);
+  }
+
+  newNpc() {
+    const x: Npc = {
+      name: 'newNpc',
+      stats: {
+        maxHealth: 100,
+        maxMana: 100,
+        dodgeChance: 10,
+        armor: 0,
+        intelligence: 10,
+        strength: 10,
+        experience: 100,
+        dropExperience: 10,
+      },
+      equipment: null,
+      behavoir: 'neutral',
+    }
+    return x
+  }
+
+  addNpc() {
+    this.Map.npcs.push(this.selectedNpc);
+    this.selectedNpc = this.newNpc()
+  }
+
+  editNpc(n: Npc) {
+    this.selectedNpc = n;
+    this.Map.npcs.splice(this.Map.npcs.indexOf(n),1);
+  }
+
 
   toggleRoom(r: Room) {
     r.isActive = !r.isActive;

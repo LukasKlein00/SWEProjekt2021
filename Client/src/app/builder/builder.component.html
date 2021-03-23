@@ -23,8 +23,8 @@
         south: <input type="checkbox" [checked]="selectedRoom.south" (change)="selectedRoom.south = !selectedRoom.south" /><br>
         west: <input type="checkbox" [checked]="selectedRoom.west" (change)="selectedRoom.west = !selectedRoom.west" /><br>
         startroom: <input type="checkbox" [checked]="selectedRoom.isStartRoom" (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /><br>
-        Items: ...<br>
-        NPC: ...<br>
+        Items: *selector Item<br>
+        NPC: *selector NPC<br>
     </div>
 
     <div *ngIf="Map" class="MapEditor m-5">
@@ -34,6 +34,10 @@
         Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}
         </div><br>
         Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}
+        </div><br>
+        Items: <div *ngFor="let item of Map.items" (click)="editItem(item)">{{item.name}}
+        </div><br>
+        Npcs: <div *ngFor="let npc of Map.npcs" (click)="editNpc(npc)">{{npc.name}}
         </div><br>
     </div>
 
@@ -56,8 +60,31 @@
         BonusArmor: <input [(ngModel)]="selectedClass.bonusstats.armor"><br>
         BonusIntelligence: <input [(ngModel)]="selectedClass.bonusstats.intelligence"><br>
         BonusStrength: <input [(ngModel)]="selectedClass.bonusstats.strength"><br>
-        Weapon: ... <br>
+        Weapon: *selector of Items <br>
         <button (click)="addClass()">submit Class</button><br>
+    </div>
+
+    <div *ngIf="Map" class="itemEditor m-5">
+        ItemName: <input [(ngModel)]="selectedItem.name"><br>
+        DamageTyp: <input [(ngModel)]="selectedItem.damageTyp"><br>
+        BaseDamage: <input [(ngModel)]="selectedItem.baseDamage"><br>
+        Value: <input [(ngModel)]="selectedItem.value"><br>
+        <button (click)="addItem()">submit Item</button><br>
+    </div>
+
+    <div *ngIf="Map" class="npcsEditor m-5">
+        NpcName: <input [(ngModel)]="selectedNpc.name"><br>
+        Health: <input [(ngModel)]="selectedNpc.stats.maxHealth"><br>
+        Mana: <input [(ngModel)]="selectedNpc.stats.maxMana"><br>
+        dodgeChance: <input [(ngModel)]="selectedNpc.stats.dodgeChance"><br>
+        armor: <input [(ngModel)]="selectedNpc.stats.armor"><br>
+        intelligence <input [(ngModel)]="selectedNpc.stats.intelligence"><br>
+        strength <input [(ngModel)]="selectedNpc.stats.strength"><br>
+        experience: <input [(ngModel)]="selectedNpc.stats.experience"><br>
+        dropExperience: <input [(ngModel)]="selectedNpc.stats.dropExperience"><br>
+        equipment: *selector item<br>
+        behavoir: <input [(ngModel)]="selectedNpc.behavoir"><br>
+        <button (click)="addNpc()">submit Npc</button><br>
     </div>
 </div>
 
