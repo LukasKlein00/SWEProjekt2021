@@ -5,43 +5,48 @@
                 <div *ngFor="let room of row" class="room" [ngClass]="{
                     'activeRoom':room.isActive && !room.isStartRoom,
                     'startRoom':room.isActive && room.isStartRoom
-                }" (click)="selectedRoom = room"
-                (dblclick)="toggleRoom(room)">
+                }" (click)="selectedRoom = room" (dblclick)="toggleRoom(room)">
                 </div>
             </div>
         </div>
         <button (click)="increaseMap()">increase Map</button>
         <button (click)="decreaseMap()">decrease Map</button>
     </div>
-    
 
-    <div *ngIf="selectedRoom" class="RoomEditor m-5">
+
+    <div *ngIf="selectedRoom" class="RoomEditor m-2 card">
         RoomName: <input [(ngModel)]="selectedRoom.name"><br>
-        RoomDescription: <textarea  [(ngModel)]="selectedRoom.description"></textarea><br>
-        north: <input type="checkbox" [checked]="selectedRoom.north" (change)="selectedRoom.north = !selectedRoom.north" /><br>
-        east: <input type="checkbox" [checked]="selectedRoom.east" (change)="selectedRoom.east = !selectedRoom.east" /><br>
-        south: <input type="checkbox" [checked]="selectedRoom.south" (change)="selectedRoom.south = !selectedRoom.south" /><br>
-        west: <input type="checkbox" [checked]="selectedRoom.west" (change)="selectedRoom.west = !selectedRoom.west" /><br>
-        startroom: <input type="checkbox" [checked]="selectedRoom.isStartRoom" (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /><br>
-        Items: *selector Item<br>
-        NPC: *selector NPC<br>
+        RoomDescription: <textarea [(ngModel)]="selectedRoom.description"></textarea><br>
+        north: <input type="checkbox" [checked]="selectedRoom.north"
+            (change)="selectedRoom.north = !selectedRoom.north" /><br>
+        east: <input type="checkbox" [checked]="selectedRoom.east"
+            (change)="selectedRoom.east = !selectedRoom.east" /><br>
+        south: <input type="checkbox" [checked]="selectedRoom.south"
+            (change)="selectedRoom.south = !selectedRoom.south" /><br>
+        west: <input type="checkbox" [checked]="selectedRoom.west"
+            (change)="selectedRoom.west = !selectedRoom.west" /><br>
+        startroom: <input type="checkbox" [checked]="selectedRoom.isStartRoom"
+            (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /><br>
+        Items: <ng-select [(ngModel)]="selectedRoom.item">
+            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+        </ng-select><br>
+        NPC: <ng-select [(ngModel)]="selectedRoom.npc">
+            <ng-option *ngFor="let npc of Map.npcs">{{npc.name}}</ng-option>
+        </ng-select><br>
     </div>
 
-    <div *ngIf="Map" class="MapEditor m-5">
+    <div *ngIf="Map" class="MapEditor m-2 card">
         Name: <input [(ngModel)]="Map.mapName"><br>
-        Description: <textarea  [(ngModel)]="Map.mapDescription"></textarea><br>
+        Description: <textarea [(ngModel)]="Map.mapDescription"></textarea><br>
         MaxPlayer: <input [(ngModel)]="Map.maxPlayers"><br>
-        Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}
-        </div><br>
-        Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}
-        </div><br>
-        Items: <div *ngFor="let item of Map.items" (click)="editItem(item)">{{item.name}}
-        </div><br>
+        Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}</div><br>
+        Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}</div><br>
+        Items:<div *ngFor="let item of Map.items" (click)="editItem(item)">{{item.name}}</div><br>
         Npcs: <div *ngFor="let npc of Map.npcs" (click)="editNpc(npc)">{{npc.name}}
         </div><br>
     </div>
 
-    <div *ngIf="Map" class="raceEditor m-5">
+    <div *ngIf="Map" class="raceEditor card m-2">
         RaceName: <input [(ngModel)]="selectedRace.name"><br>
         BonusHealth: <input [(ngModel)]="selectedRace.bonusstats.maxHealth"><br>
         BonusMana: <input [(ngModel)]="selectedRace.bonusstats.maxMana"><br>
@@ -52,7 +57,7 @@
         <button (click)="addRace()">submit Race</button><br>
     </div>
 
-    <div *ngIf="Map" class="classEditor m-5">
+    <div *ngIf="Map" class="classEditor m-2 card">
         ClassName: <input [(ngModel)]="selectedClass.name"><br>
         BonusHealth: <input [(ngModel)]="selectedClass.bonusstats.maxHealth"><br>
         BonusMana: <input [(ngModel)]="selectedClass.bonusstats.maxMana"><br>
@@ -64,15 +69,17 @@
         <button (click)="addClass()">submit Class</button><br>
     </div>
 
-    <div *ngIf="Map" class="itemEditor m-5">
+    <div *ngIf="Map" class="itemEditor m-2 card">
         ItemName: <input [(ngModel)]="selectedItem.name"><br>
-        DamageTyp: <input [(ngModel)]="selectedItem.damageTyp"><br>
+        DamageTyp: <ng-select [(ngModel)]="selectedItem.damageTyp">
+            <ng-option *ngFor="let damageTyp of damageTypes">{{damageTyp}}</ng-option>
+        </ng-select><br>
         BaseDamage: <input [(ngModel)]="selectedItem.baseDamage"><br>
         Value: <input [(ngModel)]="selectedItem.value"><br>
         <button (click)="addItem()">submit Item</button><br>
     </div>
 
-    <div *ngIf="Map" class="npcsEditor m-5">
+    <div *ngIf="Map" class="npcsEditor m-2 card">
         NpcName: <input [(ngModel)]="selectedNpc.name"><br>
         Health: <input [(ngModel)]="selectedNpc.stats.maxHealth"><br>
         Mana: <input [(ngModel)]="selectedNpc.stats.maxMana"><br>
@@ -82,11 +89,12 @@
         strength <input [(ngModel)]="selectedNpc.stats.strength"><br>
         experience: <input [(ngModel)]="selectedNpc.stats.experience"><br>
         dropExperience: <input [(ngModel)]="selectedNpc.stats.dropExperience"><br>
-        equipment: *selector item<br>
-        behavoir: <input [(ngModel)]="selectedNpc.behavoir"><br>
+        equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
+            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+        </ng-select><br>
+        behavoir: <ng-select [(ngModel)]="selectedNpc.behavoir">
+            <ng-option *ngFor="let behavoir of behaviors">{{behavoir}}</ng-option>
+        </ng-select><br>
         <button (click)="addNpc()">submit Npc</button><br>
     </div>
 </div>
-
-
-

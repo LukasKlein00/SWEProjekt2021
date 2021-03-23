@@ -16,6 +16,8 @@ export class BuilderComponent implements OnInit {
   selectedClass: Class = this.newClass();
   selectedItem: Item = this.newItem();
   selectedNpc: Npc = this.newNpc();
+  behaviors = ['passive','neutral','aggressive'];
+  damageTypes = ['normal','magic'];
 
   constructor() { }
 
@@ -185,8 +187,8 @@ export class BuilderComponent implements OnInit {
       south: true,
       east: true,
       west: true,
-      items: [],
-      npc: [],
+      item: null,
+      npc: null,
       players: [],
       isStartRoom: false,
       isActive: false,

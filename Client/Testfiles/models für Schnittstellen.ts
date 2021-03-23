@@ -20,8 +20,8 @@ export class Room {
     south: boolean;
     east: boolean;
     west: boolean;
-    items: Item[];
-    npc: Npc[];
+    item: Item;
+    npc: Npc;
     players: Player[];
     isStartRoom: boolean;
     isActive: boolean;
