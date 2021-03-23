@@ -1,0 +1,26 @@
+.map {
+    display: flex;
+    border: 1px solid blue;
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 500px;
+    width: 500px;
+}
+
+.rowMap {
+    float: left;
+}
+
+.startRoom {
+    background-color: blue;
+}
+
+.room {
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
+}
+
+.activeRoom {
+    background-color: lightslategray;
+}

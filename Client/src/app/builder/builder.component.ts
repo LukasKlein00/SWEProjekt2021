@@ -18,6 +18,7 @@ export class BuilderComponent implements OnInit {
   selectedNpc: Npc = this.newNpc();
   behaviors = ['passive','neutral','aggressive'];
   damageTypes = ['normal','magic'];
+  blub;
 
   constructor() { }
 
@@ -194,6 +195,16 @@ export class BuilderComponent implements OnInit {
       isActive: false,
       description: `NewRoom ${x} ${y} Description`,
     }
+  }
+
+  saveMap(){
+    localStorage.setItem('blub',JSON.stringify(this.Map));
+    //sende Map an Server!
+  }
+
+  publishMap(){
+    this.saveMap();
+    //sende MUD an joinable Lobbies
   }
 }
 

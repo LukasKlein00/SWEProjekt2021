@@ -11,6 +11,8 @@
         </div>
         <button (click)="increaseMap()">increase Map</button>
         <button (click)="decreaseMap()">decrease Map</button>
+        <button (click)="saveMap()" class="btn btn-primary m-1">save MUD</button>
+        <button (click)="publishMap()" class="btn btn-success m-1">publish MUD</button>
     </div>
 
 
@@ -61,7 +63,7 @@
         ClassName: <input [(ngModel)]="selectedClass.name"><br>
         BonusHealth: <input [(ngModel)]="selectedClass.bonusstats.maxHealth"><br>
         BonusMana: <input [(ngModel)]="selectedClass.bonusstats.maxMana"><br>
-        BonusDodgeChance: <input [(ngModel)]="selectedRace.bonusstats.dodgeChance"><br>
+        BonusDodgeChance: <input [(ngModel)]="selectedClass.bonusstats.dodgeChance"><br>
         BonusArmor: <input [(ngModel)]="selectedClass.bonusstats.armor"><br>
         BonusIntelligence: <input [(ngModel)]="selectedClass.bonusstats.intelligence"><br>
         BonusStrength: <input [(ngModel)]="selectedClass.bonusstats.strength"><br>
@@ -98,3 +100,6 @@
         <button (click)="addNpc()">submit Npc</button><br>
     </div>
 </div>
+
+
+{{blub}}

@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { BuilderComponent } from './builder/builder.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { HomeComponent } from './home/home.component';
+import { PlayComponent } from './play/play.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ImpressumComponent,
     LoginComponent,
     RegisterComponent,
-    BuilderComponent
+    BuilderComponent,
+    HomeComponent,
+    PlayComponent
   ],
   imports: [
     BrowserModule,
