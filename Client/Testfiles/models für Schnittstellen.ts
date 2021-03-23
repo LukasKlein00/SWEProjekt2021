@@ -1,10 +1,11 @@
 export class Map {
     mapName: string;
-    mapID: number;
+    mapDescription: string;
+    mapID?: number;
     maxPlayers: number;
-    currentPlayers: number;
+    currentPlayers?: number;
     mapMasterID?: number;
-    map?: Room[];
+    map?: Room[][];
     races?: Race[];
     classes?: Class[];
 }
@@ -21,6 +22,7 @@ export class Room {
     npc: Npc[];
     players: Player[];
     isStartRoom: boolean;
+    isActive: boolean;
     description: string;
 }
 

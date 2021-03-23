@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BuilderComponent } from './builder/builder.component';
 import { ImpressumComponent } from './impressum/impressum.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'play', component: ImpressumComponent, canActivate: [AuthguardService] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'builder', component: BuilderComponent },
 
   { path: '**', component: TestComponent }
 ];

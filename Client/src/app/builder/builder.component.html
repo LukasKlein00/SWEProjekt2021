@@ -1,0 +1,41 @@
+<div class="m-0 row">
+    <div class="mapDisplay">
+        <div class="map m-5">
+            <div *ngFor="let row of Rooms" class="rowMap">
+                <div *ngFor="let room of row" class="room" [ngClass]="{
+                    'activeRoom':room.isActive && !room.isStartRoom,
+                    'startRoom':room.isActive && room.isStartRoom
+                }" (click)="selectedRoom = room"
+                (dblclick)="toggleRoom(room)">
+                </div>
+            </div>
+        </div>
+        <button (click)="increaseMap()">increase Map</button>
+        <button (click)="decreaseMap()">decrease Map</button>
+    </div>
+    
+
+    <div *ngIf="selectedRoom" class="RoomEditor m-5">
+        RoomName: <input [(ngModel)]="selectedRoom.name"><br>
+        RoomDescription: <textarea  [(ngModel)]="selectedRoom.description"></textarea><br>
+        north: <input type="checkbox" [checked]="selectedRoom.north" (change)="selectedRoom.north = !selectedRoom.north" /><br>
+        east: <input type="checkbox" [checked]="selectedRoom.east" (change)="selectedRoom.east = !selectedRoom.east" /><br>
+        south: <input type="checkbox" [checked]="selectedRoom.south" (change)="selectedRoom.south = !selectedRoom.south" /><br>
+        west: <input type="checkbox" [checked]="selectedRoom.west" (change)="selectedRoom.west = !selectedRoom.west" /><br>
+        startroom: <input type="checkbox" [checked]="selectedRoom.isStartRoom" (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /><br>
+        Items: ...<br>
+        NPC: ...<br>
+    </div>
+
+    <div *ngIf="Map" class="MapEditor m-5">
+        Name: <input [(ngModel)]="Map.mapName"><br>
+        Description: <textarea  [(ngModel)]="Map.mapDescription"></textarea><br>
+        MaxPlayer: <input [(ngModel)]="Map.maxPlayers"><br>
+    </div>
+</div>
+
+
+
+{{selectedRoom | json}}
+
+
