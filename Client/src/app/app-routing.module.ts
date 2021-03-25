@@ -13,13 +13,12 @@ import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'test', component: TestComponent },
-  { path: 'play', component: PlayComponent },
+  { path: 'test', component: TestComponent, canActivate: [AuthguardService] },
+  { path: 'play', component: PlayComponent, canActivate: [AuthguardService] },
   { path: 'impressum', component: ImpressumComponent },
-  { path: 'play', component: ImpressumComponent, canActivate: [AuthguardService] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'builder', component: BuilderComponent },
+  { path: 'builder', component: BuilderComponent, canActivate: [AuthguardService] },
 
   { path: '**', component: TestComponent }
 ];
