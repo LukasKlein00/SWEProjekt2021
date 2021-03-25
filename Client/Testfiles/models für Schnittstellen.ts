@@ -1,12 +1,15 @@
 export class Map {
     mapName: string;
-    mapID: number;
+    mapDescription: string;
+    mapID?: number;
     maxPlayers: number;
-    currentPlayers: number;
+    currentPlayers?: number;
     mapMasterID?: number;
-    map?: Room[];
+    map?: Room[][];
     races?: Race[];
     classes?: Class[];
+    items?: Item[];
+    npcs?: Npc[];
 }
 
 export class Room {
@@ -17,10 +20,11 @@ export class Room {
     south: boolean;
     east: boolean;
     west: boolean;
-    items: Item[];
-    npc: Npc[];
+    item: Item;
+    npc: Npc;
     players: Player[];
     isStartRoom: boolean;
+    isActive: boolean;
     description: string;
 }
 
@@ -63,15 +67,15 @@ export class Player {
 
 export class Stats {
     maxHealth: number;
-    currentHealth: number;
+    currentHealth?: number;
     maxMana: number;
-    currentMana: number;
+    currentMana?: number;
     dodgeChance: number;
     armor: number;
     intelligence: number;
     strength: number;
-    experience: number;
-    dropExperience: number;
+    experience?: number;
+    dropExperience?: number;
 }
 
 export class Message {

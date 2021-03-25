@@ -1,0 +1,21 @@
+<div class="container-fluid bg-aqua">
+    <div class="row">
+        <div class="mapDisplay m-5">
+            <div class="map">
+                <div *ngFor="let row of Rooms" class="rowMap">
+                    <div *ngFor="let room of row" class="room" [ngClass]="{
+                        'activeRoom':room.isActive && !room.isStartRoom,
+                        'startRoom':room.isActive && room.isStartRoom}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="roomInfo m-5 card col-3">
+            <h3>Room: {{currentRoom.name}} </h3>
+            <p>Item: {{currentRoom.item}}</p>
+            <p>NPC: {{currentRoom.npc}}</p>
+            <p>Players: {{currentRoom.players}}</p>
+        </div>
+    </div>
+   
+</div>

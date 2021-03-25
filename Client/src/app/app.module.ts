@@ -9,6 +9,10 @@ import { TestComponent } from './test/test.component';
 import { ImpressumComponent } from './impressum/impressum.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { BuilderComponent } from './builder/builder.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { HomeComponent } from './home/home.component';
+import { PlayComponent } from './play/play.component';
 
 @NgModule({
   declarations: [
@@ -16,14 +20,18 @@ import { RegisterComponent } from './register/register.component';
     TestComponent,
     ImpressumComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    BuilderComponent,
+    HomeComponent,
+    PlayComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
