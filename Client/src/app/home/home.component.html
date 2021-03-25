@@ -4,8 +4,12 @@
             <div *ngFor="let map of availableMUDs" class="border border-dark p-3 col-3 col-auto">
                 <h5>{{map.mapName}}</h5>
                 <h6>({{map.currentPlayers}}/{{map.maxPlayers}}) Players</h6>
-                <div>{{map.mapDescription}}<div>
-                <button class="btn btn-success">JOIN</button>
+                <div>{{map.mapDescription}}</div>
+                <button class="btn btn-success" routerLink="/play">JOIN</button>
+            </div>
+            <div class="border border-dark p-3 col-3 col-auto">
+                <h5>Create Your Own MUD</h5>
+                <button class="btn btn-primary"  routerLink="/builder">Create</button>
             </div>
     </div>
 </div>
