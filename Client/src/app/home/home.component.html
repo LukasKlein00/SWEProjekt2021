@@ -1,5 +1,8 @@
 <div class="container-fluid p-0">
     <h1 class="text-center m-3">Available MUDs</h1>
+    <div class="row m-3">Filter: <ng-select class="col-1 float-left" [(ngModel)]="selectedFilter" [clearable]="false"> 
+        <ng-option *ngFor="let filter of filters">{{filter}}</ng-option>
+    </ng-select></div><br>
     <div class="row m-5">
             <div *ngFor="let map of availableMUDs" class="border border-dark p-3 col-3 col-auto">
                 <h5>{{map.mapName}}</h5>

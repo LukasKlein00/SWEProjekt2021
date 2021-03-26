@@ -30,52 +30,35 @@ export class Room {
 
 export class Race {
     name: string;
-    bonusstats: Stats;
+    description: string;
 }
 
 export class Class {
     name: string;
-    bonusstats: Stats;
+    description: string;
     equipment: Item;
 }
 
 export class Item {
     name: string;
-    damageTyp: 'normal' | 'magic';
-    baseDamage: number;
-    value: number;
+    description: string;
 }
 
 export class Npc {
     name: string;
-    stats: Stats;
     equipment: Item;
-    behavoir: 'aggressive' | 'neutral' | 'passive';
+    description: string;
 }
 
 export class Player {
     name: string;
     userID: number;
-    stats: Stats;
+    health: number;
     inventar: Item[];
     equipment: Item;
-    balance: number;
     race: Race;
     class: Class;
     mapID: number;
-}
-
-export class Stats {
-    maxHealth: number;
-    currentHealth?: number;
-    maxMana: number;
-    currentMana?: number;
-    dodgeChance: number;
-    armor: number;
-    intelligence: number;
-    strength: number;
-    experience?: number;
-    dropExperience?: number;
 }
 
 export class Message {
@@ -103,8 +86,6 @@ export class LoginData {
     username: string;
     userid: number;
 }
-
-
 
 export class User {
     username: string;

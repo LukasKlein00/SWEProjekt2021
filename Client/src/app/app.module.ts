@@ -13,6 +13,7 @@ import { BuilderComponent } from './builder/builder.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { PlayComponent } from './play/play.component';
     RegisterComponent,
     BuilderComponent,
     HomeComponent,
-    PlayComponent
+    PlayComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,7 @@ import { PlayComponent } from './play/play.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgSelectModule
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

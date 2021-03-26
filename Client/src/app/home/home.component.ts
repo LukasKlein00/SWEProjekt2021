@@ -57,6 +57,9 @@ export class HomeComponent implements OnInit {
     mapMasterID: 3,
   }]
 
+  filters = ['all','public','private','my own'];
+  selectedFilter = this.filters[0];
+
   constructor() { }
 
   ngOnInit(): void {

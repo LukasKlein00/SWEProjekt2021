@@ -8,6 +8,7 @@ import { Class, Item, Map, Npc, Race, Room } from 'Testfiles/models für Schnitt
 })
 export class BuilderComponent implements OnInit {
 
+  maxPlayerOptions = [3,4,5,6,7,8,9,10]
   mapSize = 11;
   Map: Map;
   Rooms: Room[][] = [];
@@ -51,20 +52,8 @@ export class BuilderComponent implements OnInit {
   newClass() {
     const x: Class = {
       name: 'testClass',
-      bonusstats: {
-        maxHealth: 100,
-        maxMana: 100,
-        dodgeChance: 0,
-        armor: 0,
-        intelligence: 10,
-        strength: 10,
-      },
-      equipment: {
-        name: 'newWeapon',
-        damageTyp: 'normal',
-        baseDamage: 10,
-        value: 10,
-    }
+      description: 'newClassDescription',
+      equipment: null
     }
     return x
   }
@@ -82,14 +71,7 @@ export class BuilderComponent implements OnInit {
   newRace() {
     const x: Race = {
       name: 'testRace',
-      bonusstats: {
-        maxHealth: 100,
-        maxMana: 100,
-        dodgeChance: 0,
-        armor: 0,
-        intelligence: 10,
-        strength: 10,
-      }
+      description: 'newRaceDescription',
     }
     return x
   }
@@ -107,9 +89,7 @@ export class BuilderComponent implements OnInit {
   newItem() {
     const x: Item = {
       name: 'newItem',
-      damageTyp: 'normal',
-      baseDamage: 10,
-      value: 10,
+      description: 'newItemDescription',
     }
     return x
   }
@@ -127,18 +107,8 @@ export class BuilderComponent implements OnInit {
   newNpc() {
     const x: Npc = {
       name: 'newNpc',
-      stats: {
-        maxHealth: 100,
-        maxMana: 100,
-        dodgeChance: 10,
-        armor: 0,
-        intelligence: 10,
-        strength: 10,
-        experience: 100,
-        dropExperience: 10,
-      },
+      description: 'newDescription',
       equipment: null,
-      behavoir: 'neutral',
     }
     return x
   }

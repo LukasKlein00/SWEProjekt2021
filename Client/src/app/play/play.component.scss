@@ -1,10 +1,17 @@
+@import "./../sccVariables.scss";
+
 .map {
     display: flex;
-    border: 1px solid blue;
+    border: 1px solid lightslategray;
     overflow-y: auto;
     overflow-x: auto;
-    height: 500px;
-    width: 500px;
+    height: $map-size;
+    width: $map-size;
+}
+
+.chat {
+    width: calc(80% - 500px);
+    max-height: $map-size;
 }
 
 .rowMap {
