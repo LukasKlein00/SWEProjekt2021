@@ -2,7 +2,6 @@
 
 .map {
     display: flex;
-    border: 1px solid lightslategray;
     overflow-y: auto;
     overflow-x: auto;
     height: 500px;
@@ -28,7 +27,16 @@
 }
 
 .editor {
-    border: 1px solid black;
     width: calc(80% - 500px);
     height: $map-size;
+    overflow: auto;
+}
+
+.chat {
+    height: calc(80vh - 500px);
+}
+
+.requests{
+    overflow: auto;
+    height: calc(80vh - 500px);
 }

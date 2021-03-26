@@ -1,12 +1,12 @@
 <div class="m-0 row justify-content-center">
     <div class="col-12 row justify-content-center">
         <div class="mapDisplay m-4">
-            <div class="map">
+            <div class="map border">
                 <div *ngFor="let row of Rooms" class="rowMap">
                     <div *ngFor="let room of row" class="room" [ngClass]="{
                         'activeRoom':room.isActive && !room.isStartRoom,
                         'startRoom':room.isActive && room.isStartRoom
-                    }" (click)="selectedRoom = room" (dblclick)="toggleRoom(room)">
+                    }" (click)="selectRoom(room)" (dblclick)="toggleRoom(room)">
                     </div>
                 </div>
             </div>
@@ -15,99 +15,144 @@
             <button (click)="saveMap()" class="btn btn-primary m-1">save MUD</button>
             <button (click)="publishMap()" class="btn btn-success m-1">publish MUD</button>
         </div>
-    
-        <div class="editor m-4">
+
+        <div class="editor border m-4">
             <nav>
                 <h2 class="text-center p-0 m-0">Settings</h2>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                  <a class="nav-item nav-link active" id="nav-dungeon-tab" data-toggle="tab" href="#nav-dungeon" role="tab" aria-controls="nav-dungeon" aria-selected="true">Dungeon</a>
-                  <a class="nav-item nav-link" id="nav-room-tab" data-toggle="tab" href="#nav-room" role="tab" aria-controls="nav-room" aria-selected="false">Room</a>
-                  <a class="nav-item nav-link" id="nav-race-tab" data-toggle="tab" href="#nav-race" role="tab" aria-controls="nav-race" aria-selected="false">Race</a>
-                  <a class="nav-item nav-link" id="nav-class-tab" data-toggle="tab" href="#nav-class" role="tab" aria-controls="nav-class" aria-selected="false">Class</a>
-                  <a class="nav-item nav-link" id="nav-item-tab" data-toggle="tab" href="#nav-item" role="tab" aria-controls="nav-item" aria-selected="false">Item</a>
-                  <a class="nav-item nav-link" id="nav-npc-tab" data-toggle="tab" href="#nav-npc" role="tab" aria-controls="nav-npc" aria-selected="false">NPC</a>
+                    <a class="nav-item nav-link active" id="nav-dungeon-tab" data-toggle="tab" href="#nav-dungeon"
+                        role="tab" aria-controls="nav-dungeon" aria-selected="true">Dungeon</a>
+                    <a class="nav-item nav-link" id="nav-room-tab" data-toggle="tab" href="#nav-room" role="tab"
+                        aria-controls="nav-room" aria-selected="false">Room</a>
+                    <a class="nav-item nav-link" id="nav-race-tab" data-toggle="tab" href="#nav-race" role="tab"
+                        aria-controls="nav-race" aria-selected="false">Race</a>
+                    <a class="nav-item nav-link" id="nav-class-tab" data-toggle="tab" href="#nav-class" role="tab"
+                        aria-controls="nav-class" aria-selected="false">Class</a>
+                    <a class="nav-item nav-link" id="nav-item-tab" data-toggle="tab" href="#nav-item" role="tab"
+                        aria-controls="nav-item" aria-selected="false">Item</a>
+                    <a class="nav-item nav-link" id="nav-npc-tab" data-toggle="tab" href="#nav-npc" role="tab"
+                        aria-controls="nav-npc" aria-selected="false">NPC</a>
                 </div>
-              </nav>
-              <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-dungeon" role="tabpanel" aria-labelledby="nav-dungeon-tab">
-
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-dungeon" role="tabpanel"
+                    aria-labelledby="nav-dungeon-tab">
+                    <div *ngIf="Map" class="m-3">
+                        Name: <input [(ngModel)]="Map.mapName" class="w-100"><br><br>
+                        Description: <textarea class="w-100" [(ngModel)]="Map.mapDescription"></textarea><br><br>
+                        MaxPlayer: <ng-select [(ngModel)]="Map.maxPlayers" [clearable]="false">
+                            <ng-option *ngFor="let maxP of maxPlayerOptions">{{maxP}}</ng-option>
+                        </ng-select>
+                        <!-- Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}</div><br>
+                        Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}</div><br>
+                        Items:<div *ngFor="let item of Map.items" (click)="editItem(item)">{{item.name}}</div><br>
+                        Npcs: <div *ngFor="let npc of Map.npcs" (click)="editNpc(npc)">{{npc.name}}
+                        </div><br> -->
+                    </div>
                 </div>
 
-                
-                <div class="tab-pane fade" id="nav-room" role="tabpanel" aria-labelledby="nav-room-tab">test2</div>
-                <div class="tab-pane fade" id="nav-race" role="tabpanel" aria-labelledby="nav-race-tab">test3</div>
-                <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">test3</div>
-                <div class="tab-pane fade" id="nav-item" role="tabpanel" aria-labelledby="nav-item-tab">test3</div>
-                <div class="tab-pane fade" id="nav-npc" role="tabpanel" aria-labelledby="nav-npc-tab">test3</div>
-              </div>            
+
+                <div class="tab-pane fade" id="nav-room" role="tabpanel" aria-labelledby="nav-room-tab">
+                    <div *ngIf="selectedRoom" class="m-3">
+                        RoomName: <input class="w-100" [(ngModel)]="selectedRoom.name"><br><br>
+                        RoomDescription: <textarea class="w-100" [(ngModel)]="selectedRoom.description"></textarea><br><br> 
+                        <div class="row m-0">
+                            north: <input class="m-1" type="checkbox" [checked]="selectedRoom.north"
+                                (change)="selectedRoom.north = !selectedRoom.north" />
+                            east: <input class="m-1" type="checkbox" [checked]="selectedRoom.east"
+                                (change)="selectedRoom.east = !selectedRoom.east" />
+                            south: <input class="m-1" type="checkbox" [checked]="selectedRoom.south"
+                                (change)="selectedRoom.south = !selectedRoom.south" />
+                            west: <input class="m-1" type="checkbox" [checked]="selectedRoom.west"
+                                (change)="selectedRoom.west = !selectedRoom.west" />
+                            startroom: <input class="m-1" type="checkbox" [checked]="selectedRoom.isStartRoom"
+                                (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" />
+                        </div><br>
+                        Items: <ng-select [(ngModel)]="selectedRoom.item">
+                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                        </ng-select><br>
+                        NPC: <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
+                            <ng-option *ngFor="let npc of Map.npcs">{{npc.name}}</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="nav-race" role="tabpanel" aria-labelledby="nav-race-tab">
+                    <div *ngIf="Map" class="m-3">
+                        RaceName: <input class="w-100" [(ngModel)]="selectedRace.name"><br><br>
+                        RaceDescription: <textarea class="w-100" [(ngModel)]="selectedRace.description"></textarea><br><br>
+                        <button (click)="addRace()">submit Race</button><br>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
+                    <div *ngIf="Map" class="m-3">
+                        ClassName: <input class="w-100" [(ngModel)]="selectedClass.name"><br><br>
+                        ClassDescription: <textarea class="w-100" [(ngModel)]="selectedClass.description"></textarea><br><br>
+                        equipment: <ng-select [(ngModel)]="selectedClass.equipment">
+                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                        </ng-select><br>
+                        <button (click)="addClass()">submit Class</button><br>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="nav-item" role="tabpanel" aria-labelledby="nav-item-tab">
+                    <div *ngIf="Map" class="m-3">
+                        ItemName: <input class="w-100" [(ngModel)]="selectedItem.name"><br><br>  
+                        ItemDescription: <textarea class="w-100" [(ngModel)]="selectedItem.description"></textarea><br><br>
+                        <button (click)="addItem()">submit Item</button><br>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="nav-npc" role="tabpanel" aria-labelledby="nav-npc-tab">
+                    <div *ngIf="Map" class="m-3">
+                        NpcName: <input class="w-100" [(ngModel)]="selectedNpc.name"><br><br>
+                        NpcDescription: <textarea class="w-100" [(ngModel)]="selectedNpc.description"></textarea><br><br>
+                        equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
+                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                        </ng-select><br>
+                        <button (click)="addNpc()">submit Npc</button><br>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="col-5 chat">
+            <app-chat></app-chat>
+        </div>
+
+        <div class="col-5 border requests">
+            <h4 class="text-center">Current Requests</h4>
+            <div class="row">
+                <div class="border col-6" *ngFor="let request of requests">
+                    <h6>{{request.requester.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{request.requester.health}}"></meter><br>wants to {{request.request}}</h6>
+                    What happens?:
+                    <textarea class="w-100" [(ngModel)]="request.answer"></textarea>
+                    Adjust Tom's Health <mat-slider min="1" max="100" step="1" [(ngModel)]="request.requester.health"></mat-slider>
+                    <button class="btn-dark" (click)="submitRequest(request)">Submit</button> 
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+
+
+
+
+
     
-</div>
 
+    
 
+    
 
+    
 
-<div *ngIf="selectedRoom" class="RoomEditor m-2 card">
-    RoomName: <input [(ngModel)]="selectedRoom.name"><br>
-    RoomDescription: <textarea [(ngModel)]="selectedRoom.description"></textarea><br>
-    north: <input type="checkbox" [checked]="selectedRoom.north"
-        (change)="selectedRoom.north = !selectedRoom.north" /><br>
-    east: <input type="checkbox" [checked]="selectedRoom.east"
-        (change)="selectedRoom.east = !selectedRoom.east" /><br>
-    south: <input type="checkbox" [checked]="selectedRoom.south"
-        (change)="selectedRoom.south = !selectedRoom.south" /><br>
-    west: <input type="checkbox" [checked]="selectedRoom.west"
-        (change)="selectedRoom.west = !selectedRoom.west" /><br>
-    startroom: <input type="checkbox" [checked]="selectedRoom.isStartRoom"
-        (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /><br>
-    Items: <ng-select [(ngModel)]="selectedRoom.item">
-        <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
-    </ng-select><br>
-    NPC: <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
-        <ng-option *ngFor="let npc of Map.npcs">{{npc.name}}</ng-option>
-    </ng-select><br>
-</div>
-
-<div *ngIf="Map" class="MapEditor m-2 card">
-    Name: <input [(ngModel)]="Map.mapName"><br>
-    Description: <textarea [(ngModel)]="Map.mapDescription"></textarea><br>
-    MaxPlayer: <ng-select [(ngModel)]="Map.maxPlayers" [clearable]="false">
-        <ng-option *ngFor="let maxP of maxPlayerOptions" >{{maxP}}</ng-option>
-    </ng-select>
-    Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}</div><br>
-    Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}</div><br>
-    Items:<div *ngFor="let item of Map.items" (click)="editItem(item)">{{item.name}}</div><br>
-    Npcs: <div *ngFor="let npc of Map.npcs" (click)="editNpc(npc)">{{npc.name}}
-    </div><br>
-</div>
-
-<div *ngIf="Map" class="raceEditor card m-2">
-    RaceName: <input [(ngModel)]="selectedRace.name"><br>
-    RaceDescription: <textarea [(ngModel)]="selectedRace.description"></textarea><br>
-    <button (click)="addRace()">submit Race</button><br>
-</div>
-
-<div *ngIf="Map" class="classEditor m-2 card">
-    ClassName: <input [(ngModel)]="selectedClass.name"><br>
-    ClassDescription: <textarea [(ngModel)]="selectedClass.description"></textarea><br>
-    equipment: <ng-select [(ngModel)]="selectedClass.equipment">
-        <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
-    </ng-select><br>
-    <button (click)="addClass()">submit Class</button><br>
-</div>
-
-<div *ngIf="Map" class="itemEditor m-2 card">
-    ItemName: <input [(ngModel)]="selectedItem.name"><br>
-    ItemDescription: <textarea [(ngModel)]="selectedItem.description"></textarea><br>
-    <button (click)="addItem()">submit Item</button><br>
-</div>
-
-<div *ngIf="Map" class="npcsEditor m-2 card">
-    NpcName: <input [(ngModel)]="selectedNpc.name"><br>
-    NpcDescription: <textarea [(ngModel)]="selectedNpc.description"></textarea><br>
-    equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
-        <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
-    </ng-select><br>
-    <button (click)="addNpc()">submit Npc</button><br>
-</div>
+    
 </div>

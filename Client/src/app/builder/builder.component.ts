@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Class, Item, Map, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
+import { Class, Item, Map, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
 
 @Component({
   selector: 'app-builder',
@@ -9,6 +9,50 @@ import { Class, Item, Map, Npc, Race, Room } from 'Testfiles/models für Schnitt
 export class BuilderComponent implements OnInit {
 
   maxPlayerOptions = [3,4,5,6,7,8,9,10]
+  requests: requestForMaster[] = [
+    {
+      request: 'kill Spider',
+      requester: {
+        name: 'Tom',
+        userID: 1,
+        health: 79,
+        inventar: null,
+        equipment: null,
+        race: null,
+        class: null,
+        mapID: null,
+      },
+      answer: '',
+    },
+    {
+      request: 'eat Apple',
+      requester: {
+        name: 'Sibille',
+        userID: 3,
+        health: 40,
+        inventar: null,
+        equipment: null,
+        race: null,
+        class: null,
+        mapID: null,
+      },
+      answer: '',
+    },
+    {
+      request: 'trade with Robert',
+      requester: {
+        name: 'Tim',
+        userID: 1,
+        health: 20,
+        inventar: null,
+        equipment: null,
+        race: null,
+        class: null,
+        mapID: null,
+      },
+      answer: '',
+    }
+  ]
   mapSize = 11;
   Map: Map;
   Rooms: Room[][] = [];
@@ -175,6 +219,15 @@ export class BuilderComponent implements OnInit {
   publishMap(){
     this.saveMap();
     //sende MUD an joinable Lobbies
+  }
+
+  selectRoom(r: Room){
+    this.selectedRoom = r;
+    document.getElementById('nav-room-tab').click();
+  }
+
+  submitRequest(req: requestForMaster){
+    this.requests.splice(this.requests.indexOf(req),1);
   }
 }
 

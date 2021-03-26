@@ -125,6 +125,12 @@ export class PlayerAction {
     enemyNpcID?: number;
 }
 
+export class requestForMaster {
+    request: string;
+    requester: Player;
+    answer: string;
+}
+
 
 //objekte nicht benutzt, nur das man weiß, dass diese Requests kommen :)
 
