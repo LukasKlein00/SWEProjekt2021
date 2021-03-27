@@ -10,10 +10,6 @@
                     </div>
                 </div>
             </div>
-            <button (click)="increaseMap()">increase Map</button>
-            <button (click)="decreaseMap()">decrease Map</button>
-            <button (click)="saveMap()" class="btn btn-primary m-1">save MUD</button>
-            <button (click)="publishMap()" class="btn btn-success m-1">publish MUD</button>
         </div>
 
         <div class="editor border m-4">
@@ -43,6 +39,10 @@
                         MaxPlayer: <ng-select [(ngModel)]="Map.maxPlayers" [clearable]="false">
                             <ng-option *ngFor="let maxP of maxPlayerOptions">{{maxP}}</ng-option>
                         </ng-select>
+                        <button (click)="increaseMap()">increase Map</button>
+                        <button (click)="decreaseMap()">decrease Map</button>
+                        <button (click)="saveMap()" class="btn btn-primary m-1">save MUD</button>
+                        <button (click)="publishMap()" class="btn btn-success m-1">publish MUD</button>
                         <!-- Classes: <div *ngFor="let class of Map.classes" (click)="editClass(class)">{{class.name}}</div><br>
                         Races: <div *ngFor="let race of Map.races" (click)="editRace(race)">{{race.name}}</div><br>
                         Items:<div *ngFor="let item of Map.items" (click)="editItem(item)">{{item.name}}</div><br>
@@ -55,7 +55,8 @@
                 <div class="tab-pane fade" id="nav-room" role="tabpanel" aria-labelledby="nav-room-tab">
                     <div *ngIf="selectedRoom" class="m-3">
                         RoomName: <input class="w-100" [(ngModel)]="selectedRoom.name"><br><br>
-                        RoomDescription: <textarea class="w-100" [(ngModel)]="selectedRoom.description"></textarea><br><br> 
+                        RoomDescription: <textarea class="w-100"
+                            [(ngModel)]="selectedRoom.description"></textarea><br><br>
                         <div class="row m-0">
                             north: <input class="m-1" type="checkbox" [checked]="selectedRoom.north"
                                 (change)="selectedRoom.north = !selectedRoom.north" />
@@ -81,7 +82,8 @@
                 <div class="tab-pane fade" id="nav-race" role="tabpanel" aria-labelledby="nav-race-tab">
                     <div *ngIf="Map" class="m-3">
                         RaceName: <input class="w-100" [(ngModel)]="selectedRace.name"><br><br>
-                        RaceDescription: <textarea class="w-100" [(ngModel)]="selectedRace.description"></textarea><br><br>
+                        RaceDescription: <textarea class="w-100"
+                            [(ngModel)]="selectedRace.description"></textarea><br><br>
                         <button (click)="addRace()">submit Race</button><br>
                     </div>
                 </div>
@@ -90,7 +92,8 @@
                 <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
                     <div *ngIf="Map" class="m-3">
                         ClassName: <input class="w-100" [(ngModel)]="selectedClass.name"><br><br>
-                        ClassDescription: <textarea class="w-100" [(ngModel)]="selectedClass.description"></textarea><br><br>
+                        ClassDescription: <textarea class="w-100"
+                            [(ngModel)]="selectedClass.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedClass.equipment">
                             <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
                         </ng-select><br>
@@ -101,8 +104,9 @@
 
                 <div class="tab-pane fade" id="nav-item" role="tabpanel" aria-labelledby="nav-item-tab">
                     <div *ngIf="Map" class="m-3">
-                        ItemName: <input class="w-100" [(ngModel)]="selectedItem.name"><br><br>  
-                        ItemDescription: <textarea class="w-100" [(ngModel)]="selectedItem.description"></textarea><br><br>
+                        ItemName: <input class="w-100" [(ngModel)]="selectedItem.name"><br><br>
+                        ItemDescription: <textarea class="w-100"
+                            [(ngModel)]="selectedItem.description"></textarea><br><br>
                         <button (click)="addItem()">submit Item</button><br>
                     </div>
                 </div>
@@ -111,7 +115,8 @@
                 <div class="tab-pane fade" id="nav-npc" role="tabpanel" aria-labelledby="nav-npc-tab">
                     <div *ngIf="Map" class="m-3">
                         NpcName: <input class="w-100" [(ngModel)]="selectedNpc.name"><br><br>
-                        NpcDescription: <textarea class="w-100" [(ngModel)]="selectedNpc.description"></textarea><br><br>
+                        NpcDescription: <textarea class="w-100"
+                            [(ngModel)]="selectedNpc.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
                             <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
                         </ng-select><br>
@@ -128,15 +133,45 @@
         <div class="col-5 border requests">
             <h4 class="text-center">Current Requests</h4>
             <div class="row">
-                <div class="border col-6" *ngFor="let request of requests">
-                    <h6>{{request.requester.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{request.requester.health}}"></meter><br>wants to {{request.request}}</h6>
-                    What happens?:
-                    <textarea class="w-100" [(ngModel)]="request.answer"></textarea>
-                    Adjust Tom's Health <mat-slider min="1" max="100" step="1" [(ngModel)]="request.requester.health"></mat-slider>
-                    <button class="btn-dark" (click)="submitRequest(request)">Submit</button> 
+                <div class="border col-6" *ngFor="let request of requests; let i = index">
+
+                    <nav>
+                        <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">
+                            <a class="nav-item nav-link active" id="{{'nav-overview-tab' + i}}" data-toggle="tab" href="{{'#nav-overview' + i}}"
+                                role="tab" aria-controls="nav-overview" aria-selected="true">Overview</a>
+                            <a class="nav-item nav-link" id="{{'nav-inventory-tab' +  i}" data-toggle="tab" href="{{'#nav-inventory' + i}}"
+                                role="tab" aria-controls="nav-inventory" aria-selected="false">Inventory</a>
+                        </div>
+                    </nav>
+                    
+                    <div class="tab-content" id="{{'nav-tabContent' + i}}">
+
+                        <div class="tab-pane fade show active" id="{{'nav-overview' + i}}" role="tabpanel" aria-labelledby="nav-item-overview">
+                            <div class="font-weight-bold">{{request.requester.name}} <meter id="health" min="0" max="100"
+                                    low="30" high="75" optimum="80" value="{{request.requester.health}}"></meter></div>
+                            <div>wants to: <span class="font-italic m-4">{{request.request}}</span></div><br>
+                            <div>What happens?:</div>
+                            <textarea class="w-100" [(ngModel)]="request.answer"></textarea>
+                            Adjust Tom's Health <mat-slider min="1" max="100" step="1"
+                                [(ngModel)]="request.requester.health" thumbLabel></mat-slider>
+                            <button class="btn-dark" (click)="submitRequest(request)">Submit</button>
+                        </div>
+
+                        <div class="tab-pane fade" id="{{'nav-inventory' + i}}" role="tabpanel" aria-labelledby="nav-inventory-tab">
+                            Equipment: <ng-select [(ngModel)]="request.requester.equipment">
+                                <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            </ng-select><br>
+                            Inventory <ng-select [(ngModel)]="request.requester.equipment">
+                                <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            </ng-select><br>
+                        </div>
+
+                    </div>
+                    
+
+
                 </div>
             </div>
-            
         </div>
 
     </div>
@@ -146,13 +181,13 @@
 
 
 
-    
 
-    
 
-    
 
-    
 
-    
+
+
+
+
+
 </div>
