@@ -61,6 +61,15 @@ export class Player {
     mapID: number;
 }
 
+export class SubmitPlayer {
+    name: string;
+    race: Race;
+    class: Class;
+    mapID: number;
+    equipment: Item[];
+    userID: number;
+}
+
 export class Message {
     content: string;
     playerName: string;

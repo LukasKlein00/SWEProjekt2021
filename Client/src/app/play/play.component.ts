@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Map, Room } from 'Testfiles/models für Schnittstellen';
+import { MatDialog } from '@angular/material/dialog';
+import { Map, Player, Room } from 'Testfiles/models für Schnittstellen';
+import { CreateCharacterComponent } from '../create-character/create-character.component';
 
 @Component({
   selector: 'app-play',
@@ -8,14 +10,32 @@ import { Map, Room } from 'Testfiles/models für Schnittstellen';
 })
 export class PlayComponent implements OnInit {
 
+  World: Map;
   Rooms: Room[][];
   currentRoom: Room;
+  player: Player = {
+    name: '',
+    equipment: null,
+    mapID: 1,
+    race: {
+      name: '',
+      description: '',
+    },
+    class: {
+      name: '',
+      description: '',
+      equipment: null
+    },
+    userID: 1,
+    health: 100,
+    inventar: []
+  };
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    let world: Map = JSON.parse(localStorage.getItem('blub'));
-    this.Rooms = world.map;
+    this.World = JSON.parse(localStorage.getItem('blub'));
+    this.Rooms = this.World.map;
     this.currentRoom = {
       name: "NewRoom 5 5",
       x: 5,
@@ -31,8 +51,20 @@ export class PlayComponent implements OnInit {
       isActive: true,
       description: "Starting Room Description"
   }
+    this.openDialog();
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(CreateCharacterComponent, {
+      disableClose: true,
+      data: this.World,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.player = result;
+
+    });
+  }
   
     
 

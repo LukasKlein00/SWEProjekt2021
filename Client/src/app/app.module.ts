@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { PlayComponent } from './play/play.component';
 import { ChatComponent } from './chat/chat.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CreateCharacterComponent } from './create-character/create-character.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     BuilderComponent,
     HomeComponent,
     PlayComponent,
-    ChatComponent
+    ChatComponent,
+    CreateCharacterComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +41,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     NgSelectModule,
     NoopAnimationsModule,
     MatSliderModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
