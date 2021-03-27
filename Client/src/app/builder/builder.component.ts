@@ -16,8 +16,18 @@ export class BuilderComponent implements OnInit {
         name: 'Tom',
         userID: 1,
         health: 79,
-        inventar: null,
-        equipment: null,
+        inventar: [{
+          name: 'gold nugget',
+          description: '',
+        },
+        {
+          name: 'salty Potatos',
+          description: '',
+        }],
+        equipment: {
+          name: 'damaged sword',
+          description: '',
+        },
         race: null,
         class: null,
         mapID: null,
@@ -30,8 +40,16 @@ export class BuilderComponent implements OnInit {
         name: 'Sibille',
         userID: 3,
         health: 40,
-        inventar: null,
-        equipment: null,
+        inventar: [
+          {
+            name: 'rotten Apple',
+            description: '',
+          }
+        ],
+        equipment: {
+          name: null,
+          description: null,
+        },
         race: null,
         class: null,
         mapID: null,
@@ -39,13 +57,16 @@ export class BuilderComponent implements OnInit {
       answer: '',
     },
     {
-      request: 'trade with Robert',
+      request: 'trade with Robert and run away after a short amount of time',
       requester: {
         name: 'Tim',
         userID: 1,
         health: 20,
-        inventar: null,
-        equipment: null,
+        inventar: [],
+        equipment: {
+          name: null,
+          description: null,
+        },
         race: null,
         class: null,
         mapID: null,
@@ -89,7 +110,15 @@ export class BuilderComponent implements OnInit {
       map: this.Rooms,
       races: [],
       classes: [],
-      items: [],
+      items: [{
+        name: 'blubstrahler',
+        description: 'shoots bubbles',
+      },
+      {
+        name: 'blubstrahler2.0',
+        description: 'shoots bubbles',
+      },
+      ],
       npcs: [],
     }
   }
@@ -228,6 +257,12 @@ export class BuilderComponent implements OnInit {
 
   submitRequest(req: requestForMaster){
     this.requests.splice(this.requests.indexOf(req),1);
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 }
 
