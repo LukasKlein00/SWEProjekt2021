@@ -263,6 +263,7 @@ export class BuilderComponent implements OnInit {
   }
 
   submitRequest(req: requestForMaster){
+    this.Map.map[req.y][req.x]['isViewed'] = false;
     this.requests.splice(this.requests.indexOf(req),1);
   }
   onItemSelect(item: any) {
@@ -274,12 +275,10 @@ export class BuilderComponent implements OnInit {
 
   moveOverRequest(request: requestForMaster) {
     this.Map.map[request.y][request.x]['isViewed'] = true;
-    console.log('true');
   }
 
   moveOutRequest(request: requestForMaster) {
     this.Map.map[request.y][request.x]['isViewed'] = false;
-    console.log('false');
   }
   
 }
