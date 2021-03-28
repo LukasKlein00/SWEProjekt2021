@@ -4,17 +4,15 @@
             <div class="card-body">
                 <h2>Dateien</h2>
                 <div class="download">
-                    <p (click)="psw('Projektplan.pdf')">Projektplan.pdf</p>
-                    <p (click)="psw('Projektstrukturplan.pdf')">Projektstrukturplan.pdf</p>
-                    <p (click)="psw('Arbeitspakete,Kapazitäten.xlsx')">Arbeitspakete,Kapazitäten.xlsx</p>
-                    <p (click)="psw('Timeline.png')">Timeline.png</p>
-                    <p (click)="psw('Recherchebericht_Gruppe3.pdf')">Recherchebericht_Gruppe3.pdf</p>
-                    <p (click)="psw('Zeitaufwandserfassung_Woche2_Gruppe3.xlsx')">Zeitaufwandserfassung_Woche2_Gruppe3.xlsx</p>
-                    <p (click)="psw('Statusbericht2_Gruppe3.pdf')">Statusbericht2_Gruppe3.pdf</p>
-                    <p (click)="psw('Komponentendiagramm_WrittenRealms.pdf')">Komponentendiagramm_WrittenRealms.pdf</p>
-                    <p (click)="psw('UseCase_WrittenRealms_PlayDungeon.pdf')">UseCase_WrittenRealms_PlayDungeon.pdf</p>
-                    <p (click)="psw('UseCase_WrittenRealms_CreateDungeon.pdf')">UseCase_WrittenRealms_CreateDungeon.pdf</p>
-                    <p (click)="psw('UseCase_WrittenRealms_Übersicht.pdf')">UseCase_WrittenRealms_Übersicht.pdf</p>
+                    <h5>1. Abgabe</h5>
+                    <p *ngFor="let file of files1" (click)="psw(file,'1. Abgabe')">{{file}}</p>
+                    <hr>
+                    <h5>2. Abgabe</h5>
+                    <p *ngFor="let file of files2" (click)="psw(file,'2. Abgabe')">{{file}}</p>
+                    <hr>
+                    <h5>3. Abgabe</h5>
+                    <p *ngFor="let file of files3" (click)="psw(file,'3. Abgabe')">{{file}}</p>
+                    <hr>
                 </div>
             </div>
         </div>
