@@ -54,6 +54,7 @@ export class Npc {
 
 export class Player {
     name: string;
+    description?: string;
     userID: number;
     health: number;
     inventar: Item[];

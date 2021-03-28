@@ -23,12 +23,22 @@
                     <p>Players: {{currentRoom.players}}</p>
                 </div>
                 <div class="playerInfo card col-6">
-                    <h3>PlayerInfo</h3>
-                    <p>Name: {{player.name}}</p>
-                    <div>Health: 
-                        <label for="health"></label>
-                        <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="60"></meter>
+                    <div class="row">
+                        <h3 class="col-12">PlayerInfo</h3>
+                        <div class="col-5">
+                        <p>Name: {{player.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{player.health}}"></meter></p>
+                        <p>Description: {{player.description}}</p>
+                        <p>Race: {{player.race.name}}</p>
+                        <p>Class: {{player.class.name}}</p>
+                        </div>
+                        <div class="col-5">
+                            <p>Equiped:</p>
+                            <p>Inventory:</p>
+                        </div>
                     </div>
+                   
+                    
+                    
                 </div>
             </div>
             
