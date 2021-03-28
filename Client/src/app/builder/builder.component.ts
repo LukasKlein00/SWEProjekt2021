@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Directive, OnInit } from '@angular/core';
 import { Class, Item, Map, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-builder',
@@ -93,9 +94,21 @@ export class BuilderComponent implements OnInit {
   damageTypes = ['normal','magic'];
   blub;
 
-  constructor() { }
+  constructor(
+    public toastService: ToastService
+  ) { }
 
   ngOnInit(): void {
+    this.toastService.show('John wants to join', {
+      classname: 'toast',
+      delay: 7000,
+      autohide: true
+    });
+    this.toastService.show('Elli wants to join', {
+      classname: 'toast',
+      delay: 5000,
+      autohide: true
+    });
     for (let row = 0; row < this.mapSize; row++) {
       let rowElement = []
       for (let col = 0; col < this.mapSize; col++) {

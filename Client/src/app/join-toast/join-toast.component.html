@@ -1,0 +1,18 @@
+<ngb-toast
+      *ngFor="let toast of toastService.toasts"
+      [header]="toast.headertext"
+      [class]="toast.classname"
+      [autohide]="toast.autohide"
+      [delay]="toast.delay || 5000"
+      (hide)="toastService.remove(toast)"
+    >
+      <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
+        <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+      </ng-template>
+
+      <ng-template #text>{{ toast.textOrTpl }}</ng-template><br>
+      <div class="row justify-content-around">
+        <a style="color: green" (click)="toastService.remove(toast)">allow</a>
+        <a style="color: red" (click)="toastService.remove(toast)">decline</a>
+      </div>
+</ngb-toast>

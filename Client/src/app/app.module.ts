@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,7 @@ import { PlayComponent } from './play/play.component';
 import { ChatComponent } from './chat/chat.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateCharacterComponent } from './create-character/create-character.component';
+import { JoinToastComponent } from './join-toast/join-toast.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { CreateCharacterComponent } from './create-character/create-character.co
     HomeComponent,
     PlayComponent,
     ChatComponent,
-    CreateCharacterComponent
+    CreateCharacterComponent,
+    JoinToastComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +47,7 @@ import { CreateCharacterComponent } from './create-character/create-character.co
     MatSliderModule,
     MatDialogModule,
     MatSlideToggleModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
