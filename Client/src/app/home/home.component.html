@@ -19,7 +19,8 @@
                 <h5>{{map.mapName}}</h5>
                 <h6>({{map.currentPlayers}}/{{map.maxPlayers}}) Players</h6>
                 <div>{{map.mapDescription}}</div>
-                <button class="btn btn-success" routerLink="/play">JOIN</button>
+                <button class="btn btn-success" routerLink="/builder">Resume</button>
+                <button class="btn btn-outline-success m-1" (click)="copyDungeon(map)">Copy</button>
             </div>
                 <div class="border border-dark p-3 col-12">
                     <h5>Create A New MUD</h5>

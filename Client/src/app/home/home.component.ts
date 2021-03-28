@@ -58,14 +58,7 @@ export class HomeComponent implements OnInit {
     currentPlayers: 5,
     mapMasterID: 3,
   }]
-  myMUDs: Map[] = [{
-    mapName: 'DummyMap',
-    mapDescription: 'Explore the amazing World of Suburbia',
-    mapID: 1,
-    maxPlayers: 10,
-    currentPlayers: 2,
-    mapMasterID: 3,
-  },
+  myMUDs: Map[] = [
   {
     mapName: 'TESTosteronMap',
     mapDescription: 'Feel the Power',
@@ -82,6 +75,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
+
+  copyDungeon(d: Map) {
+    const myClonedObject = Object.assign({}, d);
+    myClonedObject.mapName = d.mapName + 'Copy';
+    this.myMUDs.push(myClonedObject);
   }
 
 }
