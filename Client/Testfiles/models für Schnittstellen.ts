@@ -10,6 +10,7 @@ export class Map {
     classes?: Class[];
     items?: Item[];
     npcs?: Npc[];
+    private?: boolean;
 }
 
 export class Room {
