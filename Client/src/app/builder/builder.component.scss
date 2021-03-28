@@ -44,3 +44,13 @@
 .requestbody {
     min-height: calc(80vh - 500px);
 }
+
+.viewedRoom {
+    animation: glow-green infinite 2s ease-in;
+    background-color: lightgreen;
+}
+
+@keyframes glow-green {
+    from {background-color: lightgreen;}
+    to {background-color: white;}
+  }

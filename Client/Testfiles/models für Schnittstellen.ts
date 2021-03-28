@@ -25,6 +25,7 @@ export class Room {
     players: Player[];
     isStartRoom: boolean;
     isActive: boolean;
+    isViewed?: boolean;
     description: string;
 }
 
@@ -138,6 +139,8 @@ export class requestForMaster {
     request: string;
     requester: Player;
     answer: string;
+    x: number;
+    y: number;
 }
 
 

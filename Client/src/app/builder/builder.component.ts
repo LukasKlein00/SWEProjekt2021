@@ -8,6 +8,7 @@ import { Class, Item, Map, Npc, Race, requestForMaster, Room } from 'Testfiles/m
 })
 export class BuilderComponent implements OnInit {
 
+  privateSlider = false;
   maxPlayerOptions = [3,4,5,6,7,8,9,10]
   requests: requestForMaster[] = [
     {
@@ -33,6 +34,8 @@ export class BuilderComponent implements OnInit {
         mapID: null,
       },
       answer: '',
+      x: 1,
+      y: 4,
     },
     {
       request: 'eat Apple',
@@ -55,6 +58,8 @@ export class BuilderComponent implements OnInit {
         mapID: null,
       },
       answer: '',
+      x: 3,
+      y: 4,
     },
     {
       request: 'trade with Robert and run away after a short amount of time',
@@ -72,6 +77,8 @@ export class BuilderComponent implements OnInit {
         mapID: null,
       },
       answer: '',
+      x: 5,
+      y: 5,
     }
   ]
   mapSize = 11;
@@ -168,7 +175,7 @@ export class BuilderComponent implements OnInit {
   }
 
   addItem() {
-    this.Map.items.push(this.selectedItem);
+    this.Map.items = [...this.Map.items, this.selectedItem];
     this.selectedItem = this.newItem()
   }
 
@@ -264,5 +271,16 @@ export class BuilderComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
+
+  moveOverRequest(request: requestForMaster) {
+    this.Map.map[request.y][request.x]['isViewed'] = true;
+    console.log('true');
+  }
+
+  moveOutRequest(request: requestForMaster) {
+    this.Map.map[request.y][request.x]['isViewed'] = false;
+    console.log('false');
+  }
+  
 }
 

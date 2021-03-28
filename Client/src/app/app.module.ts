@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,6 +43,7 @@ import { CreateCharacterComponent } from './create-character/create-character.co
     NoopAnimationsModule,
     MatSliderModule,
     MatDialogModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
