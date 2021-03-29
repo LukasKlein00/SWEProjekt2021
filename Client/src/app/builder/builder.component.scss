@@ -1,6 +1,7 @@
+@import "./../sccVariables.scss";
+
 .map {
     display: flex;
-    border: 1px solid blue;
     overflow-y: auto;
     overflow-x: auto;
     height: 500px;
@@ -24,3 +25,32 @@
 .activeRoom {
     background-color: lightslategray;
 }
+
+.editor {
+    width: calc(80% - 500px);
+    height: $map-size;
+    overflow: auto;
+}
+
+.chat {
+    height: calc(85vh - 500px);
+}
+
+.requests{
+    overflow: auto;
+    height: calc(85vh - 500px);
+}
+
+.requestbody {
+    min-height: calc(80vh - 500px);
+}
+
+.viewedRoom {
+    animation: glow-green infinite 2s ease-in;
+    background-color: lightgreen;
+}
+
+@keyframes glow-green {
+    from {background-color: lightgreen;}
+    to {background-color: white;}
+  }

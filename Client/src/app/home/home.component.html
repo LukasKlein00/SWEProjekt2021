@@ -1,15 +1,33 @@
-<div class="container-fluid p-0">
-    <h1 class="text-center m-3">Available MUDs</h1>
-    <div class="row m-5">
-            <div *ngFor="let map of availableMUDs" class="border border-dark p-3 col-3 col-auto">
-                <h5>{{map.mapName}}</h5>
+<div class="container-fluid p-0" style="margin-top: 7rem;">
+    <div class="row m-5 justify-content-around align-items-start">
+        <div class="col-8 row">
+            <div class="col-12 row">
+                <h3>Available MUDs</h3><ng-select style="margin-left: 20px; min-width: 100px;" [(ngModel)]="selectedFilter" [clearable]="false"> 
+                    <ng-option *ngFor="let filter of filters">{{filter}}</ng-option>
+                </ng-select>
+            </div>
+            <div *ngFor="let map of availableMUDs" class="border border-dark p-3 col-4 mudCard">
+                <h5>{{map.mapName}} <span *ngIf="map.private" style="color: red; font-size: smaller;">private</span>  </h5>
                 <h6>({{map.currentPlayers}}/{{map.maxPlayers}}) Players</h6>
                 <div>{{map.mapDescription}}</div>
                 <button class="btn btn-success" routerLink="/play">JOIN</button>
             </div>
-            <div class="border border-dark p-3 col-3 col-auto">
-                <h5>Create Your Own MUD</h5>
-                <button class="btn btn-primary"  routerLink="/builder">Create</button>
+        </div> 
+        <div class="col-3 row">
+            <h3 class="col-12">My MUDs</h3>
+            <div *ngFor="let map of myMUDs" class="border border-dark p-3 col-12 mudCard">
+                <h5>{{map.mapName}}</h5>
+                <h6>({{map.currentPlayers}}/{{map.maxPlayers}}) Players</h6>
+                <div>{{map.mapDescription}}</div>
+                <button class="btn btn-success" routerLink="/builder">Resume</button>
+                <button class="btn btn-outline-success m-1" (click)="copyDungeon(map)">Copy</button>
             </div>
+                <div class="border border-dark p-3 col-12">
+                    <h5>Create A New MUD</h5>
+                    <button class="btn btn-primary"  routerLink="/builder">Create</button>
+                </div>
+            
+
+        </div>  
     </div>
 </div>

@@ -1,0 +1,18 @@
+<div>
+    <h1>Create Your Character</h1>
+    <div>
+        What Is Your Name?
+        <input class="w-100" type="text"[(ngModel)]="player.name"><br><br>
+        Description: 
+        <textarea class="w-100" [(ngModel)]="player.description"></textarea><br><br>
+        Choose your Race
+        <ng-select [(ngModel)]="player.race" [clearable]="false">
+            <ng-option *ngFor="let race of World.races" [value]="race">{{race.name}}</ng-option>
+        </ng-select><br>
+        Choose your Class
+        <ng-select [(ngModel)]="player.class" [clearable]="false">
+            <ng-option *ngFor="let class of World.classes" [value]="class">{{class.name}}</ng-option>
+        </ng-select><br><br>
+        <button mat-button  [mat-dialog-close]="player" [disabled]="formisinvalid" cdkFocusInitial>Ok</button>
+    </div>
+</div>

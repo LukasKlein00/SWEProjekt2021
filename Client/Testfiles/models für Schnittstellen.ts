@@ -10,6 +10,7 @@ export class Map {
     classes?: Class[];
     items?: Item[];
     npcs?: Npc[];
+    private?: boolean;
 }
 
 export class Room {
@@ -25,57 +26,51 @@ export class Room {
     players: Player[];
     isStartRoom: boolean;
     isActive: boolean;
+    isViewed?: boolean;
     description: string;
 }
 
 export class Race {
     name: string;
-    bonusstats: Stats;
+    description: string;
 }
 
 export class Class {
     name: string;
-    bonusstats: Stats;
+    description: string;
     equipment: Item;
 }
 
 export class Item {
     name: string;
-    damageTyp: 'normal' | 'magic';
-    baseDamage: number;
-    value: number;
+    description: string;
 }
 
 export class Npc {
     name: string;
-    stats: Stats;
     equipment: Item;
-    behavoir: 'aggressive' | 'neutral' | 'passive';
+    description: string;
 }
 
 export class Player {
     name: string;
+    description?: string;
     userID: number;
-    stats: Stats;
+    health: number;
     inventar: Item[];
     equipment: Item;
-    balance: number;
     race: Race;
     class: Class;
     mapID: number;
 }
 
-export class Stats {
-    maxHealth: number;
-    currentHealth?: number;
-    maxMana: number;
-    currentMana?: number;
-    dodgeChance: number;
-    armor: number;
-    intelligence: number;
-    strength: number;
-    experience?: number;
-    dropExperience?: number;
+export class SubmitPlayer {
+    name: string;
+    race: Race;
+    class: Class;
+    mapID: number;
+    equipment: Item[];
+    userID: number;
 }
 
 export class Message {
@@ -103,8 +98,6 @@ export class LoginData {
     username: string;
     userid: number;
 }
-
-
 
 export class User {
     username: string;
@@ -142,6 +135,14 @@ export class PlayerAction {
     action: 'goNorth' | 'goSouth' | 'goEast' | 'goWest' | 'battlePlayer' | 'battleNpc';
     enemyUserID?: number;
     enemyNpcID?: number;
+}
+
+export class requestForMaster {
+    request: string;
+    requester: Player;
+    answer: string;
+    x: number;
+    y: number;
 }
 
 

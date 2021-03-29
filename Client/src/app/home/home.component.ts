@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
     maxPlayers: 10,
     currentPlayers: 2,
     mapMasterID: 3,
+    private: true,
   },
   {
     mapName: 'TESTosteronMap',
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
     maxPlayers: 10,
     currentPlayers: 2,
     mapMasterID: 3,
+    private: true,
   },
   {
     mapName: 'TESTosteronMap',
@@ -56,11 +58,29 @@ export class HomeComponent implements OnInit {
     currentPlayers: 5,
     mapMasterID: 3,
   }]
+  myMUDs: Map[] = [
+  {
+    mapName: 'TESTosteronMap',
+    mapDescription: 'Feel the Power',
+    mapID: 2,
+    maxPlayers: 10,
+    currentPlayers: 5,
+    mapMasterID: 3,
+  },]
+
+  filters = ['all','public','private'];
+  selectedFilter = this.filters[0];
 
   constructor() { }
 
   ngOnInit(): void {
 
+  }
+
+  copyDungeon(d: Map) {
+    const myClonedObject = Object.assign({}, d);
+    myClonedObject.mapName = d.mapName + 'Copy';
+    this.myMUDs.push(myClonedObject);
   }
 
 }

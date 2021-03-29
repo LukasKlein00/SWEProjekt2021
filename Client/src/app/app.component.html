@@ -5,6 +5,7 @@
       <li *ngIf="currentUser" style="float:right"><a class="hover" (click)="logout()">Logout</a></li>
     </ul>
 </header>
+<h2 class="supportRes text-center">Your Resolution Is Currently Not Supported</h2>
 <main>
   <router-outlet></router-outlet>
 </main>
@@ -12,3 +13,4 @@
   <h6 routerLink="/impressum">Impressum</h6>
 </footer>
 
+<app-join-toast></app-join-toast>

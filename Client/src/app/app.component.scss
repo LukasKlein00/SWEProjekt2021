@@ -73,3 +73,16 @@ h6:hover {
     text-decoration: underline;
     cursor: pointer;
 }
+
+@media (max-width: 1200px) {
+  main, footer {
+      display: none;
+      background-color: green;
+  }
+
+  .supportRes {
+    display: block;
+    padding-top: $header-height;
+    padding-bottom: $footer-height;
+  }
+}

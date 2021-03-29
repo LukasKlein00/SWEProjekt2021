@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Class, Item, Map, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
+import { Component, Directive, OnInit } from '@angular/core';
+import { Class, Item, Map, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-builder',
@@ -8,6 +9,79 @@ import { Class, Item, Map, Npc, Race, Room } from 'Testfiles/models für Schnitt
 })
 export class BuilderComponent implements OnInit {
 
+  privateSlider = false;
+  maxPlayerOptions = [3,4,5,6,7,8,9,10]
+  requests: requestForMaster[] = [
+    {
+      request: 'kill Spider',
+      requester: {
+        name: 'Tom',
+        userID: 1,
+        health: 79,
+        inventar: [{
+          name: 'gold nugget',
+          description: '',
+        },
+        {
+          name: 'salty Potatos',
+          description: '',
+        }],
+        equipment: {
+          name: 'damaged sword',
+          description: '',
+        },
+        race: null,
+        class: null,
+        mapID: null,
+      },
+      answer: '',
+      x: 1,
+      y: 4,
+    },
+    {
+      request: 'eat Apple',
+      requester: {
+        name: 'Sibille',
+        userID: 3,
+        health: 40,
+        inventar: [
+          {
+            name: 'rotten Apple',
+            description: '',
+          }
+        ],
+        equipment: {
+          name: null,
+          description: null,
+        },
+        race: null,
+        class: null,
+        mapID: null,
+      },
+      answer: '',
+      x: 3,
+      y: 4,
+    },
+    {
+      request: 'trade with Robert and run away after a short amount of time',
+      requester: {
+        name: 'Tim',
+        userID: 1,
+        health: 20,
+        inventar: [],
+        equipment: {
+          name: null,
+          description: null,
+        },
+        race: null,
+        class: null,
+        mapID: null,
+      },
+      answer: '',
+      x: 5,
+      y: 5,
+    }
+  ]
   mapSize = 11;
   Map: Map;
   Rooms: Room[][] = [];
@@ -20,9 +94,21 @@ export class BuilderComponent implements OnInit {
   damageTypes = ['normal','magic'];
   blub;
 
-  constructor() { }
+  constructor(
+    public toastService: ToastService
+  ) { }
 
   ngOnInit(): void {
+    this.toastService.show('John wants to join', {
+      classname: 'toast',
+      delay: 7000,
+      autohide: true
+    });
+    this.toastService.show('Elli wants to join', {
+      classname: 'toast',
+      delay: 5000,
+      autohide: true
+    });
     for (let row = 0; row < this.mapSize; row++) {
       let rowElement = []
       for (let col = 0; col < this.mapSize; col++) {
@@ -44,27 +130,23 @@ export class BuilderComponent implements OnInit {
       map: this.Rooms,
       races: [],
       classes: [],
-      items: [],
+      items: [{
+        name: 'blubstrahler',
+        description: 'shoots bubbles',
+      },
+      {
+        name: 'blubstrahler2.0',
+        description: 'shoots bubbles',
+      },
+      ],
       npcs: [],
     }
   }
   newClass() {
     const x: Class = {
       name: 'testClass',
-      bonusstats: {
-        maxHealth: 100,
-        maxMana: 100,
-        dodgeChance: 0,
-        armor: 0,
-        intelligence: 10,
-        strength: 10,
-      },
-      equipment: {
-        name: 'newWeapon',
-        damageTyp: 'normal',
-        baseDamage: 10,
-        value: 10,
-    }
+      description: 'newClassDescription',
+      equipment: null
     }
     return x
   }
@@ -82,14 +164,7 @@ export class BuilderComponent implements OnInit {
   newRace() {
     const x: Race = {
       name: 'testRace',
-      bonusstats: {
-        maxHealth: 100,
-        maxMana: 100,
-        dodgeChance: 0,
-        armor: 0,
-        intelligence: 10,
-        strength: 10,
-      }
+      description: 'newRaceDescription',
     }
     return x
   }
@@ -107,15 +182,13 @@ export class BuilderComponent implements OnInit {
   newItem() {
     const x: Item = {
       name: 'newItem',
-      damageTyp: 'normal',
-      baseDamage: 10,
-      value: 10,
+      description: 'newItemDescription',
     }
     return x
   }
 
   addItem() {
-    this.Map.items.push(this.selectedItem);
+    this.Map.items = [...this.Map.items, this.selectedItem];
     this.selectedItem = this.newItem()
   }
 
@@ -127,18 +200,8 @@ export class BuilderComponent implements OnInit {
   newNpc() {
     const x: Npc = {
       name: 'newNpc',
-      stats: {
-        maxHealth: 100,
-        maxMana: 100,
-        dodgeChance: 10,
-        armor: 0,
-        intelligence: 10,
-        strength: 10,
-        experience: 100,
-        dropExperience: 10,
-      },
+      description: 'newDescription',
       equipment: null,
-      behavoir: 'neutral',
     }
     return x
   }
@@ -206,5 +269,30 @@ export class BuilderComponent implements OnInit {
     this.saveMap();
     //sende MUD an joinable Lobbies
   }
+
+  selectRoom(r: Room){
+    this.selectedRoom = r;
+    document.getElementById('nav-room-tab').click();
+  }
+
+  submitRequest(req: requestForMaster){
+    this.Map.map[req.y][req.x]['isViewed'] = false;
+    this.requests.splice(this.requests.indexOf(req),1);
+  }
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
+  }
+
+  moveOverRequest(request: requestForMaster) {
+    this.Map.map[request.y][request.x]['isViewed'] = true;
+  }
+
+  moveOutRequest(request: requestForMaster) {
+    this.Map.map[request.y][request.x]['isViewed'] = false;
+  }
+  
 }
 
