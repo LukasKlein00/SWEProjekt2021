@@ -38,51 +38,7 @@ export class BuilderComponent implements OnInit {
       answer: '',
       x: 1,
       y: 4,
-    },
-    {
-      request: 'eat Apple',
-      requester: {
-        name: 'Sibille',
-        userID: 3,
-        health: 40,
-        inventar: [
-          {
-            name: 'rotten Apple',
-            description: '',
-          }
-        ],
-        equipment: {
-          name: null,
-          description: null,
-        },
-        race: null,
-        class: null,
-        dungeonID: null,
-      },
-      answer: '',
-      x: 3,
-      y: 4,
-    },
-    {
-      request: 'trade with Robert and run away after a short amount of time',
-      requester: {
-        name: 'Tim',
-        userID: 1,
-        health: 20,
-        inventar: [],
-        equipment: {
-          name: null,
-          description: null,
-        },
-        race: null,
-        class: null,
-        dungeonID: null,
-      },
-      answer: '',
-      x: 5,
-      y: 5,
-    }
-  ]
+    }]
   dungeonSize = 11;
   dungeon: Dungeon;
   rooms: Room[][] = [];
@@ -178,18 +134,18 @@ export class BuilderComponent implements OnInit {
   increaseDungeon() {
     let newRow = []
     for (let row = 0; row < this.dungeonSize; row++) {
-      this.Rooms[row].push(this.newRoom(row, this.dungeonSize));
-      newRow.push(this.newRoom(this.dungeonSize, row));
+      this.rooms[row].push(this.DungeonService.createNewRoom(row, this.dungeonSize));
+      newRow.push(this.DungeonService.createNewRoom(this.dungeonSize, row));
     }
-    newRow.push(this.newRoom(this.dungeonSize, this.dungeonSize));
-    this.Rooms.push(newRow);
+    newRow.push(this.DungeonService.createNewRoom(this.dungeonSize, this.dungeonSize));
+    this.rooms.push(newRow);
     this.dungeonSize += 1;
   }
 
   decreaseDungeon() {
     if (this.dungeonSize>10) {
-      this.Rooms.pop()
-      for (let row of this.Rooms) {
+      this.rooms.pop()
+      for (let row of this.rooms) {
         row.pop();
       }
       this.dungeonSize -= 1;
