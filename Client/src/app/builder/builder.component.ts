@@ -1,4 +1,4 @@
-import { Component, Directive, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
 import { DungeonService } from '../services/dungeon.service';
 import { ToastService } from '../services/toast.service';
@@ -85,14 +85,12 @@ export class BuilderComponent implements OnInit {
   ]
   dungeonSize = 11;
   dungeon: Dungeon;
-  Rooms: Room[][] = [];
+  rooms: Room[][] = [];
   selectedRoom: Room;
   selectedRace: Race = this.newRace();
   selectedClass: Class = this.newClass();
   selectedItem: Item = this.newItem();
   selectedNpc: Npc = this.newNpc();
-  behaviors = ['passive','neutral','aggressive'];
-  damageTypes = ['normal','magic'];
   blub;
 
   constructor(
@@ -101,7 +99,11 @@ export class BuilderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.toastService.show('John wants to join', {
+    this.dungeon = this.DungeonService.createNewDungeon(this.dungeonSize);
+    this.rooms = this.dungeon.rooms;
+    console.log(this.rooms);
+    this.selectedRoom = this.rooms[5][5];
+    /* this.toastService.show('John wants to join', {
       classname: 'toast',
       delay: 7000,
       autohide: true
@@ -110,39 +112,7 @@ export class BuilderComponent implements OnInit {
       classname: 'toast',
       delay: 5000,
       autohide: true
-    });
-    for (let row = 0; row < this.dungeonSize; row++) {
-      let rowElement = []
-      for (let col = 0; col < this.dungeonSize; col++) {
-        const r: Room = this.newRoom(col, row);
-        rowElement.push(r)
-      }
-      this.Rooms.push(rowElement);
-    }
-    const sRoom: Room = this.Rooms[Math.floor(this.dungeonSize / 2)][Math.floor(this.dungeonSize / 2)]
-    sRoom.isStartRoom = true;
-    sRoom.description = 'Starting Room Description';
-    sRoom.isActive = true;
-    this.selectedRoom = sRoom;
-
-    this.dungeon = {
-      dungeonName: 'Newdungeon',
-      dungeonDescription: 'Newdungeon Description',
-      maxPlayers: 10,
-      dungeon: this.Rooms,
-      races: [],
-      classes: [],
-      items: [{
-        name: 'blubstrahler',
-        description: 'shoots bubbles',
-      },
-      {
-        name: 'blubstrahler2.0',
-        description: 'shoots bubbles',
-      },
-      ],
-      npcs: [],
-    }
+    }); */
   }
   newClass() {
     return this.DungeonService.createNewClass();
@@ -173,11 +143,7 @@ export class BuilderComponent implements OnInit {
   }
 
   newItem() {
-    const x: Item = {
-      name: 'newItem',
-      description: 'newItemDescription',
-    }
-    return x
+    return this.DungeonService.createNewItem();
   }
 
   addItem() {
@@ -191,12 +157,7 @@ export class BuilderComponent implements OnInit {
   }
 
   newNpc() {
-    const x: Npc = {
-      name: 'newNpc',
-      description: 'newDescription',
-      equipment: null,
-    }
-    return x
+    return this.DungeonService.createNewNpc();
   }
 
   addNpc() {
@@ -235,24 +196,6 @@ export class BuilderComponent implements OnInit {
     }
   }
 
-  newRoom(x, y) {
-    return {
-      name: `NewRoom ${x} ${y}`,
-      x: x,
-      y: y,
-      north: true,
-      south: true,
-      east: true,
-      west: true,
-      item: null,
-      npc: null,
-      players: [],
-      isStartRoom: false,
-      isActive: false,
-      description: `NewRoom ${x} ${y} Description`,
-    }
-  }
-
   saveDungeon(){
     localStorage.setItem('blub',JSON.stringify(this.dungeon));
     //sende dungeon an Server!
@@ -269,7 +212,7 @@ export class BuilderComponent implements OnInit {
   }
 
   submitRequest(req: requestForMaster){
-    this.dungeon.dungeon[req.y][req.x]['isViewed'] = false;
+    this.dungeon.rooms[req.y][req.x]['isViewed'] = false;
     this.requests.splice(this.requests.indexOf(req),1);
   }
   onItemSelect(item: any) {
@@ -280,11 +223,11 @@ export class BuilderComponent implements OnInit {
   }
 
   moveOverRequest(request: requestForMaster) {
-    this.dungeon.dungeon[request.y][request.x]['isViewed'] = true;
+    this.dungeon.rooms[request.y][request.x]['isViewed'] = true;
   }
 
   moveOutRequest(request: requestForMaster) {
-    this.dungeon.dungeon[request.y][request.x]['isViewed'] = false;
+    this.dungeon.rooms[request.y][request.x]['isViewed'] = false;
   }
   
 }

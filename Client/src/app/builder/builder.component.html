@@ -2,7 +2,7 @@
     <div class="col-12 row justify-content-center">
         <div class="mapDisplay m-4">
             <div class="map border">
-                <div *ngFor="let row of Rooms" class="rowMap">
+                <div *ngFor="let row of rooms" class="rowMap">
                     <div *ngFor="let room of row" class="room" [ngClass]="{
                         'activeRoom':room.isActive && !room.isStartRoom,
                         'startRoom':room.isActive && room.isStartRoom,

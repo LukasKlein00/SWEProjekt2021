@@ -5,7 +5,7 @@ export class Dungeon {
     maxPlayers: number;
     currentPlayers?: number;
     dungeonMasterID?: number;
-    dungeon?: Room[][];
+    rooms?: Room[][];
     races?: Race[];
     classes?: Class[];
     items?: Item[];
