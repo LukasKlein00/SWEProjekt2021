@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Map } from 'Testfiles/models für Schnittstellen';
+import { Dungeon } from 'Testfiles/models für Schnittstellen';
 
 @Component({
   selector: 'app-home',
@@ -8,64 +8,64 @@ import { Map } from 'Testfiles/models für Schnittstellen';
 })
 export class HomeComponent implements OnInit {
 
-  availableMUDs: Map[] = [{
-    mapName: 'DummyMap',
-    mapDescription: 'Explore the amazing World of Suburbia',
-    mapID: 1,
+  availableMUDs: Dungeon[] = [{
+    dungeonName: 'Dummydungeon',
+    dungeonDescription: 'Explore the amazing World of Suburbia',
+    dungeonID: 1,
     maxPlayers: 10,
     currentPlayers: 2,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
     private: true,
   },
   {
-    mapName: 'TESTosteronMap',
-    mapDescription: 'Feel the Power',
-    mapID: 2,
+    dungeonName: 'TESTosterondungeon',
+    dungeonDescription: 'Feel the Power',
+    dungeonID: 2,
     maxPlayers: 10,
     currentPlayers: 5,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
   },
   {
-    mapName: 'DummyMap',
-    mapDescription: 'Explore the amazing World of Suburbia',
-    mapID: 1,
+    dungeonName: 'Dummydungeon',
+    dungeonDescription: 'Explore the amazing World of Suburbia',
+    dungeonID: 1,
     maxPlayers: 10,
     currentPlayers: 2,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
     private: true,
   },
   {
-    mapName: 'TESTosteronMap',
-    mapDescription: 'Feel the Power',
-    mapID: 2,
+    dungeonName: 'TESTosterondungeon',
+    dungeonDescription: 'Feel the Power',
+    dungeonID: 2,
     maxPlayers: 10,
     currentPlayers: 5,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
   },
   {
-    mapName: 'DummyMap',
-    mapDescription: 'Explore the amazing World of Suburbia',
-    mapID: 1,
+    dungeonName: 'Dummydungeon',
+    dungeonDescription: 'Explore the amazing World of Suburbia',
+    dungeonID: 1,
     maxPlayers: 10,
     currentPlayers: 2,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
   },
   {
-    mapName: 'TESTosteronMap',
-    mapDescription: 'Feel the Power',
-    mapID: 2,
+    dungeonName: 'TESTosterondungeon',
+    dungeonDescription: 'Feel the Power',
+    dungeonID: 2,
     maxPlayers: 10,
     currentPlayers: 5,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
   }]
-  myMUDs: Map[] = [
+  myMUDs: Dungeon[] = [
   {
-    mapName: 'TESTosteronMap',
-    mapDescription: 'Feel the Power',
-    mapID: 2,
+    dungeonName: 'TESTosterondungeon',
+    dungeonDescription: 'Feel the Power',
+    dungeonID: 2,
     maxPlayers: 10,
     currentPlayers: 5,
-    mapMasterID: 3,
+    dungeonMasterID: 3,
   },]
 
   filters = ['all','public','private'];
@@ -77,9 +77,9 @@ export class HomeComponent implements OnInit {
 
   }
 
-  copyDungeon(d: Map) {
+  copyDungeon(d: Dungeon) {
     const myClonedObject = Object.assign({}, d);
-    myClonedObject.mapName = d.mapName + 'Copy';
+    myClonedObject.dungeonName = d.dungeonName + 'Copy';
     this.myMUDs.push(myClonedObject);
   }
 

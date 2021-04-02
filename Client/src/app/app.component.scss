@@ -40,10 +40,10 @@ header {
 main {
     z-index: 0;
     position: relative;
-    padding-top: $header-height;
-    padding-bottom: $footer-height;
+    //padding-top: $header-height;
+    //padding-bottom: $footer-height;
     top: 0;
-    min-height: 100vh;
+    min-height: calc(100vh - 3rem);
     width: 100%;
 }
 
@@ -74,7 +74,7 @@ h6:hover {
     cursor: pointer;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1000px) {
   main, footer {
       display: none;
       background-color: green;

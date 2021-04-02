@@ -1,7 +1,6 @@
 <div class="card col-12 m-0 p-0">
-    <h2>Chat</h2>
-    <div class="chat">
-        <ng-container *ngFor="let c of chatMessages"><span style="margin-right: 2rem;">{{c.id}}:</span>{{c.msg}}<br></ng-container>
+    <div class="chat" id='messageBody'>
+        <ng-container *ngFor="let c of chatMessages" ><span style="margin-right: 2rem;">{{c.id}}:</span>{{c.msg}}<br></ng-container>
     </div>
     <div class="chatinput"><input [(ngModel)]="text" (keypress)="chat($event)" placeholder="start your adventure"></div>
 </div>

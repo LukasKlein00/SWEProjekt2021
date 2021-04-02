@@ -1,8 +1,8 @@
 <div class="m-0 row justify-content-center">
     <div class="col-12 row justify-content-center">
-        <div class="mapDisplay m-4">
+        <div class="mapDisplay">
             <div class="map border">
-                <div *ngFor="let row of Rooms" class="rowMap">
+                <div *ngFor="let row of rooms" class="rowMap">
                     <div *ngFor="let room of row" class="room" [ngClass]="{
                         'activeRoom':room.isActive && !room.isStartRoom,
                         'startRoom':room.isActive && room.isStartRoom,
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="editor border m-4">
+        <div class="editor border">
             <nav>
                 <h2 class="text-center p-0 m-0">Overview</h2>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -29,27 +29,32 @@
                         aria-controls="nav-item" aria-selected="false">Item</a>
                     <a class="nav-item nav-link" id="nav-npc-tab" data-toggle="tab" href="#nav-npc" role="tab"
                         aria-controls="nav-npc" aria-selected="false">NPC</a>
-                    <a class="nav-item nav-link" id="nav-players-tab" data-toggle="tab" href="#nav-players" role="tab"
-                        aria-controls="nav-players" aria-selected="false">Players</a>
+                    <a class="nav-item nav-link" id="nav-access-rights-tab" data-toggle="tab" href="#nav-access-rights"
+                        role="tab" aria-controls="nav-access-rights" aria-selected="false">Access Rights</a>
+                    <a class="nav-item nav-link" id="nav-chat-tab" data-toggle="tab" href="#nav-chat"
+                        role="tab" aria-controls="nav-chat" aria-selected="false">
+                        <span matBadge="3" matBadgeColor="warn" matBadgeSize="small" matBadgeOverlap="false">Chat</span></a>
                 </div>
             </nav>
+
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-dungeon" role="tabpanel"
                     aria-labelledby="nav-dungeon-tab">
-                    <div *ngIf="Map" class="m-3">
-                        Name: <input [(ngModel)]="Map.mapName" class="w-100"><br><br>
-                        Description: <textarea class="w-100" [(ngModel)]="Map.mapDescription"></textarea><br><br>
-                        MaxPlayer: <ng-select [(ngModel)]="Map.maxPlayers" [clearable]="false">
+                    <div *ngIf="dungeon" class="m-3">
+                        Name: <input [(ngModel)]="dungeon.dungeonName" class="w-100"><br><br>
+                        Description: <textarea class="w-100"
+                            [(ngModel)]="dungeon.dungeonDescription"></textarea><br><br>
+                        MaxPlayer: <ng-select [(ngModel)]="dungeon.maxPlayers" [clearable]="false">
                             <ng-option *ngFor="let maxP of maxPlayerOptions">{{maxP}}</ng-option>
                         </ng-select>
-                        
-                        <button (click)="increaseMap()">increase Map</button>
-                        <button (click)="decreaseMap()">decrease Map</button>
+
+                        <button (click)="increaseDungeon()">increase Map</button>
+                        <button (click)="decreaseDungeon()">decrease Map</button>
                         <mat-slide-toggle [(ngModel)]="privateSlider" class="m-3">private</mat-slide-toggle>
 
                         <div class="float-right">
-                            <button (click)="saveMap()" class="btn btn-primary m-1">save MUD</button>
-                            <button (click)="publishMap()" class="btn btn-success m-1">publish MUD</button>
+                            <button (click)="saveDungeon()" class="btn btn-primary m-1">save MUD</button>
+                            <button (click)="publishDungeon()" class="btn btn-success m-1">publish MUD</button>
                         </div>
                     </div>
                 </div>
@@ -65,29 +70,30 @@
                             <mat-slide-toggle [(ngModel)]="selectedRoom.east">east</mat-slide-toggle>
                             <mat-slide-toggle [(ngModel)]="selectedRoom.south">south</mat-slide-toggle>
                             <mat-slide-toggle [(ngModel)]="selectedRoom.west">west</mat-slide-toggle>
-                            <div style="margin-left: 30px;">startroom: <input type="checkbox" [checked]="selectedRoom.isStartRoom"
-                                (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /></div> 
+                            <div style="margin-left: 30px;">startroom: <input type="checkbox"
+                                    [checked]="selectedRoom.isStartRoom"
+                                    (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /></div>
                         </div><br>
                         Items: <ng-select [(ngModel)]="selectedRoom.item">
-                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         NPC: <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
-                            <ng-option *ngFor="let npc of Map.npcs">{{npc.name}}</ng-option>
+                            <ng-option *ngFor="let npc of dungeon.npcs">{{npc.name}}</ng-option>
                         </ng-select>
                     </div>
                 </div>
 
 
                 <div class="tab-pane fade" id="nav-race" role="tabpanel" aria-labelledby="nav-race-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         RaceName: <input class="w-100" [(ngModel)]="selectedRace.name"><br><br>
                         RaceDescription: <textarea class="w-100"
                             [(ngModel)]="selectedRace.description"></textarea><br><br>
                         <button (click)="addRace()">submit Race</button><br><br>
                         <div class="row m-0">
                             <div>Races: </div>
-                            <div *ngFor="let race of Map.races" (dblclick)="editRace(race)" style="margin-left: 10px;"
-                                title="{{race.description}}">
+                            <div *ngFor="let race of dungeon.races" (dblclick)="editRace(race)"
+                                style="margin-left: 10px;" title="{{race.description}}">
                                 {{race.name}}
                             </div>
                         </div>
@@ -98,17 +104,17 @@
 
 
                 <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         ClassName: <input class="w-100" [(ngModel)]="selectedClass.name"><br><br>
                         ClassDescription: <textarea class="w-100"
                             [(ngModel)]="selectedClass.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedClass.equipment">
-                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         <button (click)="addClass()">submit Class</button><br><br>
                         <div class="row m-0">
                             <div>Classes: </div>
-                            <div *ngFor="let class of Map.classes" (dblclick)="editClass(class)"
+                            <div *ngFor="let class of dungeon.classes" (dblclick)="editClass(class)"
                                 style="margin-left: 10px;" title="{{class.description}}">
                                 {{class.name}}
                             </div>
@@ -118,15 +124,15 @@
 
 
                 <div class="tab-pane fade" id="nav-item" role="tabpanel" aria-labelledby="nav-item-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         ItemName: <input class="w-100" [(ngModel)]="selectedItem.name"><br><br>
                         ItemDescription: <textarea class="w-100"
                             [(ngModel)]="selectedItem.description"></textarea><br><br>
                         <button (click)="addItem()">submit Item</button><br><br>
                         <div class="row m-0">
                             <div>Items: </div>
-                            <div *ngFor="let item of Map.items" (dblclick)="editItem(item)" style="margin-left: 10px;"
-                                title="{{item.description}}">
+                            <div *ngFor="let item of dungeon.items" (dblclick)="editItem(item)"
+                                style="margin-left: 10px;" title="{{item.description}}">
                                 {{item.name}}
                             </div>
                         </div>
@@ -135,65 +141,40 @@
 
 
                 <div class="tab-pane fade" id="nav-npc" role="tabpanel" aria-labelledby="nav-npc-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         NpcName: <input class="w-100" [(ngModel)]="selectedNpc.name"><br><br>
                         NpcDescription: <textarea class="w-100"
                             [(ngModel)]="selectedNpc.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
-                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         <button (click)="addNpc()">submit Npc</button><br>
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="nav-players" role="tabpanel" aria-labelledby="nav-players-tab">
-                    <div *ngIf="Map" class="m-3">
-                        <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Playername</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Race</th>
-                                <th scope="col">Class</th>
-                                <th scope="col">Current Room</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>A famouse wizard from germany</td>
-                                <td>human</td>
-                                <td>mage</td>
-                                <td>StartRoom [5:5]</td>
-                              </tr>
-                              <tr>
-                                <th scope="row">2</th>
-                                <td>Tim Timmeson</td>
-                                <td>Better known as TT-Ice-Cold</td>
-                                <td>org</td>
-                                <td>warrior</td>
-                                <td>Wyvern Trench [3:5]</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                <div class="tab-pane fade" id="nav-access-rights" role="tabpanel"
+                    aria-labelledby="nav-access-rights-tab">
+                    <div *ngIf="dungeon" class="m-3">
+                        Whitelist: <br>
+                        Blacklist:
                     </div>
                 </div>
 
-
+                <div class="tab-pane fade" id="nav-chat" role="tabpanel"
+                    aria-labelledby="nav-chat-tab">
+                    <div *ngIf="dungeon" class="chat">
+                        <app-chat></app-chat>
+                    </div>
+                </div>
             </div>
+
         </div>
 
-        <div class="col-5 chat">
-            <app-chat></app-chat>
-        </div>
-
-        <div class="col-5 border requests">
-            <h4 class="text-center">Current Requests</h4>
+        <div class="col-10 requests">
+            <h3>Requests</h3>
             <div class="row">
-                <div class="border col-6 requestbody" *ngFor="let request of requests; let i = index"
-                (mouseover)='moveOverRequest(request)' (mouseout)='moveOutRequest(request)'>
+                <div class="border col-4 requestbody" *ngFor="let request of requests; let i = index"
+                    (mouseover)='moveOverRequest(request)' (mouseout)='moveOutRequest(request)'>
 
                     <nav>
                         <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">
@@ -233,12 +214,12 @@
                             aria-labelledby="nav-inventory-tab">
                             <div>
                                 Equipment: <ng-select [(ngModel)]="request.requester.equipment.name">
-                                    <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                                    <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                                 </ng-select>
                             </div><br>
                             <div>
                                 Inventory
-                                <ng-select [multiple]="true" [items]="Map.items" bindLabel="name" bindValue=""
+                                <ng-select [multiple]="true" [items]="dungeon.items" bindLabel="name" bindValue=""
                                     [(ngModel)]="request.requester.inventar">
                                 </ng-select>
                             </div>
@@ -250,20 +231,9 @@
 
                 </div>
             </div>
+            
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
 
 </div>

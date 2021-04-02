@@ -1,16 +1,18 @@
-export class Map {
-    mapName: string;
-    mapDescription: string;
-    mapID?: number;
+export class Dungeon {
+    dungeonName: string;
+    dungeonDescription: string;
+    dungeonID?: number;
     maxPlayers: number;
     currentPlayers?: number;
-    mapMasterID?: number;
-    map?: Room[][];
+    dungeonMasterID?: number;
+    rooms?: Room[][];
     races?: Race[];
     classes?: Class[];
     items?: Item[];
     npcs?: Npc[];
     private?: boolean;
+    whiteList: string[];
+    blackList: string[];
 }
 
 export class Room {
@@ -61,14 +63,14 @@ export class Player {
     equipment: Item;
     race: Race;
     class: Class;
-    mapID: number;
+    dungeonID: number;
 }
 
 export class SubmitPlayer {
     name: string;
     race: Race;
     class: Class;
-    mapID: number;
+    dungeonID: number;
     equipment: Item[];
     userID: number;
 }
@@ -76,7 +78,7 @@ export class SubmitPlayer {
 export class Message {
     content: string;
     playerName: string;
-    mapID: number;
+    dungeonID: number;
     receiver: 'dungeonchat' | 'roomchat' | string;
 }
 
@@ -108,30 +110,30 @@ export class User {
     characters: Player[];
 }
 
-export class ParticipateMap {
+export class ParticipateDungeon {
     userID: number;
-    mapID: number;
+    dungeonID: number;
 }
 
 export class JoinPlayer {
     ownPlayer: Player;
-    map: Map;
-    isMapMaster: boolean;
+    dungeon: Dungeon;
+    isDungeonMaster: boolean;
 }
 
 export class PlayerJoinInfos {
-    mapID: number;
+    dungeonID: number;
     playerName: string;
 }
 
 export class WebsocketObject {
-    method: 'chat' | 'mapUpdate' | 'playerAction' | 'playerJoin';
-    content: Message | PlayerAction | Map | PlayerJoinInfos;
+    method: 'chat' | 'dungeonUpdate' | 'playerAction' | 'playerJoin';
+    content: Message | PlayerAction | Dungeon | PlayerJoinInfos;
 }
 
 export class PlayerAction {
     userID: number;
-    mapID: number;
+    dungeonID: number;
     action: 'goNorth' | 'goSouth' | 'goEast' | 'goWest' | 'battlePlayer' | 'battleNpc';
     enemyUserID?: number;
     enemyNpcID?: number;
@@ -148,8 +150,8 @@ export class requestForMaster {
 
 //objekte nicht benutzt, nur das man weiß, dass diese Requests kommen :)
 
-export class MapRequest {
-    mapID: number;
+export class DungeonRequest {
+    dungeonID: number;
 }
 
 export class AuthorisationWithToken {

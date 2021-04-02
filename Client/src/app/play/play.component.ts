@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Map, Player, Room } from 'Testfiles/models für Schnittstellen';
+import { Dungeon, Player, Room } from 'Testfiles/models für Schnittstellen';
 import { CreateCharacterComponent } from '../create-character/create-character.component';
 
 @Component({
@@ -10,13 +10,13 @@ import { CreateCharacterComponent } from '../create-character/create-character.c
 })
 export class PlayComponent implements OnInit {
 
-  World: Map;
-  Rooms: Room[][];
+  world: Dungeon;
+  rooms: Room[][];
   currentRoom: Room;
   player: Player = {
     name: '',
     equipment: null,
-    mapID: 1,
+    dungeonID: 1,
     race: {
       name: '',
       description: '',
@@ -34,8 +34,8 @@ export class PlayComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.World = JSON.parse(localStorage.getItem('blub'));
-    this.Rooms = this.World.map;
+    this.world = JSON.parse(localStorage.getItem('blub'));
+    this.rooms = this.world.rooms;
     this.currentRoom = {
       name: "NewRoom 5 5",
       x: 5,
@@ -51,13 +51,14 @@ export class PlayComponent implements OnInit {
       isActive: true,
       description: "Starting Room Description"
   }
+    console.log(this.rooms);
     this.openDialog();
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(CreateCharacterComponent, {
       disableClose: true,
-      data: this.World,
+      data: this.world,
     });
 
     dialogRef.afterClosed().subscribe(result => {

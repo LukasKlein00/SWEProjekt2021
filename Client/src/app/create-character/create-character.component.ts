@@ -1,7 +1,7 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
-import { Map, Player, SubmitPlayer } from 'Testfiles/models für Schnittstellen';
+import { Dungeon, Player} from 'Testfiles/models für Schnittstellen';
 
 @Component({
   selector: 'app-create-character',
@@ -16,7 +16,7 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
     name: '',
     equipment: null,
     description: '',
-    mapID: 1,
+    dungeonID: 1,
     race: {
       name: '',
       description: '',
@@ -31,7 +31,7 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
     inventar: []
   };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public World: Map) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public World: Dungeon) { }
 
   ngOnInit(): void {
   }

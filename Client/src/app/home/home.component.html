@@ -1,4 +1,4 @@
-<div class="container-fluid p-0" style="margin-top: 7rem;">
+<div class="container-fluid p-0 m-0">
     <div class="row m-5 justify-content-around align-items-start">
         <div class="col-8 row">
             <div class="col-12 row">
@@ -6,21 +6,21 @@
                     <ng-option *ngFor="let filter of filters">{{filter}}</ng-option>
                 </ng-select>
             </div>
-            <div *ngFor="let map of availableMUDs" class="border border-dark p-3 col-4 mudCard">
-                <h5>{{map.mapName}} <span *ngIf="map.private" style="color: red; font-size: smaller;">private</span>  </h5>
-                <h6>({{map.currentPlayers}}/{{map.maxPlayers}}) Players</h6>
-                <div>{{map.mapDescription}}</div>
+            <div *ngFor="let dungeon of availableMUDs" class="border border-dark p-3 col-4 mudCard">
+                <h5>{{dungeon.dungeonName}} <span *ngIf="dungeon.private" style="color: red; font-size: smaller;">private</span>  </h5>
+                <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
+                <div>{{dungeon.dungeonDescription}}</div>
                 <button class="btn btn-success" routerLink="/play">JOIN</button>
             </div>
         </div> 
         <div class="col-3 row">
             <h3 class="col-12">My MUDs</h3>
-            <div *ngFor="let map of myMUDs" class="border border-dark p-3 col-12 mudCard">
-                <h5>{{map.mapName}}</h5>
-                <h6>({{map.currentPlayers}}/{{map.maxPlayers}}) Players</h6>
-                <div>{{map.mapDescription}}</div>
+            <div *ngFor="let dungeon of myMUDs" class="border border-dark p-3 col-12 mudCard">
+                <h5>{{dungeon.dungeonName}}</h5>
+                <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
+                <div>{{dungeon.dungeonDescription}}</div>
                 <button class="btn btn-success" routerLink="/builder">Resume</button>
-                <button class="btn btn-outline-success m-1" (click)="copyDungeon(map)">Copy</button>
+                <button class="btn btn-outline-success m-1" (click)="copyDungeon(dungeon)">Copy</button>
             </div>
                 <div class="border border-dark p-3 col-12">
                     <h5>Create A New MUD</h5>
