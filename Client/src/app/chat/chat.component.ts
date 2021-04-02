@@ -23,6 +23,8 @@ export class ChatComponent implements OnInit {
         });
         this.text = '';
       }
+      const messageBody = document.querySelector('#messageBody');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
   }
 }
 

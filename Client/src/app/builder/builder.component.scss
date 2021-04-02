@@ -4,8 +4,11 @@
     display: flex;
     overflow-y: auto;
     overflow-x: auto;
-    height: 500px;
-    width: 500px;
+    height: $map-size;
+    width: $map-size;
+    margin-top: 1.5rem;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
 }
 
 .rowMap {
@@ -27,22 +30,30 @@
 }
 
 .editor {
-    width: calc(80% - 500px);
+    margin-top: 1.5rem;
+    width: calc(80% - 400px);
     height: $map-size;
     overflow: auto;
 }
 
 .chat {
-    height: calc(85vh - 500px);
+    position: relative;
+    background-color: grey;
+    height: 19rem
+}
+
+.chat-input {
+    position: absolute;
+    bottom: 0;
 }
 
 .requests{
     overflow: auto;
-    height: calc(85vh - 500px);
+    height: calc(85vh - 400px);
 }
 
 .requestbody {
-    min-height: calc(80vh - 500px);
+    min-height: calc(80vh - 400px);
 }
 
 .viewedRoom {

@@ -11,6 +11,8 @@ export class Dungeon {
     items?: Item[];
     npcs?: Npc[];
     private?: boolean;
+    whiteList: string[];
+    blackList: string[];
 }
 
 export class Room {

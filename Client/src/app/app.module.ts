@@ -6,6 +6,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {MatBadgeModule} from '@angular/material/badge';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { ChatComponent } from './chat/chat.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateCharacterComponent } from './create-character/create-character.component';
 import { JoinToastComponent } from './join-toast/join-toast.component';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { JoinToastComponent } from './join-toast/join-toast.component';
     MatSliderModule,
     MatDialogModule,
     MatSlideToggleModule,
-    NgbModule
+    NgbModule,
+    MatBadgeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

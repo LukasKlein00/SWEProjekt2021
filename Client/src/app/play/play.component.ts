@@ -10,8 +10,8 @@ import { CreateCharacterComponent } from '../create-character/create-character.c
 })
 export class PlayComponent implements OnInit {
 
-  World: Dungeon;
-  Rooms: Room[][];
+  world: Dungeon;
+  rooms: Room[][];
   currentRoom: Room;
   player: Player = {
     name: '',
@@ -34,8 +34,8 @@ export class PlayComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.World = JSON.parse(localStorage.getItem('blub'));
-    this.Rooms = this.World.dungeon;
+    this.world = JSON.parse(localStorage.getItem('blub'));
+    this.rooms = this.world.rooms;
     this.currentRoom = {
       name: "NewRoom 5 5",
       x: 5,
@@ -51,13 +51,14 @@ export class PlayComponent implements OnInit {
       isActive: true,
       description: "Starting Room Description"
   }
+    console.log(this.rooms);
     this.openDialog();
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(CreateCharacterComponent, {
       disableClose: true,
-      data: this.World,
+      data: this.world,
     });
 
     dialogRef.afterClosed().subscribe(result => {
