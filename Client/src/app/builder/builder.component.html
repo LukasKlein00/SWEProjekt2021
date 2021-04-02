@@ -36,20 +36,20 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-dungeon" role="tabpanel"
                     aria-labelledby="nav-dungeon-tab">
-                    <div *ngIf="Map" class="m-3">
-                        Name: <input [(ngModel)]="Map.mapName" class="w-100"><br><br>
-                        Description: <textarea class="w-100" [(ngModel)]="Map.mapDescription"></textarea><br><br>
-                        MaxPlayer: <ng-select [(ngModel)]="Map.maxPlayers" [clearable]="false">
+                    <div *ngIf="dungeon" class="m-3">
+                        Name: <input [(ngModel)]="dungeon.dungeonName" class="w-100"><br><br>
+                        Description: <textarea class="w-100" [(ngModel)]="dungeon.dungeonDescription"></textarea><br><br>
+                        MaxPlayer: <ng-select [(ngModel)]="dungeon.maxPlayers" [clearable]="false">
                             <ng-option *ngFor="let maxP of maxPlayerOptions">{{maxP}}</ng-option>
                         </ng-select>
                         
-                        <button (click)="increaseMap()">increase Map</button>
-                        <button (click)="decreaseMap()">decrease Map</button>
+                        <button (click)="increaseDungeon()">increase Map</button>
+                        <button (click)="decreaseDungeon()">decrease Map</button>
                         <mat-slide-toggle [(ngModel)]="privateSlider" class="m-3">private</mat-slide-toggle>
 
                         <div class="float-right">
-                            <button (click)="saveMap()" class="btn btn-primary m-1">save MUD</button>
-                            <button (click)="publishMap()" class="btn btn-success m-1">publish MUD</button>
+                            <button (click)="saveDungeon()" class="btn btn-primary m-1">save MUD</button>
+                            <button (click)="publishDungeon()" class="btn btn-success m-1">publish MUD</button>
                         </div>
                     </div>
                 </div>
@@ -69,24 +69,24 @@
                                 (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /></div> 
                         </div><br>
                         Items: <ng-select [(ngModel)]="selectedRoom.item">
-                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         NPC: <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
-                            <ng-option *ngFor="let npc of Map.npcs">{{npc.name}}</ng-option>
+                            <ng-option *ngFor="let npc of dungeon.npcs">{{npc.name}}</ng-option>
                         </ng-select>
                     </div>
                 </div>
 
 
                 <div class="tab-pane fade" id="nav-race" role="tabpanel" aria-labelledby="nav-race-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         RaceName: <input class="w-100" [(ngModel)]="selectedRace.name"><br><br>
                         RaceDescription: <textarea class="w-100"
                             [(ngModel)]="selectedRace.description"></textarea><br><br>
                         <button (click)="addRace()">submit Race</button><br><br>
                         <div class="row m-0">
                             <div>Races: </div>
-                            <div *ngFor="let race of Map.races" (dblclick)="editRace(race)" style="margin-left: 10px;"
+                            <div *ngFor="let race of dungeon.races" (dblclick)="editRace(race)" style="margin-left: 10px;"
                                 title="{{race.description}}">
                                 {{race.name}}
                             </div>
@@ -98,17 +98,17 @@
 
 
                 <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         ClassName: <input class="w-100" [(ngModel)]="selectedClass.name"><br><br>
                         ClassDescription: <textarea class="w-100"
                             [(ngModel)]="selectedClass.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedClass.equipment">
-                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         <button (click)="addClass()">submit Class</button><br><br>
                         <div class="row m-0">
                             <div>Classes: </div>
-                            <div *ngFor="let class of Map.classes" (dblclick)="editClass(class)"
+                            <div *ngFor="let class of dungeon.classes" (dblclick)="editClass(class)"
                                 style="margin-left: 10px;" title="{{class.description}}">
                                 {{class.name}}
                             </div>
@@ -118,14 +118,14 @@
 
 
                 <div class="tab-pane fade" id="nav-item" role="tabpanel" aria-labelledby="nav-item-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         ItemName: <input class="w-100" [(ngModel)]="selectedItem.name"><br><br>
                         ItemDescription: <textarea class="w-100"
                             [(ngModel)]="selectedItem.description"></textarea><br><br>
                         <button (click)="addItem()">submit Item</button><br><br>
                         <div class="row m-0">
                             <div>Items: </div>
-                            <div *ngFor="let item of Map.items" (dblclick)="editItem(item)" style="margin-left: 10px;"
+                            <div *ngFor="let item of dungeon.items" (dblclick)="editItem(item)" style="margin-left: 10px;"
                                 title="{{item.description}}">
                                 {{item.name}}
                             </div>
@@ -135,19 +135,19 @@
 
 
                 <div class="tab-pane fade" id="nav-npc" role="tabpanel" aria-labelledby="nav-npc-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         NpcName: <input class="w-100" [(ngModel)]="selectedNpc.name"><br><br>
                         NpcDescription: <textarea class="w-100"
                             [(ngModel)]="selectedNpc.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
-                            <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         <button (click)="addNpc()">submit Npc</button><br>
                     </div>
                 </div>
 
                 <div class="tab-pane fade" id="nav-players" role="tabpanel" aria-labelledby="nav-players-tab">
-                    <div *ngIf="Map" class="m-3">
+                    <div *ngIf="dungeon" class="m-3">
                         <table class="table">
                             <thead>
                               <tr>
@@ -233,12 +233,12 @@
                             aria-labelledby="nav-inventory-tab">
                             <div>
                                 Equipment: <ng-select [(ngModel)]="request.requester.equipment.name">
-                                    <ng-option *ngFor="let item of Map.items">{{item.name}}</ng-option>
+                                    <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                                 </ng-select>
                             </div><br>
                             <div>
                                 Inventory
-                                <ng-select [multiple]="true" [items]="Map.items" bindLabel="name" bindValue=""
+                                <ng-select [multiple]="true" [items]="dungeon.items" bindLabel="name" bindValue=""
                                     [(ngModel)]="request.requester.inventar">
                                 </ng-select>
                             </div>
