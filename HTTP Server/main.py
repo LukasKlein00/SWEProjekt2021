@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+import post
 
 login = {
     'username': 'Testuser',
@@ -71,6 +72,13 @@ class S(BaseHTTPRequestHandler):
 
             self._set_response()
             self.wfile.write(json.dumps(replyLoginData).encode(encoding='utf_8'))
+
+
+        ##Weitermachen
+        if (self.path == '/saveMap'):
+            try:
+                response = post.saveOrUpdateMap(data['dungeonID'],data['dungeonContent'])
+                print(response)
 
 
 #Startet den Server
