@@ -4,18 +4,22 @@
             <div class="card-body">
                 <h2>Dateien</h2>
                 <p *ngIf="!privateDownloads" class="activate" (click)="psw()">activate private files</p>
-                <div class="download" *ngIf="privateDownloads">
+                <div class="download">
                     <h5>1. Abgabe</h5>
                     <p *ngFor="let file of files1" (click)="download(file,'1. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files1p" (click)="download(file,'1. Abgabe')" >{{file}} <span style="color: red">[private]</span></p></ng-container>
                     <hr>
                     <h5>2. Abgabe</h5>
                     <p *ngFor="let file of files2" (click)="download(file,'2. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files2p" (click)="download(file,'2. Abgabe')" >{{file}} <span style="color: red">[private]</span></p></ng-container>
                     <hr>
                     <h5>3. Abgabe</h5>
                     <p *ngFor="let file of files3" (click)="download(file,'3. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files3p" (click)="download(file,'3. Abgabe')">{{file}} <span style="color: red">[private]</span></p></ng-container>
                     <hr>
                     <h5>4. Abgabe</h5>
                     <p *ngFor="let file of files4" (click)="download(file,'4. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files4p" (click)="download(file,'4. Abgabe')">{{file}} <span style="color: red">[private]</span></p></ng-container>
                     <hr>
                 </div>
             </div>
