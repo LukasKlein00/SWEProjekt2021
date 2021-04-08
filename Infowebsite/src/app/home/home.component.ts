@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   password = 'mudcakemudcake';
+  privateDownloads = false;
 
   files1 = [
     'Projektplan_Gruppe3_Version0.2.pdf',
@@ -53,15 +54,20 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  psw(pfad: string, ordner: string) {
+  psw() {
     if (prompt('Enter Password To Download Doc') === this.password) {
-      const d = document.createElement('a');
-      d.setAttribute('href', 'assets/' + ordner + '/' + pfad);
-      d.setAttribute('download', pfad);
-      d.click();
+      this.privateDownloads = true;
     } else {
+      this.privateDownloads = false;
       alert('wrong password');
     }
+  }
+
+  download(pfad: string, ordner: string) {
+    const d = document.createElement('a');
+    d.setAttribute('href', 'assets/' + ordner + '/' + pfad);
+    d.setAttribute('download', pfad);
+    d.click();
   }
 
 }

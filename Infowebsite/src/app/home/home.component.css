@@ -22,6 +22,14 @@ h2 {
     cursor: pointer;
 }
 
+.activate {
+    width: max-content;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
 .download {
     max-height: 30vh;
     overflow-y: auto;
