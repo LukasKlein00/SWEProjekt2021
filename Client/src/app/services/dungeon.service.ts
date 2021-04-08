@@ -66,6 +66,8 @@ export class DungeonService {
       classes: [],
       items: [],
       npcs: [],
+      whiteList: [],
+      blackList: [],
     }
 
     
