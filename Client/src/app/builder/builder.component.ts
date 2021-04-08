@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
 import { DungeonService } from '../services/dungeon.service';
+import { HttpService } from '../services/http.service';
 import { ToastService } from '../services/toast.service';
 
 @Component({
@@ -129,7 +130,8 @@ export class BuilderComponent implements OnInit {
 
   constructor(
     public toastService: ToastService,
-    private DungeonService: DungeonService
+    private DungeonService: DungeonService,
+    private httpService: HttpService,
   ) { }
 
   ngOnInit(): void {
@@ -233,6 +235,9 @@ export class BuilderComponent implements OnInit {
   saveDungeon(){
     localStorage.setItem('blub',JSON.stringify(this.dungeon));
     //sende dungeon an Server!
+    this.httpService.saveOrUpdateDungeon(this.dungeon)
+      .subscribe((response) => console.log(response));
+
   }
 
   publishDungeon(){

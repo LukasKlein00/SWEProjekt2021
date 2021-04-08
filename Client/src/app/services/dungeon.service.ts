@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Class, Dungeon, Item, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
+import * as uuid from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,8 @@ export class DungeonService {
 
     //erstellt Dungeon
     let dungeon: Dungeon = {
+      dungeonID: uuid.v4(),
+      dungeonMasterID: uuid.v4(),                   //id des Masters dann
       dungeonName: 'Newdungeon',
       dungeonDescription: 'Newdungeon Description',
       maxPlayers: 10,
@@ -66,6 +69,7 @@ export class DungeonService {
       classes: [],
       items: [],
       npcs: [],
+      private: false,
       whiteList: [],
       blackList: [],
     }

@@ -16,13 +16,14 @@ class S(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Methods', 'POST GET')
+        self.send_header('Access-Control-Allow-Methods', 'POST')
         self.send_header('Access-Control-Allow-Headers', 'Authorization, Content-Type')
         self.end_headers()
 
 
     #OPTIONS Request: Wird vor jeder Request ausgeführt, um zu checken, ob die Request erlaubt ist
     def do_OPTIONS(self):
+        print("Request received!")
         self._set_response()      
 
 
@@ -75,14 +76,20 @@ class S(BaseHTTPRequestHandler):
 
 
         ##Weitermachen
-        if (self.path == '/saveMap'):
+        if (self.path == '/saveDungeon'):
+            print("safe Dungeon")
             try:
-                response = post.saveOrUpdateMap(data['dungeonID'],data['dungeonContent'])
+                response = post.saveOrUpdateDungeon(data)
                 print(response)
+                self._set_response()
+                self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
+            except IOError:
+                print("failed")
 
 
 #Startet den Server
 def run(server_class=HTTPServer, handler_class=S):
+    print("Starting Server...")
     server_address = ('', 1188)
     http = server_class(server_address, handler_class)
     try:
