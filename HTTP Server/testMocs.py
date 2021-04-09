@@ -1,4 +1,4 @@
-dummyMap = {
+dummyDungeon = {
     "dungeonID": "2e366ef5-dd81-4c1c-a43a-a775d8274460",
     "dungeonMasterID": "3e3666f5-dd81-4c1c-a43a-af75d8274460",
     "dungeonName": "Newdungeon",
@@ -2101,3 +2101,21 @@ dummyMap = {
     "whiteList": ["ManniMark", "MegaSaurus2000" ],
     "blackList": [],
 }
+
+dummyRegister = {
+    "firstName": "TestUser",
+    "lastName": "TestUserNachname",
+    "email": "Test@testo.de",
+    "username": "TestTest",
+    "password": "testtest",
+    "userID": "c41ea6ac-c2a5-468b-ba26-f65b01a13d4e"
+}
+
+dummyLogin = {
+    "username": "TestTest",
+    "password": "testtest"
+}
+
+dummyUserID = "3e3666f5-dd81-4c1c-a43a-af75d8274460"
+
+dummyDungeonID = "2e366ef5-dd81-4c1c-a43a-a775d8274460"

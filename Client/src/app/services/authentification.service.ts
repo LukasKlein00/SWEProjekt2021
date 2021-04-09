@@ -2,14 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import * as uuid from 'uuid';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
 
-  private readonly apiUrl = 'http://193.196.53.67:1188'
-  //private readonly apiUrl = 'http://localhost:1188'
+  private readonly apiUrl = environment.httpUrl;
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
@@ -23,7 +24,7 @@ export class AuthentificationService {
   }
 
   login(username, password) {
-    return this.http.post<any>(`${this.apiUrl}/users/authenticate`, { username, password })
+    return this.http.post<any>(`${this.apiUrl}/users/login`, { username, password })
       .pipe(map(user => {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
@@ -40,6 +41,7 @@ export class AuthentificationService {
   }
 
   register(user) {
+    user.userID = uuid.v4();
     return this.http.post(`${this.apiUrl}/users/register`, user);
   }
 }

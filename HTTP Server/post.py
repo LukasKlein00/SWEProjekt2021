@@ -38,8 +38,73 @@ def saveOrUpdateDungeon(dungeon):
         c.execute(query, variables)
         conn.commit()
     except IOError:
-        print("fail adding/updating Dungeon")
-        conn.close()
-        return 0
+        pass
+    conn.close()
     return "successful"
-    
+
+def regiserUser(user):
+    conn = connect()
+    c = conn.cursor()
+    query = """
+    INSERT INTO mudcake.accounts 
+            (username, vorname, nachname, passwort, userID, email)
+        VALUES 
+            (%s, %s, %s, %s, %s, %s) 
+    """
+    variables = (user['username'], user['firstName'],user['lastName'], user['password'], user['userID'], user['email'])
+    try:
+        c.execute(query, variables)
+        conn.commit()
+    except IOError:
+        pass
+    conn.close()
+    return "successful"
+
+def loginUser(user):
+    conn = connect()
+    c = conn.cursor() 
+    query = """
+    SELECT username, userID
+    From mudcake.accounts 
+    WHERE (username = %s AND passwort = %s)
+    """
+    variables = (user['username'], user['password'])
+    c.execute(query, variables)
+    try:
+        username = c.fetchone()
+    except:
+        username = 0
+    conn.close()
+    return username  
+
+def getMyDungeons(userID):
+    conn = connect()
+    c = conn.cursor()
+    query = f"""
+    SELECT dungeonID, dungeonName, dungeonDescription
+    From mudcake.dungeons 
+    WHERE (dungeonMasterID = '{userID}')
+    """
+    c.execute(query)
+    try:
+        dungeons = c.fetchall()
+    except:
+        dungeons = 0
+    conn.close()
+    return dungeons
+
+def getDungeon(dungeonID):
+    conn = connect()
+    c = conn.cursor()
+    query = f"""
+    SELECT *
+    From mudcake.dungeons 
+    WHERE (dungeonID = '{dungeonID}')
+    """
+    c.execute(query)
+    try:
+        dungeons = c.fetchone()
+    except:
+        dungeons = 0
+    conn.close()
+    return dungeons     

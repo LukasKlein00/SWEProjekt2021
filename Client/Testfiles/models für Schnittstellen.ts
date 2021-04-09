@@ -2,7 +2,7 @@ export class Dungeon {
     dungeonName: string;
     dungeonDescription: string;
     dungeonID?: string;
-    maxPlayers: number;
+    maxPlayers?: number;
     currentPlayers?: number;
     dungeonMasterID?: string;
     rooms?: Room[][];
