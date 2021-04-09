@@ -69,7 +69,8 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.httpService.getCreatedDungeons()
+    if (localStorage.getItem('currentUser')) {
+      this.httpService.getCreatedDungeons()
       .subscribe((response) => {
           Object.keys(response).forEach( key => {this.myMUDs.push( {
             dungeonID: response[key][0],
@@ -77,6 +78,7 @@ export class HomeComponent implements OnInit {
             dungeonDescription: response[key][2]
           });})
         });
+    }
   }
 
   copyDungeon(d: Dungeon) {
