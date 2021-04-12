@@ -17,9 +17,8 @@
             <h3 class="col-12">My MUDs</h3>
             <div *ngFor="let dungeon of myMUDs" class="border border-dark p-3 col-12 mudCard">
                 <h5>{{dungeon.dungeonName}}</h5>
-                <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
                 <div>{{dungeon.dungeonDescription}}</div>
-                <button class="btn btn-success" routerLink="/builder">Resume</button>
+                <button class="btn btn-success" [routerLink]="['/builder',{id: dungeon.dungeonID}]">Resume</button>
                 <button class="btn btn-outline-success m-1" (click)="copyDungeon(dungeon)">Copy</button>
             </div>
                 <div class="border border-dark p-3 col-12">

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Class, Dungeon, Item, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
+import * as uuid from 'uuid';
+import { jsonSchema } from 'uuidv4';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +60,8 @@ export class DungeonService {
 
     //erstellt Dungeon
     let dungeon: Dungeon = {
+      dungeonID: uuid.v4(),
+      dungeonMasterID: JSON.parse(localStorage.getItem('currentUser'))[1],            
       dungeonName: 'Newdungeon',
       dungeonDescription: 'Newdungeon Description',
       maxPlayers: 10,
@@ -66,6 +70,9 @@ export class DungeonService {
       classes: [],
       items: [],
       npcs: [],
+      private: false,
+      whiteList: [],
+      blackList: [],
     }
 
     

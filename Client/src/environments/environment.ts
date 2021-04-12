@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  httpUrl:'http://localhost:1188',
+  websocketUrl: 'http://localhost:1189',
+
 };
 
 /*

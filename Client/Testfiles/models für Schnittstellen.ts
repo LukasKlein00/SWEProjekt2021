@@ -1,18 +1,18 @@
 export class Dungeon {
     dungeonName: string;
     dungeonDescription: string;
-    dungeonID?: number;
-    maxPlayers: number;
+    dungeonID?: string;
+    maxPlayers?: number;
     currentPlayers?: number;
-    dungeonMasterID?: number;
+    dungeonMasterID?: string;
     rooms?: Room[][];
     races?: Race[];
     classes?: Class[];
     items?: Item[];
     npcs?: Npc[];
     private?: boolean;
-    whiteList: string[];
-    blackList: string[];
+    whiteList?: string[];
+    blackList?: string[];
 }
 
 export class Room {

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
 import { DungeonService } from '../services/dungeon.service';
+import { HttpService } from '../services/http.service';
 import { ToastService } from '../services/toast.service';
 
 @Component({
@@ -129,12 +131,33 @@ export class BuilderComponent implements OnInit {
 
   constructor(
     public toastService: ToastService,
-    private DungeonService: DungeonService
+    private DungeonService: DungeonService,
+    private httpService: HttpService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
     this.dungeon = this.DungeonService.createNewDungeon(this.dungeonSize);
     this.rooms = this.dungeon.rooms;
+    if (id) {
+      this.httpService.getDungeon(id)
+      .subscribe((res) => {
+        this.dungeon.dungeonID = res[0];
+        this.dungeon.dungeonName = res[1];
+        this.dungeon.dungeonDescription = res[2];
+        this.dungeon.maxPlayers = res[3];
+        this.dungeon.rooms = JSON.parse(res[5]);
+        this.dungeon.races = JSON.parse(res[6]);
+        this.dungeon.classes = JSON.parse(res[7]);
+        this.dungeon.items = JSON.parse(res[8]);
+        this.dungeon.npcs = JSON.parse(res[9]);
+        this.dungeon.private = res[10];
+        this.dungeon.whiteList = JSON.parse(res[11]);
+        this.dungeon.blackList = JSON.parse(res[12]);
+        this.rooms = this.dungeon.rooms;
+        });
+    }
     console.log(this.rooms);
     this.selectedRoom = this.rooms[5][5];
     /* this.toastService.show('John wants to join', {
@@ -233,6 +256,9 @@ export class BuilderComponent implements OnInit {
   saveDungeon(){
     localStorage.setItem('blub',JSON.stringify(this.dungeon));
     //sende dungeon an Server!
+    this.httpService.saveOrUpdateDungeon(this.dungeon)
+      .subscribe((response) => console.log(response));
+
   }
 
   publishDungeon(){
