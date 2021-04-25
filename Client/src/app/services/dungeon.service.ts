@@ -48,14 +48,12 @@ export class DungeonService {
   createNewDungeon(dungeonSize: number): Dungeon {
 
     //erstellt Räumematrix
-    let rooms: Room[][] = [];
-    for (let row = 0; row < dungeonSize; row++) {
-      let rowElement: Room[] = []
-      for (let col = 0; col < dungeonSize; col++) {
+    let rooms: Room[] = [];
+    for (let row = 1; row <= dungeonSize; row++) {
+      for (let col = 1; col <= dungeonSize; col++) {
         const room: Room = this.createNewRoom(col, row);
-        rowElement.push(room)
+        rooms.push(room)
       }
-      rooms.push(rowElement);
     }
 
     //erstellt Dungeon
@@ -71,8 +69,7 @@ export class DungeonService {
       items: [],
       npcs: [],
       private: false,
-      whiteList: [],
-      blackList: [],
+      accessList: [],
     }
 
     
@@ -82,19 +79,8 @@ export class DungeonService {
 
   createNewRoom(x,y): Room {
     return {
-      name: `NewRoom ${x} ${y}`,
       x: x,
       y: y,
-      north: true,
-      south: true,
-      east: true,
-      west: true,
-      item: null,
-      npc: null,
-      players: [],
-      isStartRoom: false,
-      isActive: false,
-      description: `NewRoom ${x} ${y} Description`,
     }
   }
 }

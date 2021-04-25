@@ -11,7 +11,7 @@ import { CreateCharacterComponent } from '../create-character/create-character.c
 export class PlayComponent implements OnInit {
 
   world: Dungeon;
-  rooms: Room[][];
+  rooms: Room[];
   currentRoom: Room;
   player: Player = {
     name: '',

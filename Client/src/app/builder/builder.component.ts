@@ -119,9 +119,9 @@ export class BuilderComponent implements OnInit {
       x: 1,
       y: 4,
     }]
-  dungeonSize = 11;
+  dungeonSize = 13;
   dungeon: Dungeon;
-  rooms: Room[][] = [];
+  rooms: Room[] = []
   selectedRoom: Room;
   selectedRace: Race = this.newRace();
   selectedClass: Class = this.newClass();
@@ -153,14 +153,12 @@ export class BuilderComponent implements OnInit {
         this.dungeon.items = JSON.parse(res[8]);
         this.dungeon.npcs = JSON.parse(res[9]);
         this.dungeon.private = res[10];
-        this.dungeon.whiteList = JSON.parse(res[11]);
-        this.dungeon.blackList = JSON.parse(res[12]);
-        this.rooms = this.dungeon.rooms;
+        /* this.rooms = this.dungeon.rooms; */
         });
     }
     console.log(this.rooms);
-    this.selectedRoom = this.rooms[5][5];
-    /* this.toastService.show('John wants to join', {
+    //this.selectedRoom = this.rooms[5][5];
+    this.toastService.show('John wants to join', {
       classname: 'toast',
       delay: 7000,
       autohide: true
@@ -169,8 +167,9 @@ export class BuilderComponent implements OnInit {
       classname: 'toast',
       delay: 5000,
       autohide: true
-    }); */
+    });
   }
+
   newClass() {
     return this.DungeonService.createNewClass();
   }
@@ -229,32 +228,47 @@ export class BuilderComponent implements OnInit {
 
 
   toggleRoom(r: Room) {
-    r.isActive = !r.isActive;
+    if (r.isActive) {
+      delete r.isActive;
+      delete r.description;
+      delete r.isStartRoom;
+      delete r.name;
+      delete r.north;
+      delete r.east;
+      delete r.south;
+      delete r.west;
+      delete r.item;
+      delete r.npc;
+    } else {
+      r['isActive'] = true;
+    }
   }
 
   increaseDungeon() {
-    let newRow = []
-    for (let row = 0; row < this.dungeonSize; row++) {
-      this.rooms[row].push(this.DungeonService.createNewRoom(row, this.dungeonSize));
-      newRow.push(this.DungeonService.createNewRoom(this.dungeonSize, row));
-    }
-    newRow.push(this.DungeonService.createNewRoom(this.dungeonSize, this.dungeonSize));
-    this.rooms.push(newRow);
     this.dungeonSize += 1;
+    for (let row = 1; row < this.dungeonSize; row++) {
+      this.rooms.push(this.DungeonService.createNewRoom(row, this.dungeonSize));
+    }
+    for (let col = 1; col <= this.dungeonSize; col++) {
+      this.rooms.push(this.DungeonService.createNewRoom(this.dungeonSize, col));
+    }
+    
   }
 
   decreaseDungeon() {
     if (this.dungeonSize>10) {
-      this.rooms.pop()
-      for (let row of this.rooms) {
-        row.pop();
-      }
-      this.dungeonSize -= 1;
+      this.dungeonSize--;
+      this.rooms = this.rooms.filter(room => room.x <= this.dungeonSize && room.y <= this.dungeonSize)
     }
   }
 
   saveDungeon(){
-    localStorage.setItem('blub',JSON.stringify(this.dungeon));
+
+    
+
+    const safeDungeon: Dungeon = this.dungeon;
+    safeDungeon.rooms = this.dungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
+    localStorage.setItem('blub',JSON.stringify(safeDungeon));
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(this.dungeon)
       .subscribe((response) => console.log(response));
@@ -281,14 +295,5 @@ export class BuilderComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
-
-  moveOverRequest(request: requestForMaster) {
-    this.dungeon.rooms[request.y][request.x]['isViewed'] = true;
-  }
-
-  moveOutRequest(request: requestForMaster) {
-    this.dungeon.rooms[request.y][request.x]['isViewed'] = false;
-  }
-  
 }
 
