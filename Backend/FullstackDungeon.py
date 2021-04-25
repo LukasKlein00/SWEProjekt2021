@@ -1,17 +1,16 @@
-from Backend.BackendClasses.Directions import Directions
-from Backend.BackendClasses.Dungeon import Dungeon
-from Backend.BackendClasses.Room import Room
-from Backend.BackendClasses.Character import Character
-from Backend.BackendClasses.Inventory import Inventory
+import Backend.BackendClasses as backEnd
 
 
 class FullStackDungeon:
 
-    def __init__(self, dungeon: Dungeon, rooms: Room, character: Character, inventory: Inventory):
+    def __init__(self, dungeon: backEnd.Dungeon, rooms: backEnd.Room, character: backEnd.Character,
+                 inventory: backEnd.Inventory):
         self.dungeon = dungeon
         self.rooms = rooms
+        self.character = character
+        self.inventory = inventory
 
-    def move(self, userId: int, roomID: int, direction: Directions):
+    def move(self, userId: int, roomID: int, direction: backEnd.Directions):
         raise NotImplementedError
 
     def lookInRoom(self):
