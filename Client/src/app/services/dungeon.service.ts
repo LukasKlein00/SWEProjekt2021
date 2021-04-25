@@ -47,7 +47,8 @@ export class DungeonService {
 
   createNewDungeon(dungeonSize: number): Dungeon {
 
-    //erstellt Räumematrix
+    if (JSON.parse(localStorage.getItem('currentUser'))) {
+      //erstellt Räumematrix
     let rooms: Room[] = [];
     for (let row = 1; row <= dungeonSize; row++) {
       for (let col = 1; col <= dungeonSize; col++) {
@@ -57,6 +58,7 @@ export class DungeonService {
     }
 
     //erstellt Dungeon
+    
     let dungeon: Dungeon = {
       dungeonID: uuid.v4(),
       dungeonMasterID: JSON.parse(localStorage.getItem('currentUser'))[1],            
@@ -71,10 +73,22 @@ export class DungeonService {
       private: false,
       accessList: [],
     }
-
-    
-
-    return dungeon;
+    return dungeon; 
+    } else {
+      let dungeon: Dungeon = {         
+        dungeonName: 'Newdungeon',
+        dungeonDescription: 'Newdungeon Description',
+        maxPlayers: 10,
+        rooms: [],
+        races: [],
+        classes: [],
+        items: [],
+        npcs: [],
+        private: false,
+        accessList: [],
+      }
+      return dungeon;
+    }
   }
 
   createNewRoom(x,y): Room {

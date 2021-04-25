@@ -34,8 +34,10 @@ export class PlayComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.world = JSON.parse(localStorage.getItem('blub'));
-    this.rooms = this.world.rooms;
+    if (localStorage.getItem('blub')) {
+      this.world = JSON.parse(localStorage.getItem('blub'));
+      this.rooms = this.world.rooms;
+    }
     this.currentRoom = {
       name: "NewRoom 5 5",
       x: 5,
