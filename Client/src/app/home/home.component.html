@@ -20,6 +20,7 @@
                 <div>{{dungeon.dungeonDescription}}</div>
                 <button class="btn btn-success" [routerLink]="['/builder',{id: dungeon.dungeonID}]">Resume</button>
                 <button class="btn btn-outline-success m-1" (click)="copyDungeon(dungeon)">Copy</button>
+                <button class="btn btn-danger" (click)="deleteDungeon(dungeon)">Delete</button>
             </div>
                 <div class="border border-dark p-3 col-12">
                     <h5>Create A New MUD</h5>

@@ -1,10 +1,11 @@
 from mysql.connector import MySQLConnection
 
-from FullstackDungeon import FullStackDungeon
+from BackendClasses.FullstackDungeon import FullStackDungeon
 from BackendClasses.Character import Character
 from BackendClasses.User import User
 from BackendClasses.Inventory import Inventory
 from BackendClasses.Dungeon import Dungeon
+
 
 class DatabaseHandler:
     def __init__(self, databasePath: MySQLConnection):
@@ -40,7 +41,18 @@ class DatabaseHandler:
             queryData = cursor.fetchone()
             return User(userID=queryData[1], userName=queryData[0])
         except:
-            pass
+            return None
+
+    def getFullDungeonByDungeonID(self, dungeonID):
+        raise NotImplementedError
+
+    def saveFullDungeon(self, dungeon):
+        raise NotImplementedError
+
+
+    def copyDungeon(self, dungeonID):
+        newDungeon = self.getFullDungeonByDungeonID(dungeonID)
+        #DungeonID austragen und abspeichern!
 
     def saveOrUpdateDungeon(self, d: Dungeon):
         cursor = self.databasePath.cursor()
@@ -57,14 +69,16 @@ class DatabaseHandler:
             Private  = VALUES(Private)
                    """
         variables = (
-            d.dungeonID, d.dungeonName, d.dungeonDescription, d.maxPlayers, d.dungenMasterID, d.private
+            d.dungeonID, d.dungeonName, d.dungeonDescription, d.maxPlayers, d.dungeonMasterID, d.private
         )
         try:
             cursor.execute(query, variables)
+            d.dungeonID = cursor.lastrowid
             self.databasePath.commit()
+            return d.dungeonID
+
         except IOError:
             pass
-
 
     def getEverything(self, fullstackDungeon: FullStackDungeon):
         raise NotImplementedError
@@ -76,7 +90,19 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def getDungeonByID(self, dungeonID: int):
-        raise NotImplementedError
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT DungeonID, DungeonName, DungeonDescription
+                    From mudcake.Dungeon
+                    WHERE (DungeonMasterID = '{dungeonID}' )
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchall()
+            return queryData
+
+        except:
+            pass
 
     def getInventarOfCharacter(self, character: Character):
         raise NotImplementedError
@@ -95,3 +121,24 @@ class DatabaseHandler:
 
     def writeCharacterToDatabase(self, character: Character):
         raise NotImplementedError
+
+    def deleteDungeonByID(self, dungeonID):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                            DELETE
+                            From mudcake.Dungeon
+                            WHERE (DungeonID = '{dungeonID}' )
+                            """
+        cursor.execute(query)
+        self.databasePath.commit()
+
+    def deleteUserByID(self, userID):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                            DELETE
+                            From mudcake.User
+                            WHERE (UserID = '{userID}' )
+                            """
+        cursor.execute(query)
+        self.databasePath.commit()
+        print("deleted")
