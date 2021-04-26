@@ -1,12 +1,22 @@
 @import "./../sccVariables.scss";
 
-.map {
-    display: flex;
-    border: 1px solid lightslategray;
+.roomMap{
     overflow-y: auto;
     overflow-x: auto;
     height: $map-size;
     width: $map-size;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
+    display: grid;
+    grid-template-columns: repeat(15, 30px [col-start]);
+    grid-template-rows: repeat(15, 30px [row-start]);
+}
+
+.roomCell{
+    margin: auto;
+    width: 25px;
+    height: 25px;
+    border: 1px solid black;
 }
 
 .chat {
@@ -14,20 +24,11 @@
     max-height: $map-size;
 }
 
-.rowMap {
-    float: left;
-}
-
 .startRoom {
-    background-color: blue;
+    background-color: rgb(87, 87, 236);
 }
 
-.room {
-    width: 25px;
-    height: 25px;
-    border: 1px solid black;
-}
 
 .activeRoom {
-    background-color: lightslategray;
+    background-color: rgb(228, 174, 104);
 }

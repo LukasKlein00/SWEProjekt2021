@@ -13,7 +13,7 @@ import { ToastService } from '../services/toast.service';
 export class BuilderComponent implements OnInit {
 
   privateSlider = false;
-  maxPlayerOptions = [3,4,5,6,7,8,9,10]
+  maxPlayerOptions = [3, 4, 5, 6, 7, 8, 9, 10]
   requests: requestForMaster[] = [
     {
       request: 'kill Spider',
@@ -119,9 +119,9 @@ export class BuilderComponent implements OnInit {
       x: 1,
       y: 4,
     }]
-  dungeonSize = 11;
+  dungeonSize = 13;
   dungeon: Dungeon;
-  rooms: Room[][] = [];
+  rooms: Room[] = []
   selectedRoom: Room;
   selectedRace: Race = this.newRace();
   selectedClass: Class = this.newClass();
@@ -142,25 +142,20 @@ export class BuilderComponent implements OnInit {
     this.rooms = this.dungeon.rooms;
     if (id) {
       this.httpService.getDungeon(id)
-      .subscribe((res) => {
-        this.dungeon.dungeonID = res[0];
-        this.dungeon.dungeonName = res[1];
-        this.dungeon.dungeonDescription = res[2];
-        this.dungeon.maxPlayers = res[3];
-        this.dungeon.rooms = JSON.parse(res[5]);
-        this.dungeon.races = JSON.parse(res[6]);
-        this.dungeon.classes = JSON.parse(res[7]);
-        this.dungeon.items = JSON.parse(res[8]);
-        this.dungeon.npcs = JSON.parse(res[9]);
-        this.dungeon.private = res[10];
-        this.dungeon.whiteList = JSON.parse(res[11]);
-        this.dungeon.blackList = JSON.parse(res[12]);
-        this.rooms = this.dungeon.rooms;
+        .subscribe((res) => {
+          this.dungeon.dungeonID = res[0];
+          this.dungeon.dungeonName = res[1];
+          this.dungeon.dungeonDescription = res[2];
+          this.dungeon.maxPlayers = res[3];
+          this.dungeon.rooms = JSON.parse(res[5]);
+          this.dungeon.races = JSON.parse(res[6]);
+          this.dungeon.classes = JSON.parse(res[7]);
+          this.dungeon.items = JSON.parse(res[8]);
+          this.dungeon.npcs = JSON.parse(res[9]);
+          this.dungeon.private = res[10];
         });
     }
-    console.log(this.rooms);
-    this.selectedRoom = this.rooms[5][5];
-    /* this.toastService.show('John wants to join', {
+    this.toastService.show('John wants to join', {
       classname: 'toast',
       delay: 7000,
       autohide: true
@@ -169,8 +164,9 @@ export class BuilderComponent implements OnInit {
       classname: 'toast',
       delay: 5000,
       autohide: true
-    }); */
+    });
   }
+
   newClass() {
     return this.DungeonService.createNewClass();
   }
@@ -182,7 +178,7 @@ export class BuilderComponent implements OnInit {
 
   editClass(c: Class) {
     this.selectedClass = c;
-    this.dungeon.classes.splice(this.dungeon.classes.indexOf(c),1);
+    this.dungeon.classes.splice(this.dungeon.classes.indexOf(c), 1);
   }
 
   newRace() {
@@ -196,7 +192,7 @@ export class BuilderComponent implements OnInit {
 
   editRace(r: Race) {
     this.selectedRace = r;
-    this.dungeon.races.splice(this.dungeon.races.indexOf(r),1);
+    this.dungeon.races.splice(this.dungeon.races.indexOf(r), 1);
   }
 
   newItem() {
@@ -210,7 +206,7 @@ export class BuilderComponent implements OnInit {
 
   editItem(i: Item) {
     this.selectedItem = i;
-    this.dungeon.items.splice(this.dungeon.items.indexOf(i),1);
+    this.dungeon.items.splice(this.dungeon.items.indexOf(i), 1);
   }
 
   newNpc() {
@@ -224,56 +220,71 @@ export class BuilderComponent implements OnInit {
 
   editNpc(n: Npc) {
     this.selectedNpc = n;
-    this.dungeon.npcs.splice(this.dungeon.npcs.indexOf(n),1);
+    this.dungeon.npcs.splice(this.dungeon.npcs.indexOf(n), 1);
   }
 
 
   toggleRoom(r: Room) {
-    r.isActive = !r.isActive;
+    if (r.isActive) {
+      delete r.isActive;
+      delete r.description;
+      delete r.isStartRoom;
+      delete r.name;
+      delete r.north;
+      delete r.east;
+      delete r.south;
+      delete r.west;
+      delete r.item;
+      delete r.npc;
+    } else {
+      r['isActive'] = true;
+    }
   }
 
   increaseDungeon() {
-    let newRow = []
-    for (let row = 0; row < this.dungeonSize; row++) {
-      this.rooms[row].push(this.DungeonService.createNewRoom(row, this.dungeonSize));
-      newRow.push(this.DungeonService.createNewRoom(this.dungeonSize, row));
-    }
-    newRow.push(this.DungeonService.createNewRoom(this.dungeonSize, this.dungeonSize));
-    this.rooms.push(newRow);
     this.dungeonSize += 1;
+    for (let row = 1; row < this.dungeonSize; row++) {
+      this.rooms.push(this.DungeonService.createNewRoom(row, this.dungeonSize));
+    }
+    for (let col = 1; col <= this.dungeonSize; col++) {
+      this.rooms.push(this.DungeonService.createNewRoom(this.dungeonSize, col));
+    }
+
   }
 
   decreaseDungeon() {
-    if (this.dungeonSize>10) {
-      this.rooms.pop()
-      for (let row of this.rooms) {
-        row.pop();
-      }
-      this.dungeonSize -= 1;
+    if (this.dungeonSize > 10) {
+      this.dungeonSize--;
+      this.rooms = this.rooms.filter(room => room.x <= this.dungeonSize && room.y <= this.dungeonSize)
     }
   }
 
-  saveDungeon(){
-    localStorage.setItem('blub',JSON.stringify(this.dungeon));
+  saveDungeon() {
+
+
+
+    const safeDungeon: Dungeon = this.dungeon;
+    safeDungeon.rooms = this.dungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
+    localStorage.setItem('blub', JSON.stringify(safeDungeon));
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(this.dungeon)
       .subscribe((response) => console.log(response));
 
   }
 
-  publishDungeon(){
+  publishDungeon() {
     this.saveDungeon();
     //sende MUD an joinable Lobbies
   }
 
-  selectRoom(r: Room){
+  selectRoom(r: Room) {
     this.selectedRoom = r;
     document.getElementById('nav-room-tab').click();
   }
 
-  submitRequest(req: requestForMaster){
+  submitRequest(req: requestForMaster) {
     this.dungeon.rooms[req.y][req.x]['isViewed'] = false;
-    this.requests.splice(this.requests.indexOf(req),1);
+    this.requests.splice(this.requests.indexOf(req), 1);
   }
   onItemSelect(item: any) {
     console.log(item);
@@ -281,14 +292,5 @@ export class BuilderComponent implements OnInit {
   onSelectAll(items: any) {
     console.log(items);
   }
-
-  moveOverRequest(request: requestForMaster) {
-    this.dungeon.rooms[request.y][request.x]['isViewed'] = true;
-  }
-
-  moveOutRequest(request: requestForMaster) {
-    this.dungeon.rooms[request.y][request.x]['isViewed'] = false;
-  }
-  
 }
 

@@ -5,31 +5,30 @@ export class Dungeon {
     maxPlayers?: number;
     currentPlayers?: number;
     dungeonMasterID?: string;
-    rooms?: Room[][];
+    rooms?: Room[];
     races?: Race[];
     classes?: Class[];
     items?: Item[];
     npcs?: Npc[];
     private?: boolean;
-    whiteList?: string[];
-    blackList?: string[];
+    accessList?: string[];
 }
 
 export class Room {
-    name: string;
+    name?: string;
     x: number;
     y: number;
-    north: boolean;
-    south: boolean;
-    east: boolean;
-    west: boolean;
-    item: Item;
-    npc: Npc;
-    players: Player[];
-    isStartRoom: boolean;
-    isActive: boolean;
+    north?: boolean;
+    south?: boolean;
+    east?: boolean;
+    west?: boolean;
+    item?: Item;
+    npc?: Npc;
+    players?: Player[];
+    isStartRoom?: boolean;
+    isActive?: boolean;
     isViewed?: boolean;
-    description: string;
+    description?: string;
 }
 
 export class Race {

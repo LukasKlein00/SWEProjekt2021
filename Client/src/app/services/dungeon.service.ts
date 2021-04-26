@@ -47,18 +47,18 @@ export class DungeonService {
 
   createNewDungeon(dungeonSize: number): Dungeon {
 
-    //erstellt Räumematrix
-    let rooms: Room[][] = [];
-    for (let row = 0; row < dungeonSize; row++) {
-      let rowElement: Room[] = []
-      for (let col = 0; col < dungeonSize; col++) {
+    if (JSON.parse(localStorage.getItem('currentUser'))) {
+      //erstellt Räumematrix
+    let rooms: Room[] = [];
+    for (let row = 1; row <= dungeonSize; row++) {
+      for (let col = 1; col <= dungeonSize; col++) {
         const room: Room = this.createNewRoom(col, row);
-        rowElement.push(room)
+        rooms.push(room)
       }
-      rooms.push(rowElement);
     }
 
     //erstellt Dungeon
+    
     let dungeon: Dungeon = {
       dungeonID: uuid.v4(),
       dungeonMasterID: JSON.parse(localStorage.getItem('currentUser'))[1],            
@@ -71,30 +71,30 @@ export class DungeonService {
       items: [],
       npcs: [],
       private: false,
-      whiteList: [],
-      blackList: [],
+      accessList: [],
     }
-
-    
-
-    return dungeon;
+    return dungeon; 
+    } else {
+      let dungeon: Dungeon = {         
+        dungeonName: 'Newdungeon',
+        dungeonDescription: 'Newdungeon Description',
+        maxPlayers: 10,
+        rooms: [],
+        races: [],
+        classes: [],
+        items: [],
+        npcs: [],
+        private: false,
+        accessList: [],
+      }
+      return dungeon;
+    }
   }
 
   createNewRoom(x,y): Room {
     return {
-      name: `NewRoom ${x} ${y}`,
       x: x,
       y: y,
-      north: true,
-      south: true,
-      east: true,
-      west: true,
-      item: null,
-      npc: null,
-      players: [],
-      isStartRoom: false,
-      isActive: false,
-      description: `NewRoom ${x} ${y} Description`,
     }
   }
 }

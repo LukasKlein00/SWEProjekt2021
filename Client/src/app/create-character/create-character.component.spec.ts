@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CreateCharacterComponent } from './create-character.component';
 
@@ -8,7 +9,10 @@ describe('CreateCharacterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateCharacterComponent ]
+      declarations: [ CreateCharacterComponent ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+    ]
     })
     .compileComponents();
   }));
