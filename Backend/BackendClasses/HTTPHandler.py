@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from BackendClasses.User import User
-from BackendClasses.Dungeon import Dungeon
-from BackendClasses.DatabaseHandler import DatabaseHandler
+from User import *
+from Dungeon import *
+from DatabaseHandler import *
 import mysql.connector
 
 # Server
