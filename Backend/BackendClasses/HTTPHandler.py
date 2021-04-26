@@ -5,13 +5,6 @@ from BackendClasses.Dungeon import Dungeon
 from BackendClasses.DatabaseHandler import DatabaseHandler
 import mysql.connector
 
-login = {
-    'username': 'Testuser',
-    'password': 'testpassword'
-}
-dummyData = json.dumps(login)
-
-
 # Server
 class S(BaseHTTPRequestHandler):
     mDBHandler = DatabaseHandler(mysql.connector.connect(
@@ -22,8 +15,8 @@ class S(BaseHTTPRequestHandler):
     ))
 
     # übermittelt Einstellungen "Headers" des Requests
-    def _set_response(self):
-        self.send_response(200)
+    def _set_response(self, code: int = 200):
+        self.send_response(code)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
         self.send_header('Access-Control-Allow-Methods', 'POST, GET')
@@ -32,7 +25,6 @@ class S(BaseHTTPRequestHandler):
 
     # OPTIONS Request: Wird vor jeder Request ausgeführt, um zu checken, ob die Request erlaubt ist
     def do_OPTIONS(self):
-        print("Request received!")
         self._set_response()
 
         # GET Request: "Wird verwendet wenn Daten ausgegeben werden sollen"
@@ -50,34 +42,53 @@ class S(BaseHTTPRequestHandler):
             data = None
 
         if self.path == '/register':
+            self._set_response()
             newUser = User(userID=data['userID'], firstName=data['firstName'], lastName=data['lastName'],
                            eMail=data['email'], userName=data['username'], password=data['password'],
                            confirmation=False)
             self.mDBHandler.registerUser(newUser)
-            self._set_response()
+
             # Antwort senden? self.wfile.write(json.dumps("moin").encode(encoding='utf_8'))
 
         if self.path == '/login':
-            print(data)
+            self._set_response()
             newUser = User(userName=data['username'], password=data['password'])
             returnedUser = self.mDBHandler.loginUser(newUser)
-            self._set_response()
-            print(returnedUser.userName)
-            response = {
-                'username': returnedUser.userName,
-                'userID': returnedUser.userID
-            }
-            self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
+            if returnedUser:
+                response = {
+                    'username': returnedUser.userName,
+                    'userID': returnedUser.userID
+                }
+                self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
+            else:
+                self._set_response(400)
 
         if self.path == '/getMyDungeons':
             self._set_response()
+            response = self.mDBHandler.getDungeonByID(data)
+            self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
 
         if self.path == '/saveDungeon':
-            print(data)
+            self._set_response()
             newDungeon = Dungeon(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
                                  dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'], private=data['private'],
                                  dungeonMasterID=data['dungeonMasterID'])
+            dungeonID = self.mDBHandler.saveOrUpdateDungeon(newDungeon)
+            #noch items und so abspeichern
+
+        if self.path == '/deleteDungeon':
             self._set_response()
+            self.mDBHandler.deleteDungeonByID(data)
+
+        if self.path == '/deleteUser':
+            self._set_response()
+            self.mDBHandler.deleteUserByID(data)
+
+        if self.path == '/copyDungeon':
+            print(data)
+            self._set_response()
+            #self.mDBHandler.copyDungeon(data)
+
 
 
 # Startet den Server

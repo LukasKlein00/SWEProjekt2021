@@ -7,14 +7,14 @@ from BackendClasses.Inventory import Inventory
 
 class FullStackDungeon:
 
-    def __init__(self, dungeon: backEnd.Dungeon, rooms: backEnd.Room, character: backEnd.Character,
-                 inventory: backEnd.Inventory):
+    def __init__(self, dungeon: Dungeon, rooms: Room, character: Character,
+                 inventory: Inventory):
         self.dungeon = dungeon
         self.rooms = rooms
         self.character = character
         self.inventory = inventory
 
-    def move(self, userId: int, roomID: int, direction: backEnd.Directions):
+    def move(self, userId: int, roomID: int, direction: Directions):
         raise NotImplementedError
 
     def lookInRoom(self):

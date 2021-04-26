@@ -69,6 +69,11 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getCreatedDungeons()
+  }
+  
+  getCreatedDungeons(){
+    this.myMUDs = [];
     if (localStorage.getItem('currentUser')) {
       this.httpService.getCreatedDungeons()
       .subscribe((response) => {
@@ -82,9 +87,16 @@ export class HomeComponent implements OnInit {
   }
 
   copyDungeon(d: Dungeon) {
-    const myClonedObject = Object.assign({}, d);
-    myClonedObject.dungeonName = d.dungeonName + 'Copy';
-    this.myMUDs.push(myClonedObject);
+    this.httpService.copyDungeon(d.dungeonID).subscribe((response) => {
+      this.getCreatedDungeons()
+      
+    });;
   }
 
+  deleteDungeon(d: Dungeon){
+    this.httpService.deleteDungeon(d.dungeonID).subscribe((response) => {
+      this.getCreatedDungeons()
+      
+    });;
+  }
 }

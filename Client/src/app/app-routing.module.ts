@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { ImpressumComponent } from './impressum/impressum.component';
 import { LoginComponent } from './login/login.component';
 import { PlayComponent } from './play/play.component';
+import { ProfilComponent } from './profil/profil.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthguardService } from './services/authguard.service';
 import { TestComponent } from './test/test.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'builder', component: BuilderComponent, canActivate: [AuthguardService] },
+  { path: 'profil', component: ProfilComponent, canActivate: [AuthguardService] },
 
   { path: '**', component: TestComponent }
 ];

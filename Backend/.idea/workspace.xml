@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="added HTTPHandler and programmed DatabaseHandler">
-      <change beforePath="$PROJECT_DIR$/../Client/src/app/builder/builder.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/src/app/builder/builder.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client/src/app/services/authentification.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/src/app/services/authentification.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Client/src/app/services/dungeon.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Client/src/app/services/dungeon.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendClasses/DatabaseHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendClasses/DatabaseHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendClasses/FullstackDungeon.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendClasses/FullstackDungeon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendClasses/HTTPHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendClasses/HTTPHandler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
