@@ -1,4 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PlayComponent } from './play.component';
 
@@ -8,7 +10,11 @@ describe('PlayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlayComponent ]
+      declarations: [ PlayComponent ],
+      imports: [
+        MatDialogModule,
+        BrowserAnimationsModule
+      ]
     })
     .compileComponents();
   }));
