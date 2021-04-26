@@ -13,3 +13,4 @@ class Dungeon:
         self.dungeonName = dungeonName
         self.dungeonDescription = dungeonDescription
         self.private = private
+
