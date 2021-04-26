@@ -21,6 +21,18 @@
                     <p *ngFor="let file of files4" (click)="download(file,'4. Abgabe')">{{file}}</p>
                     <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files4p" (click)="download(file,'4. Abgabe')">{{file}} <span style="color: red">[private]</span></p></ng-container>
                     <hr>
+                    <h5>5. Abgabe</h5>
+                    <p *ngFor="let file of files5" (click)="download(file,'5. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files5p" (click)="download(file,'5. Abgabe')">{{file}} <span style="color: red">[private]</span></p></ng-container>
+                    <hr>
+                    <h5>6. Abgabe</h5>
+                    <p *ngFor="let file of files6" (click)="download(file,'6. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files6p" (click)="download(file,'6. Abgabe')">{{file}} <span style="color: red">[private]</span></p></ng-container>
+                    <hr>
+                    <h5>7. Abgabe</h5>
+                    <p *ngFor="let file of files7" (click)="download(file,'7. Abgabe')">{{file}}</p>
+                    <ng-container *ngIf="privateDownloads"><p *ngFor="let file of files7p" (click)="download(file,'7. Abgabe')">{{file}} <span style="color: red">[private]</span></p></ng-container>
+                    <hr>
                 </div>
             </div>
         </div>
