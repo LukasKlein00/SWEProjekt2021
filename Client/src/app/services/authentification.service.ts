@@ -24,7 +24,7 @@ export class AuthentificationService {
   }
 
   login(username, password) {
-    return this.http.post<any>(`${this.apiUrl}/users/login`, { username, password })
+    return this.http.post<any>(`${this.apiUrl}/login`, { username, password })
       .pipe(map(user => {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
@@ -42,6 +42,6 @@ export class AuthentificationService {
 
   register(user) {
     user.userID = uuid.v4();
-    return this.http.post(`${this.apiUrl}/users/register`, user);
+    return this.http.post(`${this.apiUrl}/register`, user);
   }
 }
