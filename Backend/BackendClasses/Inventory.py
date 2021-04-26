@@ -1,4 +1,4 @@
-from Backend.BackendClasses.Item import Item
+from BackendClasses.Item import Item
 
 
 class Inventory:
