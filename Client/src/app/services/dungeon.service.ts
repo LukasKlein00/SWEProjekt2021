@@ -60,8 +60,8 @@ export class DungeonService {
     //erstellt Dungeon
     
     let dungeon: Dungeon = {
-      dungeonID: uuid.v4(),
-      dungeonMasterID: JSON.parse(localStorage.getItem('currentUser'))[1],            
+      dungeonID: null,
+      dungeonMasterID: JSON.parse(localStorage.getItem('currentUser')).userID,            
       dungeonName: 'Newdungeon',
       dungeonDescription: 'Newdungeon Description',
       maxPlayers: 10,
