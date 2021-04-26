@@ -1,15 +1,20 @@
 <div class="m-0 row justify-content-center">
     <div class="col-12 row justify-content-center">
         <div class="mapDisplay">
-            <div class="map border">
-                <div *ngFor="let row of rooms" class="rowMap">
-                    <div *ngFor="let room of row" class="room" [ngClass]="{
-                        'activeRoom':room.isActive && !room.isStartRoom,
-                        'startRoom':room.isActive && room.isStartRoom,
-                        'viewedRoom':room.isViewed
-                    }" (click)="selectRoom(room)" (dblclick)="toggleRoom(room)">
-                    </div>
-                </div>
+            <div class="roomMap border">
+                <div *ngFor="let room of rooms" [ngStyle]="{
+                    'grid-column': room.x,
+                    'grid-row': room.y
+                }" class="roomCell"
+                (dblclick)="toggleRoom(room)"
+                (click)="selectRoom(room)"
+                [ngClass]="{
+                    'activeRoom':room.isActive && !room.isStartRoom,
+                    'startRoom':room.isActive && room.isStartRoom,
+                    'viewedRoom':room.isViewed,
+                    'selectedRoom' : room == selectedRoom
+                }"></div>
+
             </div>
         </div>
 
@@ -173,8 +178,7 @@
         <div class="col-10 requests">
             <h3>Requests</h3>
             <div class="row">
-                <div class="border col-4 requestbody" *ngFor="let request of requests; let i = index"
-                    (mouseover)='moveOverRequest(request)' (mouseout)='moveOutRequest(request)'>
+                <div class="border col-4 requestbody" *ngFor="let request of requests; let i = index">
 
                     <nav>
                         <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">

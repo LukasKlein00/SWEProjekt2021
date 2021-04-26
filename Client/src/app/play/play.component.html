@@ -1,13 +1,17 @@
 <div class="container-fluid bg-aqua">
     <div class="row justify-content-center">
         <div class="mapDisplay m-4">
-            <div class="map">
-                <div *ngFor="let row of rooms" class="rowMap">
-                    <div *ngFor="let room of row" class="room" [ngClass]="{
-                        'activeRoom':room.isActive && !room.isStartRoom,
-                        'startRoom':room.isActive && room.isStartRoom}">
-                    </div>
-                </div>
+            <div class="roomMap border">
+                <div *ngFor="let room of rooms" [ngStyle]="{
+                    'grid-column': room.x,
+                    'grid-row': room.y
+                }" class="roomCell"
+                [ngClass]="{
+                    'activeRoom':room.isActive && !room.isStartRoom,
+                    'startRoom':room.isActive && room.isStartRoom,
+                    'viewedRoom':room.isViewed
+                }"></div>
+
             </div>
         </div>
         <div class="chat m-4">
