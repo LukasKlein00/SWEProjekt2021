@@ -1,12 +1,14 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler
 import json
-from User import *
-from Dungeon import *
-from DatabaseHandler import *
-import mysql.connector
+from BackendClasses.DatabaseHandler import *
+from BackendClasses.User import *
+from BackendClasses.Dungeon import *
 
-# Server
-class S(BaseHTTPRequestHandler):
+import mysql
+
+
+
+class HTTPHandler(BaseHTTPRequestHandler):
     mDBHandler = DatabaseHandler(mysql.connector.connect(
         host="193.196.53.67",
         port="1189",
@@ -74,7 +76,7 @@ class S(BaseHTTPRequestHandler):
                                  dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'], private=data['private'],
                                  dungeonMasterID=data['dungeonMasterID'])
             dungeonID = self.mDBHandler.saveOrUpdateDungeon(newDungeon)
-            #noch items und so abspeichern
+            # noch items und so abspeichern
 
         if self.path == '/deleteDungeon':
             self._set_response()
@@ -87,23 +89,4 @@ class S(BaseHTTPRequestHandler):
         if self.path == '/copyDungeon':
             print(data)
             self._set_response()
-            #self.mDBHandler.copyDungeon(data)
-
-
-
-# Startet den Server
-def run(server_class=HTTPServer, handler_class=S):
-    print("Starting HTTP Server...")
-    server_address = ('', 1188)
-    http = server_class(server_address, handler_class)
-    print("Started!")
-    try:
-        http.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    http.server_close()
-
-
-# Main-Methode wird beim Starten der Datei ausgeführt
-if __name__ == '__main__':
-    run()
+            # self.mDBHandler.copyDungeon(data)

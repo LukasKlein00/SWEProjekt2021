@@ -1,8 +1,5 @@
-from Dungeon import *
-from Room import *
-from Character import *
-from Inventory import *
-from Directions import *
+from BackendClasses import Dungeon, Room, Character, Inventory, Directions
+
 
 class FullStackDungeon:
 
