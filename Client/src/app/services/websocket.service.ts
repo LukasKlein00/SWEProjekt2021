@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { WebsocketObject } from 'Testfiles/models für Schnittstellen';
 import { WebsocketBuilder } from 'websocket-ts/lib';
 import { PythonJSON } from '../test/test.component';
@@ -9,8 +10,7 @@ import { PythonJSON } from '../test/test.component';
 export class WebsocketService {
   socket: any;
   status = 'unknown';
-  readonly uri = 'ws://193.196.53.67:1187';
-  //readonly uri = 'ws://localhost:1187'
+  readonly uri = environment.websocketUrl;
 
   constructor() { 
     this.socket = new WebsocketBuilder(this.uri)

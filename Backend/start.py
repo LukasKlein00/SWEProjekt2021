@@ -1,4 +1,5 @@
-import subprocess
+import os
 
 if __name__ == '__main__':
-    subprocess.run("python3 httpStart.py", shell=True)
+    os.system('python3 httpStart.py')
+    os.system('python3 websocketStart.py')

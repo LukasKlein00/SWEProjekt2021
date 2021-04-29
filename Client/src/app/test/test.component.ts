@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { WebsocketBuilder } from 'websocket-ts';
 import { AuthentificationService } from '../services/authentification.service';
 
@@ -15,8 +16,7 @@ selector: 'app-test',
 })
 export class TestComponent implements OnInit {
   socket: any;
-  readonly uri = 'ws://193.196.53.67:1187';
-  //readonly uri = 'ws://localhost:1187';
+  readonly uri = environment.websocketUrl;
   text = '';
   chat = [];
   action = [];
