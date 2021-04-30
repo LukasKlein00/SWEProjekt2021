@@ -40,6 +40,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         post_data_raw = self.rfile.read(content_length)  # <--- Erfasst die Daten
         try:
             data = json.loads(post_data_raw)  # <--Daten als JSON-Objekt
+            print(data)
         except:
             data = None
 

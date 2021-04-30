@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="delete old files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendClasses/HTTPHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendClasses/HTTPHandler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/start.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
