@@ -8,20 +8,20 @@ from DungeonPackage.Inventory import *
 
 class DatabaseHandler:
     '''
-
+    Class for handling Database transactions
     '''
     def __init__(self, databasePath: MySQLConnection):
         '''
-
-        :param databasePath:
+        constructor for DatabaseHandler
+        :param databasePath: path to database
         '''
         self.databasePath = databasePath
 
     def registerUser(self, user: User):
         '''
-
-        :param user:
-        :return:
+        insert user to database after user registration
+        :param user: a user object
+        :return: nothing
         '''
         cursor = self.databasePath.cursor()
         query = """
@@ -41,9 +41,9 @@ class DatabaseHandler:
 
     def loginUser(self, user: User):
         '''
-
-        :param user:
-        :return:
+        checks if user is already in database, when client tries to login
+        :param user: user object
+        :return: returns the user from database if the user is exists in database
         '''
         cursor = self.databasePath.cursor()
         query = """
@@ -152,9 +152,9 @@ class DatabaseHandler:
 
     def deleteUserByID(self, userID):
         '''
-
-        :param userID:
-        :return:
+        deletes a user in database
+        :param userID: id of the user
+        :return: true if transaction is successful
         '''
         cursor = self.databasePath.cursor()
         query = f"""
