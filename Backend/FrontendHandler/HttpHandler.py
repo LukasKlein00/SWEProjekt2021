@@ -44,7 +44,12 @@ class HTTPHandler(BaseHTTPRequestHandler):
             data = None
 
         if self.path == '/confirm':
-            return
+            self._set_response()
+            try:
+                self.AccManager.confirm_registration_token(data['token'])
+            except:
+                print("/confirm received but error")
+                pass
 
         if self.path == '/register':
             self._set_response()
@@ -63,7 +68,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/login':
             self._set_response()
             try:
-                response = self.AccManager.checkLoginCredeantials(Username=data['username'], Password=data['password'])
+                response = self.AccManager.checkLoginCredentials(Username=data['username'], Password=data['password'])
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             except:
                 self._set_response(400)

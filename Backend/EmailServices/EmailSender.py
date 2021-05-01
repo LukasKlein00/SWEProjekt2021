@@ -43,9 +43,9 @@ class EmailSender:
             hostname = socket.gethostname()
 
             if str(socket.gethostbyname(hostname)) != "193.196.54.98":
-                content.replace("{Server}", "localhost:4200")
+                content = content.replace("{Server}", "localhost:4200")
             else:
-                content.replace("{Server}", "193.196.54.98")
+                content = content.replace("{Server}", "193.196.54.98")
 
             self.msg.set_content(content.replace("{UserToken}", self.userID))
             self.msg["Subject"] = contentReader.overwriteName("EmailServices/confirmationEmailTemplates/subject").read()

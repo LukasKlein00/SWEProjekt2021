@@ -66,9 +66,14 @@ class AccountManager:
         if returnedUser:
             response = {
                 'username': returnedUser.userName,
-                'userID': returnedUser.userID
+                'userID': returnedUser.userID,
+                'confirmation': returnedUser.confirmation
             }
-            return response
+
+            if returnedUser.confirmation:
+                return response
+            else:
+                raise ValueError
             # self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
         # else:
         # self._set_response(400)
@@ -99,10 +104,10 @@ class AccountManager:
         self.mDBHandler.deleteUserByID(UserID)
         return True
 
-    def createRegistrationToken(self, UserID: str) -> str:
+    def confirm_registration_token(self, UserID: str):
         '''
 
         :param UserID:
         :return:
         '''
-        return
+        self.mDBHandler.change_registration_status(userID=UserID)
