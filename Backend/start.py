@@ -5,8 +5,6 @@ from http.server import HTTPServer
 from FrontendHandler.HttpHandler import HTTPHandler
 from threading import Thread
 
-#test
-
 def startHTTP():
     print("Starting HTTPServer...\n")
     serverAddress = ('', 1188)
