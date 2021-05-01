@@ -1,19 +1,18 @@
-from http.server import BaseHTTPRequestHandler
 import json
+from http.server import BaseHTTPRequestHandler
+
+import mysql
+
+from BackendServices.AccountManager import AccountManager
 from DatabaseHandler.DatabaseHandler import *
 from DatabaseHandler.User import *
-from DungeonPackage.DungeonData import *
 from DungeonPackage.ActiveDungeon import *
-import mysql
 
 
 class HTTPHandler(BaseHTTPRequestHandler):
-    mDBHandler = DatabaseHandler(mysql.connector.connect(
-        host="193.196.53.67",
-        port="1189",
-        user="jack",
-        password="123123"
-    ))
+
+
+    AccManager = AccountManager()
 
     # übermittelt Einstellungen "Headers" des Requests
     def _set_response(self, code: int = 200):
@@ -45,22 +44,17 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/register':
             self._set_response()
-            newUser = User(userID=data['userID'], firstName=data['firstName'], lastName=data['lastName'],
-                           eMail=data['email'], userName=data['username'], password=data['password'],
-                           confirmation=False)
-            self.mDBHandler.registerUser(newUser)
+
+            self.AccManager.registerUser(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
+                                    Username=data['username'], Email=data['email'], Password=data['password'],
+                                    IsConfirmed=False)
 
             # Antwort senden? self.wfile.write(json.dumps("moin").encode(encoding='utf_8'))
 
         if self.path == '/login':
             self._set_response()
-            newUser = User(userName=data['username'], password=data['password'])
-            returnedUser = self.mDBHandler.loginUser(newUser)
-            if returnedUser:
-                response = {
-                    'username': returnedUser.userName,
-                    'userID': returnedUser.userID
-                }
+            response = self.AccManager.checkLoginCredeantials(Username=data['username'], Password=data['password'])
+            if response:
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             else:
                 self._set_response(400)
@@ -73,8 +67,9 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/saveDungeon':
             self._set_response()
             newDungeon = DungeonData(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
-                                 dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'], private=data['private'],
-                                 dungeonMasterID=data['dungeonMasterID'])
+                                     dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'],
+                                     private=data['private'],
+                                     dungeonMasterID=data['dungeonMasterID'])
             dungeonID = self.mDBHandler.saveOrUpdateDungeon(newDungeon)
             # noch items und so abspeichern
 

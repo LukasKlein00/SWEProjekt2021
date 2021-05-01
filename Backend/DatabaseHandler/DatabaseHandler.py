@@ -1,6 +1,6 @@
 from mysql.connector import MySQLConnection
 
-from DatabaseHandler.User import *
+from DatabaseHandler.User import User
 from DungeonPackage.ActiveDungeon import *
 from DungeonPackage.Character import   *
 from DungeonPackage.Inventory import *
@@ -38,8 +38,12 @@ class DatabaseHandler:
         cursor.execute(query, variables)
         try:
             queryData = cursor.fetchone()
-            return User(userID=queryData[1], userName=queryData[0])
-        except:
+            print(queryData[0])
+            tempuser = User(userID=queryData[1], userName=queryData[0])
+            print(tempuser)
+            return tempuser
+        except IOError:
+            print("failed")
             return None
 
     def getFullDungeonByDungeonID(self, dungeonID):
