@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="delete old files">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackendClasses/HTTPHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendClasses/HTTPHandler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.py" beforeDir="false" afterPath="$PROJECT_DIR$/start.py" afterDir="false" />
-    </list>
+    <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="changes from 2 processes to 2 threads :)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -164,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619703511162</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="changes from 2 processes to 2 threads :)">
+      <created>1619796476950</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1619796476950</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -195,6 +198,7 @@
     <MESSAGE value="added HTTPHandler and programmed DatabaseHandler" />
     <MESSAGE value="changed StartUp Process" />
     <MESSAGE value="delete old files" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete old files" />
+    <MESSAGE value="changes from 2 processes to 2 threads :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes from 2 processes to 2 threads :)" />
   </component>
 </project>
