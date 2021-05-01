@@ -36,21 +36,25 @@ class HTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])  # <--- Größe der Daten
         post_data_raw = self.rfile.read(content_length)  # <--- Erfasst die Daten
+        print(self.path)
         try:
             data = json.loads(post_data_raw)  # <--Daten als JSON-Objekt
             print(data)
         except:
             data = None
 
+        if self.path == '/confirm':
+            return
+
         if self.path == '/register':
             self._set_response()
-
+            print(self.path)
             try:
                 self.AccManager.registerUser(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
                                     Username=data['username'], Email=data['email'], Password=data['password'],
                                     IsConfirmed=False)
 
-                self.AccManager.send_registration_email(data['email'])
+                self.AccManager.send_registration_email(data['email'], data['userID'])
             except:
                 pass
 

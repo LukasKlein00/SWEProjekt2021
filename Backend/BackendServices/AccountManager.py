@@ -45,15 +45,14 @@ class AccountManager:
         else:
             return False
 
-    def send_registration_email(self, email: str):
+    def send_registration_email(self, email: str, userID: str):
         '''
         :param UserID: id of user
         :return:
         '''
         print(email)
-        email_sender = EmailSender(userEmail=email)
+        email_sender = EmailSender(userEmail=email, userID=userID)
         email_sender.sendEmail(messageType.registration)
-
 
     def checkLoginCredentials(self, Username: str, Password: str):
         '''
