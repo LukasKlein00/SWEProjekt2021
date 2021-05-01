@@ -95,6 +95,10 @@ export class DungeonService {
     return {
       x: x,
       y: y,
+      north: true,
+      east: true,
+      south: true,
+      west: true,
     }
   }
 }

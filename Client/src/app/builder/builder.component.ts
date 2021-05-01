@@ -230,10 +230,6 @@ export class BuilderComponent implements OnInit {
       delete r.description;
       delete r.isStartRoom;
       delete r.name;
-      delete r.north;
-      delete r.east;
-      delete r.south;
-      delete r.west;
       delete r.item;
       delete r.npc;
     } else {

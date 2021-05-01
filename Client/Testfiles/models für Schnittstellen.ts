@@ -1,6 +1,6 @@
 export class Dungeon {
-    dungeonName: string;
-    dungeonDescription: string;
+    dungeonName?: string;
+    dungeonDescription?: string;
     dungeonID?: string;
     maxPlayers?: number;
     currentPlayers?: number;

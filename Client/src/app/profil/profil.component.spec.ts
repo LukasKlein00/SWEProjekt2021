@@ -1,4 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { ProfilComponent } from './profil.component';
 
@@ -8,7 +12,14 @@ describe('ProfilComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProfilComponent ]
+      declarations: [ ProfilComponent ],
+      imports: [
+        RouterTestingModule,
+        HttpClientTestingModule,
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ],
     })
     .compileComponents();
   }));
@@ -22,4 +33,15 @@ describe('ProfilComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call deleteUser() if Delete-Button clicked', async(() => {
+    spyOn(component, 'deleteUser');
+  
+    let button = fixture.debugElement.query(By.css('.btn-danger'));
+    button.triggerEventHandler('click', null);
+  
+    fixture.whenStable().then(() => {
+      expect(component.deleteUser).toHaveBeenCalled();
+    });
+  }));
 });

@@ -1,4 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +15,9 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       imports: [BrowserModule, ReactiveFormsModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
       declarations: [ LoginComponent ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ],
     })
     .compileComponents();
   }));

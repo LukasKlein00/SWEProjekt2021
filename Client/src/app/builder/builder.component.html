@@ -50,7 +50,7 @@
                         Description: <textarea class="w-100"
                             [(ngModel)]="dungeon.dungeonDescription"></textarea><br><br>
                         MaxPlayer: <ng-select [(ngModel)]="dungeon.maxPlayers" [clearable]="false">
-                            <ng-option *ngFor="let maxP of maxPlayerOptions">{{maxP}}</ng-option>
+                            <ng-option [value]="maxP" *ngFor="let maxP of maxPlayerOptions">{{maxP}}</ng-option>
                         </ng-select>
 
                         <button (click)="increaseDungeon()">increase Map</button>
@@ -80,10 +80,10 @@
                                     (change)="selectedRoom.isStartRoom = !selectedRoom.isStartRoom" /></div>
                         </div><br>
                         Items: <ng-select [(ngModel)]="selectedRoom.item">
-                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
+                            <ng-option [value]="item" *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         NPC: <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
-                            <ng-option *ngFor="let npc of dungeon.npcs">{{npc.name}}</ng-option>
+                            <ng-option [value]="npc" *ngFor="let npc of dungeon.npcs">{{npc.name}}</ng-option>
                         </ng-select>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                         ClassDescription: <textarea class="w-100"
                             [(ngModel)]="selectedClass.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedClass.equipment">
-                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
+                            <ng-option [value]="item" *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         <button (click)="addClass()">submit Class</button><br><br>
                         <div class="row m-0">
@@ -151,7 +151,7 @@
                         NpcDescription: <textarea class="w-100"
                             [(ngModel)]="selectedNpc.description"></textarea><br><br>
                         equipment: <ng-select [(ngModel)]="selectedNpc.equipment">
-                            <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
+                            <ng-option [value]="item" *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                         </ng-select><br>
                         <button (click)="addNpc()">submit Npc</button><br>
                     </div>
@@ -218,7 +218,7 @@
                             aria-labelledby="nav-inventory-tab">
                             <div>
                                 Equipment: <ng-select [(ngModel)]="request.requester.equipment.name">
-                                    <ng-option *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
+                                    <ng-option [value]="item" *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
                                 </ng-select>
                             </div><br>
                             <div>

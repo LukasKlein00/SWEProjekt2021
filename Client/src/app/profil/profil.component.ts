@@ -17,7 +17,12 @@ export class ProfilComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.user = this.authentificationService.currentUserValue
+    if (this.authentificationService.currentUserValue) {
+      this.user = this.authentificationService.currentUserValue
+    } else {
+      this.user = "unknown"
+    }
+    
   }
 
   deleteUser(){
