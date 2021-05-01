@@ -53,10 +53,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/login':
             self._set_response()
-            response = self.AccManager.checkLoginCredeantials(Username=data['username'], Password=data['password'])
-            if response:
+            try:
+                response = self.AccManager.checkLoginCredeantials(Username=data['username'], Password=data['password'])
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
-            else:
+            except:
                 self._set_response(400)
 
         if self.path == '/getMyDungeons':
