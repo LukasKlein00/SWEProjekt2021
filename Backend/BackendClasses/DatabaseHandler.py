@@ -4,7 +4,7 @@ from Backend.BackendClasses.Character import *
 from Backend.BackendClasses.User import *
 from Backend.BackendClasses.Dungeon import *
 from Backend.BackendClasses.Inventory import *
-from Backend.BackendClasses.FullstackDungeon import *
+from Backend.BackendClasses.FullStackDungeon import *
 
 
 class DatabaseHandler:
