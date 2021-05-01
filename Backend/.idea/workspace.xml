@@ -2,27 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../.idea/MUDCake.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend-Services/AccountManager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Backend-Services/DungeonManager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/Action.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/ActionType.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/ActiveDungeonHandler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/Direction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/FrontendCommands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/Message.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonDirector/MessageType.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonPackage/AccessList.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonPackage/DungeonData.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonPackage/DungeonPackageMain.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DungeonPackage/Npc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FrontendHandler/WebsocketHandler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JSONSerializer/JSONSerializer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Backend-Services/DungeonManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Backend-Services/DungeonManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Legacy/OLD____BackendClasses/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseHandler/User.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +43,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Programming\MUDCake\Backend\DatabaseHandler" />
+      <recent name="D:\Programming\MUDCake\Backend\Legacy" />
+      <recent name="D:\Programming\MUDCake\Backend\DungeonPackage" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.start">
     <configuration name="httpStart" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -194,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619860703272</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Setup for Backend Development">
+      <created>1619861640598</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1619861640598</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -226,17 +224,18 @@
     <MESSAGE value="changed StartUp Process" />
     <MESSAGE value="delete old files" />
     <MESSAGE value="Fixed Imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Imports" />
+    <MESSAGE value="Setup for Backend Development" />
+    <option name="LAST_COMMIT_MESSAGE" value="Setup for Backend Development" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="297" y="0" key="CommitChangelistDialog2" timestamp="1619860701773">
+    <state x="256" y="0" key="CommitChangelistDialog2" timestamp="1619861637896">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="297" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1619860701773" />
-    <state x="233" y="62" key="Vcs.Push.Dialog.v2" timestamp="1619860704907">
+    <state x="256" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1619861637896" />
+    <state x="233" y="62" key="Vcs.Push.Dialog.v2" timestamp="1619861651910">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="233" y="62" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1619860704907" />
+    <state x="233" y="62" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1619861651910" />
     <state x="450" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619860714448">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
