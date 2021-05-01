@@ -23,6 +23,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CreateCharacterComponent } from './create-character/create-character.component';
 import { JoinToastComponent } from './join-toast/join-toast.component';
 import { ProfilComponent } from './profil/profil.component';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ProfilComponent } from './profil/profil.component';
     CreateCharacterComponent,
     JoinToastComponent,
     ProfilComponent,
+    ConfirmComponent,
   ],
   imports: [
     BrowserModule,
