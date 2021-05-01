@@ -44,4 +44,8 @@ export class AuthentificationService {
     user.userID = uuid.v4();
     return this.http.post(`${this.apiUrl}/register`, user);
   }
+
+  confirm(token) {
+    return this.http.post(`${this.apiUrl}/confirm`, token);
+  }
 }
