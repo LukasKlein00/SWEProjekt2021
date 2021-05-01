@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DungeonPackage/DungeonData.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/DungeonData.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,7 +197,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619862958299</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Refactored ActiveDungeon.py and DungeonData.py">
+      <created>1619863612351</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1619863612351</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -231,17 +238,18 @@
     <MESSAGE value="Fixed Imports" />
     <MESSAGE value="Setup for Backend Development" />
     <MESSAGE value="Refactored old DatabaseHandler.py and modified AcitveDungeon" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored old DatabaseHandler.py and modified AcitveDungeon" />
+    <MESSAGE value="Refactored ActiveDungeon.py and DungeonData.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored ActiveDungeon.py and DungeonData.py" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="256" y="0" key="CommitChangelistDialog2" timestamp="1619862956528">
+    <state x="256" y="0" key="CommitChangelistDialog2" timestamp="1619863610319">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="256" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1619862956528" />
-    <state x="233" y="62" key="Vcs.Push.Dialog.v2" timestamp="1619862965704">
+    <state x="256" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1619863610319" />
+    <state x="233" y="62" key="Vcs.Push.Dialog.v2" timestamp="1619863615217">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state x="233" y="62" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1619862965704" />
+    <state x="233" y="62" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1619863615217" />
     <state x="450" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619860714448">
       <screen x="0" y="0" width="1280" height="680" />
     </state>

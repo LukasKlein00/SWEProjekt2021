@@ -2,6 +2,8 @@ from mysql.connector import MySQLConnection
 
 from DatabaseHandler.User import *
 from DungeonPackage.ActiveDungeon import *
+from DungeonPackage.Character import   *
+from DungeonPackage.Inventory import *
 
 
 class DatabaseHandler:
@@ -65,19 +67,19 @@ class DatabaseHandler:
             Private  = VALUES(Private)
                    """
         variables = (
-            dungeon.GetdDungeonID, dungeon.GetDungeonName, dungeon.GetDungeonDescription, dungeon.GetMaxPlayers,
-            dungeon.GetDungeonMasterID, dungeon.GetPrivate
+            dungeon.dungeonData.dungeonId, dungeon.dungeonData.name, dungeon.dungeonData.description,
+            dungeon.dungeonData.maxPlayers, dungeon.dungeonData.dungeonMasterID, dungeon.dungeonData.private
         )
         try:
             cursor.execute(query, variables)
-            d.dungeonID = cursor.lastrowid
+            dungeon.dungeonData.dungeonID = cursor.lastrowid
             self.databasePath.commit()
-            return d.dungeonID
+            return dungeon.dungeonData.dungeonID
 
         except IOError:
             pass
 
-    def getEverything(self, fullstackDungeon: FullStackDungeon):
+    def getEverything(self, dungeon: ActiveDungeon):
         raise NotImplementedError
 
     def getUserByID(self, userID: int):
@@ -113,7 +115,7 @@ class DatabaseHandler:
     def userAlreadyInDungeon(self, characterID: int):
         raise NotImplementedError
 
-    def writeGamestateToDatabase(self, dungeon: FullStackDungeon):
+    def writeGamestateToDatabase(self, dungeon: ActiveDungeon):
         raise NotImplementedError
 
     def writeCharacterToDatabase(self, character: Character):
