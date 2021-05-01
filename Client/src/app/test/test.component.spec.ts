@@ -1,5 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 
 import { TestComponent } from './test.component';
@@ -10,8 +12,14 @@ describe('TestComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [ TestComponent ]
+      imports: [
+        HttpClientTestingModule,
+        FormsModule,
+      ],
+      declarations: [ TestComponent ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ],
     })
     .compileComponents();
   }));
