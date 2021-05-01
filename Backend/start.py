@@ -1,8 +1,8 @@
-from BackendClasses.WebSocketHandler import *
+from FrontendHandler.WebsocketHandler import WebSocketHandler
 import websockets
 import asyncio
 from http.server import HTTPServer
-from BackendClasses.HTTPHandler import HTTPHandler
+from FrontendHandler.HttpHandler import HTTPHandler
 from threading import Thread
 
 def startHTTP():
@@ -18,9 +18,10 @@ def startHTTP():
 
 
 def startWS():
+    ws = WebSocketHandler
     loop = asyncio.new_event_loop()
     print('Starting WebsocketServer... \n')
-    start_server = websockets.serve(WebSocketHandler, '', 1187, loop=loop)
+    start_server = websockets.serve(ws.handle, '', 1187, loop=loop)
     print('WebsocketServer is running!')
     loop.run_until_complete(start_server)
     loop.run_forever()

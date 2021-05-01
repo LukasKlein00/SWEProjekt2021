@@ -1,4 +1,4 @@
-from BackendClasses import Item
+from DungeonPackage.Item import *
 
 
 class Inventory:
