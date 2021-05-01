@@ -138,6 +138,7 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
     this.dungeon = this.DungeonService.createNewDungeon(this.dungeonSize);
     this.rooms = this.dungeon.rooms;
     if (id) {
