@@ -11,7 +11,7 @@
         </ng-select><br>
         Choose your Class
         <ng-select [(ngModel)]="player.class" [clearable]="false">
-            <ng-option *ngFor="let class of World.classes" [value]="class">{{class.name}}</ng-option>
+            <ng-option [value]="class" *ngFor="let class of World.classes" [value]="class">{{class.name}}</ng-option>
         </ng-select><br><br>
         <button mat-button  [mat-dialog-close]="player" [disabled]="formisinvalid" cdkFocusInitial>Ok</button>
     </div>

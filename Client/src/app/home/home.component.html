@@ -3,7 +3,7 @@
         <div class="col-8 row">
             <div class="col-12 row">
                 <h3>Available MUDs</h3><ng-select style="margin-left: 20px; min-width: 100px;" [(ngModel)]="selectedFilter" [clearable]="false"> 
-                    <ng-option *ngFor="let filter of filters">{{filter}}</ng-option>
+                    <ng-option [value]="filter" *ngFor="let filter of filters">{{filter}}</ng-option>
                 </ng-select>
             </div>
             <div *ngFor="let dungeon of availableMUDs" class="border border-dark p-3 col-4 mudCard">
