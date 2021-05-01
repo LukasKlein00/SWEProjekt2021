@@ -7,10 +7,22 @@ from DungeonPackage.Inventory import *
 
 
 class DatabaseHandler:
+    '''
+
+    '''
     def __init__(self, databasePath: MySQLConnection):
+        '''
+
+        :param databasePath:
+        '''
         self.databasePath = databasePath
 
     def registerUser(self, user: User):
+        '''
+
+        :param user:
+        :return:
+        '''
         cursor = self.databasePath.cursor()
         query = """
             INSERT INTO mudcake.User
@@ -28,6 +40,11 @@ class DatabaseHandler:
             pass
 
     def loginUser(self, user: User):
+        '''
+
+        :param user:
+        :return:
+        '''
         cursor = self.databasePath.cursor()
         query = """
             SELECT UserName, UserID
@@ -38,12 +55,9 @@ class DatabaseHandler:
         cursor.execute(query, variables)
         try:
             queryData = cursor.fetchone()
-            print(queryData[0])
             tempuser = User(userID=queryData[1], userName=queryData[0])
-            print(tempuser)
             return tempuser
         except IOError:
-            print("failed")
             return None
 
     def getFullDungeonByDungeonID(self, dungeonID):
@@ -126,6 +140,7 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def deleteDungeonByID(self, dungeonID):
+
         cursor = self.databasePath.cursor()
         query = f"""
                             DELETE
@@ -136,12 +151,21 @@ class DatabaseHandler:
         self.databasePath.commit()
 
     def deleteUserByID(self, userID):
+        '''
+
+        :param userID:
+        :return:
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                             DELETE
                             From mudcake.User
                             WHERE (UserID = '{userID}' )
                             """
-        cursor.execute(query)
-        self.databasePath.commit()
-        print("deleted")
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+            return True
+        except:
+            return False
+

@@ -19,13 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="Refactored ActiveDungeon.py and DungeonData.py">
-      <change afterPath="$PROJECT_DIR$/../.idea/SWEProjekt2021.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BackendServices/AccountManager.py" afterDir="false" />
+    <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="Implemented Login and Register for AccountManager.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend-Services/AccountManager.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Backend-Services/DungeonManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendServices/DungeonManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendServices/AccountManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendServices/AccountManager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" afterDir="false" />
     </list>
@@ -234,7 +230,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619867537972</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Implemented Login and Register for AccountManager.py">
+      <created>1619877547317</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1619877547317</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -269,34 +272,39 @@
     <MESSAGE value="Setup for Backend Development" />
     <MESSAGE value="Refactored old DatabaseHandler.py and modified AcitveDungeon" />
     <MESSAGE value="Refactored ActiveDungeon.py and DungeonData.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored ActiveDungeon.py and DungeonData.py" />
+    <MESSAGE value="Implemented Login and Register for AccountManager.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Login and Register for AccountManager.py" />
   </component>
   <component name="WindowStateProjectService">
     <state x="256" y="0" key="CommitChangelistDialog2" timestamp="1619863610319">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="256" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1619863610319" />
-    <state width="2124" height="363" key="GridCell.Tab.0.bottom" timestamp="1619877264121">
+    <state width="2124" height="363" key="GridCell.Tab.0.bottom" timestamp="1619879044388">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2124" height="363" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619877264121" />
-    <state width="2124" height="363" key="GridCell.Tab.0.center" timestamp="1619877264121">
+    <state width="2124" height="363" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619879044388" />
+    <state width="1588" height="363" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@2560.364.1920.1040" timestamp="1619878472331" />
+    <state width="2124" height="363" key="GridCell.Tab.0.center" timestamp="1619879044388">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2124" height="363" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619877264121" />
-    <state width="2124" height="363" key="GridCell.Tab.0.left" timestamp="1619877264121">
+    <state width="2124" height="363" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619879044388" />
+    <state width="1588" height="363" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@2560.364.1920.1040" timestamp="1619878472331" />
+    <state width="2124" height="363" key="GridCell.Tab.0.left" timestamp="1619879044388">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2124" height="363" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619877264121" />
-    <state width="2124" height="363" key="GridCell.Tab.0.right" timestamp="1619877264121">
+    <state width="2124" height="363" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619879044388" />
+    <state width="1588" height="363" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@2560.364.1920.1040" timestamp="1619878472331" />
+    <state width="2124" height="363" key="GridCell.Tab.0.right" timestamp="1619879044388">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2124" height="363" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619877264121" />
-    <state x="466" y="128" key="Vcs.Push.Dialog.v2" timestamp="1619870971227">
+    <state width="2124" height="363" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619879044388" />
+    <state width="1588" height="363" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@2560.364.1920.1040" timestamp="1619878472331" />
+    <state x="466" y="128" key="Vcs.Push.Dialog.v2" timestamp="1619877554260">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="233" y="62" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1619863615217" />
-    <state x="466" y="128" key="Vcs.Push.Dialog.v2/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619870971227" />
+    <state x="466" y="128" key="Vcs.Push.Dialog.v2/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619877554260" />
     <state x="900" y="529" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619867823153">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>

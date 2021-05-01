@@ -79,7 +79,9 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/deleteUser':
             self._set_response()
-            self.mDBHandler.deleteUserByID(data)
+            deletetransaction = self.AccManager.deleteUser(UserID=data)
+            if not deletetransaction:
+                self._set_response(400)
 
         if self.path == '/copyDungeon':
             print(data)
