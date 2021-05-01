@@ -1,5 +1,5 @@
 class Character:
-    def __init__(self, characterID: int, classID: int, raceID: int, discoveredMap: [int], userID: str, name: str,
+    def __init__(self, characterID: str, classID: int, raceID: int, discoveredMap: [int], userID: str, name: str,
                  description: str, health: int):
         self.characterID = characterID
         self.classID = classID

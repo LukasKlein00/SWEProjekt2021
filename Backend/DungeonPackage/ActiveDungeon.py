@@ -18,20 +18,20 @@ class ActiveDungeon:
         self.classes = classes
         self.dungeonData = dungeonData
 
-    def addItem(self):
-        raise NotImplementedError
+    def addItem(self, item: Item):
+        self.items.append(item)
 
-    def addRace(self):
-        raise NotImplementedError
+    def addRace(self, race: Race):
+        self.races.append(race)
 
-    def isDungeonMasterInGame(self):
-        raise NotImplementedError
+    def isDungeonMasterInGame(self) -> bool:
+        return self.userIDs.contains(self.dungeonData.dungeonMasterID)
 
-    def addRoom(self):
-        raise NotImplementedError
+    def addRoom(self, room: Room):
+        self.rooms.append(room)
 
-    def addClass(self):
-        raise NotImplementedError
+    def addClass(self, dClass: Class):
+        self.classes.append(dClass)
 
     def loadData(self):
         raise NotImplementedError
