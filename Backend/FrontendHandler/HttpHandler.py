@@ -59,7 +59,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/login':
             self._set_response()
             try:
-                response = self.AccManager.checkLoginCredeantials(Username=data['username'], Password=data['password'])
+                response = self.AccManager.checkLoginCredentials(Username=data['username'], Password=data['password'])
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             except:
                 self._set_response(400)

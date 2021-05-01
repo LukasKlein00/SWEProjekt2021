@@ -1,17 +1,18 @@
 class Room:
 
-    def __init__(self, coordinates: [int, int], roomID: str, dungeonID: int, roomDescription: str, roomName: str,
-                 isStartRoom: bool, north: bool = True, south: bool = True, west: bool = True, east: bool = True,
-                 userIDs: [int] = None, npcID: int = None, itemID: int = None):
-        self.userIDs = userIDs
-        self.coordinates = coordinates
-        self.roomID = roomID
-        self.dungeonID = dungeonID
-        self.npcID = npcID
-        self.itemID = itemID
-        self.roomDescription = roomDescription
-        self.roomName = roomName
-        self.isStartRoom = isStartRoom
+    def __init__(self, coordinate_x: int, coordinate_y: int, room_id: str, dungeon_id: int, room_description: str, room_name: str,
+                 is_start_room: bool, north: bool = True, south: bool = True, west: bool = True, east: bool = True,
+                 user_ids: [int] = None, npc_id: int = None, item_id: int = None):
+        self.user_ids = user_ids
+        self.coordinate_x = coordinate_x
+        self.coordinate_y = coordinate_y
+        self.room_id = room_id
+        self.dungeon_id = dungeon_id
+        self.npc_id = npc_id
+        self.item_id = item_id
+        self.room_description = room_description
+        self.room_name = room_name
+        self.is_start_room = is_start_room
         self.north = north
         self.south = south
         self.west = west

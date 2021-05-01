@@ -20,37 +20,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="Refactored ActiveDungeon.py and DatabaseHandler.py">
-      <change beforePath="$PROJECT_DIR$/BackendServices/AccountManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendServices/AccountManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EmailServices/EmailSender.py" beforeDir="false" afterPath="$PROJECT_DIR$/EmailServices/EmailSender.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackendServices/DungeonManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendServices/DungeonManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/Room.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/Room.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="main" />
+        <entry key="$PROJECT_DIR$/.." value="safeDungeon" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
   </component>
   <component name="ProjectId" id="1rhYMMJ5SWkBveJxkeVexw1T3tG" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -61,38 +47,9 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Programming\MUDCake\Backend\DatabaseHandler" />
-      <recent name="D:\Programming\MUDCake\Backend\Legacy" />
-      <recent name="D:\Programming\MUDCake\Backend\DungeonPackage" />
-    </key>
-  </component>
   <component name="RunManager" selected="Python.start">
-    <configuration name="httpStart" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Backend" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/httpStart.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -135,32 +92,9 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="websocketStart" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Backend" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/websocketStart.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.start" />
-        <item itemvalue="Python.httpStart" />
-        <item itemvalue="Python.websocketStart" />
         <item itemvalue="Python.init" />
       </list>
     </recent_temporary>
@@ -184,70 +118,7 @@
       <option name="project" value="LOCAL" />
       <updated>1619441403496</updated>
     </task>
-    <task id="LOCAL-00002" summary="changed StartUp Process">
-      <created>1619701236783</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1619701236783</updated>
-    </task>
-    <task id="LOCAL-00003" summary="delete old files">
-      <created>1619703511162</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1619703511162</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Fixed Imports">
-      <created>1619860703272</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1619860703272</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Setup for Backend Development">
-      <created>1619861640598</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1619861640598</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Refactored old DatabaseHandler.py and modified AcitveDungeon">
-      <created>1619862958299</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1619862958299</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Refactored ActiveDungeon.py and DungeonData.py">
-      <created>1619863612351</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1619863612351</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Refactored ActiveDungeon.py and DungeonData.py">
-      <created>1619867537972</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1619867537972</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Implemented Login and Register for AccountManager.py">
-      <created>1619877547317</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1619877547317</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Implemented method for deleting Users">
-      <created>1619879386792</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1619879386793</updated>
-    </task>
-    <option name="localTasksCounter" value="11" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -255,19 +126,7 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="main" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -276,54 +135,24 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added HTTPHandler and programmed DatabaseHandler" />
-    <MESSAGE value="changed StartUp Process" />
-    <MESSAGE value="delete old files" />
-    <MESSAGE value="Fixed Imports" />
-    <MESSAGE value="Setup for Backend Development" />
-    <MESSAGE value="Refactored old DatabaseHandler.py and modified AcitveDungeon" />
-    <MESSAGE value="Refactored ActiveDungeon.py and DungeonData.py" />
-    <MESSAGE value="Implemented Login and Register for AccountManager.py" />
-    <MESSAGE value="Implemented method for deleting Users" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implemented method for deleting Users" />
+    <option name="LAST_COMMIT_MESSAGE" value="added HTTPHandler and programmed DatabaseHandler" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="256" y="0" key="CommitChangelistDialog2" timestamp="1619887228156">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="256" y="0" key="CommitChangelistDialog2/0.0.1280.680@0.0.1280.680" timestamp="1619887228156" />
-    <state width="2539" height="362" key="GridCell.Tab.0.bottom" timestamp="1619892893612">
+    <state width="2539" height="362" key="GridCell.Tab.0.bottom" timestamp="1619896421225">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="631" height="156" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1619884245540" />
-    <state width="2539" height="362" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619892893612" />
-    <state width="2539" height="362" key="GridCell.Tab.0.center" timestamp="1619892893612">
+    <state width="2539" height="362" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421225" />
+    <state width="2539" height="362" key="GridCell.Tab.0.center" timestamp="1619896421224">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="631" height="156" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1619884245540" />
-    <state width="2539" height="362" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619892893612" />
-    <state width="2539" height="362" key="GridCell.Tab.0.left" timestamp="1619892893612">
+    <state width="2539" height="362" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421224" />
+    <state width="2539" height="362" key="GridCell.Tab.0.left" timestamp="1619896421224">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="631" height="156" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1619884245540" />
-    <state width="2539" height="362" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619892893612" />
-    <state width="2539" height="362" key="GridCell.Tab.0.right" timestamp="1619892893612">
+    <state width="2539" height="362" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421224" />
+    <state width="2539" height="362" key="GridCell.Tab.0.right" timestamp="1619896421224">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="631" height="156" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1619884245540" />
-    <state width="2539" height="362" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619892893612" />
-    <state x="466" y="128" key="Vcs.Push.Dialog.v2" timestamp="1619870971227">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state x="233" y="62" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1619863615217" />
-    <state x="466" y="128" key="Vcs.Push.Dialog.v2/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619870971227" />
-    <state x="450" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619887230443">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="450" y="257" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680@0.0.1280.680" timestamp="1619887230443" />
-    <state x="900" y="529" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619867823153" />
-    <state x="424" y="53" key="git4idea.branch.GitSmartOperationDialog" timestamp="1619887212494">
-      <screen x="0" y="0" width="1280" height="680" />
-    </state>
-    <state x="424" y="53" key="git4idea.branch.GitSmartOperationDialog/0.0.1280.680@0.0.1280.680" timestamp="1619887212494" />
+    <state width="2539" height="362" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421224" />
   </component>
 </project>
