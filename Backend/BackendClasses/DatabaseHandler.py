@@ -1,9 +1,10 @@
 from mysql.connector import MySQLConnection
 
-from BackendClasses.DatabaseHandler import *
-from BackendClasses.User import *
-from BackendClasses.Dungeon import *
-from BackendClasses.FullStackDungeon import *
+from Backend.BackendClasses.Character import *
+from Backend.BackendClasses.User import *
+from Backend.BackendClasses.Dungeon import *
+from Backend.BackendClasses.Inventory import *
+from Backend.BackendClasses.FullstackDungeon import *
 
 
 class DatabaseHandler:

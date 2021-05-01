@@ -1,5 +1,8 @@
-from BackendClasses import Dungeon, Room, Character, Inventory, Directions
-
+from Backend.BackendClasses.Dungeon import *
+from Backend.BackendClasses.Room import *
+from Backend.BackendClasses.Character import *
+from Backend.BackendClasses.Inventory import *
+from Backend.BackendClasses.Directions import *
 
 class FullStackDungeon:
 
