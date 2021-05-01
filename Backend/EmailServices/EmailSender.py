@@ -1,8 +1,8 @@
 import smtplib
 import ssl
 from email.message import EmailMessage
-from Backend.EmailServices.messageType import messageType
-from Backend.EmailServices.fileReader import fileReader
+from EmailServices.messageType import messageType
+from EmailServices.fileReader import fileReader
 
 
 class EmailSender:
@@ -33,17 +33,17 @@ class EmailSender:
         :param mType: type of message to be send - MessageType
         """
         if mType == messageType.registration:
-            contentReader = fileReader("confirmationEmailTemplates/content")
+            contentReader = fileReader("EmailServices/confirmationEmailTemplates/content")
             self.msg.set_content(contentReader.read())
-            self.msg["Subject"] = contentReader.overwriteName("confirmationEmailTemplates/subject").read()
+            self.msg["Subject"] = contentReader.overwriteName("EmailServices/confirmationEmailTemplates/subject").read()
             self.msg["From"] = self.email
             self.msg["To"] = self.userEmail
             self.__sendViaServerContext(self.msg)
 
         if mType == messageType.resetPassword:
-            contentReader = fileReader("resetPasswordEmailTemplates/content")
+            contentReader = fileReader("EmailServices/resetPasswordEmailTemplates/content")
             self.msg.set_content(contentReader.read())
-            self.msg["Subject"] = contentReader.overwriteName("resetPasswordEmailTemplates/subject").read()
+            self.msg["Subject"] = contentReader.overwriteName("EmailServices/resetPasswordEmailTemplates/subject").read()
             self.msg["From"] = self.email
             self.msg["To"] = self.userEmail
             self.__sendViaServerContext(self.msg)

@@ -45,9 +45,14 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/register':
             self._set_response()
 
-            self.AccManager.registerUser(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
+            try:
+                self.AccManager.registerUser(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
                                     Username=data['username'], Email=data['email'], Password=data['password'],
                                     IsConfirmed=False)
+
+                self.AccManager.send_registration_email(data['email'])
+            except:
+                pass
 
             # Antwort senden? self.wfile.write(json.dumps("moin").encode(encoding='utf_8'))
 
