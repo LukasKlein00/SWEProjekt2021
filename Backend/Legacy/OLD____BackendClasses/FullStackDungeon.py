@@ -1,7 +1,7 @@
 from BackendClasses.Dungeon import *
-from BackendClasses.Room import *
-from BackendClasses.Character import *
-from BackendClasses.Inventory import *
+from DungeonPackage.Room import *
+from DungeonPackage.Character import *
+from DungeonPackage.Inventory import *
 from BackendClasses.Directions import *
 
 
