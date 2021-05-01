@@ -3,9 +3,7 @@ import json
 from BackendClasses.DatabaseHandler import *
 from BackendClasses.User import *
 from BackendClasses.Dungeon import *
-
 import mysql
-
 
 
 class HTTPHandler(BaseHTTPRequestHandler):
