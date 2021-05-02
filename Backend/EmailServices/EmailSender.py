@@ -42,7 +42,7 @@ class EmailSender:
             content = contentReader.read()
             hostname = socket.gethostname()
 
-            if str(socket.gethostbyname(hostname)) != "193.196.54.98":
+            if str(socket.gethostbyname(hostname)) != "193.196.53.67":
                 content = content.replace("{Server}", "localhost:4200")
             else:
                 content = content.replace("{Server}", "193.196.54.98")
