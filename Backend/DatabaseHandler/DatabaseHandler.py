@@ -68,6 +68,10 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def copyDungeon(self, dungeonID):
+        '''
+        copies a dungeon
+        :param dungeonID: id of dungeon
+        '''
         newDungeon = self.getFullDungeonByDungeonID(dungeonID)
         # DungeonID austragen und abspeichern!
 
@@ -104,7 +108,9 @@ class DatabaseHandler:
 
     def getUserIdByEmail(self, email: str):
         '''
-        Placeholder
+        reads the userid from the database belonging to the corresponding email
+        :param email: email
+        :return: returns the userid of the query 
         '''
         cursor = self.databasePath.cursor()
         query = f"""
@@ -123,6 +129,11 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def getDungeonByID(self, dungeonID: int):
+        '''
+        reads the dungeoninformation from the database belonging to the corresponding dungeonID
+        :param dungeonID: id of the dungeon
+        :return: value of query -> dungeonID, dungeonName, dungeonDescription 
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                     SELECT DungeonID, DungeonName, DungeonDescription
@@ -175,8 +186,11 @@ class DatabaseHandler:
     def writeCharacterToDatabase(self, character: Character):
         raise NotImplementedError
 
-    def deleteDungeonByID(self, dungeonID):
-
+    def deleteDungeonByID(self, dungeonID: str):
+        '''
+        deletes the dungeon that belongs to the given dungeonid
+        :param dungeonID: id of the dungeon
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                             DELETE
@@ -206,6 +220,11 @@ class DatabaseHandler:
             return False
 
     def write_race_to_database(self, race: Race, dungeon_id):
+        '''
+        insert a race object to database
+        :param race: race object
+        :param dungeon_id: id of dungeon 
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                INSERT INTO mudcake.Race
@@ -221,6 +240,11 @@ class DatabaseHandler:
             pass
 
     def write_class_to_database(self, class_object: Class, dungeon_id):
+        '''
+        insert a class object to database
+        :param class_object: class object
+        :param dungeon_id: id of dungeon 
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                       INSERT INTO mudcake.Class
@@ -235,6 +259,11 @@ class DatabaseHandler:
             pass
 
     def write_room_to_database(self, room: Room, dungeon_id):
+        '''
+        insert a room object to database
+        :param room: room object
+        :param dungeon_id: id of dungeon 
+        '''
         cursor = self.databasePath.cursor()
         print("cursor set")
         print(int(room.is_start_room))
@@ -261,6 +290,11 @@ class DatabaseHandler:
     # ("{dungeon_id}", "{room.room_id}", "{room.room_name}", "{room.room_description}","{room.coordinate_x}", "{room.coordinate_y}", "{int(room.north)}", "{int(room.east)}",  "{int(room.south)}", "{int(room.west)}", "{int(room.is_start_room)}","{room.npc_id}", "{room.item_id}")
 
     def change_registration_status(self, userID: str):
+        '''
+        updates the isConfirmed field from False(0) to True(1)
+        :param userID: id of user
+        :return: true if transaction was successful, false if not 
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                     UPDATE mudcake.User
@@ -277,6 +311,11 @@ class DatabaseHandler:
             return False
 
     def write_npc_to_database(self, npc: Npc, dungeon_id):
+        '''
+        insert a npc object to database
+        :param npc: npc object
+        :param dungeon_id: id of dungeon 
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                               INSERT INTO mudcake.Npc
@@ -294,6 +333,11 @@ class DatabaseHandler:
             pass
 
     def write_item_to_database(self, item: Item, dungeon_id):
+        '''
+        insert a item object to database
+        :param item: item object
+        :param dungeon_id: id of dungeon 
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                                       INSERT INTO mudcake.ItemTemplate

@@ -13,7 +13,13 @@ from DungeonPackage.Room import Room
 
 
 class DungeonManager:
+    """
+    class for handling dungeon data
+    """
     def __init__(self, data):
+        """
+        constructor for dungeon manager
+        """
         self.data = data
         self.managed_dungeon = DungeonData(dungeonId=self.data['dungeonID'],
                                            dungeonMasterID=self.data['dungeonMasterID'],
@@ -36,6 +42,9 @@ class DungeonManager:
         self.parse_config_data()
 
     def parse_config_data(self):
+        """
+        deserializes the dungeon json and adds the deserialized elements to corresponding lists  
+        """
         # TODO: in allen Klassen den Default Wert von DungeonID entfernen, sobald die DungeonID vom Backend generierbar
         #  ist. IDs von Dungeondaten eventuell doch über autoincrement in Datenbank vornehmen.
         # accessList = AccessList()
@@ -121,6 +130,9 @@ class DungeonManager:
     # dungeon = ActiveDungeon(None, None, None, None, None, None, None, dungeonData=dungeonData)
 
     def write_dungeon_to_database(self):
+        """
+        writes whole Dungeon to Database
+        """
         active_dungeon = ActiveDungeon(rooms=self.room_list, classes=self.class_list, npcs=self.npc_list,
                                        items=self.item_list, dungeonData=self.managed_dungeon, races=self.race_list,
                                        userIDs=None, characterIDs=None) #Darf das None sein? :D
@@ -143,10 +155,16 @@ class DungeonManager:
             pass
 
     def check_for_dungeon_id(self):
+        """
+        writes if Dungeon has an id already. if not, it creates one
+        """
         if self.managed_dungeon.dungeon_id is None:
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
 
     def _write_race_to_database(self):
+        """
+        writes Races to Database
+        """
         print(self.race_list)
         for race in self.race_list:
             try:
@@ -155,6 +173,9 @@ class DungeonManager:
                 pass
 
     def _write_class_to_database(self):
+        """
+        writes Classes to Database
+        """
         print(self.class_list)
         for classes in self.class_list:
             try:
@@ -163,6 +184,9 @@ class DungeonManager:
                 pass
 
     def _write_rooms_to_database(self):
+        """
+        writes Rooms to Database
+        """
         print(self.room_list)
         for room in self.room_list:
             try:
@@ -171,6 +195,9 @@ class DungeonManager:
                 pass
 
     def _write_items_to_database(self):
+        """
+        writes Items to Database
+        """
         print(self.item_list)
         for item in self.item_list:
             try:
@@ -179,12 +206,16 @@ class DungeonManager:
                 pass
 
     def _write_npcs_to_database(self):
+        """
+        writes Npcs to Database
+        """
         print(self.npc_list)
         for npc in self.npc_list:
             try:
                 self.mDBHandler.write_npc_to_database(npc= npc, dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
+    
     def _loadDungeonFromDatabase(self):
         ######
         raise NotImplementedError
