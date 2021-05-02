@@ -121,6 +121,26 @@ class DatabaseHandler:
         except:
             pass
 
+    def updatePasswordByUserID(self, userID: str, password: str):
+        '''
+        Updates UserPassword in Database
+        :param userID: UserID
+        :param password: UserPassword
+        :return: true if transaction is succesfull
+        '''
+        cursor = self.databasePath.cursor()
+        query = f"""
+                        UPDATE mudcake.User
+                        SET Password = '{password}'
+                        WHERE UserID = '{userID}'
+                        """
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+            return True
+        except:
+            return False
+
     def getInventarOfCharacter(self, character: Character):
         raise NotImplementedError
 
