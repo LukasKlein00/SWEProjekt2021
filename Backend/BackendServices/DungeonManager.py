@@ -17,12 +17,7 @@ class DungeonManager:
         self.data = data
 
 
-        self.mDBHandler = DatabaseHandler(mysql.connector.connect(
-            host="193.196.53.67",
-            port="1189",
-            user="jack",
-            password="123123"
-        ))
+        self.mDBHandler = DatabaseHandler()
         self.room_list = []
         self.race_list = []
         self.class_list = []

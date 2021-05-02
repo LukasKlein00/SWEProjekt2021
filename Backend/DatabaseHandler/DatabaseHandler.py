@@ -436,7 +436,7 @@ class DatabaseHandler:
             return queryData
         except IOError:
             pass
-    def checkUser(self, user: User):
+    def checkUser(self, user):
         '''
         checks if user is already in database, when client is already logged in
         :param user: user object
