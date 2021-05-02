@@ -11,6 +11,7 @@ import { AuthentificationService } from '../services/authentification.service';
 export class ConfirmComponent implements OnInit {
 
   token: string;
+  confirmed;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,8 +29,12 @@ export class ConfirmComponent implements OnInit {
   }
 
   confirm(){
-    this.authentificationService.confirm(this.token).subscribe(res => {
-      console.log(res);
-    });
+    this.authentificationService.confirm(this.token).subscribe(
+      data => {
+        this.confirmed = true;
+      },
+      error => {
+        this.confirmed = false;
+      });
   }
 }

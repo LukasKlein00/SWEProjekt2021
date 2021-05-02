@@ -1,1 +1,13 @@
-<p class="text-center m-5">Email confirmed!</p>   
+<div *ngIf="confirmed == undefined" class="row justify-content-center">
+    <p class="text-center m-5">Email is confirming</p>
+    <div class="row justify-content-center align-content-center">
+        <div class="sk-folding-cube">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+    </div>
+</div>
+<p *ngIf="confirmed == false" class="text-center m-5">Email could not be confirmed!</p>
+<p *ngIf="confirmed == true" class="text-center m-5">Email confirmed!</p>      
