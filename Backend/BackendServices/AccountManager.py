@@ -78,13 +78,14 @@ class AccountManager:
         # else:
         # self._set_response(400)
 
-    def sendPasswordResetEmail(self, UserID: str, UserEmail: str):
+    def sendPasswordResetEmail(self, UserEmail: str):
         '''
 
         :param UserID: id of user
         :return:
         '''
-        print(UserID, UserEmail)
+        print(UserEmail)
+        userID = self.
         passwordVergessenEmail = EmailSender(UserEmail, UserID)
         passwordVergessenEmail.sendEmail(messageType.resetPassword)
         return
