@@ -86,9 +86,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
                                      private=data['private'],
                                      dungeonMasterID=data['dungeonMasterID'])"""
             dungeon_manager = DungeonManager(data)
-            dungeon_manager.write_dungeon_to_database()
-            #dungeonID = self.mDBHandler.saveOrUpdateDungeon(newDungeon)
-            # noch items und so abspeichern
+            dungeon_id = dungeon_manager.write_dungeon_to_database()
+            self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
 
         if self.path == '/deleteDungeon':
             self._set_response()

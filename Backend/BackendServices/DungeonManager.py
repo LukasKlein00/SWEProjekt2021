@@ -53,7 +53,37 @@ class DungeonManager:
             new_room = Room(coordinate_x=room['x'], coordinate_y=room['y'], north=room['north'], east=room['east'],
                             south=room['south'], west=room['west'], room_id=str(uuid.uuid4()),
                             dungeon_id=self.managed_dungeon.dungeon_id)
-            #checkforname = name in room
+
+            checkforname = 'name' in room
+            if checkforname:
+                new_room.room_name=room['name']
+            else:
+                new_room.room_name = None
+
+            checkfordescription = 'description' in room
+            if checkfordescription:
+                new_room.room_description = room['description']
+            else:
+                new_room.room_description = "NULL"
+
+            check_for_start_room = 'isStartRoom' in room
+            if check_for_start_room:
+                new_room.is_start_room = room['isStartRoom']
+            else:
+                new_room.is_start_room = False
+
+            check_for_npc = 'npc' in room
+            if check_for_npc:
+                new_room.npc_id = room['Npc']
+            else:
+                new_room.npc_id = None
+
+            check_for_item = 'item' in room
+            if check_for_item:
+                new_room.item_id = room['Item']
+            else:
+                new_room.item_id = None
+
             self.room_list.append(new_room)
             """room_list.append(
                 Room(coordinate_x=room['x'], coordinate_y=room['y'], room_id=(str(uuid.uuid4())),
@@ -63,11 +93,13 @@ class DungeonManager:
                      east=bool((room['east']))))"""
 
         for race in race_data:
+            print(race)
             new_race = Race(race_id=str(uuid.uuid4()), name=race['name'], description=race['description'],
                             dungeon_id=self.managed_dungeon.dungeon_id)
             self.race_list.append(new_race)
 
         for classes in class_data:
+            print(classes)
             new_class = Class(class_id=str(uuid.uuid4()), name=classes['name'], description=classes['description'],
                               dungeon_id=self.managed_dungeon.dungeon_id)
             self.class_list.append(new_class)
@@ -83,9 +115,6 @@ class DungeonManager:
                           description=npc['description'], dungeon_id=self.managed_dungeon.dungeon_id)
             self.npc_list.append(new_npc)
 
-        for npc_object in self.npc_list:
-            print(npc_object.name, npc_object.description, npc_object.item)
-
     # dungeonData = DungeonData(dungeonId=(str(uuid.uuid4())), dungeonMasterID=data['dungeonMasterID'],
     # name=data['dungeonName'], description=data['dungeonDescription'],
     # maxPlayers=data['maxPlayers'], private=data['private'], accessList=accessList)
@@ -99,11 +128,17 @@ class DungeonManager:
             self.mDBHandler.saveOrUpdateDungeon(active_dungeon)
             print("Dungeon saved")
             self._write_race_to_database()
-            self._write_class_to_database()
             print("Races saved")
+            self._write_class_to_database()
+            print("Classes saved")
             print(self.room_list)
             self._write_rooms_to_database()
             print("Rooms saved")
+            self._write_items_to_database()
+            print("Items saved")
+            self._write_npcs_to_database()
+            print("Npcs saved")
+            return self.managed_dungeon.dungeon_id
         except:
             pass
 
@@ -120,6 +155,7 @@ class DungeonManager:
                 pass
 
     def _write_class_to_database(self):
+        print(self.class_list)
         for classes in self.class_list:
             try:
                 self.mDBHandler.write_class_to_database(class_object=classes, dungeon_id=self.managed_dungeon.dungeon_id)
@@ -127,12 +163,28 @@ class DungeonManager:
                 pass
 
     def _write_rooms_to_database(self):
+        print(self.room_list)
         for room in self.room_list:
             try:
                 self.mDBHandler.write_room_to_database(room=room, dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
 
+    def _write_items_to_database(self):
+        print(self.item_list)
+        for item in self.item_list:
+            try:
+                self.mDBHandler.write_item_to_database(item=item, dungeon_id=self.managed_dungeon.dungeon_id)
+            except IOError:
+                pass
+
+    def _write_npcs_to_database(self):
+        print(self.npc_list)
+        for npc in self.npc_list:
+            try:
+                self.mDBHandler.write_npc_to_database(npc= npc, dungeon_id=self.managed_dungeon.dungeon_id)
+            except IOError:
+                pass
     def _loadDungeonFromDatabase(self):
         ######
         raise NotImplementedError
