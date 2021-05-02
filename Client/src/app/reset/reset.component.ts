@@ -45,7 +45,7 @@ export class ResetComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.confirm(this.resetForm.value)
+    this.authenticationService.reset(this.resetForm.value)
       .pipe(first())
       .subscribe(
         data => {
