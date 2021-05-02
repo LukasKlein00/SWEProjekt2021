@@ -15,7 +15,19 @@ from DungeonPackage.Room import Room
 class DungeonManager:
     def __init__(self, data=None):
         self.data = data
-        self.mDBHandler = DatabaseHandler()
+
+
+        self.mDBHandler = DatabaseHandler(mysql.connector.connect(
+            host="193.196.53.67",
+            port="1189",
+            user="jack",
+            password="123123"
+        ))
+        self.room_list = []
+        self.race_list = []
+        self.class_list = []
+        self.item_list = []
+        self.npc_list = []
         if data is not None:
             self.managed_dungeon = DungeonData(dungeonId=self.data['dungeonID'],
                                                dungeonMasterID=self.data['dungeonMasterID'],
@@ -23,11 +35,6 @@ class DungeonManager:
                                                description=self.data['dungeonDescription'],
                                                private=self.data['private'],
                                                accessList=self.data['accessList'])
-            self.room_list = []
-            self.race_list = []
-            self.class_list = []
-            self.item_list = []
-            self.npc_list = []
             self.check_for_dungeon_id()
             self.parse_config_data()
 
@@ -186,9 +193,32 @@ class DungeonManager:
     def deleteDungeonFromDatabase(self, dungeonID: str):
         self.mDBHandler.deleteDungeonByID(dungeonID)
 
-    def copyDungeon(self):
-        #####
+    def _loadDungeonFromDatabase(self):
+        ######
         raise NotImplementedError
+
+    def get_dungeon_by_id(self, user_id_data):
+        return self.mDBHandler.get_dungeon_by_id(user_id_data)
+
+
+    def delete_dungeon(self, dungeon_id):
+        try:
+            self.mDBHandler.delete_dungeon_by_id(dungeon_id)
+        except IOError:
+            pass
+
+    def copy_dungeon(self, dungeon_id):
+        self.room_list = []
+        self.race_list = []
+        self.class_list = []
+        self.item_list = []
+        self.npc_list = []
+        try:
+            items = self.mDBHandler.get_items_by_dungeon_id(dungeon_id)
+            print(items)
+
+        except IOError:
+            pass
 
     def makeDungeonPrivate(self):
         raise NotImplementedError
