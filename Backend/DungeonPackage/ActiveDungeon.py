@@ -1,14 +1,15 @@
-from DungeonPackage.Room import Room as Room
-from DungeonPackage.Npc import Npc as Npc
-from DungeonPackage.Item import Item as Item
-from DungeonPackage.Race import Race as Race
 from DungeonPackage.Class import Class as Class
 from DungeonPackage.DungeonData import DungeonData as DungeonData
+from DungeonPackage.Item import Item as Item
+from DungeonPackage.Npc import Npc as Npc
+from DungeonPackage.Race import Race as Race
+from DungeonPackage.Room import Room as Room
 
 
 class ActiveDungeon:
-    def __init__(self, userIDs: [int], characterIDs: [int], rooms: [Room], npcs: [Npc], items: [Item], races: [Race],
-                 classes: [Class], dungeonData: DungeonData):
+    def __init__(self, userIDs: [int] = None, characterIDs: [int] = None, rooms: [Room] = None, npcs: [Npc] = None,
+                 items: [Item] = None, races: [Race] = None,
+                 classes: [Class] = None, dungeonData: DungeonData = None):
         self.userIDs = userIDs
         self.characterIDs = characterIDs
         self.rooms = rooms

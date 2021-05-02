@@ -2,7 +2,7 @@ from mysql.connector import MySQLConnection
 
 from DatabaseHandler.User import User
 from DungeonPackage.ActiveDungeon import *
-from DungeonPackage.Character import   *
+from DungeonPackage.Character import *
 from DungeonPackage.Inventory import *
 
 
@@ -10,6 +10,7 @@ class DatabaseHandler:
     '''
     Class for handling Database transactions
     '''
+
     def __init__(self, databasePath: MySQLConnection):
         '''
         constructor for DatabaseHandler
@@ -72,11 +73,11 @@ class DatabaseHandler:
 
     def saveOrUpdateDungeon(self, dungeon: ActiveDungeon):
         cursor = self.databasePath.cursor()
-        query = """
+        query = f"""
         INSERT INTO mudcake.Dungeon
             (DungeonID, DungeonName, DungeonDescription, MaxPlayers, DungeonMasterID, Private)
         VALUES 
-            (%s, %s, %s, %s, %s, %s) 
+            ("{dungeon.dungeonData.dungeon_id}", "{dungeon.dungeonData.name}", "{dungeon.dungeonData.description}", "{dungeon.dungeonData.maxPlayers}", "{dungeon.dungeonData.dungeonMasterID}", "{int(dungeon.dungeonData.private)}") 
         ON DUPLICATE KEY UPDATE 
             DungeonID  = VALUES(DungeonID),
             DungeonName  = VALUES(DungeonName),
@@ -84,12 +85,10 @@ class DatabaseHandler:
             DungeonMasterID  = VALUES(DungeonMasterID),
             Private  = VALUES(Private)
                    """
-        variables = (
-            dungeon.dungeonData.dungeonId, dungeon.dungeonData.name, dungeon.dungeonData.description,
-            dungeon.dungeonData.maxPlayers, dungeon.dungeonData.dungeonMasterID, dungeon.dungeonData.private
-        )
+        """variables = (dungeon.dungeonData.dungeon_id, dungeon.dungeonData.name, dungeon.dungeonData.description,
+                     dungeon.dungeonData.maxPlayers, dungeon.dungeonData.dungeonMasterID, dungeon.dungeonData.private)"""
         try:
-            cursor.execute(query, variables)
+            cursor.execute(query)
             dungeon.dungeonData.dungeonID = cursor.lastrowid
             self.databasePath.commit()
             return dungeon.dungeonData.dungeonID
@@ -189,6 +188,61 @@ class DatabaseHandler:
         except:
             return False
 
+    def write_race_to_database(self, race: Race, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+               INSERT INTO mudcake.Race
+                   (DungeonID, RaceID, Name, Description)
+               VALUES 
+                   ("{dungeon_id}", "{race.race_id}", "{race.name}", "{race.description}")
+               """
+
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+        except IOError:
+            pass
+
+    def write_class_to_database(self, class_object: Class, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                      INSERT INTO mudcake.Class
+                          (DungeonID, ClassID, Name, Description)
+                      VALUES 
+                          ("{dungeon_id}", "{class_object.classID}", "{class_object.name}", "{class_object.description}")
+                      """
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+        except IOError:
+            pass
+
+    def write_room_to_database(self, room: Room, dungeon_id):
+        cursor = self.databasePath.cursor()
+        print("cursor set")
+        print(int(room.is_start_room))
+        query = f"""
+                             INSERT INTO mudcake.Room
+                                 (DungeonID, RoomID, Name, Description, CoordinateX, CoordinateY, 
+                                    North, East, South, West, isStartingRoom, NpcID, ItemID)
+                             VALUES 
+                                 (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                             """
+        variables = (
+            dungeon_id, room.room_id, room.room_name, room.room_description, room.coordinate_x, room.coordinate_y,
+            int(room.north), int(room.east), int(room.south), int(room.west), int(room.is_start_room), room.npc_id,
+            room.item_id)
+        print(query)
+        print("Wrote room to database")
+        try:
+            cursor.execute(query, variables)
+            self.databasePath.commit()
+        except IOError:
+            print("aua")
+            pass
+
+    # ("{dungeon_id}", "{room.room_id}", "{room.room_name}", "{room.room_description}","{room.coordinate_x}", "{room.coordinate_y}", "{int(room.north)}", "{int(room.east)}",  "{int(room.south)}", "{int(room.west)}", "{int(room.is_start_room)}","{room.npc_id}", "{room.item_id}")
+
     def change_registration_status(self, userID: str):
         cursor = self.databasePath.cursor()
         query = f"""
@@ -204,3 +258,36 @@ class DatabaseHandler:
             return True
         except:
             return False
+
+    def write_npc_to_database(self, npc: Npc, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                              INSERT INTO mudcake.Npc
+                                  (DungeonID, NpcID, Name, Description, ItemID)
+                              VALUES 
+                                (%s,%s,%s,%s,%s)
+    
+                              """
+        variables= (dungeon_id, npc.npc_id, npc.name, npc.description, npc.item)
+        #"{dungeon_id}", "{npc.npc_id}", "{npc.name}", "{npc.description}", "{npc.item}"
+        try:
+            cursor.execute(query, variables)
+            self.databasePath.commit()
+        except IOError:
+            pass
+
+    def write_item_to_database(self, item: Item, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                                      INSERT INTO mudcake.ItemTemplate
+                                          (DungeonID, ItemTemplateID, Name, Description)
+                                      VALUES 
+                                          (%s,%s,%s,%s)
+                                      """
+        variables = (dungeon_id, item.item_id, item.name, item.description)
+        # "{dungeon_id}", "{item.item_id}", "{item.name}", "{item.description}"
+        try:
+            cursor.execute(query, variables)
+            self.databasePath.commit()
+        except IOError:
+            pass

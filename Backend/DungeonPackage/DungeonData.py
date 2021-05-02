@@ -2,9 +2,10 @@ from DungeonPackage.AccessList import AccessList as AccessList
 
 
 class DungeonData:
-    def __init__(self, dungeonId: str, dungeonMasterID: int, maxPlayers: int, name: str, description: str,
-                 private: bool, accessList: AccessList):
-        self.dungeonId = dungeonId
+    def __init__(self, dungeonId: str = None, dungeonMasterID: str = None, maxPlayers: int = None, name: str = None,
+                 description: str = None,
+                 private: bool = False, accessList: AccessList = None):
+        self.dungeon_id = dungeonId
         self.dungeonMasterID = dungeonMasterID
         self.maxPlayers = maxPlayers
         self.name = name
