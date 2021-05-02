@@ -106,7 +106,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self._set_response()
             self.AccManager.sendPasswordResetEmail(UserEmail=data['email'])
 
-        if self.path == '/reset':
+        if self.path == '/resetPassword':
             self._set_response()
             isPasswordChanged = self.AccManager.changePasswordInDatabase(UserID=data['userID'], Password=data['password'])
             if not isPasswordChanged:

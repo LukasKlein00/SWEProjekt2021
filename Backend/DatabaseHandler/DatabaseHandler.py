@@ -104,6 +104,9 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def getUserIdByEmail(self, email: str):
+        '''
+        Placeholder
+        '''
         cursor = self.databasePath.cursor()
         query = f"""
                     SELECT UserID

@@ -80,17 +80,12 @@ class AccountManager:
 
     def sendPasswordResetEmail(self, UserEmail: str):
         '''
-
+        Gets UserId from DatabaseHandler and gives it to Emailsender
         :param UserID: id of user
-        :return:
         '''
-        print(UserEmail)
         userID = self.mDBHandler.getUserIdByEmail(UserEmail)
-        print("userID:")
-        print(userID)
         passwordVergessenEmail = EmailSender(UserEmail, userID)
         passwordVergessenEmail.sendEmail(messageType.resetPassword)
-        return
 
     def changePasswordInDatabase(self, UserID: str, Password: str):
         '''
