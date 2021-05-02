@@ -26,6 +26,7 @@ import { ProfilComponent } from './profil/profil.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ResetComponent } from './reset/reset.component';
 import { ForgotComponent } from './forgot/forgot.component';
+import { ErrorComponent } from './error/error.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { ForgotComponent } from './forgot/forgot.component';
     ConfirmComponent,
     ResetComponent,
     ForgotComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
