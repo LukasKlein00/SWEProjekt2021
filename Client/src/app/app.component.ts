@@ -1,4 +1,4 @@
-import { AfterViewChecked, ChangeDetectorRef, Component } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthentificationService } from './services/authentification.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { AuthentificationService } from './services/authentification.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewChecked{
+export class AppComponent implements AfterViewChecked, OnInit{
   title = 'Client';
   currentUser = this.authentificationService.currentUserValue
 
@@ -17,6 +17,19 @@ export class AppComponent implements AfterViewChecked{
   ngAfterViewChecked(): void {
     this.currentUser = this.authentificationService.currentUserValue;
     this.cdRef.detectChanges();
+  }
+  
+  ngOnInit() {
+    if (this.currentUser) {
+      console.log("check");
+      this.authentificationService.check().subscribe(response => {
+        console.log("user checked")
+      },
+      error => {
+        console.log("logging out..")
+        this.logout();
+      });
+    }
   }
 
   logout() {

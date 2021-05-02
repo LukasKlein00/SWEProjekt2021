@@ -24,6 +24,7 @@ class EmailSender:
 
         :param msg: preconfigured message in external method - EmailMessage
         """
+        print("Email send to:" + msg['To'])
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context()) as server:
             server.login(self.email, bytes(b'$9PLnJ5NsB#!').decode('utf8', 'strict'))
             server.send_message(msg)

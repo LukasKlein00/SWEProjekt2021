@@ -75,8 +75,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/getMyDungeons':
             self._set_response()
-            response = self.mDBHandler.getDungeonByID(data)
-            self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
+            #response = self.mDBHandler.getDungeonByID(data)
+            #self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
 
         if self.path == '/saveDungeon':
             self._set_response()
@@ -112,4 +112,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
             print(data)
             isPasswordChanged = self.AccManager.changePasswordInDatabase(UserID=data['token'], Password=data['password'])
             if not isPasswordChanged:
+                self._set_response(400)
+
+        if self.path == '/check':
+            self._set_response()
+            check = self.AccManager.check_logged_in_credentials(UserName=data['username'], UserID=data['userID'])
+            if not check:
                 self._set_response(400)
