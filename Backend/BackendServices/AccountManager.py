@@ -85,8 +85,9 @@ class AccountManager:
         :return:
         '''
         print(UserEmail)
-        userID = self.
-        passwordVergessenEmail = EmailSender(UserEmail, UserID)
+        userID = self.mDBHandler.getUserIdByEmail(UserEmail)
+        print("holt user id aus db" + userID)
+        passwordVergessenEmail = EmailSender(UserEmail, userID)
         passwordVergessenEmail.sendEmail(messageType.resetPassword)
         return
 
@@ -97,7 +98,7 @@ class AccountManager:
         :param Password: password if user
         :return: true if transaction was successful
         '''
-        updatedPassword = DatabaseHandler.updatePasswordByUserID(UserID, Password)
+        updatedPassword = self.mDBHandler.updatePasswordByUserID(UserID, Password)
         return updatedPassword
 
     def deleteUser(self, UserID: str):

@@ -114,7 +114,6 @@ class DatabaseHandler:
         try:
             queryData = cursor.fetchone()
             return queryData
-
         except:
             pass
 
