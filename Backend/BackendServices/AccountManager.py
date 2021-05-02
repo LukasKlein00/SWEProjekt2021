@@ -78,16 +78,14 @@ class AccountManager:
         # else:
         # self._set_response(400)
 
-    def sendPasswordResetEmail(self, UserID: str, UserEmail: str):
+    def sendPasswordResetEmail(self, UserEmail: str):
         '''
-
+        Gets UserId from DatabaseHandler and gives it to Emailsender
         :param UserID: id of user
-        :return:
         '''
-        print(UserID, UserEmail)
-        passwordVergessenEmail = EmailSender(UserEmail, UserID)
+        userID = self.mDBHandler.getUserIdByEmail(UserEmail)
+        passwordVergessenEmail = EmailSender(UserEmail, userID)
         passwordVergessenEmail.sendEmail(messageType.resetPassword)
-        return
 
     def changePasswordInDatabase(self, UserID: str, Password: str):
         '''
@@ -96,7 +94,7 @@ class AccountManager:
         :param Password: password if user
         :return: true if transaction was successful
         '''
-        updatedPassword = DatabaseHandler.updatePasswordByUserID(UserID, Password)
+        updatedPassword = self.mDBHandler.updatePasswordByUserID(UserID, Password)
         return updatedPassword
 
     def deleteUser(self, UserID: str):
