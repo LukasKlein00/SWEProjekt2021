@@ -113,7 +113,7 @@ class DatabaseHandler:
         cursor.execute(query)
         try:
             queryData = cursor.fetchone()
-            return queryData
+            return queryData[0]
         except:
             pass
 
