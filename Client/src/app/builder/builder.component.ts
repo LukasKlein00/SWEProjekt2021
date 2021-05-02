@@ -264,7 +264,7 @@ export class BuilderComponent implements OnInit {
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     //sende dungeon an Server!
-    this.httpService.saveOrUpdateDungeon(this.dungeon)
+    this.httpService.saveOrUpdateDungeon(safeDungeon)
       .subscribe((response) => console.log(response));
 
   }
