@@ -56,4 +56,8 @@ export class AuthentificationService {
   forgot(email) {
     return this.http.post(`${this.apiUrl}/forgot`, email);
   }
+
+  check() {
+    return this.http.post(`${this.apiUrl}/check`, JSON.parse(localStorage.getItem('currentUser')));
+  }
 }

@@ -308,3 +308,25 @@ class DatabaseHandler:
             self.databasePath.commit()
         except IOError:
             pass
+
+    def checkUser(self, user: User):
+        '''
+        checks if user is already in database, when client is already logged in
+        :param user: user object
+        :return: returns true if credentials are still correct
+        '''
+        cursor = self.databasePath.cursor()
+        query = f"""
+            SELECT * 
+            From mudcake.User
+            WHERE (UserName = '{user.userName}' AND UserID = '{user.userID}' )
+            """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            if queryData:
+                return True
+            else:
+                return False
+        except IOError:
+            return False
