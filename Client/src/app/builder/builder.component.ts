@@ -265,7 +265,9 @@ export class BuilderComponent implements OnInit {
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon)
-      .subscribe((response) => console.log(response));
+      .subscribe(response => {
+        this.dungeon.dungeonID = response[0]
+      });
 
   }
 
