@@ -225,7 +225,6 @@ export class BuilderComponent implements OnInit {
 
 
   toggleRoom(r: Room) {
-    console.log(this.dungeon.rooms)
     if (r.isActive) {
       delete r.isActive;
       delete r.description;
@@ -265,7 +264,9 @@ export class BuilderComponent implements OnInit {
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon)
-      .subscribe((response) => console.log(response));
+      .subscribe(response => {
+        this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
+      });
 
   }
 
