@@ -1,0 +1,11 @@
+<div *ngIf="token" class="fluid-container m-5 row justify-content-center">
+    <h2 class="col-12 text-center">Reset your Password</h2>
+    
+    <div class="form-inline">
+        <input class="form-control m-2" [(ngModel)]="psw">
+        <button class="btn btn-primary m-2" (click)="reset()" [disabled]="psw?.length < 6">Reset</button>
+    </div>
+
+    <p *ngIf="error" class="col-12 text-center" style="color: red">{{error}}</p>
+</div>
+
