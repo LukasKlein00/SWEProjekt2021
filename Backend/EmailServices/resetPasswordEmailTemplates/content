@@ -1,6 +1,6 @@
 Dear User,
 please click on the following link to reset you password.
-https://www.youtube.com/watch?v=dQw4w9WgXcQ
+http://{Server}/resetPassword?token={UserToken}
 
 Kind regards,
 your MUDCake-Team
