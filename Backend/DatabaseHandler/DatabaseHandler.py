@@ -103,6 +103,21 @@ class DatabaseHandler:
     def getUserByID(self, userID: int):
         raise NotImplementedError
 
+    def getUserIdByEmail(self, email: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT UserID
+                    From mudcake.User
+                    WHERE (Email = '{email}' )
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except:
+            pass
+
     def getCharacterByID(self, characterID: int):
         raise NotImplementedError
 
