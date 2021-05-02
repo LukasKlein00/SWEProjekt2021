@@ -22,7 +22,9 @@ export class ConfirmComponent implements OnInit {
     this.route.queryParams.subscribe(p => {
       this.token = p['token'];
       if (this.token){
-        this.confirm()
+        setTimeout(()=>{                         
+          this.confirm()
+     }, 3000);
       }
       console.log(p)
     })
