@@ -120,6 +120,26 @@ class DatabaseHandler:
         except:
             pass
 
+    def updatePasswordByUserID(self, userID: str, password: str):
+        '''
+        Updates UserPassword in Database
+        :param userID: UserID
+        :param password: UserPassword
+        :return: true if transaction is succesfull
+        '''
+        cursor = self.databasePath.cursor()
+        query = f"""
+                        UPDATE mudcake.User
+                        SET Password = '{password}'
+                        WHERE UserID = '{userID}'
+                        """
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+            return True
+        except:
+            return False
+
     def getInventarOfCharacter(self, character: Character):
         raise NotImplementedError
 
@@ -167,3 +187,50 @@ class DatabaseHandler:
             return True
         except:
             return False
+
+    def write_race_to_database(self, race: Race, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+               INSERT INTO mudcake.Race
+                   (DungeonID, RaceID, Name, Description)
+               VALUES 
+                   ("{dungeon_id}", "{race.race_id}", "{race.name}", "{race.description}")
+               """
+
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+        except IOError:
+            pass
+
+    def write_class_to_database(self, class_object: Class, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                      INSERT INTO mudcake.Class
+                          (DungeonID, ClassID, Name, Description)
+                      VALUES 
+                          ("{dungeon_id}", "{class_object.classID}", "{class_object.name}", "{class_object.description}")
+                      """
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+        except IOError:
+            pass
+
+    def write_room_to_database(self, room: Room, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                             INSERT INTO mudcake.Room
+                                 (DungeonID, RoomID, Name, Description, CoordinateX. CoordinateY, 
+                                    North, East, South, West, isStartingRoom, NpcID, ItemID)
+                             VALUES 
+                                 ("{dungeon_id}", "{room.room_id}", "{room.room_name}", "{room.room_description}",
+                                "{room.coordinate_x}", "{room.coordinate_y}", "{int(room.north)}", "{int(room.east)}", 
+                                "{int(room.south)}", "{int(room.west)}", "{int(room.is_start_room)}",
+                                "{room.npc_id}", "{room.item_id}")
+                             """
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+        except IOError:
+            pass

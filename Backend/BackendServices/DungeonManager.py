@@ -49,9 +49,11 @@ class DungeonManager:
         # accessList.addUserToAccessList(dataForUser['user'], dataForUser['isAllowed'])
 
         for room in room_data:
+            print(room)
             new_room = Room(coordinate_x=room['x'], coordinate_y=room['y'], north=room['north'], east=room['east'],
                             south=room['south'], west=room['west'], room_id=str(uuid.uuid4()),
                             dungeon_id=self.managed_dungeon.dungeon_id)
+            #checkforname = name in room
             self.room_list.append(new_room)
             """room_list.append(
                 Room(coordinate_x=room['x'], coordinate_y=room['y'], room_id=(str(uuid.uuid4())),
@@ -93,13 +95,45 @@ class DungeonManager:
         active_dungeon = ActiveDungeon(rooms=self.room_list, classes=self.class_list, npcs=self.npc_list,
                                        items=self.item_list, dungeonData=self.managed_dungeon, races=self.race_list,
                                        userIDs=None, characterIDs=None) #Darf das None sein? :D
-        self.mDBHandler.saveOrUpdateDungeon(active_dungeon)
+        try:
+            self.mDBHandler.saveOrUpdateDungeon(active_dungeon)
+            print("Dungeon saved")
+            self._write_race_to_database()
+            self._write_class_to_database()
+            print("Races saved")
+            print(self.room_list)
+            self._write_rooms_to_database()
+            print("Rooms saved")
+        except:
+            pass
 
     def check_for_dungeon_id(self):
-        if self.managed_dungeon.dungeon_id == None:
+        if self.managed_dungeon.dungeon_id is None:
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
 
-    def loadDungeonFromDatabase(self):
+    def _write_race_to_database(self):
+        print(self.race_list)
+        for race in self.race_list:
+            try:
+                self.mDBHandler.write_race_to_database(race=race, dungeon_id=self.managed_dungeon.dungeon_id)
+            except IOError:
+                pass
+
+    def _write_class_to_database(self):
+        for classes in self.class_list:
+            try:
+                self.mDBHandler.write_class_to_database(class_object=classes, dungeon_id=self.managed_dungeon.dungeon_id)
+            except IOError:
+                pass
+
+    def _write_rooms_to_database(self):
+        for room in self.room_list:
+            try:
+                self.mDBHandler.write_room_to_database(room=room, dungeon_id=self.managed_dungeon.dungeon_id)
+            except IOError:
+                pass
+
+    def _loadDungeonFromDatabase(self):
         ######
         raise NotImplementedError
 
