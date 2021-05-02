@@ -45,15 +45,14 @@ class AccountManager:
         else:
             return False
 
-    def send_registration_email(self, email: str):
+    def send_registration_email(self, email: str, userID: str):
         '''
         :param UserID: id of user
         :return:
         '''
         print(email)
-        email_sender = EmailSender(userEmail=email)
+        email_sender = EmailSender(userEmail=email, userID=userID)
         email_sender.sendEmail(messageType.registration)
-
 
     def checkLoginCredentials(self, Username: str, Password: str):
         '''
@@ -67,29 +66,38 @@ class AccountManager:
         if returnedUser:
             response = {
                 'username': returnedUser.userName,
-                'userID': returnedUser.userID
+                'userID': returnedUser.userID,
+                'confirmation': returnedUser.confirmation
             }
-            return response
+
+            if returnedUser.confirmation:
+                return response
+            else:
+                raise ValueError
             # self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
         # else:
         # self._set_response(400)
 
-    def sendPasswordResetEmail(self, UserID: str):
+    def sendPasswordResetEmail(self, UserID: str, UserEmail: str):
         '''
 
         :param UserID: id of user
         :return:
         '''
+        print(UserID, UserEmail)
+        passwordVergessenEmail = EmailSender(UserEmail, UserID)
+        passwordVergessenEmail.sendEmail(messageType.resetPassword)
         return
 
     def changePasswordInDatabase(self, UserID: str, Password: str):
         '''
-
+        hand over UserID and Password to DatabaseHandler method "updatePasswordByUserID"
         :param UserID: id of user
         :param Password: password if user
-        :return:
+        :return: true if transaction was successful
         '''
-        return
+        updatedPassword = DatabaseHandler.updatePasswordByUserID(UserID, Password)
+        return updatedPassword
 
     def deleteUser(self, UserID: str):
         '''
@@ -97,13 +105,13 @@ class AccountManager:
         :param UserID: id of user
         :return: True
         '''
-        self.mDBHandler.deleteUserByID(UserID)
-        return True
+        deletedUser = self.mDBHandler.deleteUserByID(UserID)
+        return deletedUser
 
-    def createRegistrationToken(self, UserID: str) -> str:
+    def confirm_registration_token(self, UserID: str):
         '''
 
         :param UserID:
         :return:
         '''
-        return
+        self.mDBHandler.change_registration_status(userID=UserID)

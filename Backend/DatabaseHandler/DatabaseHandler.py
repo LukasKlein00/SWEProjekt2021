@@ -48,7 +48,7 @@ class DatabaseHandler:
         '''
         cursor = self.databasePath.cursor()
         query = """
-            SELECT UserName, UserID
+            SELECT UserName, UserID, isConfirmed
             From mudcake.User
             WHERE (UserName = %s AND Password = %s)
             """
@@ -56,7 +56,7 @@ class DatabaseHandler:
         cursor.execute(query, variables)
         try:
             queryData = cursor.fetchone()
-            tempuser = User(userID=queryData[1], userName=queryData[0])
+            tempuser = User(userID=queryData[1], userName=queryData[0], confirmation=bool(queryData[2]))
             return tempuser
         except IOError:
             return None
@@ -234,3 +234,18 @@ class DatabaseHandler:
             self.databasePath.commit()
         except IOError:
             pass
+    def change_registration_status(self, userID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    UPDATE mudcake.User
+                    SET isConfirmed = 1
+                    WHERE (UserID = '{userID}')
+                    """
+        try:
+            print("Executing confirmation in database...")
+            cursor.execute(query)
+            self.databasePath.commit()
+            print("Executed")
+            return True
+        except:
+            return False

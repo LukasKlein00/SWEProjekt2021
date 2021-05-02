@@ -3,19 +3,20 @@ import ssl
 from email.message import EmailMessage
 from EmailServices.messageType import messageType
 from EmailServices.fileReader import fileReader
+import socket
 
 
 class EmailSender:
     """Basic class for interaction to User via Email"""
-    def __init__(self, userEmail, token: str = None):
+    def __init__(self, userEmail, userID: str):
         """Constructor for Email Sender to initiate needed parameters
 
         :param userEmail: Email of the recipient - String
         :param token: Token to verify User after email confirmation - String
         """
         self.userEmail = userEmail
-        self.token = token
         self.msg = EmailMessage()
+        self.userID = userID
         self.email = "mudcakegame@gmail.com"
 
     def __sendViaServerContext(self, msg: EmailMessage):
@@ -32,9 +33,21 @@ class EmailSender:
 
         :param mType: type of message to be send - MessageType
         """
+        hostname = socket.gethostname()
+        local_ip = socket.gethostbyname(hostname)
+        print(local_ip)
+
         if mType == messageType.registration:
             contentReader = fileReader("EmailServices/confirmationEmailTemplates/content")
-            self.msg.set_content(contentReader.read())
+            content = contentReader.read()
+            hostname = socket.gethostname()
+
+            if str(socket.gethostbyname(hostname)) != "193.196.54.98":
+                content = content.replace("{Server}", "localhost:4200")
+            else:
+                content = content.replace("{Server}", "193.196.54.98")
+
+            self.msg.set_content(content.replace("{UserToken}", self.userID))
             self.msg["Subject"] = contentReader.overwriteName("EmailServices/confirmationEmailTemplates/subject").read()
             self.msg["From"] = self.email
             self.msg["To"] = self.userEmail

@@ -37,21 +37,30 @@ class HTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])  # <--- Größe der Daten
         post_data_raw = self.rfile.read(content_length)  # <--- Erfasst die Daten
+        print(self.path)
         try:
             data = json.loads(post_data_raw)  # <--Daten als JSON-Objekt
             print(data)
         except:
             data = None
 
+        if self.path == '/confirm':
+            self._set_response()
+            try:
+                self.AccManager.confirm_registration_token(data['token'])
+            except:
+                print("/confirm received but error")
+                pass
+
         if self.path == '/register':
             self._set_response()
-
+            print(self.path)
             try:
                 self.AccManager.registerUser(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
                                     Username=data['username'], Email=data['email'], Password=data['password'],
                                     IsConfirmed=False)
 
-                self.AccManager.send_registration_email(data['email'])
+                self.AccManager.send_registration_email(data['email'], data['userID'])
             except:
                 pass
 
@@ -95,3 +104,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
             print(data)
             self._set_response()
             # self.mDBHandler.copyDungeon(data)
+
+        if self.path == '/forgotPassword':
+            self._set_response()
+            self.AccManager.sendPasswordResetEmail(UserID=data['userID'], UserEmail=data['email'])
+
+        if self.path == '/resetPassword':
+            self._set_response()
+            isPasswordChanged = self.AccManager.changePasswordInDatabase(UserID=data['userID'], Password=data['password'])
+            if not isPasswordChanged:
+                self._set_response(400)

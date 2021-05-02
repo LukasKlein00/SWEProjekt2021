@@ -1,0 +1,4 @@
+
+# sollte folgende Ordner ignorieren...
+*/.idea
+*/__pycache__
