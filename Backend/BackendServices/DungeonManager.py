@@ -13,13 +13,9 @@ from DungeonPackage.Room import Room
 
 
 class DungeonManager:
-    def __init__(self, data):
+    def __init__(self, data=None):
         self.data = data
-        self.managed_dungeon = DungeonData(dungeonId=self.data['dungeonID'],
-                                           dungeonMasterID=self.data['dungeonMasterID'],
-                                           maxPlayers=self.data['maxPlayers'], name=self.data['dungeonName'],
-                                           description=self.data['dungeonDescription'], private=self.data['private'],
-                                           accessList=self.data['accessList'])
+
 
         self.mDBHandler = DatabaseHandler(mysql.connector.connect(
             host="193.196.53.67",
@@ -32,8 +28,15 @@ class DungeonManager:
         self.class_list = []
         self.item_list = []
         self.npc_list = []
-        self.check_for_dungeon_id()
-        self.parse_config_data()
+        if data is not None:
+            self.managed_dungeon = DungeonData(dungeonId=self.data['dungeonID'],
+                                               dungeonMasterID=self.data['dungeonMasterID'],
+                                               maxPlayers=self.data['maxPlayers'], name=self.data['dungeonName'],
+                                               description=self.data['dungeonDescription'],
+                                               private=self.data['private'],
+                                               accessList=self.data['accessList'])
+            self.check_for_dungeon_id()
+            self.parse_config_data()
 
     def parse_config_data(self):
         # TODO: in allen Klassen den Default Wert von DungeonID entfernen, sobald die DungeonID vom Backend generierbar
@@ -56,7 +59,7 @@ class DungeonManager:
 
             checkforname = 'name' in room
             if checkforname:
-                new_room.room_name=room['name']
+                new_room.room_name = room['name']
             else:
                 new_room.room_name = None
 
@@ -123,7 +126,7 @@ class DungeonManager:
     def write_dungeon_to_database(self):
         active_dungeon = ActiveDungeon(rooms=self.room_list, classes=self.class_list, npcs=self.npc_list,
                                        items=self.item_list, dungeonData=self.managed_dungeon, races=self.race_list,
-                                       userIDs=None, characterIDs=None) #Darf das None sein? :D
+                                       userIDs=None, characterIDs=None)  # Darf das None sein? :D
         try:
             self.mDBHandler.saveOrUpdateDungeon(active_dungeon)
             print("Dungeon saved")
@@ -158,7 +161,8 @@ class DungeonManager:
         print(self.class_list)
         for classes in self.class_list:
             try:
-                self.mDBHandler.write_class_to_database(class_object=classes, dungeon_id=self.managed_dungeon.dungeon_id)
+                self.mDBHandler.write_class_to_database(class_object=classes,
+                                                        dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
 
@@ -182,20 +186,36 @@ class DungeonManager:
         print(self.npc_list)
         for npc in self.npc_list:
             try:
-                self.mDBHandler.write_npc_to_database(npc= npc, dungeon_id=self.managed_dungeon.dungeon_id)
+                self.mDBHandler.write_npc_to_database(npc=npc, dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
+
     def _loadDungeonFromDatabase(self):
         ######
         raise NotImplementedError
 
-    def deleteDungeonFromDatabase(self):
-        #######
-        raise NotImplementedError
+    def get_dungeon_by_id(self, user_id_data):
+        return self.mDBHandler.get_dungeon_by_id(user_id_data)
 
-    def copyDungeon(self):
-        #####
-        raise NotImplementedError
+
+    def delete_dungeon(self, dungeon_id):
+        try:
+            self.mDBHandler.delete_dungeon_by_id(dungeon_id)
+        except IOError:
+            pass
+
+    def copy_dungeon(self, dungeon_id):
+        self.room_list = []
+        self.race_list = []
+        self.class_list = []
+        self.item_list = []
+        self.npc_list = []
+        try:
+            items = self.mDBHandler.get_items_by_dungeon_id(dungeon_id)
+            print(items)
+
+        except IOError:
+            pass
 
     def makeDungeonPrivate(self):
         raise NotImplementedError
