@@ -1,6 +1,6 @@
 Dear User,
 please click on the following link to reset you password.
-http://{Server}/resetPassword?token={UserToken}
+http://{Server}/reset?token={UserToken}
 
 Kind regards,
 your MUDCake-Team
