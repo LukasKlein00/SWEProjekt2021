@@ -12,8 +12,8 @@ from DungeonPackage.ActiveDungeon import *
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
-
     AccManager = AccountManager()
+    DungManager = DungeonManager()
 
     # übermittelt Einstellungen "Headers" des Requests
     def _set_response(self, code: int = 200):
@@ -91,7 +91,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/deleteDungeon':
             self._set_response()
-            self.mDBHandler.deleteDungeonByID(data)
+            self.DungManager.deleteDungeonFromDatabase(data['dungeonID'])
 
         if self.path == '/deleteUser':
             self._set_response()

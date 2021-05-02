@@ -5,6 +5,7 @@ class Room:
                  is_start_room: bool = False, north: bool = True, south: bool = True, west: bool = True,
                  east: bool = True,
                  user_ids: [int] = None, npc_id: int = None, item_id: int = None):
+
         self.user_ids = user_ids
         self.coordinate_x = coordinate_x
         self.coordinate_y = coordinate_y
