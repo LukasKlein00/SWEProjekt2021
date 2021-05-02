@@ -127,7 +127,6 @@ export class BuilderComponent implements OnInit {
   selectedClass: Class = this.newClass();
   selectedItem: Item = this.newItem();
   selectedNpc: Npc = this.newNpc();
-  blub;
 
   constructor(
     public toastService: ToastService,
@@ -226,6 +225,7 @@ export class BuilderComponent implements OnInit {
 
 
   toggleRoom(r: Room) {
+    console.log(this.dungeon.rooms)
     if (r.isActive) {
       delete r.isActive;
       delete r.description;
@@ -260,8 +260,8 @@ export class BuilderComponent implements OnInit {
 
 
 
-    const safeDungeon: Dungeon = this.dungeon;
-    safeDungeon.rooms = this.dungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
+    const safeDungeon: Dungeon = Object.assign({},this.dungeon);
+    safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(this.dungeon)

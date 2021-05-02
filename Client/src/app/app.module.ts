@@ -24,6 +24,8 @@ import { CreateCharacterComponent } from './create-character/create-character.co
 import { JoinToastComponent } from './join-toast/join-toast.component';
 import { ProfilComponent } from './profil/profil.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ResetComponent } from './reset/reset.component';
+import { ForgotComponent } from './forgot/forgot.component';
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import { ConfirmComponent } from './confirm/confirm.component';
     JoinToastComponent,
     ProfilComponent,
     ConfirmComponent,
+    ResetComponent,
+    ForgotComponent,
   ],
   imports: [
     BrowserModule,
