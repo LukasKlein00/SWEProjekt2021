@@ -2,7 +2,7 @@ from mysql.connector import MySQLConnection
 
 from DatabaseHandler.User import User
 from DungeonPackage.ActiveDungeon import *
-from DungeonPackage.Character import   *
+from DungeonPackage.Character import *
 from DungeonPackage.Inventory import *
 
 
@@ -10,6 +10,7 @@ class DatabaseHandler:
     '''
     Class for handling Database transactions
     '''
+
     def __init__(self, databasePath: MySQLConnection):
         '''
         constructor for DatabaseHandler
@@ -72,11 +73,11 @@ class DatabaseHandler:
 
     def saveOrUpdateDungeon(self, dungeon: ActiveDungeon):
         cursor = self.databasePath.cursor()
-        query = """
+        query = f"""
         INSERT INTO mudcake.Dungeon
             (DungeonID, DungeonName, DungeonDescription, MaxPlayers, DungeonMasterID, Private)
         VALUES 
-            (%s, %s, %s, %s, %s, %s) 
+            ("{dungeon.dungeonData.dungeon_id}", "{dungeon.dungeonData.name}", "{dungeon.dungeonData.description}", "{dungeon.dungeonData.maxPlayers}", "{dungeon.dungeonData.dungeonMasterID}", "{int(dungeon.dungeonData.private)}") 
         ON DUPLICATE KEY UPDATE 
             DungeonID  = VALUES(DungeonID),
             DungeonName  = VALUES(DungeonName),
@@ -84,12 +85,10 @@ class DatabaseHandler:
             DungeonMasterID  = VALUES(DungeonMasterID),
             Private  = VALUES(Private)
                    """
-        variables = (
-            dungeon.dungeonData.dungeonId, dungeon.dungeonData.name, dungeon.dungeonData.description,
-            dungeon.dungeonData.maxPlayers, dungeon.dungeonData.dungeonMasterID, dungeon.dungeonData.private
-        )
+        """variables = (dungeon.dungeonData.dungeon_id, dungeon.dungeonData.name, dungeon.dungeonData.description,
+                     dungeon.dungeonData.maxPlayers, dungeon.dungeonData.dungeonMasterID, dungeon.dungeonData.private)"""
         try:
-            cursor.execute(query, variables)
+            cursor.execute(query)
             dungeon.dungeonData.dungeonID = cursor.lastrowid
             self.databasePath.commit()
             return dungeon.dungeonData.dungeonID
@@ -168,4 +167,3 @@ class DatabaseHandler:
             return True
         except:
             return False
-

@@ -1,7 +1,9 @@
 class Room:
 
-    def __init__(self, coordinate_x: int, coordinate_y: int, room_id: str, dungeon_id: int, room_description: str, room_name: str,
-                 is_start_room: bool, north: bool = True, south: bool = True, west: bool = True, east: bool = True,
+    def __init__(self, coordinate_x: int, coordinate_y: int, room_id: str, dungeon_id: str = None,
+                 room_description: str = None, room_name: str = None,
+                 is_start_room: bool = None, north: bool = True, south: bool = True, west: bool = True,
+                 east: bool = True,
                  user_ids: [int] = None, npc_id: int = None, item_id: int = None):
         self.user_ids = user_ids
         self.coordinate_x = coordinate_x

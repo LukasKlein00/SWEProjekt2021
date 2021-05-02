@@ -20,10 +20,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fb8bca5-8f53-44b0-aadd-798f596cad9d" name="Default Changelist" comment="Refactored ActiveDungeon.py and DatabaseHandler.py">
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BackendServices/DungeonManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/BackendServices/DungeonManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/DatabaseHandler/DatabaseHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/ActiveDungeon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/Class.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/Class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/DungeonData.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/DungeonData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/Item.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/Item.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/Npc.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/Npc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DungeonPackage/Race.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/Race.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DungeonPackage/Room.py" beforeDir="false" afterPath="$PROJECT_DIR$/DungeonPackage/Room.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/FrontendHandler/HttpHandler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,21 +145,29 @@
     <option name="LAST_COMMIT_MESSAGE" value="added HTTPHandler and programmed DatabaseHandler" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="2539" height="362" key="GridCell.Tab.0.bottom" timestamp="1619896421225">
+    <state width="2103" height="362" key="GridCell.Tab.0.bottom" timestamp="1619914219019">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="362" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421225" />
-    <state width="2539" height="362" key="GridCell.Tab.0.center" timestamp="1619896421224">
+    <state width="2103" height="362" key="GridCell.Tab.0.bottom/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619914219019" />
+    <state width="2103" height="362" key="GridCell.Tab.0.center" timestamp="1619914219019">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="362" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421224" />
-    <state width="2539" height="362" key="GridCell.Tab.0.left" timestamp="1619896421224">
+    <state width="2103" height="362" key="GridCell.Tab.0.center/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619914219019" />
+    <state width="2103" height="362" key="GridCell.Tab.0.left" timestamp="1619914219019">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="362" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421224" />
-    <state width="2539" height="362" key="GridCell.Tab.0.right" timestamp="1619896421224">
+    <state width="2103" height="362" key="GridCell.Tab.0.left/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619914219019" />
+    <state width="2103" height="362" key="GridCell.Tab.0.right" timestamp="1619914219019">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state width="2539" height="362" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896421224" />
+    <state width="2103" height="362" key="GridCell.Tab.0.right/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619914219019" />
+    <state x="1089" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1619896843439">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1089" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619896843439" />
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup" timestamp="1619904457086">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/2560.364.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1619904457086" />
   </component>
 </project>
