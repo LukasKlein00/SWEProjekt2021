@@ -63,7 +63,7 @@ class EmailSender:
             else:
                 content = content.replace("{Server}", "193.196.54.98")
 
-            self.msg.set_content(content.replace("{UserToken}", self.userID))
+            self.msg.set_content(content.replace("{UserToken}", str(self.userID)))
             self.msg["Subject"] = contentReader.overwriteName(
                 "EmailServices/resetPasswordEmailTemplates/subject").read()
             self.msg["From"] = self.email
