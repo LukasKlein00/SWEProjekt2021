@@ -110,3 +110,14 @@ class AccountManager:
         :return:
         '''
         self.mDBHandler.change_registration_status(userID=UserID)
+
+    def check_logged_in_credentials(self, UserID: str, UserName: str):
+        '''
+
+        :param UserID:
+        :param UserName:
+        :return:
+        '''
+        checkUser = User(userName=UserName, userID=UserID)
+        check = self.mDBHandler.checkUser(user=checkUser)
+        return check
