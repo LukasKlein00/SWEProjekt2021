@@ -108,6 +108,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/reset':
             self._set_response()
+            print('data')
+            print(data)
             isPasswordChanged = self.AccManager.changePasswordInDatabase(UserID=data['userID'], Password=data['password'])
             if not isPasswordChanged:
                 self._set_response(400)
