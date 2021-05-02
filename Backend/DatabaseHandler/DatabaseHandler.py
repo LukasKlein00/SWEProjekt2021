@@ -1,9 +1,5 @@
+import mysql
 from mysql.connector import MySQLConnection
-
-from DatabaseHandler.User import User
-from DungeonPackage.ActiveDungeon import *
-from DungeonPackage.Character import *
-from DungeonPackage.Inventory import *
 
 
 class DatabaseHandler:
@@ -11,14 +7,19 @@ class DatabaseHandler:
     Class for handling Database transactions
     '''
 
-    def __init__(self, databasePath: MySQLConnection):
+    def __init__(self):
         '''
         constructor for DatabaseHandler
         :param databasePath: path to database
         '''
-        self.databasePath = databasePath
+        self.databasePath = (mysql.connector.connect(
+            host="193.196.53.67",
+            port="1189",
+            user="jack",
+            password="123123"
+        ))
 
-    def registerUser(self, user: User):
+    def registerUser(self, user):
         '''
         insert user to database after user registration
         :param user: a user object
@@ -40,7 +41,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def loginUser(self, user: User):
+    def loginUser(self, user):
         '''
         checks if user is already in database, when client tries to login
         :param user: user object
@@ -56,22 +57,18 @@ class DatabaseHandler:
         cursor.execute(query, variables)
         try:
             queryData = cursor.fetchone()
-            tempuser = User(userID=queryData[1], userName=queryData[0], confirmation=bool(queryData[2]))
-            return tempuser
+            return queryData
         except IOError:
             return None
-
-    def getFullDungeonByDungeonID(self, dungeonID):
-        raise NotImplementedError
 
     def saveFullDungeon(self, dungeon):
         raise NotImplementedError
 
-    def copyDungeon(self, dungeonID):
+    def copy_dungeon(self, dungeonID):
         newDungeon = self.getFullDungeonByDungeonID(dungeonID)
         # DungeonID austragen und abspeichern!
 
-    def saveOrUpdateDungeon(self, dungeon: ActiveDungeon):
+    def saveOrUpdateDungeon(self, dungeon):
         cursor = self.databasePath.cursor()
         query = f"""
         INSERT INTO mudcake.Dungeon
@@ -85,8 +82,6 @@ class DatabaseHandler:
             DungeonMasterID  = VALUES(DungeonMasterID),
             Private  = VALUES(Private)
                    """
-        """variables = (dungeon.dungeonData.dungeon_id, dungeon.dungeonData.name, dungeon.dungeonData.description,
-                     dungeon.dungeonData.maxPlayers, dungeon.dungeonData.dungeonMasterID, dungeon.dungeonData.private)"""
         try:
             cursor.execute(query)
             dungeon.dungeonData.dungeonID = cursor.lastrowid
@@ -96,7 +91,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def getEverything(self, dungeon: ActiveDungeon):
+    def getEverything(self, dungeon):
         raise NotImplementedError
 
     def getUserByID(self, userID: int):
@@ -122,23 +117,17 @@ class DatabaseHandler:
     def getCharacterByID(self, characterID: int):
         raise NotImplementedError
 
-    def getDungeonByID(self, dungeonID: int):
-        """
-
-        :param dungeonID:
-        :return:
-        """
+    def get_dungeon_by_id(self, user_id: str):
         cursor = self.databasePath.cursor()
         query = f"""
                     SELECT DungeonID, DungeonName, DungeonDescription
                     From mudcake.Dungeon
-                    WHERE (DungeonMasterID = '{dungeonID}' )
+                    WHERE (DungeonMasterID = '{user_id}' )
                     """
         cursor.execute(query)
         try:
             queryData = cursor.fetchall()
             return queryData
-
         except:
             pass
 
@@ -162,34 +151,37 @@ class DatabaseHandler:
         except:
             return False
 
-    def getInventarOfCharacter(self, character: Character):
+    def getInventarOfCharacter(self, character):
         raise NotImplementedError
 
-    def getItemsFromInventar(self, inventory: Inventory):
+    def getItemsFromInventar(self):
         raise NotImplementedError
 
-    def getRoomByCharacterID(self, character: Character):
+    def getRoomByCharacterID(self, character):
         raise NotImplementedError
 
     def userAlreadyInDungeon(self, characterID: int):
         raise NotImplementedError
 
-    def writeGamestateToDatabase(self, dungeon: ActiveDungeon):
+    def writeGamestateToDatabase(self, dungeon):
         raise NotImplementedError
 
-    def writeCharacterToDatabase(self, character: Character):
+    def writeCharacterToDatabase(self, character):
         raise NotImplementedError
 
-    def deleteDungeonByID(self, dungeonID):
+    def delete_dungeon_by_id(self, dungeon_id):
 
         cursor = self.databasePath.cursor()
         query = f"""
                             DELETE
                             From mudcake.Dungeon
-                            WHERE (DungeonID = '{dungeonID}' )
+                            WHERE (DungeonID = '{dungeon_id}' )
                             """
-        cursor.execute(query)
-        self.databasePath.commit()
+        try:
+            cursor.execute(query)
+            self.databasePath.commit()
+        except IOError:
+            pass
 
     def deleteUserByID(self, userID):
         '''
@@ -210,7 +202,7 @@ class DatabaseHandler:
         except:
             return False
 
-    def write_race_to_database(self, race: Race, dungeon_id):
+    def write_race_to_database(self, race, dungeon_id):
         cursor = self.databasePath.cursor()
         query = f"""
                INSERT INTO mudcake.Race
@@ -225,7 +217,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def write_class_to_database(self, class_object: Class, dungeon_id):
+    def write_class_to_database(self, class_object, dungeon_id):
         cursor = self.databasePath.cursor()
         query = f"""
                       INSERT INTO mudcake.Class
@@ -239,7 +231,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def write_room_to_database(self, room: Room, dungeon_id):
+    def write_room_to_database(self, room, dungeon_id):
         cursor = self.databasePath.cursor()
         print("cursor set")
         print(int(room.is_start_room))
@@ -281,7 +273,7 @@ class DatabaseHandler:
         except:
             return False
 
-    def write_npc_to_database(self, npc: Npc, dungeon_id):
+    def write_npc_to_database(self, npc, dungeon_id):
         cursor = self.databasePath.cursor()
         query = f"""
                               INSERT INTO mudcake.Npc
@@ -298,7 +290,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def write_item_to_database(self, item: Item, dungeon_id):
+    def write_item_to_database(self, item, dungeon_id):
         cursor = self.databasePath.cursor()
         query = f"""
                                       INSERT INTO mudcake.ItemTemplate
@@ -307,13 +299,143 @@ class DatabaseHandler:
                                           (%s,%s,%s,%s)
                                       """
         variables = (dungeon_id, item.item_id, item.name, item.description)
-        # "{dungeon_id}", "{item.item_id}", "{item.name}", "{item.description}"
         try:
             cursor.execute(query, variables)
             self.databasePath.commit()
         except IOError:
             pass
 
+    def get_character_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Character
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except IOError:
+            pass
+
+    def get_class_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Class
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+        except IOError:
+            pass
+
+    def get_race_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Race
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except IOError:
+            pass
+
+    def get_npc_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Npc
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except IOError:
+            pass
+
+    def get_room_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Room
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except IOError:
+            pass
+
+    def get_item_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Item
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except IOError:
+            pass
+
+    def get_access_list_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.AccessList
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+
+        except IOError:
+            pass
+
+    def get_dungeon_data_by_dungeon_ID(self, dungeonID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Dungeon
+                    WHERE (dungeonID = '{dungeonID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+        except IOError:
+            pass
+
+    def get_inventory_by_character_ID(self, characterID: str):
+        cursor = self.databasePath.cursor()
+        query = f"""
+                    SELECT *
+                    From mudcake.Inventory
+                    WHERE (characterID = '{characterID}')
+                    """
+        cursor.execute(query)
+        try:
+            queryData = cursor.fetchone()
+            return queryData
+        except IOError:
+            pass
     def checkUser(self, user: User):
         '''
         checks if user is already in database, when client is already logged in
@@ -335,3 +457,65 @@ class DatabaseHandler:
                 return False
         except IOError:
             return False
+
+    def get_items_by_dungeon_id(self, dungeon_id):
+        """
+
+        :param dungeon_id:
+        :type dungeon_id:
+        :return:
+        :rtype:
+        """
+        cursor = self.databasePath.cursor()
+        query=f"""SELECT ItemTemplateID, Name, Description
+            FROM mudcake.ItemTemplate
+            WHERE (DungeonID = '{dungeon_id}')
+            """
+        try:
+            cursor.execute(query)
+            query_data = cursor.fetchall()
+            return query_data
+        except IOError:
+            pass
+
+    def get_npcs_by_dungeon_id(self, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""SELECT *
+                    FROM mudcake.Npc
+                    WHERE (DungeonID ) '{dungeon_id}"""
+        try:
+            query_data = cursor.execute(query)
+            return query_data
+        except IOError:
+            pass
+    def get_classes_by_dungeon_id(self, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""SELECT *
+                    FROM mudcake.Class
+                    WHERE (DungeonID ) '{dungeon_id}"""
+        try:
+            query_data = cursor.execute(query)
+            return query_data
+        except IOError:
+            pass
+
+    def get_rooms_by_dungeon_id(self, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""SELECT *
+                    FROM mudcake.Room
+                    WHERE (DungeonID ) '{dungeon_id}"""
+        try:
+            query_data = cursor.execute(query)
+            return query_data
+        except IOError:
+            pass
+    def get_races_by_dungeon_id(self, dungeon_id):
+        cursor = self.databasePath.cursor()
+        query = f"""SELECT *
+                    FROM mudcake.Race
+                    WHERE (DungeonID ) '{dungeon_id}"""
+        try:
+            query_data = cursor.execute(query)
+            return query_data
+        except IOError:
+            pass
