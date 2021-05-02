@@ -121,6 +121,13 @@ class DungeonManager:
     # dungeon = ActiveDungeon(None, None, None, None, None, None, None, dungeonData=dungeonData)
 
     def write_dungeon_to_database(self):
+        """
+
+        @return:
+        """
+
+
+
         active_dungeon = ActiveDungeon(rooms=self.room_list, classes=self.class_list, npcs=self.npc_list,
                                        items=self.item_list, dungeonData=self.managed_dungeon, races=self.race_list,
                                        userIDs=None, characterIDs=None) #Darf das None sein? :D

@@ -123,6 +123,11 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def getDungeonByID(self, dungeonID: int):
+        """
+
+        :param dungeonID:
+        :return:
+        """
         cursor = self.databasePath.cursor()
         query = f"""
                     SELECT DungeonID, DungeonName, DungeonDescription
