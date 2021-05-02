@@ -1,0 +1,23 @@
+<div class="fluid-container m-5 row justify-content-center">
+    <div class="col-xl-4 col-md-6 col-10">
+        <h2>Forgot Password?</h2>
+        <form [formGroup]="forgotForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" formControlName="email" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.fail">Something went wrong :(</div>
+                    <div *ngIf="f.email.errors.email">Please provide a valid email address</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Reset
+                </button>
+                <a routerLink="/login" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

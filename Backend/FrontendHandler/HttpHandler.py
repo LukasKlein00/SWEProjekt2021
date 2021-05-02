@@ -101,3 +101,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
             print(data)
             self._set_response()
             # self.mDBHandler.copyDungeon(data)
+
+        if self.path == '/forgotPassword':
+            self._set_response()
+            self.AccManager.sendPasswordResetEmail(UserID=data['userID'], UserEmail=data['email'])
+
+        if self.path == '/resetPassword':
+            self._set_response()
+            isPasswordChanged = self.AccManager.changePasswordInDatabase(UserID=data['userID'], Password=data['password'])
+            if not isPasswordChanged:
+                self._set_response(400)

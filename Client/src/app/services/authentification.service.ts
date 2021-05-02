@@ -46,6 +46,14 @@ export class AuthentificationService {
   }
 
   confirm(token) {
-    return this.http.post(`${this.apiUrl}/confirm`, token);
+    return this.http.post(`${this.apiUrl}/confirm`, {token});
+  }
+
+  reset(token) {
+    return this.http.post(`${this.apiUrl}/reset`, {token});
+  }
+
+  forgot(email) {
+    return this.http.post(`${this.apiUrl}/forgot`, email);
   }
 }
