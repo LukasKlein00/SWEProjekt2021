@@ -86,7 +86,8 @@ class AccountManager:
         '''
         print(UserEmail)
         userID = self.mDBHandler.getUserIdByEmail(UserEmail)
-        print("holt user id aus db" + userID)
+        print("userID:")
+        print(userID)
         passwordVergessenEmail = EmailSender(UserEmail, userID)
         passwordVergessenEmail.sendEmail(messageType.resetPassword)
         return
