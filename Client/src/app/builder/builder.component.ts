@@ -13,7 +13,6 @@ import { ToastService } from '../services/toast.service';
 export class BuilderComponent implements OnInit {
 
   loading = false;
-  privateSlider = false;
   requests: requestForMaster[] = [
     {
       request: 'kill Spider',

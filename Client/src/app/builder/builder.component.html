@@ -56,7 +56,7 @@
     
                             <button class="btn btn-outline-success m-2" (click)="increaseDungeon()">increase Map</button>
                             <button class="btn btn-outline-danger m-2" (click)="decreaseDungeon()">decrease Map</button>
-                            <mat-slide-toggle [(ngModel)]="privateSlider" class="m-3">private</mat-slide-toggle>
+                            <mat-slide-toggle [(ngModel)]="this.dungeon.private" class="m-3">private</mat-slide-toggle>
     
                             <div class="float-right">
                                 <button (click)="saveDungeon()" class="btn btn-primary m-1">save MUD</button>
