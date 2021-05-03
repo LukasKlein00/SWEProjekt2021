@@ -48,14 +48,49 @@ class DungeonManager:
         # TODO: in allen Klassen den Default Wert von DungeonID entfernen, sobald die DungeonID vom Backend generierbar
         #  ist. IDs von Dungeondaten eventuell doch über autoincrement in Datenbank vornehmen.
         # accessList = AccessList()
-        room_data = self.data['rooms']
+
         race_data = self.data['races']
-        class_data = self.data['classes']
         items_data = self.data['items']
         npcs_data = self.data['npcs']
+        room_data = self.data['rooms']
+        class_data = self.data['classes']
 
         # for dataForUser in data['accessList']:
         # accessList.addUserToAccessList(dataForUser['user'], dataForUser['isAllowed'])
+
+        for race in race_data:
+            print(race)
+            new_race = Race(race_id=str(uuid.uuid4()), name=race['name'], description=race['description'],
+                            dungeon_id=self.managed_dungeon.dungeon_id)
+            self.race_list.append(new_race)
+
+        for item in items_data:
+            print(item)
+            new_item = Item(item_id=item['itemID'], name=item['name'], description=item['description'])
+            self.item_list.append(new_item)
+
+        for npc in npcs_data:
+            print(npc)
+            new_npc = Npc(npc_id=npc['npcID'], name=npc['name'],
+                          description=npc['description'], dungeon_id=self.managed_dungeon.dungeon_id)
+
+            if npc['equipment'] is None:
+                new_npc.item = None
+            else:
+                new_npc.item = npc['equipment']['itemID']
+                print(npc['equipment']['itemID'])
+            self.npc_list.append(new_npc)
+
+        for classes in class_data:
+            print(classes)
+            new_class = Class(class_id=str(uuid.uuid4()), name=classes['name'], description=classes['description'],
+                              dungeon_id=self.managed_dungeon.dungeon_id)
+            if npc['equipment'] is None:
+                new_class.item = None
+            else:
+                new_class.item = classes['equipment']['itemID']
+                print(classes['equipment']['itemID'])
+            self.class_list.append(new_class)
 
         for room in room_data:
             print(room)
@@ -83,46 +118,17 @@ class DungeonManager:
 
             check_for_npc = 'npc' in room
             if check_for_npc:
-                new_room.npc_id = room['Npc']
+                new_room.npc_id = room['npc']['npcID']
             else:
                 new_room.npc_id = None
 
             check_for_item = 'item' in room
             if check_for_item:
-                new_room.item_id = room['Item']
+                new_room.item_id = room['item']['itemID']
             else:
                 new_room.item_id = None
 
             self.room_list.append(new_room)
-            """room_list.append(
-                Room(coordinate_x=room['x'], coordinate_y=room['y'], room_id=(str(uuid.uuid4())),
-                     dungeon_id=data['dungeonID'],
-                     room_description=room['description'], room_name=room['name'], is_start_room=room['isStartRoom'],
-                     north=(bool(room['north'])), south=(bool(room['south'])), west=(bool(room['west'])),
-                     east=bool((room['east']))))"""
-
-        for race in race_data:
-            print(race)
-            new_race = Race(race_id=str(uuid.uuid4()), name=race['name'], description=race['description'],
-                            dungeon_id=self.managed_dungeon.dungeon_id)
-            self.race_list.append(new_race)
-
-        for classes in class_data:
-            print(classes)
-            new_class = Class(class_id=str(uuid.uuid4()), name=classes['name'], description=classes['description'],
-                              dungeon_id=self.managed_dungeon.dungeon_id)
-            self.class_list.append(new_class)
-
-        for item in items_data:
-            print(item)
-            new_item = Item(item_id=str(uuid.uuid4()), name=item['name'], description=item['description'])
-            self.item_list.append(new_item)
-
-        for npc in npcs_data:
-            print(npc)
-            new_npc = Npc(npc_id=str(uuid.uuid4()), name=npc['name'], item=npc['equipment'],
-                          description=npc['description'], dungeon_id=self.managed_dungeon.dungeon_id)
-            self.npc_list.append(new_npc)
 
     # dungeonData = DungeonData(dungeonId=(str(uuid.uuid4())), dungeonMasterID=data['dungeonMasterID'],
     # name=data['dungeonName'], description=data['dungeonDescription'],
@@ -139,17 +145,19 @@ class DungeonManager:
         try:
             self.mDBHandler.saveOrUpdateDungeon(active_dungeon)
             print("Dungeon saved")
-            self._write_race_to_database()
+           #for data in active_dungeon.races:
+           #    print(data.name)
+            self._write_races_to_database()
             print("Races saved")
-            self._write_class_to_database()
+            self._write_items_to_database()
+            print("Items saved")
+            self._write_classes_to_database()
             print("Classes saved")
+            self._write_npcs_to_database()
+            print("Npcs saved")
             print(self.room_list)
             self._write_rooms_to_database()
             print("Rooms saved")
-            self._write_items_to_database()
-            print("Items saved")
-            self._write_npcs_to_database()
-            print("Npcs saved")
             return self.managed_dungeon.dungeon_id
         except:
             pass
@@ -161,7 +169,7 @@ class DungeonManager:
         if self.managed_dungeon.dungeon_id is None:
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
 
-    def _write_race_to_database(self):
+    def _write_races_to_database(self):
         """
         writes Races to Database
         """
@@ -172,7 +180,7 @@ class DungeonManager:
             except IOError:
                 pass
 
-    def _write_class_to_database(self):
+    def _write_classes_to_database(self):
         """
         writes Classes to Database
         """

@@ -338,12 +338,13 @@ class DatabaseHandler:
         '''
 
         query = f"""
-                                      INSERT INTO mudcake.ItemTemplate
-                                          (DungeonID, ItemTemplateID, Name, Description)
+                                      INSERT INTO mudcake.Item
+                                          (DungeonID, ItemID, Name, Description)
                                       VALUES 
                                           (%s,%s,%s,%s)
                                       """
         variables = (dungeon_id, item.item_id, item.name, item.description)
+
         try:
             self.cursor.execute(query, variables)
             self.databasePath.commit()

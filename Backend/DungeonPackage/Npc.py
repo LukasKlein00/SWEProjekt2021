@@ -3,7 +3,7 @@ from DatabaseHandler.DatabaseHandler import *
 
 
 class Npc:
-    def __init__(self, npc_id: str, dungeon_id: str, item: Item = None, name: str = None, description: str = None ):
+    def __init__(self, npc_id: str, dungeon_id: str, item: str = None, name: str = None, description: str = None ):
         self.npc_id = npc_id
         self.item = item
         self.name = name
