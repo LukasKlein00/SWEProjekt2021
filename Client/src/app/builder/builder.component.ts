@@ -14,7 +14,6 @@ export class BuilderComponent implements OnInit {
 
   loading = false;
   privateSlider = false;
-  maxPlayerOptions = [3, 4, 5, 6, 7, 8, 9, 10]
   requests: requestForMaster[] = [
     {
       request: 'kill Spider',
