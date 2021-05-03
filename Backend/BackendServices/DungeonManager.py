@@ -240,7 +240,33 @@ class DungeonManager:
         self.npc_list = []
         try:
             items = self.mDBHandler.get_items_by_dungeon_id(dungeon_id)
-            print(items)
+            self.item_list.__add__(items)
+            print("Item List:")
+            print(self.item_list)
+            
+            rooms = self.mDBHandler.get_room_by_dungeon_id(dungeon_id)
+            self.room_list.__add__(rooms)
+            print("Room List:")
+            print(self.room_list)
+
+            race = self.mDBHandler.get_race_by_dungeon_id(dungeon_id)
+            self.race_list.__add__(race)
+            print("Race List:")
+            print(self.race_list)
+
+            classes = self.mDBHandler.get_class_by_dungeon_ID(dungeonID)
+            self.class_list.__add__(classes)
+            print("Class List:")
+            print(self.class_list)
+
+            npc = self.mDBHandler.get_npc_by_dungeon_ID(dungeonID)
+            self.npc_list.__add__(npc)
+            print("NPC List:")
+            print(self.class_list)
+
+            dungeon = self.mDBHandler.get_dungeon_data_by_dungeon_ID(dungeonID)
+            print("Dungeon:")
+            print(dungeon)
 
         except IOError:
             pass
