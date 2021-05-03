@@ -9,8 +9,9 @@ import socket
 class EmailSender:
     """Basic class for interaction to User via Email"""
     def __init__(self, userEmail, userID: str):
-        """Constructor for Email Sender to initiate needed parameters
-
+        """
+        Constructor for Email Sender to initiate needed parameters
+        
         :param userEmail: Email of the recipient - String
         :param token: Token to verify User after email confirmation - String
         """

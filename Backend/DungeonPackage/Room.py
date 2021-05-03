@@ -1,7 +1,4 @@
 class Room:
-    """
-    
-    """
     def __init__(self, coordinate_x: int, coordinate_y: int, room_id: str, dungeon_id: str = None,
                  room_description: str = None, room_name: str = None,
                  is_start_room: bool = False, north: bool = True, south: bool = True, west: bool = True,
