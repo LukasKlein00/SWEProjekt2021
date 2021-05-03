@@ -2,7 +2,7 @@ from DatabaseHandler.DatabaseHandler import *
 
 
 class Item:
-    def __init__(self, item_id: str, name: str, description: str, dungeon_id: str = None):
+    def __init__(self, item_id: str= None, name: str= None, description: str= None, dungeon_id: str = None):
         self.item_id = item_id
         self.name = name
         self.description = description

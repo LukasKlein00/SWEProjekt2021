@@ -36,7 +36,9 @@ class DungeonManager:
                                                description=self.data['dungeonDescription'],
                                                private=self.data['private'],
                                                accessList=self.data['accessList'])
+
             self.check_for_dungeon_id()
+            print("constructor:" + self.managed_dungeon.dungeon_id)
             self.parse_config_data()
         else:
             self.managed_dungeon = DungeonData()
@@ -60,13 +62,25 @@ class DungeonManager:
 
         for race in race_data:
             print(race)
-            new_race = Race(race_id=str(uuid.uuid4()), name=race['name'], description=race['description'],
+
+            new_race = Race(name=race['name'], description=race['description'],
                             dungeon_id=self.managed_dungeon.dungeon_id)
+
+            check_for_race_id = 'raceID' in race
+            if check_for_race_id:
+                new_race.race_id = race['raceID']
+            else:
+                new_race.race_id = str(uuid.uuid4())
             self.race_list.append(new_race)
 
         for item in items_data:
             print(item)
-            new_item = Item(item_id=item['itemID'], name=item['name'], description=item['description'])
+            new_item = Item(name=item['name'], description=item['description'])
+            check_for_item_id = 'itemID' in item
+            if check_for_item_id:
+                new_item.item_id = item['itemID']
+            else:
+                new_item.item_id = str(uuid.uuid4())
             self.item_list.append(new_item)
 
         for npc in npcs_data:
@@ -78,32 +92,43 @@ class DungeonManager:
                 new_npc.item = None
             else:
                 new_npc.item = npc['equipment']['itemID']
-                print(npc['equipment']['itemID'])
             self.npc_list.append(new_npc)
 
         for classes in class_data:
             print(classes)
-            new_class = Class(class_id=str(uuid.uuid4()), name=classes['name'], description=classes['description'],
+            new_class = Class(name=classes['name'], description=classes['description'],
                               dungeon_id=self.managed_dungeon.dungeon_id)
-            if npc['equipment'] is None:
-                new_class.item = None
+
+            check_for_class_id= 'classID' in classes
+            if check_for_class_id:
+                new_class.class_id = classes['classID']
             else:
-                new_class.item = classes['equipment']['itemID']
+                new_class.class_id = str(uuid.uuid4())
+
+            if classes['equipment'] is None:
+                new_class.item_id = None
+            else:
+                new_class.item_id = classes['equipment']['itemID']
                 print(classes['equipment']['itemID'])
             self.class_list.append(new_class)
 
         for room in room_data:
             print(room)
             new_room = Room(coordinate_x=room['x'], coordinate_y=room['y'], north=room['north'], east=room['east'],
-                            south=room['south'], west=room['west'], room_id=str(uuid.uuid4()),
-                            dungeon_id=self.managed_dungeon.dungeon_id)
+                            south=room['south'], west=room['west'], dungeon_id=self.managed_dungeon.dungeon_id)
 
             checkforname = 'name' in room
+            check_for_room_id = 'roomID' in room
+            if check_for_room_id:
+                new_room.room_id = room['roomID']
+                print("roomID assigned")
+            else:
+                new_room.room_id = str(uuid.uuid4())
+                print("roomID generated!")
             if checkforname:
                 new_room.room_name = room['name']
             else:
                 new_room.room_name = None
-
             checkfordescription = 'description' in room
             if checkfordescription:
                 new_room.room_description = room['description']
@@ -130,11 +155,6 @@ class DungeonManager:
 
             self.room_list.append(new_room)
 
-    # dungeonData = DungeonData(dungeonId=(str(uuid.uuid4())), dungeonMasterID=data['dungeonMasterID'],
-    # name=data['dungeonName'], description=data['dungeonDescription'],
-    # maxPlayers=data['maxPlayers'], private=data['private'], accessList=accessList)
-    # dungeon = ActiveDungeon(None, None, None, None, None, None, None, dungeonData=dungeonData)
-
     def write_dungeon_to_database(self):
         """
         writes whole Dungeon to Database
@@ -158,6 +178,7 @@ class DungeonManager:
             print(self.room_list)
             self._write_rooms_to_database()
             print("Rooms saved")
+            print("write dungeon to database: self.managed_dungeon.dungeon_id")
             return self.managed_dungeon.dungeon_id
         except:
             pass

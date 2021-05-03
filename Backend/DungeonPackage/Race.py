@@ -3,7 +3,7 @@ from DatabaseHandler.DatabaseHandler import *
 
 class Race:
 
-    def __init__(self, race_id: str, name: str, description: str, dungeon_id: str):
+    def __init__(self, race_id: str = None, name: str = None, description: str= None, dungeon_id: str= None):
         self.race_id = race_id
         self.name = name
         self.description = description

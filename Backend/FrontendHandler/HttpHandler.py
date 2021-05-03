@@ -98,8 +98,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
                                              private=data['private'],
                                              dungeonMasterID=data['dungeonMasterID'])"""
             dungeon_manager = DungeonManager(data)
+            print("successfully created DungeonManager!")
             dungeon_id = dungeon_manager.write_dungeon_to_database()
-            self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
+            print("successfully executed Database transaction! Dungeon ID: " + dungeon_id)
+            try:
+                self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
+            except IOError:
+                pass
             # noch items und so abspeichern
 
         if self.path == '/deleteDungeon':

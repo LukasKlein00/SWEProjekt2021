@@ -229,6 +229,8 @@ class DatabaseHandler:
                    (DungeonID, RaceID, Name, Description)
                VALUES 
                    ("{dungeon_id}", "{race.race_id}", "{race.name}", "{race.description}")
+                ON DUPLICATE KEY UPDATE
+                DungeonID=VALUES(DungeonID), RaceID=VALUES(RaceID), Name=VALUES(Name), Description=VALUES(Description)
                """
 
         try:
@@ -246,10 +248,13 @@ class DatabaseHandler:
 
         query = f"""
                       INSERT INTO mudcake.Class
-                          (DungeonID, ClassID, Name, Description)
+                          (DungeonID, ClassID, Name, Description, ItemID)
                       VALUES 
                           ("{dungeon_id}", "{class_object.classID}", "{class_object.name}", 
-                            "{class_object.description}")
+                            "{class_object.description}, "{class_object.item_id}")
+                    ON DUPLICATE KEY UPDATE
+                    DungeonID = VALUES(DungeonID), ClassID=VALUES(ClassID), Name=VALUES(Name), 
+                            Description=VALUES(Description), ItemID = VALUES(ItemID)
                       """
         try:
             self.cursor.execute(query)
@@ -272,6 +277,9 @@ class DatabaseHandler:
                                     North, East, South, West, isStartingRoom, NpcID, ItemID)
                              VALUES 
                                  (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                            ON DUPLICATE KEY UPDATE
+                            DungeonID = VALUES(DungeonID), RoomID = VALUES(RoomID), Name = VALUES(Name), Description = VALUES(Description), CoordinateX = VALUES(CoordinateX), CoordinateY=VALUES(CoordinateY),
+                            North=VALUES(North),East=VALUES(East),South=VALUES(South),West=VALUES(West),isStartingRoom=VALUES(isStartingRoom),NpcID=VALUES(NpcID),ItemID=VALUES(ItemID)
                              """
         variables = (
             dungeon_id, room.room_id, room.room_name, room.room_description, room.coordinate_x, room.coordinate_y,
@@ -319,6 +327,8 @@ class DatabaseHandler:
                                   (DungeonID, NpcID, Name, Description, ItemID)
                               VALUES 
                                 (%s,%s,%s,%s,%s)
+                            ON DUPLICATE KEY UPDATE
+                            DungeonID = VALUES(DungeonID), NpcID = VALUES(NpcID), Name = VALUES(Name), Description = VALUES(Description), ItemID = VALUES(ItemID)
     
                               """
         variables = (dungeon_id, npc.npc_id, npc.name, npc.description, npc.item)
@@ -340,6 +350,8 @@ class DatabaseHandler:
                                           (DungeonID, ItemID, Name, Description)
                                       VALUES 
                                           (%s,%s,%s,%s)
+                                    ON DUPLICATE KEY UPDATE 
+                                    DungeonID = VALUES(DungeonID), ItemID = VALUES(ItemID), Name = VALUES(Name), Description =VALUES(Description)
                                       """
         variables = (dungeon_id, item.item_id, item.name, item.description)
 

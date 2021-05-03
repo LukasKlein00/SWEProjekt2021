@@ -2,7 +2,7 @@ from DatabaseHandler.DatabaseHandler import *
 
 
 class Inventory:
-    def __init__(self, inventoryID: str, characterID: int, ItemIDs: [int] = None):
+    def __init__(self, inventoryID: str= None, characterID: int= None, ItemIDs: [int] = None):
         self.inventoryID = inventoryID
         self.characterID = characterID
         self.ItemIDs = ItemIDs
