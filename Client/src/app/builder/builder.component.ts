@@ -281,7 +281,9 @@ export class BuilderComponent implements OnInit {
   }
 
   getRooms(id) {
-    this.httpService.getRooms(id).subscribe(res => this.dungeon.rooms = res as Room[])
+    this.httpService.getRooms(id).subscribe(res => {
+      this.dungeon.rooms = res as Room[] ?? [];
+    });
   }
 
   getRaces() {
@@ -321,9 +323,11 @@ export class BuilderComponent implements OnInit {
       this.dungeon.dungeonMasterID =res[0][1];
       this.dungeon.dungeonName = res[0][2];
       this.dungeon.dungeonDescription = res[0][3];
-      this.dungeon.private = res[0][4];
+      this.dungeon.private = Boolean(res[0][4]).valueOf();
       this.dungeon.maxPlayers = res[0][5];
       this.loading = false;
+
+      console.log(this.dungeon);
     })
   }
 }
