@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="card col-12-min-map">
+        <div class="card bg-dark col-12-min-map">
             <div class="">
                 <nav>
                     <h2 class="text-center p-0 m-1">Overview</h2>
@@ -56,7 +56,7 @@
     
                             <button class="btn btn-outline-success m-2" (click)="increaseDungeon()">increase Map</button>
                             <button class="btn btn-outline-danger m-2" (click)="decreaseDungeon()">decrease Map</button>
-                            <mat-slide-toggle [(ngModel)]="privateSlider" class="m-3">private</mat-slide-toggle>
+                            <mat-slide-toggle [(ngModel)]="this.dungeon.private" class="m-3">private</mat-slide-toggle>
     
                             <div class="float-right">
                                 <button (click)="saveDungeon()" class="btn btn-primary m-1">save MUD</button>
@@ -176,11 +176,11 @@
             </div>
         </div>
 
-        <div class="col-12 requests card">
+        <div class="col-12 requests card bg-dark">
             <div class="card-body">
                 <h3>Requests</h3>
                 <div class="row">
-                    <div class="card col-4" *ngFor="let request of requests; let i = index">
+                    <div class="card col-4 bg-dark" *ngFor="let request of requests; let i = index">
                         <div class="card-body">
                             <nav>
                                 <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">
@@ -201,7 +201,7 @@
                                         <span class="font-weight-bold">{{request.requester.name}}</span>
                                         <meter id="health" min="0" max="100" low="30" high="75" optimum="80"
                                             value="{{request.requester.health}}" style="margin-left: 10px;"></meter>
-                                        <button class="btn-dark float-right m-2"
+                                        <button class="btn-success float-right m-2"
                                             (click)="submitRequest(request)">Submit</button>
                                     </div>
                                     <div>Mensch, Scout</div>

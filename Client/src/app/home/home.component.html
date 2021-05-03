@@ -6,7 +6,7 @@
                     <ng-option [value]="filter" *ngFor="let filter of filters">{{filter}}</ng-option>
                 </ng-select>
             </div>
-            <div *ngFor="let dungeon of availableMUDs" class="card m-2 shadow text-white bg-dark max-col-4">
+            <div *ngFor="let dungeon of availableMUDs" class="card m-2 bg-dark max-col-4 card-backdrop">
                 <div class="card-body">
                     <h5>{{dungeon.dungeonName}} <span *ngIf="dungeon.private" class="badge badge-danger">private</span>  </h5>
                     <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
@@ -17,14 +17,14 @@
         </div> 
         <div class="col-3 row">
             <h3 class="col-12">My MUDs</h3>
-            <div class="card text-white bg-dark col-12 m-2">
+            <div class="card bg-dark col-12 m-2 card-backdrop">
                 <div class="card-body">
                     <h5>Create A New MUD</h5>
                     <button class="btn btn-primary"  routerLink="/builder">Create</button>
                 </div>
             </div>
 
-            <div *ngFor="let dungeon of myMUDs" class="card text-white bg-dark col-12 m-2">
+            <div *ngFor="let dungeon of myMUDs" class="card bg-dark col-12 m-2 card-backdrop">
                 <div class="card-body">
                     <h5 class="line-clamp-1">{{dungeon.dungeonName}}</h5>
                     <div class="line-clamp-3">{{dungeon.dungeonDescription}}</div>
