@@ -257,11 +257,11 @@ class DungeonManager:
             print("Dungeon:")
             print(dungeon)
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
-            self.managed_dungeon.dungeonMasterID = dungeon[1]
-            self.managed_dungeon.name = dungeon[2] + " - copy"
-            self.managed_dungeon.description = dungeon[3]
-            self.managed_dungeon.private = dungeon[4]
-            self.managed_dungeon.maxPlayers = dungeon[5]
+            self.managed_dungeon.dungeonMasterID = dungeon[0][1]
+            self.managed_dungeon.name = dungeon[0][2] + " - copy"
+            self.managed_dungeon.description = dungeon[0][3]
+            self.managed_dungeon.private = dungeon[0][4]
+            self.managed_dungeon.maxPlayers = dungeon[0][5]
 
             items = self.mDBHandler.get_item_by_dungeon_id(dungeon_id)
             for item in items:
