@@ -12,6 +12,7 @@ import { ToastService } from '../services/toast.service';
 })
 export class BuilderComponent implements OnInit {
 
+  loading = false;
   privateSlider = false;
   maxPlayerOptions = [3, 4, 5, 6, 7, 8, 9, 10]
   requests: requestForMaster[] = [
@@ -244,7 +245,7 @@ export class BuilderComponent implements OnInit {
   }
 
   saveDungeon() {
-
+    this.loading = true;
 
 
     const safeDungeon: Dungeon = Object.assign({}, this.dungeon);
@@ -254,6 +255,7 @@ export class BuilderComponent implements OnInit {
     this.httpService.saveOrUpdateDungeon(safeDungeon)
       .subscribe(response => {
         this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
+        this.loading = false;
       });
 
   }
