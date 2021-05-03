@@ -44,3 +44,32 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: $primary-background-color;
     color: $primary-text-color;
 }
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.max-col-6 {
+    max-width: 50%;
+}
+
+.max-col-4 {
+    max-width: 33.333333%;
+}

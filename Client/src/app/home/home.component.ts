@@ -11,11 +11,11 @@ export class HomeComponent implements OnInit {
 
   loading = false;
   availableMUDs: Dungeon[] = [{
-    dungeonName: 'Dummydungeon',
-    dungeonDescription: 'Explore the amazing World of Suburbia',
+    dungeonName: "Jack's mega cooler TestDungeon",
+    dungeonDescription: 'Es war einmal vor langer Zeit ein nettes SWE Projekt, welches dafür sorgt, das mal ganz viel Erfahrung sammelt und sein Leben einfach genießt',
     dungeonID: "1",
     maxPlayers: 10,
-    currentPlayers: 2,
+    currentPlayers: 5,
     dungeonMasterID: "3",
     private: true,
   },
