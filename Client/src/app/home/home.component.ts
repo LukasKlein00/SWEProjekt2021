@@ -81,7 +81,8 @@ export class HomeComponent implements OnInit {
             dungeonID: response[key][0],
             dungeonName: response[key][1],
             dungeonDescription: response[key][2]
-          });})
+          });});
+          this.myMUDs.sort((a,b) => a.dungeonName.localeCompare(b.dungeonName));
         });
     }
   }
