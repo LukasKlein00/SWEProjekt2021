@@ -42,8 +42,8 @@ class AccountManager:
 
     def send_registration_email(self, email: str, userID: str):
         '''
+        sends registration email
         :param UserID: id of user
-        :return:
         '''
         print(email)
         email_sender = EmailSender(userEmail=email, userID=userID)
@@ -105,18 +105,17 @@ class AccountManager:
 
     def confirm_registration_token(self, UserID: str):
         '''
-
-        :param UserID:
-        :return:
+        takes userID and change the isConfirmed field in Database from False to True
+        :param UserID: id of user
         '''
         self.mDBHandler.change_registration_status(userID=UserID)
 
     def check_logged_in_credentials(self, UserID: str, UserName: str):
         '''
-
-        :param UserID:
-        :param UserName:
-        :return:
+        checks if user is already in database, when client is already logged in
+        :param UserID: id of user
+        :param UserName: username
+        :return: return true if successful
         '''
         checkUser = User(userName=UserName, userID=UserID)
         check = self.mDBHandler.checkUser(user=checkUser)
