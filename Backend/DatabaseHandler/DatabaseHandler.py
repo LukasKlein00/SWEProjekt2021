@@ -6,7 +6,6 @@ class DatabaseHandler:
     """
     Class for handling Database transactions
     """
-
     def __init__(self):
         """
         constructor for DatabaseHandler
@@ -26,7 +25,6 @@ class DatabaseHandler:
         :param user: a user object
         :return: nothing
         """
-
         query = """
             INSERT INTO mudcake.User
                     (UserID ,FirstName, LastName, UserName, Password, Email, isConfirmed)
@@ -465,7 +463,8 @@ class DatabaseHandler:
                     """
         self.cursor.execute(query)
         try:
-            queryData = self.cursor.fetchone()
+            queryData = self.cursor.fetchall()
+            print(queryData)
             return queryData
         except IOError:
             pass

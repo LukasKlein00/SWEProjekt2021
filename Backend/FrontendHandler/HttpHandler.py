@@ -80,10 +80,16 @@ class HTTPHandler(BaseHTTPRequestHandler):
             dungeons = dungeon_manager.get_dungeon_by_id(data)
             self.wfile.write(json.dumps(dungeons).encode(encoding='utf_8'))
 
-        if self.path == '/getRooms':
+        if self.path == '/getDungeon':
             self._set_response()
             dungeon_manager = DungeonManager()
-            rooms = dungeon_manager.get
+            dungeon = dungeon_manager.get_dungeon_data_by_dungeon_id(data)
+            self.wfile.write(json.dumps(dungeon).encode(encoding='utf_8'))
+
+        if self.path == '/getRooms':
+            self._set_response()
+            #dungeon_manager = DungeonManager()
+            #rooms = dungeon_manager.get
 
         if self.path == '/saveDungeon':
             self._set_response()
