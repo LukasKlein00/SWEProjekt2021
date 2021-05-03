@@ -315,7 +315,16 @@ export class BuilderComponent implements OnInit {
   }
 
   getDungeon(id) {
-    this.httpService.getDungeon(id).subscribe(res => this.dungeon = res) //eigentlich nur beschreibung
+    this.loading = true;
+    this.httpService.getDungeon(id).subscribe(res => {
+      this.dungeon.dungeonID = res[0][0];
+      this.dungeon.dungeonMasterID =res[0][1];
+      this.dungeon.dungeonName = res[0][2];
+      this.dungeon.dungeonDescription = res[0][3];
+      this.dungeon.private = res[0][4];
+      this.dungeon.maxPlayers = res[0][5];
+      this.loading = false;
+    })
   }
 }
 
