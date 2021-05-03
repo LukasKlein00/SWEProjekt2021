@@ -427,8 +427,8 @@ class DatabaseHandler:
     def get_item_by_dungeon_id(self, dungeonID: str):
 
         query = f"""
-                    SELECT ItemTemplateID, Name, Description
-                    From mudcake.ItemTemplate
+                    SELECT ItemID, Name, Description
+                    From mudcake.Item
                     WHERE (DungeonID = '{dungeonID}')
                     """
         self.cursor.execute(query)
@@ -464,7 +464,6 @@ class DatabaseHandler:
         self.cursor.execute(query)
         try:
             queryData = self.cursor.fetchall()
-            print(queryData)
             return queryData
         except IOError:
             pass
