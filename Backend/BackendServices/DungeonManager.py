@@ -239,6 +239,7 @@ class DungeonManager:
         return self.mDBHandler.get_dungeon_data_by_dungeon_id(dungeon_id)
 
 
+
     def delete_dungeon(self, dungeon_id):
         try:
             self.mDBHandler.delete_dungeon_by_id(dungeon_id)

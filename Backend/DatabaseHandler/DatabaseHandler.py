@@ -464,6 +464,7 @@ class DatabaseHandler:
         self.cursor.execute(query)
         try:
             queryData = self.cursor.fetchall()
+            queryData[4] = str(bool(queryData[4]))
             print(queryData)
             return queryData
         except IOError:
