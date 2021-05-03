@@ -35,8 +35,7 @@ export class LoginComponent implements OnInit {
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    this.emailConfirm = this.route.snapshot.queryParams['registered'];
-    console.log(this.emailConfirm); 
+    this.emailConfirm = this.route.snapshot.queryParams['registered']; 
   }
 
   // convenience getter for easy access to form fields

@@ -21,10 +21,6 @@ export class HttpService {
     return this.http.post(`${this.apiUrl}/getMyDungeons`,JSON.stringify(JSON.parse(localStorage.getItem('currentUser')).userID));
   }
 
-  getDungeon(id) {
-    return this.http.post(`${this.apiUrl}/getDungeon`, JSON.stringify(id));
-  }
-
   deleteDungeon(id) {
     return this.http.post(`${this.apiUrl}/deleteDungeon`, JSON.stringify(id));
   }
@@ -35,6 +31,34 @@ export class HttpService {
 
   copyDungeon(id) {
     return this.http.post(`${this.apiUrl}/copyDungeon`, JSON.stringify(id));
+  }
+
+  getDungeon(id) {
+    return this.http.post(`${this.apiUrl}/getDungeon`, JSON.stringify(id));
+  }
+
+  getRooms(id) {
+    return this.http.post(`${this.apiUrl}/getRooms`, JSON.stringify(id));
+  }
+
+  getClasses(id) {
+    return this.http.post(`${this.apiUrl}/getClasses`, JSON.stringify(id));
+  }
+
+  getRaces(id) {
+    return this.http.post(`${this.apiUrl}/getRaces`, JSON.stringify(id));
+  }
+
+  getItems(id) {
+    return this.http.post(`${this.apiUrl}/getItems`, JSON.stringify(id));
+  }
+
+  getNpcs(id) {
+    return this.http.post(`${this.apiUrl}/getNpcs`, JSON.stringify(id));
+  }
+
+  getAccessList(id) {
+    return this.http.post(`${this.apiUrl}/getAccessList`, JSON.stringify(id));
   }
 
 }

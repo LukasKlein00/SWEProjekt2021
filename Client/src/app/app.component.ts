@@ -21,12 +21,9 @@ export class AppComponent implements AfterViewChecked, OnInit{
   
   ngOnInit() {
     if (this.currentUser) {
-      console.log("check");
       this.authentificationService.check().subscribe(response => {
-        console.log("user checked")
       },
       error => {
-        console.log("logging out..")
         this.logout();
       });
     }

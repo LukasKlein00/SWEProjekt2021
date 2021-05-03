@@ -26,7 +26,6 @@ export class ConfirmComponent implements OnInit {
           this.confirm()
      }, 3000);
       }
-      console.log(p)
     })
   }
 
