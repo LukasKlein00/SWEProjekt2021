@@ -48,11 +48,13 @@ export class Class {
 }
 
 export class Item {
+    itemID?: string;
     name: string;
     description: string;
 }
 
 export class Npc {
+    npcID?: string;
     name: string;
     equipment: Item;
     description: string;
