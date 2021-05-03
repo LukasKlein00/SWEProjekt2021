@@ -4,6 +4,7 @@ from http.server import BaseHTTPRequestHandler
 import mysql
 
 from BackendServices.AccountManager import AccountManager
+from BackendServices.DungeonManager import DungeonManager
 from DatabaseHandler.DatabaseHandler import *
 from DatabaseHandler.User import *
 from DungeonPackage.ActiveDungeon import *
@@ -81,11 +82,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/saveDungeon':
             self._set_response()
-            newDungeon = DungeonData(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
-                                     dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'],
-                                     private=data['private'],
-                                     dungeonMasterID=data['dungeonMasterID'])
-            dungeonID = self.mDBHandler.saveOrUpdateDungeon(newDungeon)
+            """newDungeon = DungeonData(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
+                                             dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'],
+                                             private=data['private'],
+                                             dungeonMasterID=data['dungeonMasterID'])"""
+            dungeon_manager = DungeonManager(data)
+            dungeon_id = dungeon_manager.write_dungeon_to_database()
+            self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
             # noch items und so abspeichern
 
         if self.path == '/deleteDungeon':

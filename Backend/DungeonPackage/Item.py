@@ -2,10 +2,11 @@ from DatabaseHandler.DatabaseHandler import *
 
 
 class Item:
-    def __init__(self, item_id: str, name: str, description: str):
+    def __init__(self, item_id: str, name: str, description: str, dungeon_id: str = None):
         self.item_id = item_id
         self.name = name
         self.description = description
+        self.dungeon_id = dungeon_id
         self.mDBHandler = DatabaseHandler()
 
     def loadData(self, dungeonID):

@@ -16,7 +16,7 @@ class DungeonManager:
     """
     class for handling dungeon data
     """
-    def __init__(self, data):
+    def __init__(self, data = None):
         """
         constructor for dungeon manager
         """
@@ -38,6 +38,8 @@ class DungeonManager:
                                                accessList=self.data['accessList'])
             self.check_for_dungeon_id()
             self.parse_config_data()
+        else:
+            self.managed_dungeon = DungeonData()
 
     def parse_config_data(self):
         """
@@ -239,34 +241,54 @@ class DungeonManager:
         self.item_list = []
         self.npc_list = []
         try:
-            items = self.mDBHandler.get_items_by_dungeon_id(dungeon_id)
-            self.item_list.__add__(items)
+            dungeon = self.mDBHandler.get_dungeon_data_by_dungeon_id(dungeon_id)
+            print("Dungeon:")
+            print(dungeon)
+            self.managed_dungeon.dungeon_id = str(uuid.uuid4())
+            self.managed_dungeon.dungeonMasterID = dungeon[1]
+            self.managed_dungeon.name = dungeon[2] + " - copy"
+            self.managed_dungeon.description = dungeon[3]
+            self.managed_dungeon.private = dungeon[4]
+            self.managed_dungeon.maxPlayers = dungeon[5]
+
+            items = self.mDBHandler.get_item_by_dungeon_id(dungeon_id)
+            for item in items:
+                copied_item = Item(item_id=item[0], name=item[1], description=item[2], dungeon_id=self.managed_dungeon.dungeon_id)
+                self.item_list.append(copied_item)
+
             print("Item List:")
             print(self.item_list)
             
             rooms = self.mDBHandler.get_room_by_dungeon_id(dungeon_id)
-            self.room_list.__add__(rooms)
+            for room in rooms:
+                copied_room = Room(room_id=room[0], room_name=room[1], room_description=room[2], coordinate_x=room[3], coordinate_y=room[4], north=room[5], east=room[6], south=room[7], west=room[8], is_start_room=room[9], npc_id=room[10], item_id=room[11], dungeon_id=self.managed_dungeon.dungeon_id)
+                self.room_list.append(copied_room)
             print("Room List:")
             print(self.room_list)
 
-            race = self.mDBHandler.get_race_by_dungeon_id(dungeon_id)
-            self.race_list.__add__(race)
+            races = self.mDBHandler.get_race_by_dungeon_id(dungeon_id)
+            for race in races:
+                copied_race = Race(race_id=race[0], name=race[1], description=race[2], dungeon_id=self.managed_dungeon.dungeon_id)
+                self.race_list.append(copied_race)
             print("Race List:")
             print(self.race_list)
 
-            classes = self.mDBHandler.get_class_by_dungeon_ID(dungeonID)
-            self.class_list.__add__(classes)
+            classes = self.mDBHandler.get_class_by_dungeon_id(dungeon_id)
+            for class_tuple in classes:
+                copied_class = Class(class_id=class_tuple[0], name=class_tuple[1], description=class_tuple[2],dungeon_id=self.managed_dungeon.dungeon_id)
+                self.class_list.append(copied_class)
             print("Class List:")
             print(self.class_list)
 
-            npc = self.mDBHandler.get_npc_by_dungeon_ID(dungeonID)
-            self.npc_list.__add__(npc)
+            npcs = self.mDBHandler.get_npc_by_dungeon_id(dungeon_id)
+            for npc in npcs:
+                copied_npc = Npc(npc_id=npc[0], name=npc[1], description=npc[2], item=npc[3], dungeon_id=self.managed_dungeon.dungeon_id)
+                self.npc_list.append(copied_npc)
             print("NPC List:")
-            print(self.class_list)
+            print(self.npc_list)
 
-            dungeon = self.mDBHandler.get_dungeon_data_by_dungeon_ID(dungeonID)
-            print("Dungeon:")
-            print(dungeon)
+            #TODO: AccessList
+            self.write_dungeon_to_database()
 
         except IOError:
             pass
