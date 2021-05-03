@@ -569,3 +569,15 @@ class DatabaseHandler:
             return query_data
         except IOError:
             pass
+
+    def user_status_on_access_list(self, userID: str, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT IsAllowed
+                                    FROM mudcake.AccessList
+                                    WHERE (DungeonID = %s AND UserID = %s )
+                                    """, (userID, dungeonID))
+        try:
+            return self.cursor.fetchone()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
