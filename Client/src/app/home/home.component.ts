@@ -9,6 +9,7 @@ import { HttpService } from '../services/http.service';
 })
 export class HomeComponent implements OnInit {
 
+  loading = false;
   availableMUDs: Dungeon[] = [{
     dungeonName: 'Dummydungeon',
     dungeonDescription: 'Explore the amazing World of Suburbia',
@@ -83,18 +84,20 @@ export class HomeComponent implements OnInit {
             dungeonDescription: response[key][2]
           });});
           this.myMUDs.sort((a,b) => a.dungeonName.localeCompare(b.dungeonName));
+          this.loading = false
         });
     }
   }
 
   copyDungeon(d: Dungeon) {
+    this.loading = true;
     this.httpService.copyDungeon(d.dungeonID).subscribe((response) => {
-      this.getCreatedDungeons()
-      
+      this.getCreatedDungeons();  
     });;
   }
 
   deleteDungeon(d: Dungeon){
+    this.loading = true;
     this.httpService.deleteDungeon(d.dungeonID).subscribe((response) => {
       this.getCreatedDungeons()
       
