@@ -6,7 +6,6 @@ class DatabaseHandler:
     """
     Class for handling Database transactions
     """
-
     def __init__(self):
         """
         constructor for DatabaseHandler
@@ -26,7 +25,6 @@ class DatabaseHandler:
         :param user: a user object
         :return: nothing
         """
-
         query = """
             INSERT INTO mudcake.User
                     (UserID ,FirstName, LastName, UserName, Password, Email, isConfirmed)
@@ -338,12 +336,13 @@ class DatabaseHandler:
         '''
 
         query = f"""
-                                      INSERT INTO mudcake.ItemTemplate
-                                          (DungeonID, ItemTemplateID, Name, Description)
+                                      INSERT INTO mudcake.Item
+                                          (DungeonID, ItemID, Name, Description)
                                       VALUES 
                                           (%s,%s,%s,%s)
                                       """
         variables = (dungeon_id, item.item_id, item.name, item.description)
+
         try:
             self.cursor.execute(query, variables)
             self.databasePath.commit()
@@ -464,7 +463,8 @@ class DatabaseHandler:
                     """
         self.cursor.execute(query)
         try:
-            queryData = self.cursor.fetchone()
+            queryData = self.cursor.fetchall()
+            print(queryData)
             return queryData
         except IOError:
             pass
@@ -568,3 +568,15 @@ class DatabaseHandler:
             return query_data
         except IOError:
             pass
+
+    def user_status_on_access_list(self, userID: str, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT IsAllowed
+                                    FROM mudcake.AccessList
+                                    WHERE (DungeonID = %s AND UserID = %s )
+                                    """, (userID, dungeonID))
+        try:
+            return self.cursor.fetchone()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
