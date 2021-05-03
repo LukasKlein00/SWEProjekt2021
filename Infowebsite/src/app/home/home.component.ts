@@ -82,6 +82,16 @@ export class HomeComponent implements OnInit {
     'Aufwandserfassung_7_MUDCAKE.xlsx',
   ];
 
+  files8 = [
+    'Storyplanung_MUDCAKE_Version1.xlsx',
+    'Designbeschreibung_MUDCAKE_Version3.pdf',
+    'Testkonzept_MUDCAKE_Version2.pdf'
+  ];
+  files8p = [
+    'Statusbericht_MUDCAKE_Woche8.pdf',
+    'Aufwandserfassung_MUDCAKE_Woche8.xlsx',
+  ];
+
 
   constructor() { }
 
