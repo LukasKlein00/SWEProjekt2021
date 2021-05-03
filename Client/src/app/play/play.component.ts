@@ -53,7 +53,6 @@ export class PlayComponent implements OnInit {
       isActive: true,
       description: "Starting Room Description"
   }
-    console.log(this.rooms);
     this.openDialog();
   }
 

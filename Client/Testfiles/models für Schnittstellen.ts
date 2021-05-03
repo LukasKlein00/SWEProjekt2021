@@ -11,7 +11,12 @@ export class Dungeon {
     items?: Item[];
     npcs?: Npc[];
     private?: boolean;
-    accessList?: string[];
+    accessList?: Access[];
+}
+
+export class Access {
+    name: string;
+    isAllowed: boolean;
 }
 
 export class Room {

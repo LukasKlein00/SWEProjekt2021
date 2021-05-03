@@ -27,7 +27,6 @@ export class ResetComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(p => {
       this.token = p['token'];
-      console.log(p)
     });
     this.resetForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]]

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room } from 'Testfiles/models für Schnittstellen';
+import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room, Access } from 'Testfiles/models für Schnittstellen';
 import { DungeonService } from '../services/dungeon.service';
 import { HttpService } from '../services/http.service';
 import { ToastService } from '../services/toast.service';
@@ -137,23 +137,11 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
     this.dungeon = this.DungeonService.createNewDungeon(this.dungeonSize);
     this.rooms = this.dungeon.rooms;
     if (id) {
-      this.httpService.getDungeon(id)
-        .subscribe((res) => {
-          this.dungeon.dungeonID = res[0];
-          this.dungeon.dungeonName = res[1];
-          this.dungeon.dungeonDescription = res[2];
-          this.dungeon.maxPlayers = res[3];
-          this.dungeon.rooms = JSON.parse(res[5]);
-          this.dungeon.races = JSON.parse(res[6]);
-          this.dungeon.classes = JSON.parse(res[7]);
-          this.dungeon.items = JSON.parse(res[8]);
-          this.dungeon.npcs = JSON.parse(res[9]);
-          this.dungeon.private = res[10];
-        });
+      this.getDungeon(id);
+      this.getRooms(id);
     }
     this.toastService.show('John wants to join', {
       classname: 'toast',
@@ -259,7 +247,7 @@ export class BuilderComponent implements OnInit {
 
 
 
-    const safeDungeon: Dungeon = Object.assign({},this.dungeon);
+    const safeDungeon: Dungeon = Object.assign({}, this.dungeon);
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     //sende dungeon an Server!
@@ -289,6 +277,44 @@ export class BuilderComponent implements OnInit {
   }
   onSelectAll(items: any) {
     console.log(items);
+  }
+
+  getRooms(id) {
+    this.httpService.getRooms(id).subscribe(res => this.dungeon.rooms = res as Room[])
+  }
+
+  getRaces() {
+    if (this.dungeon.races = []) {
+      this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res as Race[])
+    }
+  }
+
+  getClasses() {
+    if (this.dungeon.classes = []) {
+      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
+    }
+  }
+
+  getItems() {
+    if (this.dungeon.races = []) {
+      this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res as Item[])
+    }
+  }
+
+  getNpcs() {
+    if (this.dungeon.npcs = []) {
+      this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res as Npc[])
+    }
+  }
+
+  getAccessList() {
+    if (this.dungeon.accessList = []) {
+      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res as Access[])
+    }
+  }
+
+  getDungeon(id) {
+    this.httpService.getDungeon(id).subscribe(res => this.dungeon = res) //eigentlich nur beschreibung
   }
 }
 

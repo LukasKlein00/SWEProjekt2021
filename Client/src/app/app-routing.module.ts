@@ -12,13 +12,10 @@ import { ProfilComponent } from './profil/profil.component';
 import { RegisterComponent } from './register/register.component';
 import { ResetComponent } from './reset/reset.component';
 import { AuthguardService } from './services/authguard.service';
-import { TestComponent } from './test/test.component';
-
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'test', component: TestComponent, canActivate: [AuthguardService] },
   { path: 'play', component: PlayComponent, canActivate: [AuthguardService] },
   { path: 'impressum', component: ImpressumComponent },
   { path: 'login', component: LoginComponent },
