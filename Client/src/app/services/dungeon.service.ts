@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Class, Dungeon, Item, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
 import * as uuid from 'uuid';
-import { jsonSchema } from 'uuidv4';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +29,7 @@ export class DungeonService {
 
   createNewItem(): Item {
     const x: Item = {
+      itemID: uuid.v4(),
       name: 'newItem',
       description: 'newItemDescription',
     }
@@ -38,6 +38,7 @@ export class DungeonService {
 
   createNewNpc(): Npc {
     const x: Npc = {
+      npcID: uuid.v4(),
       name: 'newNpc',
       description: 'newDescription',
       equipment: null,
