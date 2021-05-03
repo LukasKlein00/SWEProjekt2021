@@ -126,7 +126,7 @@ class DatabaseHandler:
         raise NotImplementedError
 
     def get_dungeon_by_id(self, user_id: str):
-         '''
+        '''
         reads the dungeoninformation from the database belonging to the corresponding dungeonID
         :param dungeonID: id of the dungeon
         :return: value of query -> dungeonID, dungeonName, dungeonDescription 
@@ -308,7 +308,7 @@ class DatabaseHandler:
         except IOError:
             return False
 
-    def write_npc_to_database(self, npc: Npc, dungeon_id):
+    def write_npc_to_database(self, npc, dungeon_id):
         '''
         insert a npc object to database
         :param npc: npc object
