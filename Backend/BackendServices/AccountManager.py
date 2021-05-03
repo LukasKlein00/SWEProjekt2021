@@ -16,12 +16,7 @@ class AccountManager:
         '''
         Constructor for AccountManager
         '''
-        self.mDBHandler = DatabaseHandler(mysql.connector.connect(
-            host="193.196.53.67",
-            port="1189",
-            user="jack",
-            password="123123"
-        ))
+        self.mDBHandler = DatabaseHandler()
 
     def registerUser(self, UserID: str, Firstname: str, Lastname: str, Username: str, Email: str, Password: str,
                      IsConfirmed: bool) -> bool:
@@ -62,7 +57,9 @@ class AccountManager:
         :return: username and id of corresponding user
         '''
         checkUser = User(userName=Username, password=Password)
-        returnedUser = self.mDBHandler.loginUser(checkUser)
+        returnedUserData = self.mDBHandler.loginUser(checkUser)
+        returnedUser = User(userID=returnedUserData[1], userName=returnedUserData[0],
+                            confirmation=bool(returnedUserData[2]))
         if returnedUser:
             response = {
                 'username': returnedUser.userName,

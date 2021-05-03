@@ -11,8 +11,8 @@ from DungeonPackage.ActiveDungeon import *
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
-
     AccManager = AccountManager()
+    DungManager = DungeonManager()
 
     # übermittelt Einstellungen "Headers" des Requests
     def _set_response(self, code: int = 200):
@@ -75,8 +75,9 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/getMyDungeons':
             self._set_response()
-            #response = self.mDBHandler.getDungeonByID(data)
-            #self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
+            dungeon_manager = DungeonManager()
+            dungeons = dungeon_manager.get_dungeon_by_id(data)
+            self.wfile.write(json.dumps(dungeons).encode(encoding='utf_8'))
 
         if self.path == '/saveDungeon':
             self._set_response()
@@ -89,7 +90,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/deleteDungeon':
             self._set_response()
-            self.mDBHandler.deleteDungeonByID(data)
+            dungeon_manager = DungeonManager()
+            dungeon_manager.delete_dungeon(data)
 
         if self.path == '/deleteUser':
             self._set_response()
@@ -100,7 +102,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/copyDungeon':
             print(data)
             self._set_response()
-            # self.mDBHandler.copyDungeon(data)
+            dungeon_manager = DungeonManager()
+            dungeon_manager.copy_dungeon(data)
 
         if self.path == '/forgot':
             self._set_response()
