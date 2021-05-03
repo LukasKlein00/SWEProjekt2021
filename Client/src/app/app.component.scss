@@ -43,8 +43,8 @@ main {
     padding-top: $header-height;
     padding-bottom: $footer-height;
     top: 0;
-    min-height: calc(100vh - 3rem);
-    width: 100%;
+    min-height: 100vh;
+    width: 100%;  
 }
 
 footer {
@@ -74,3 +74,13 @@ h6:hover {
     cursor: pointer;
 }
 
+
+.bg-purple{
+  background: url(./../assets/bg_purple.png);
+  background-repeat: repeat-x;
+  background-size: cover;
+  background-position: left top;
+  height: 100vh;
+  overflow: hidden;
+  
+}

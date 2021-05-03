@@ -1,12 +1,12 @@
 <div class="container-fluid p-0 m-0">
-    <div class="row m-5 justify-content-around align-items-start">
+    <div class="row m-5 justify-content-around align-items-start text-white">
         <div class="col-8 row">
             <div class="col-12 row">
                 <h3>Available MUDs</h3><ng-select style="margin-left: 20px; min-width: 100px;" [(ngModel)]="selectedFilter" [clearable]="false"> 
                     <ng-option [value]="filter" *ngFor="let filter of filters">{{filter}}</ng-option>
                 </ng-select>
             </div>
-            <div *ngFor="let dungeon of availableMUDs" class="card m-2 shadow text-white bg-dark max-col-4">
+            <div *ngFor="let dungeon of availableMUDs" class="card m-2 text-white bg-dark max-col-4 card-backdrop">
                 <div class="card-body">
                     <h5>{{dungeon.dungeonName}} <span *ngIf="dungeon.private" class="badge badge-danger">private</span>  </h5>
                     <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
@@ -17,14 +17,14 @@
         </div> 
         <div class="col-3 row">
             <h3 class="col-12">My MUDs</h3>
-            <div class="card text-white bg-dark col-12 m-2">
+            <div class="card text-white bg-dark col-12 m-2 card-backdrop">
                 <div class="card-body">
                     <h5>Create A New MUD</h5>
                     <button class="btn btn-primary"  routerLink="/builder">Create</button>
                 </div>
             </div>
 
-            <div *ngFor="let dungeon of myMUDs" class="card text-white bg-dark col-12 m-2">
+            <div *ngFor="let dungeon of myMUDs" class="card text-white bg-dark col-12 m-2 card-backdrop">
                 <div class="card-body">
                     <h5 class="line-clamp-1">{{dungeon.dungeonName}}</h5>
                     <div class="line-clamp-3">{{dungeon.dungeonDescription}}</div>
