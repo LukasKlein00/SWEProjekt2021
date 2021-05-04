@@ -11,7 +11,7 @@ header {
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background-color: $primary-background-color;
+        background-color: $color-5;
         height: $header-height;
         
       }
@@ -29,11 +29,7 @@ header {
       }
       
       li .hover:hover {
-        background-color: $primary-hover-color;
-      }
-
-      .active {
-        background-color: #4CAF50;
+        background-color: $color-3;
       }
 }
 
@@ -51,7 +47,7 @@ footer {
     z-index: 100;
     height: $footer-height;
     width: 100%;
-    background-color: $primary-background-color;
+    background-color: $color-5;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -76,11 +72,6 @@ h6:hover {
 
 
 .bg-purple{
-  background: url(./../assets/bg_purple.png);
-  background-repeat: repeat-x;
-  background-size: cover;
-  background-position: left top;
-  height: 100vh;
-  overflow: hidden;
+  background-color: $color-4;
   
 }

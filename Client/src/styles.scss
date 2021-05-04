@@ -73,3 +73,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .max-col-4 {
     max-width: 33.333333%;
 }
+
+.card-backdrop {
+    box-shadow: 10px 10px $color-1;
+}
