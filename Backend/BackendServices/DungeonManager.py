@@ -1,6 +1,6 @@
 import uuid
 
-import mysql
+from json import JSONEncoder as foreignEncoder
 
 from DatabaseHandler.DatabaseHandler import DatabaseHandler
 from DungeonPackage.ActiveDungeon import ActiveDungeon
@@ -292,7 +292,7 @@ class DungeonManager:
             print("Item List:")
             print(self.item_list)
             
-            rooms = self.mDBHandler.get_room_by_dungeon_id(dungeon_id)
+            rooms = self.mDBHandler.get_all_rooms_by_dungeon_ID(dungeon_id)
             for room in rooms:
                 copied_room = Room(room_id=room[0], room_name=room[1], room_description=room[2], coordinate_x=room[3], coordinate_y=room[4], north=room[5], east=room[6], south=room[7], west=room[8], is_start_room=room[9], npc_id=room[10], item_id=room[11], dungeon_id=self.managed_dungeon.dungeon_id)
                 self.room_list.append(copied_room)
@@ -331,3 +331,20 @@ class DungeonManager:
 
     def makeDungeonPublic(self):
         raise NotImplementedError
+
+    def get_all_from_room_as_json(self, data):
+        temp_room_list = []
+        rooms = self.mDBHandler.get_all_rooms_by_dungeon_ID(data['dungeonID'])
+        for room in rooms:
+            for i in room:
+                temp_room_list.append(i)
+        # return temp_room_list # dumps(rooms).encode(encoding='utf_8')
+
+        print(temp_room_list)
+    def get_all_from_classes_as_json(self):
+        raise NotImplementedError
+
+
+dungeon = {"dungeonID" : "8e691b24-789c-4176-8106-331c0b17efe3"}
+test = DungeonManager()
+test.get_all_from_room_as_json(dungeon)

@@ -24,6 +24,7 @@ class AccessList:
         self.accessList["isAllowed"].append(isAllowed)
 
     def loadData(self):
-        databaseAccessList = self.mDBHandler.get_access_list_by_dungeon_ID(self.dungeonID)
+        # TODO: Fix that shit
+        databaseAccessList = self.mDBHandler.user_status_on_access_list(self.userID, self.dungeonID)
         self.accessList['userID'].append(databaseAccessList[2])
         self.accessList['isAllowed'].append(bool(databaseAccessList[1]))

@@ -14,8 +14,7 @@ class DatabaseHandler:
             host="193.196.53.67",
             port="1189",
             user="jack",
-            password="123123",
-            buffered = True
+            password="123123"
         ))
         self.cursor = self.databasePath.cursor()
 
@@ -250,14 +249,14 @@ class DatabaseHandler:
                       INSERT INTO mudcake.Class
                           (DungeonID, ClassID, Name, Description, ItemID)
                       VALUES 
-                          ("{dungeon_id}", "{class_object.classID}", "{class_object.name}", 
-                            "{class_object.description}, "{class_object.item_id}")
+                          (%s, %s, %s, %s, %s)
                     ON DUPLICATE KEY UPDATE
                     DungeonID = VALUES(DungeonID), ClassID=VALUES(ClassID), Name=VALUES(Name), 
                             Description=VALUES(Description), ItemID = VALUES(ItemID)
                       """
+        variables = (dungeon_id, class_object.class_id, class_object.name, class_object.description, class_object.item_id)
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, variables)
             self.databasePath.commit()
         except IOError:
             pass
@@ -588,6 +587,115 @@ class DatabaseHandler:
                                     """, (userID, dungeonID))
         try:
             return self.cursor.fetchone()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    #################### NEW #######################
+
+    def get_all_rooms_by_dungeon_ID_OLD(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT RoomID, isStartingRoom, Description, Name, CoordinateX, CoordinateY, North, East, South, West, NpcID, ItemID
+                                    FROM mudcake.Room
+                                    WHERE (DungeonID = '{dungeonID}' )
+                                    """)
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_rooms_by_dungeon_ID(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT JSON_OBJECT( 'RoomID', RoomID, 
+                                                        'isStartingRoom', isStartingRoom,
+                                                        'Description', Description,
+                                                        'Name', Name,
+                                                        'CoordinateX', CoordinateX,
+                                                        'CoordinateY', CoordinateY,
+                                                        'North', North,
+                                                        'East', East,
+                                                        'South', South,
+                                                        'West', West,
+                                                        'NpcID', NpcID,
+                                                        'ItemID', ItemID )
+                                    FROM mudcake.Room
+                                    WHERE (DungeonID = '{dungeonID}' )
+                                    """)
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_classes_by_dungeon_ID(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT JSON_OBJECT( 'ClassID', ClassID,
+                                                        'Name', Name,
+                                                        'Description', Description,
+                                                        'ItemID', ItemID )
+                                    FROM mudcake.Class
+                                    WHERE (DungeonID = %s )
+                                    """, (dungeonID))
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_races_by_dungeon_ID(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT JSON_OBJECT( 'RaceID', RaceID,
+                                                        'Name', Name,
+                                                        'Description', Description
+                                                        'DungeonID', DungeonID )
+                                    FROM mudcake.Race
+                                    WHERE (DungeonID = %s )
+                                    """, (dungeonID))
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_item_by_dungeon_ID(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT JSON_OBJECT( 'ItemID', ItemID,
+                                                        'Description', Description,
+                                                        'Name', Name )
+                                    FROM mudcake.Item
+                                    WHERE (DungeonID = %s )
+                                    """, (dungeonID))
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_npc_by_dungeon_ID(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT JSON_OBJECT( 'NpcID', NpcID,
+                                                        'Name', Name,
+                                                        'Description', Description
+                                                        'ItemID', ItemID )         
+                                    FROM mudcake.Npc
+                                    WHERE (DungeonID = %s )
+                                    """, (dungeonID))
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_access_list_by_dungeon_ID(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT JSON_OBJECT( 'IsAllowed', IsAllowed,
+                                                        'UserID', UserID )
+                                    FROM mudcake.AccessList
+                                    WHERE (DungeonID = %s )
+                                    """, (dungeonID))
+        try:
+            return self.cursor.fetchall()
         except IOError:
             print("Error occurred by accessing AccessList")
             raise IOError
