@@ -2,7 +2,7 @@
 <div class="m-0 row justify-content-center">
     <div class="col-12 row justify-content-center">
         <div class="mapDisplay">
-            <div class="roomMap border">
+            <div class="roomMap card-border">
                 <div *ngFor="let room of rooms" [ngStyle]="{
                     'grid-column': room.x,
                     'grid-row': room.y
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <div class="card bg-dark col-12-min-map border-light">
+        <div class="card bg-dark col-12-min-map card-border">
             <div class="card-body">
                 <nav>
                     <h2 class="text-center p-0 m-1">Overview</h2>
@@ -182,7 +182,7 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12 col-lg-4 p-0" *ngFor="let request of requests; let i = index">
-                            <div class="card m-2 bg-dark border-light">
+                            <div class="card m-2 bg-dark card-border">
                                 <div class="card-body">
                                     <nav>
                                         <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">

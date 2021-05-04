@@ -34,15 +34,12 @@ html, body {
     margin: 0;
 }
 
-.bg-main {
-    background-color: $primary-background-color;
-}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .toast {
     background-color: $color-2;
-    color: $primary-text-color;
+    color: $text-color-1
 }
 
 .line-clamp-3 {
@@ -82,8 +79,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     }
 } 
 
-
 .card-backdrop {
-    box-shadow: 10px 10px 20px rgba(255, 255, 255, 0.4);
+    box-shadow: 10px 10px 20px $color-1;
+}
+
+.card-border {
     border: 3px solid $color-1;
 }
