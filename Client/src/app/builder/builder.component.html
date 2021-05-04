@@ -6,10 +6,7 @@
                 <div *ngFor="let room of rooms" [ngStyle]="{
                     'grid-column': room.x,
                     'grid-row': room.y
-                }" class="roomCell"
-                (dblclick)="toggleRoom(room)"
-                (click)="selectRoom(room)"
-                [ngClass]="{
+                }" class="roomCell" (dblclick)="toggleRoom(room)" (click)="selectRoom(room)" [ngClass]="{
                     'activeRoom':room.isActive && !room.isStartRoom,
                     'startRoom':room.isActive && room.isStartRoom,
                     'viewedRoom':room.isViewed,
@@ -19,31 +16,33 @@
             </div>
         </div>
 
-        <div class="card bg-dark col-12-min-map">
-            <div class="">
+        <div class="card bg-dark col-12-min-map border-light">
+            <div class="card-body">
                 <nav>
                     <h2 class="text-center p-0 m-1">Overview</h2>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-dungeon-tab" data-toggle="tab" href="#nav-dungeon"
-                            role="tab" aria-controls="nav-dungeon" aria-selected="true">Dungeon</a>
-                        <a class="nav-item nav-link" id="nav-room-tab" data-toggle="tab" href="#nav-room" role="tab"
-                            aria-controls="nav-room" aria-selected="false">Room</a>
-                        <a class="nav-item nav-link" id="nav-race-tab" data-toggle="tab" href="#nav-race" role="tab"
-                            aria-controls="nav-race" aria-selected="false" (click)="getRaces()">Race</a>
-                        <a class="nav-item nav-link" id="nav-class-tab" data-toggle="tab" href="#nav-class" role="tab"
-                            aria-controls="nav-class" aria-selected="false" (click)="getClasses()">Class</a>
-                        <a class="nav-item nav-link" id="nav-item-tab" data-toggle="tab" href="#nav-item" role="tab"
-                            aria-controls="nav-item" aria-selected="false" (click)="getItems">Item</a>
-                        <a class="nav-item nav-link" id="nav-npc-tab" data-toggle="tab" href="#nav-npc" role="tab"
-                            aria-controls="nav-npc" aria-selected="false" (click)="getNpcs()">NPC</a>
-                        <a class="nav-item nav-link" id="nav-access-rights-tab" data-toggle="tab" href="#nav-access-rights"
-                            role="tab" aria-controls="nav-access-rights" aria-selected="false" (click)="getAccessList()">Access Rights</a>
-                        <a class="nav-item nav-link" id="nav-chat-tab" data-toggle="tab" href="#nav-chat"
+                        <a class="nav-item nav-link active text-white" id="nav-dungeon-tab" data-toggle="tab"
+                            href="#nav-dungeon" role="tab" aria-controls="nav-dungeon" aria-selected="true">Dungeon</a>
+                        <a class="nav-item nav-link text-white" id="nav-room-tab" data-toggle="tab" href="#nav-room"
+                            role="tab" aria-controls="nav-room" aria-selected="false">Room</a>
+                        <a class="nav-item nav-link text-white" id="nav-race-tab" data-toggle="tab" href="#nav-race"
+                            role="tab" aria-controls="nav-race" aria-selected="false" (click)="getRaces()">Race</a>
+                        <a class="nav-item nav-link text-white" id="nav-class-tab" data-toggle="tab" href="#nav-class"
+                            role="tab" aria-controls="nav-class" aria-selected="false" (click)="getClasses()">Class</a>
+                        <a class="nav-item nav-link text-white" id="nav-item-tab" data-toggle="tab" href="#nav-item"
+                            role="tab" aria-controls="nav-item" aria-selected="false" (click)="getItems">Item</a>
+                        <a class="nav-item nav-link text-white" id="nav-npc-tab" data-toggle="tab" href="#nav-npc"
+                            role="tab" aria-controls="nav-npc" aria-selected="false" (click)="getNpcs()">NPC</a>
+                        <a class="nav-item nav-link text-white" id="nav-access-rights-tab" data-toggle="tab"
+                            href="#nav-access-rights" role="tab" aria-controls="nav-access-rights" aria-selected="false"
+                            (click)="getAccessList()">Access Rights</a>
+                        <a class="nav-item nav-link text-white" id="nav-chat-tab" data-toggle="tab" href="#nav-chat"
                             role="tab" aria-controls="nav-chat" aria-selected="false">
-                            <span matBadge="3" matBadgeColor="warn" matBadgeSize="small" matBadgeOverlap="false">Chat</span></a>
+                            <span matBadge="3" matBadgeColor="warn" matBadgeSize="small"
+                                matBadgeOverlap="false">Chat</span></a>
                     </div>
                 </nav>
-    
+
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-dungeon" role="tabpanel"
                         aria-labelledby="nav-dungeon-tab">
@@ -51,21 +50,23 @@
                             Name: <input [(ngModel)]="dungeon.dungeonName" class="w-100 m-1">
                             Description: <textarea class="w-100 m-1"
                                 [(ngModel)]="dungeon.dungeonDescription"></textarea>
-                            MaxPlayer: <mat-slider min="1" max="10" step="1" [(ngModel)]="dungeon.maxPlayers" thumbLabel >
+                            MaxPlayer: <mat-slider min="1" max="10" step="1" [(ngModel)]="dungeon.maxPlayers"
+                                thumbLabel>
                             </mat-slider>
-    
-                            <button class="btn btn-outline-success m-2" (click)="increaseDungeon()">increase Map</button>
+
+                            <button class="btn btn-outline-success m-2" (click)="increaseDungeon()">increase
+                                Map</button>
                             <button class="btn btn-outline-danger m-2" (click)="decreaseDungeon()">decrease Map</button>
                             <mat-slide-toggle [(ngModel)]="this.dungeon.private" class="m-3">private</mat-slide-toggle>
-    
+
                             <div class="float-right">
                                 <button (click)="saveDungeon()" class="btn btn-primary m-1">save MUD</button>
                                 <button (click)="publishDungeon()" class="btn btn-success m-1">publish MUD</button>
                             </div>
                         </div>
                     </div>
-    
-    
+
+
                     <div class="tab-pane fade" id="nav-room" role="tabpanel" aria-labelledby="nav-room-tab">
                         <div *ngIf="selectedRoom" class="m-3">
                             RoomName: <input class="w-100" [(ngModel)]="selectedRoom.name"><br><br>
@@ -88,8 +89,8 @@
                             </ng-select>
                         </div>
                     </div>
-    
-    
+
+
                     <div class="tab-pane fade" id="nav-race" role="tabpanel" aria-labelledby="nav-race-tab">
                         <div *ngIf="dungeon" class="m-3">
                             RaceName: <input class="w-100" [(ngModel)]="selectedRace.name"><br><br>
@@ -103,12 +104,12 @@
                                     {{race.name}}
                                 </div>
                             </div>
-    
-    
+
+
                         </div>
                     </div>
-    
-    
+
+
                     <div class="tab-pane fade" id="nav-class" role="tabpanel" aria-labelledby="nav-class-tab">
                         <div *ngIf="dungeon" class="m-3">
                             ClassName: <input class="w-100" [(ngModel)]="selectedClass.name"><br><br>
@@ -127,8 +128,8 @@
                             </div>
                         </div>
                     </div>
-    
-    
+
+
                     <div class="tab-pane fade" id="nav-item" role="tabpanel" aria-labelledby="nav-item-tab">
                         <div *ngIf="dungeon" class="m-3">
                             ItemName: <input class="w-100" [(ngModel)]="selectedItem.name"><br><br>
@@ -144,8 +145,8 @@
                             </div>
                         </div>
                     </div>
-    
-    
+
+
                     <div class="tab-pane fade" id="nav-npc" role="tabpanel" aria-labelledby="nav-npc-tab">
                         <div *ngIf="dungeon" class="m-3">
                             NpcName: <input class="w-100" [(ngModel)]="selectedNpc.name"><br><br>
@@ -157,7 +158,7 @@
                             <button (click)="addNpc()">submit Npc</button><br>
                         </div>
                     </div>
-    
+
                     <div class="tab-pane fade" id="nav-access-rights" role="tabpanel"
                         aria-labelledby="nav-access-rights-tab">
                         <div *ngIf="dungeon" class="m-3">
@@ -165,9 +166,8 @@
                             Blacklist:
                         </div>
                     </div>
-    
-                    <div class="tab-pane fade" id="nav-chat" role="tabpanel"
-                        aria-labelledby="nav-chat-tab">
+
+                    <div class="tab-pane fade" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab">
                         <div *ngIf="dungeon" class="chat">
                             <app-chat></app-chat>
                         </div>
@@ -176,75 +176,72 @@
             </div>
         </div>
 
-        <div class="col-12 requests card bg-dark">
+        <div class="col-12">
             <div class="card-body">
                 <h3>Requests</h3>
-                <div class="row">
-                    <div class="card col-4 bg-dark" *ngFor="let request of requests; let i = index">
-                        <div class="card-body">
-                            <nav>
-                                <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">
-                                    <a class="nav-item nav-link active" id="{{'nav-overview-tab' + i}}" data-toggle="tab"
-                                        href="{{'#nav-overview' + i}}" role="tab" aria-controls="nav-overview"
-                                        aria-selected="true">Overview</a>
-                                    <a class="nav-item nav-link" id="{{'nav-inventory-tab' +  i}}" data-toggle="tab"
-                                        href="{{'#nav-inventory' + i}}" role="tab" aria-controls="nav-inventory"
-                                        aria-selected="false">Inventory</a>
-                                </div>
-                            </nav>
-        
-                            <div class="tab-content" id="{{'nav-tabContent' + i}}">
-        
-                                <div class="tab-pane fade show active" id="{{'nav-overview' + i}}" role="tabpanel"
-                                    aria-labelledby="nav-item-overview">
-                                    <div>
-                                        <span class="font-weight-bold">{{request.requester.name}}</span>
-                                        <meter id="health" min="0" max="100" low="30" high="75" optimum="80"
-                                            value="{{request.requester.health}}" style="margin-left: 10px;"></meter>
-                                        <button class="btn-success float-right m-2"
-                                            (click)="submitRequest(request)">Submit</button>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 col-lg-4 p-0" *ngFor="let request of requests; let i = index">
+                            <div class="card m-2 bg-dark border-light">
+                                <div class="card-body">
+                                    <nav>
+                                        <div class="nav nav-tabs" id="{{'nav-tab' + i}}" role="tablist">
+                                            <a class="nav-item nav-link active text-white" id="{{'nav-overview-tab' + i}}"
+                                                data-toggle="tab" href="{{'#nav-overview' + i}}" role="tab"
+                                                aria-controls="nav-overview" aria-selected="true">Overview</a>
+                                            <a class="nav-item nav-link text-white" id="{{'nav-inventory-tab' +  i}}"
+                                                data-toggle="tab" href="{{'#nav-inventory' + i}}" role="tab"
+                                                aria-controls="nav-inventory" aria-selected="false">Inventory</a>
+                                        </div>
+                                    </nav>
+    
+                                    <div class="tab-content" id="{{'nav-tabContent' + i}}">
+    
+                                        <div class="tab-pane fade show active" id="{{'nav-overview' + i}}" role="tabpanel"
+                                            aria-labelledby="nav-item-overview">
+                                            <div>
+                                                <span class="font-weight-bold">{{request.requester.name}}</span>
+                                                <meter id="health" min="0" max="100" low="30" high="75" optimum="80"
+                                                    value="{{request.requester.health}}" style="margin-left: 10px;"></meter>
+                                                <button class="btn-success float-right m-2"
+                                                    (click)="submitRequest(request)">Submit</button>
+                                            </div>
+                                            <div>Mensch, Scout</div>
+                                            <div>
+                                                <span class="font-weight-bold">wants to: </span>
+                                                <span class="font-italic m-4">{{request.request}}</span>
+                                            </div><br>
+                                            <div>What happens?:</div>
+                                            <textarea class="w-100" [(ngModel)]="request.answer"></textarea>
+                                            Adjust {{request.requester.name}}'s Health
+                                            <mat-slider min="1" max="100" step="1" [(ngModel)]="request.requester.health"
+                                                thumbLabel>
+                                            </mat-slider>
+                                        </div>
+    
+                                        <div class="tab-pane fade" id="{{'nav-inventory' + i}}" role="tabpanel"
+                                            aria-labelledby="nav-inventory-tab">
+                                            <div>
+                                                Equipment: <ng-select [(ngModel)]="request.requester.equipment.name">
+                                                    <ng-option [value]="item" *ngFor="let item of dungeon.items">
+                                                        {{item.name}}</ng-option>
+                                                </ng-select>
+                                            </div><br>
+                                            <div>
+                                                Inventory
+                                                <ng-select [multiple]="true" [items]="dungeon.items" bindLabel="name"
+                                                    bindValue="" [(ngModel)]="request.requester.inventar">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+    
                                     </div>
-                                    <div>Mensch, Scout</div>
-                                    <div>
-                                        <span class="font-weight-bold">wants to: </span>
-                                        <span class="font-italic m-4">{{request.request}}</span>
-                                    </div><br>
-                                    <div>What happens?:</div>
-                                    <textarea class="w-100" [(ngModel)]="request.answer"></textarea>
-                                    Adjust {{request.requester.name}}'s Health
-                                    <mat-slider min="1" max="100" step="1" [(ngModel)]="request.requester.health" thumbLabel>
-                                    </mat-slider>
                                 </div>
-        
-                                <div class="tab-pane fade" id="{{'nav-inventory' + i}}" role="tabpanel"
-                                    aria-labelledby="nav-inventory-tab">
-                                    <div>
-                                        Equipment: <ng-select [(ngModel)]="request.requester.equipment.name">
-                                            <ng-option [value]="item" *ngFor="let item of dungeon.items">{{item.name}}</ng-option>
-                                        </ng-select>
-                                    </div><br>
-                                    <div>
-                                        Inventory
-                                        <ng-select [multiple]="true" [items]="dungeon.items" bindLabel="name" bindValue=""
-                                            [(ngModel)]="request.requester.inventar">
-                                        </ng-select>
-                                    </div>
-                                </div>
-        
                             </div>
                         </div>
-    
-                        
-    
-    
-    
                     </div>
                 </div>
             </div>
-            
-            
         </div>
-
     </div>
-
 </div>

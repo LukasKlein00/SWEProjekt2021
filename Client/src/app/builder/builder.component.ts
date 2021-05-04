@@ -117,6 +117,32 @@ export class BuilderComponent implements OnInit {
       answer: '',
       x: 1,
       y: 4,
+    },
+    {
+      request: 'kill Spider',
+      requester: {
+        name: 'Tom',
+        userID: 1,
+        health: 79,
+        inventar: [{
+          name: 'gold nugget',
+          description: '',
+        },
+        {
+          name: 'salty Potatos',
+          description: '',
+        }],
+        equipment: {
+          name: 'damaged sword',
+          description: '',
+        },
+        race: null,
+        class: null,
+        dungeonID: null,
+      },
+      answer: '',
+      x: 1,
+      y: 4,
     }]
   dungeonSize = 13;
   dungeon: Dungeon;

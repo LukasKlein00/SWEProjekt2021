@@ -1,16 +1,5 @@
 @import "./../sccVariables.scss";
 
-.map {
-    display: flex;
-    overflow-y: auto;
-    overflow-x: auto;
-    height: $map-size;
-    width: $map-size;
-    margin-top: 1.5rem;
-    margin-right: 1.5em;
-    margin-bottom: 1.5em;
-}
-
 .roomMap{
     overflow-y: auto;
     overflow-x: auto;
@@ -53,10 +42,18 @@
 
 .col-12-min-map {
     margin-top: 1.5rem;
-    width: calc(95% - 400px);
+    width: 100%;
     height: $map-size;
     overflow: auto;
 }
+
+@media (min-width: 992px) { .col-12-min-map {
+    margin-top: 1.5rem;
+    width: calc(94% - 400px);
+    height: $map-size;
+    overflow: auto;
+} }
+
 
 .chat {
     position: relative;
@@ -69,14 +66,6 @@
     bottom: 0;
 }
 
-.requests{
-    overflow: auto;
-    height: calc(85vh - 400px);
-}
-
-.requestbody {
-    min-height: calc(80vh - 400px);
-}
 
 .viewedRoom {
     animation: glow-green infinite 2s ease-in;
@@ -87,3 +76,7 @@
     from {background-color: lightgreen;}
     to {background-color: white;}
   }
+
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: $color-3;
+}

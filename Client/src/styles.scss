@@ -41,7 +41,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .toast {
-    background-color: $primary-background-color;
+    background-color: $color-2;
     color: $primary-text-color;
 }
 
@@ -72,4 +72,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .max-col-4 {
     max-width: 33.333333%;
+}
+
+
+@media (min-width: 992px) {
+
+    .max-col-lg-4 {
+    max-width: 33.333333%;
+    }
+} 
+
+
+.card-backdrop {
+    box-shadow: 10px 10px $color-1;
 }
