@@ -1,12 +1,12 @@
 <div class="container-fluid p-0 m-0">
     <div class="row m-5 justify-content-around align-items-start">
-        <div class="col-8 row">
+        <div class=" row col-lg-8 col-12">
             <div class="col-12 row">
                 <h3>Available MUDs</h3><ng-select style="margin-left: 20px; min-width: 100px;" [(ngModel)]="selectedFilter" [clearable]="false"> 
                     <ng-option [value]="filter" *ngFor="let filter of filters">{{filter}}</ng-option>
                 </ng-select>
             </div>
-            <div *ngFor="let dungeon of availableMUDs" class="card m-2 bg-dark max-col-4 card-backdrop">
+            <div *ngFor="let dungeon of availableMUDs" class="card m-2 bg-dark max-col-lg-4 card-backdrop">
                 <div class="card-body">
                     <h5>{{dungeon.dungeonName}} <span *ngIf="dungeon.private" class="badge badge-danger">private</span>  </h5>
                     <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div> 
-        <div class="col-3 row">
+        <div class="col-lg-3 col-12 row">
             <h3 class="col-12">My MUDs</h3>
             <div class="card bg-dark col-12 m-2 card-backdrop">
                 <div class="card-body">
