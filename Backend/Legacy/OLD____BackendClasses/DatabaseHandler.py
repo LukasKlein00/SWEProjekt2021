@@ -66,7 +66,7 @@ class DatabaseHandler:
             Private  = VALUES(Private)
                    """
         variables = (
-            d.dungeon_id, d.dungeonName, d.dungeonDescription, d.maxPlayers, d.dungeonMasterID, d.private
+            d.dungeon_id, d.dungeonName, d.dungeonDescription, d.max_players, d.dungeon_master_id, d.private
         )
         try:
             cursor.execute(query, variables)

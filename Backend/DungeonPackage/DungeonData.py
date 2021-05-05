@@ -3,17 +3,17 @@ from DatabaseHandler.DatabaseHandler import *
 
 
 class DungeonData:
-    def __init__(self, dungeonId: str = None, dungeonMasterID: str = None, maxPlayers: int = None, name: str = None,
+    def __init__(self, dungeon_id: str = None, dungeon_master_id: str = None, max_players: int = None, name: str = None,
                  description: str = None,
-                 private: bool = False, accessList: AccessList = None):
-        self.dungeon_id = dungeonId
-        self.dungeonMasterID = dungeonMasterID
-        self.maxPlayers = maxPlayers
+                 private: bool = False, access_list: AccessList = None):
+        self.dungeon_id = dungeon_id
+        self.dungeon_master_id = dungeon_master_id
+        self.max_players = max_players
         self.name = name
         self.description = description
         self.private = private
-        self.accessList = accessList
-        self.mDBHandler = DatabaseHandler()
+        self.access_list = access_list
+        self.db_handler = DatabaseHandler()
 
     def is_dungeon_master_in(self):
         raise NotImplementedError
@@ -27,14 +27,14 @@ class DungeonData:
     def add_npc_to_room(self):
         raise NotImplementedError
 
-    def load_data(self, dungeonID: str):
-        databaseDungeonData = self.mDBHandler.get_dungeon_data_by_dungeon_ID(dungeonID)
-        self.dungeon_id = databaseDungeonData[0]
-        self.maxPlayers = databaseDungeonData[1]
-        self.name = databaseDungeonData[2]
-        self.description = databaseDungeonData[3]
-        self.private = bool(databaseDungeonData[4])
-        self.dungeonMasterID = databaseDungeonData[5]
+    def load_data(self, dungeon_id: str):
+        database_dungeon_data = self.db_handler.get_dungeon_data_by_dungeon_id(dungeon_id)
+        self.dungeon_id = database_dungeon_data[0]
+        self.max_players = database_dungeon_data[1]
+        self.name = database_dungeon_data[2]
+        self.description = database_dungeon_data[3]
+        self.private = bool(database_dungeon_data[4])
+        self.dungeon_master_id = database_dungeon_data[5]
 
     def is_private(self):
         raise NotImplementedError

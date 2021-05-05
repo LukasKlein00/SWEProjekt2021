@@ -45,7 +45,7 @@ class ActiveDungeon:
         :param item: item object
         :return: True if so
         """
-        return self.user_ids.contains(self.dungeon_data.dungeonMasterID)
+        return self.user_ids.contains(self.dungeon_data.dungeon_master_id)
 
     def add_room(self, room: Room):
         """

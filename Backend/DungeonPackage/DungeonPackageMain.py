@@ -6,10 +6,10 @@ from DungeonPackage.Room import Room
 
 
 class DungeonPackageMain:
-    def __init__(self, accessList: AccessList, activeDungeon: ActiveDungeon, character: Character,
-                 dungeonData: DungeonData, room: Room):
-        self.accessList = accessList
-        self.activeDungeon = activeDungeon
+    def __init__(self, access_list: AccessList, active_dungeon: ActiveDungeon, character: Character,
+                 dungeon_data: DungeonData, room: Room):
+        self.access_list = access_list
+        self.active_dungeon = active_dungeon
         self.character = character
-        self.dungeonData = dungeonData
+        self.dungeon_data = dungeon_data
         self.room = room

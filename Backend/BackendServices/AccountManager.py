@@ -31,11 +31,11 @@ class AccountManager:
         :param is_confirmed: is the account already confirmed?
         :return: if DatabaseHandler transaction worked, return true
         '''
-        newUser = User(user_id, first_name, last_name, user_name, e_mail, password, is_confirmed)
+        new_user = User(user_id, first_name, last_name, user_name, e_mail, password, is_confirmed)
         # sendRegistrationEmail()
-        checkMethod = self.db_handler.register_user(newUser)
-        print(checkMethod)
-        if checkMethod:
+        check_method = self.db_handler.register_user(new_user)
+        print(check_method)
+        if check_method:
             return True
         else:
             return False
@@ -46,7 +46,7 @@ class AccountManager:
         :param UserID: id of user
         '''
         print(email)
-        email_sender = EmailSender(userEmail=email, userID=userID)
+        email_sender = EmailSender(user_email=email, user_id=userID)
         email_sender.send_email(MessageType.registration)
 
     def check_login_credentials(self, Username: str, Password: str):
@@ -57,17 +57,17 @@ class AccountManager:
         :return: username and id of corresponding user
         '''
         checkUser = User(user_name=Username, password=Password)
-        returnedUserData = self.db_handler.login_user(checkUser)
-        returnedUser = User(user_id=returnedUserData[1], user_name=returnedUserData[0],
-                            confirmation=bool(returnedUserData[2]))
-        if returnedUser:
+        returned_user_data = self.db_handler.login_user(checkUser)
+        returned_user = User(user_id=returned_user_data[1], user_name=returned_user_data[0],
+                            confirmation=bool(returned_user_data[2]))
+        if returned_user:
             response = {
-                'username': returnedUser.user_name,
-                'userID': returnedUser.user_id,
-                'confirmation': returnedUser.confirmation
+                'username': returned_user.user_name,
+                'userID': returned_user.user_id,
+                'confirmation': returned_user.confirmation
             }
 
-            if returnedUser.confirmation:
+            if returned_user.confirmation:
                 return response
             else:
                 raise ValueError
@@ -80,9 +80,9 @@ class AccountManager:
         Gets UserId from DatabaseHandler and gives it to Emailsender
         :param UserID: id of user
         '''
-        userID = self.db_handler.get_user_id_by_email(user_email)
-        passwordVergessenEmail = EmailSender(user_email, userID)
-        passwordVergessenEmail.send_email(MessageType.resetPassword)
+        user_id = self.db_handler.get_user_id_by_email(user_email)
+        reset_password_email = EmailSender(user_email, user_id)
+        reset_password_email.send_email(MessageType.reset_password)
 
     def change_password_in_database(self, user_id: str, password: str):
         '''
@@ -91,8 +91,8 @@ class AccountManager:
         :param password: password if user
         :return: true if transaction was successful
         '''
-        updatedPassword = self.db_handler.update_password_by_user_id(user_id, password)
-        return updatedPassword
+        updated_password = self.db_handler.update_password_by_user_id(user_id, password)
+        return updated_password
 
     def delete_user(self, user_id: str):
         '''
@@ -100,15 +100,15 @@ class AccountManager:
         :param user_id: id of user
         :return: True
         '''
-        deletedUser = self.db_handler.delete_user_by_id(user_id)
-        return deletedUser
+        deleted_user = self.db_handler.delete_user_by_id(user_id)
+        return deleted_user
 
-    def confirm_registration_token(self, UserID: str):
+    def confirm_registration_token(self, user_id: str):
         '''
         takes userID and change the isConfirmed field in Database from False to True
-        :param UserID: id of user
+        :param user_id: id of user
         '''
-        self.db_handler.change_registration_status(user_id=UserID)
+        self.db_handler.change_registration_status(user_id=user_id)
 
     def check_logged_in_credentials(self, user_id: str, user_name: str):
         '''
@@ -117,6 +117,6 @@ class AccountManager:
         :param user_name: username
         :return: return true if successful
         '''
-        checkUser = User(user_name=user_name, user_id=user_id)
-        check = self.db_handler.check_user(user=checkUser)
+        check_user = User(user_name=user_name, user_id=user_id)
+        check = self.db_handler.check_user(user=check_user)
         return check
