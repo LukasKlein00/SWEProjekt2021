@@ -10,7 +10,7 @@ class AccessList:
         """
         constructor for class AccessList
         """
-        self.accessList = {"userID": [], "isAllowed": []}
+        self.accessList = {"user_id": [], "isAllowed": []}
         self.dungeonID = dungeonID
         self.mDBHandler = DatabaseHandler()
 
@@ -20,11 +20,11 @@ class AccessList:
         :param userID: id of user
         :param isAllowed: bool true=user on white list false=user on blacklist  
         """
-        self.accessList["userID"].append(userID)
+        self.accessList["user_id"].append(userID)
         self.accessList["isAllowed"].append(isAllowed)
 
     def load_data(self):
         # TODO: Fix that shit
         databaseAccessList = self.mDBHandler.user_status_on_access_list(self.userID, self.dungeonID)
-        self.accessList['userID'].append(databaseAccessList[2])
+        self.accessList['user_id'].append(databaseAccessList[2])
         self.accessList['isAllowed'].append(bool(databaseAccessList[1]))

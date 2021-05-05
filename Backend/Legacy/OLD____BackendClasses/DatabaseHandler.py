@@ -12,12 +12,12 @@ class DatabaseHandler:
         cursor = self.databasePath.cursor()
         query = """
             INSERT INTO mudcake.User
-                    (UserID ,FirstName, LastName, UserName, Password, Email, isConfirmed)
+                    (user_id ,FirstName, LastName, user_name, password, email, isConfirmed)
                 VALUES 
                     (%s, %s, %s, %s, %s, %s, %s) 
             """
         variables = (
-            user.userID, user.firstName, user.lastName, user.userName, user.password, user.eMail, user.confirmation
+            user.userID, user.firstName, user.lastName, user.username, user.password, user.eMail, user.confirmation
         )
         try:
             cursor.execute(query, variables)
@@ -28,11 +28,11 @@ class DatabaseHandler:
     def loginUser(self, user: User):
         cursor = self.databasePath.cursor()
         query = """
-            SELECT UserName, UserID
+            SELECT user_name, user_id
             From mudcake.User
-            WHERE (UserName = %s AND Password = %s)
+            WHERE (user_name = %s AND password = %s)
             """
-        variables = (user.userName, user.password)
+        variables = (user.username, user.password)
         cursor.execute(query, variables)
         try:
             queryData = cursor.fetchone()
@@ -134,7 +134,7 @@ class DatabaseHandler:
         query = f"""
                             DELETE
                             From mudcake.User
-                            WHERE (UserID = '{userID}' )
+                            WHERE (user_id = '{userID}' )
                             """
         cursor.execute(query)
         self.databasePath.commit()

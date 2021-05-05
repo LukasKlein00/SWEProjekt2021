@@ -10,7 +10,7 @@ class User:
         self.userID = userID
         self.firstName = firstName
         self.lastName = lastName
-        self.userName = userName
+        self.username = userName
         self.eMail = eMail
         self.password = password
         self.confirmation = confirmation
