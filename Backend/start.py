@@ -5,7 +5,7 @@ from http.server import HTTPServer
 from FrontendHandler.HttpHandler import HTTPHandler
 from threading import Thread
 
-def startHTTP():
+def start_HTTP():
     print("Starting HTTPServer...\n")
     serverAddress = ('', 1188)
     http = HTTPServer(serverAddress, HTTPHandler)
@@ -17,7 +17,7 @@ def startHTTP():
     http.server_close()
 
 
-def startWS():
+def start_WS():
     ws = WebSocketHandler
     loop = asyncio.new_event_loop()
     print('Starting WebsocketServer... \n')
@@ -28,5 +28,5 @@ def startWS():
 
 
 if __name__ == '__main__':
-    Thread(target=startHTTP).start()
-    Thread(target=startWS).start()
+    Thread(target=start_HTTP).start()
+    Thread(target=start_WS).start()

@@ -16,7 +16,7 @@ class Character:
         self.inventory = inventory
         self.mDBHandler = DatabaseHandler()
 
-    def loadData(self, dungeonID: str):
+    def load_data(self, dungeonID: str):
         databaseCharacterData = self.mDBHandler.get_character_by_dungeon_ID(dungeonID)
         self.characterID = databaseCharacterData[0]
         self.lifePoints = databaseCharacterData[1]

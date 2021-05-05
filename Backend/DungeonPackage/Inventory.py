@@ -8,7 +8,7 @@ class Inventory:
         self.ItemIDs = ItemIDs
         self.mDBHandler = DatabaseHandler()
 
-    def loadData(self, dungeonID: str):
+    def load_data(self, dungeonID: str):
         databaseInventory = self.mDBHandler.get_inventory_by_character_ID(dungeonID)
         self.inventoryID = databaseInventory[0]
         self.ItemIDs.append(databaseInventory[1])
