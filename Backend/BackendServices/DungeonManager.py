@@ -336,27 +336,27 @@ class DungeonManager:
         raise NotImplementedError
 
     def get_all_from_room_as_json(self, data):
-        rooms = self.mDBHandler.get_all_rooms_by_dungeon_id(dungeonID=data)
+        rooms = self.mDBHandler.get_all_rooms_by_dungeon_id(dungeon_id=data)
         print(rooms)
         return json.dumps(rooms).encode(encoding='utf_8')
 
     def get_all_from_classes_as_json(self, data):
-        classes = self.mDBHandler.get_all_classes_by_dungeon_id(dungeonID=data)
+        classes = self.mDBHandler.get_all_classes_by_dungeon_id(dungeon_id=data)
         print(classes)
         return json.dumps(classes).encode(encoding='utf_8')
 
     def get_all_from_races_as_json(self, data):
-        races = self.mDBHandler.get_all_races_by_dungeon_id(dungeonID=data)
+        races = self.mDBHandler.get_all_races_by_dungeon_id(dungeon_id=data)
         print(races)
         return json.dumps(races).encode(encoding='utf_8')
 
     def get_all_from_items_as_json(self, data):
-        items = self.mDBHandler.get_all_item_by_dungeon_id(dungeonID=data)
+        items = self.mDBHandler.get_all_item_by_dungeon_id(dungeon_id=data)
         print(items)
         return json.dumps(items).encode(encoding='utf_8')
 
     def get_all_from_npcs_as_json(self, data):
-        npcs = self.mDBHandler.get_all_npc_by_dungeon_id(dungeonID=data)
+        npcs = self.mDBHandler.get_all_npc_by_dungeon_id(dungeon_id=data)
         print(npcs)
         return json.dumps(npcs).encode(encoding='utf_8')
 

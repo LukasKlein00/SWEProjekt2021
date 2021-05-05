@@ -56,9 +56,9 @@ class AccountManager:
         :param Password: password of user
         :return: username and id of corresponding user
         '''
-        checkUser = User(userName=Username, password=Password)
+        checkUser = User(user_name=Username, password=Password)
         returnedUserData = self.mDBHandler.login_user(checkUser)
-        returnedUser = User(userID=returnedUserData[1], userName=returnedUserData[0],
+        returnedUser = User(user_id=returnedUserData[1], user_name=returnedUserData[0],
                             confirmation=bool(returnedUserData[2]))
         if returnedUser:
             response = {
@@ -108,7 +108,7 @@ class AccountManager:
         takes userID and change the isConfirmed field in Database from False to True
         :param UserID: id of user
         '''
-        self.mDBHandler.change_registration_status(userID=UserID)
+        self.mDBHandler.change_registration_status(user_id=UserID)
 
     def check_logged_in_credentials(self, UserID: str, UserName: str):
         '''
@@ -117,6 +117,6 @@ class AccountManager:
         :param UserName: username
         :return: return true if successful
         '''
-        checkUser = User(userName=UserName, userID=UserID)
+        checkUser = User(user_name=UserName, user_id=UserID)
         check = self.mDBHandler.check_user(user=checkUser)
         return check
