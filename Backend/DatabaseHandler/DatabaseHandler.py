@@ -26,12 +26,12 @@ class DatabaseHandler:
         """
         query = """
             INSERT INTO mudcake.User
-                    (UserID ,FirstName, LastName, UserName, Password, Email, isConfirmed)
+                    (user_id ,FirstName, LastName, user_name, password, email, isConfirmed)
                 VALUES 
                     (%s, %s, %s, %s, %s, %s, %s) 
             """
         variables = (
-            user.userID, user.firstName, user.lastName, user.userName, user.password, user.eMail, user.confirmation
+            user.userID, user.firstName, user.lastName, user.username, user.password, user.eMail, user.confirmation
         )
         try:
             self.cursor.execute(query, variables)
@@ -47,11 +47,11 @@ class DatabaseHandler:
         """
 
         query = """
-            SELECT UserName, UserID, isConfirmed
+            SELECT user_name, user_id, isConfirmed
             From mudcake.User
-            WHERE (UserName = %s AND Password = %s)
+            WHERE (user_name = %s AND password = %s)
             """
-        variables = (user.userName, user.password)
+        variables = (user.username, user.password)
         self.cursor.execute(query, variables)
         try:
             queryData = self.cursor.fetchone()
@@ -67,7 +67,7 @@ class DatabaseHandler:
         copies a dungeon
         :param dungeonID: id of dungeon
         '''
-        # newDungeon = self.getFullDungeonByDungeonID(dungeonID)
+        # newDungeon = self.getFullDungeonByDungeonID(dungeon_id)
         # get Dungeon by DungeonID and save with other ID!
         raise NotImplementedError
 
@@ -109,9 +109,9 @@ class DatabaseHandler:
         '''
 
         query = f"""
-                    SELECT UserID
+                    SELECT user_id
                     From mudcake.User
-                    WHERE (Email = '{email}' )
+                    WHERE (email = '{email}' )
                     """
         self.cursor.execute(query)
         try:
@@ -125,9 +125,9 @@ class DatabaseHandler:
 
     def get_dungeon_by_id(self, user_id: str):
         '''
-        reads the dungeoninformation from the database belonging to the corresponding dungeonID
-        :param dungeonID: id of the dungeon
-        :return: value of query -> dungeonID, dungeonName, dungeonDescription 
+        reads the dungeoninformation from the database belonging to the corresponding dungeon_id
+        :param dungeon_id: id of the dungeon
+        :return: value of query -> dungeon_id, dungeonName, dungeonDescription
         '''
 
         query = f"""
@@ -145,15 +145,15 @@ class DatabaseHandler:
     def update_password_by_user_id(self, userID: str, password: str):
         """
         Updates UserPassword in Database
-        :param userID: UserID
+        :param userID: user_id
         :param password: UserPassword
         :return: true if transaction is successful
         """
 
         query = f"""
                         UPDATE mudcake.User
-                        SET Password = '{password}'
-                        WHERE UserID = '{userID}'
+                        SET password = '{password}'
+                        WHERE user_id = '{userID}'
                         """
         try:
             self.cursor.execute(query)
@@ -183,7 +183,7 @@ class DatabaseHandler:
     def delete_dungeon_by_id(self, dungeon_id: str):
         '''
         deletes the dungeon that belongs to the given dungeonid
-        :param dungeonID: id of the dungeon
+        :param dungeon_id: id of the dungeon
         '''
 
         query = f"""
@@ -207,7 +207,7 @@ class DatabaseHandler:
         query = f"""
                             DELETE
                             From mudcake.User
-                            WHERE (UserID = '{userID}' )
+                            WHERE (user_id = '{userID}' )
                             """
         try:
             self.cursor.execute(query)
@@ -303,7 +303,7 @@ class DatabaseHandler:
         query = f"""
                     UPDATE mudcake.User
                     SET isConfirmed = 1
-                    WHERE (UserID = '{userID}')
+                    WHERE (user_id = '{userID}')
                     """
         try:
             print("Executing confirmation in database...")
@@ -363,7 +363,7 @@ class DatabaseHandler:
     def get_character_by_dungeon_ID(self, dungeonID: str):
 
         query = f"""
-                    SELECT CharacterID, Lifepoints, Name, Description, ClassID, RaceID, UserID, DiscoverdMapID, RoomID
+                    SELECT CharacterID, Lifepoints, Name, Description, ClassID, RaceID, user_id, DiscoverdMapID, RoomID
                     From mudcake.Character
                     WHERE (DungeonID = '{dungeonID}')
                     """
@@ -453,7 +453,7 @@ class DatabaseHandler:
     def get_access_list_by_dungeon_id(self, dungeonID: str):
 
         query = f"""
-                    SELECT UserID, isAllowed
+                    SELECT user_id, isAllowed
                     From mudcake.AccessList
                     WHERE (DungeonID = '{dungeonID}')
                     """
@@ -503,7 +503,7 @@ class DatabaseHandler:
         query = f"""
             SELECT * 
             From mudcake.User
-            WHERE (UserName = '{user.userName}' AND UserID = '{user.userID}' )
+            WHERE (user_name = '{user.username}' AND user_id = '{user.userID}' )
             """
         self.cursor.execute(query)
         try:
@@ -583,7 +583,7 @@ class DatabaseHandler:
         self.cursor.execute(f"""
                                     SELECT IsAllowed
                                     FROM mudcake.AccessList
-                                    WHERE (DungeonID = %s AND UserID = %s )
+                                    WHERE (DungeonID = %s AND user_id = %s )
                                     """, (userID, dungeonID))
         try:
             return self.cursor.fetchone()
@@ -652,7 +652,7 @@ class DatabaseHandler:
                                     SELECT RaceID raceID,
                                            Name name,
                                            Description description,
-                                           DungeonID dungeonID 
+                                           DungeonID dungeon_id 
                                     FROM mudcake.Race
                                     WHERE (DungeonID = '{dungeonID}' )
                                     """)
@@ -697,7 +697,7 @@ class DatabaseHandler:
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
                                     SELECT IsAllowed isAllowed,
-                                           UserID userID)
+                                           user_id user_id)
                                     FROM mudcake.AccessList
                                     WHERE (DungeonID = '{dungeonID}' )
                                     """,)
