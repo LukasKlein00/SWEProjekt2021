@@ -244,7 +244,7 @@ export class BuilderComponent implements OnInit {
 
   saveDungeon() {
     this.loading = true;
-
+    
 
     const safeDungeon: Dungeon = Object.assign({}, this.dungeon);
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
@@ -252,6 +252,7 @@ export class BuilderComponent implements OnInit {
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon)
       .subscribe(response => {
+        console.log(response)
         this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
         this.loading = false;
       });
