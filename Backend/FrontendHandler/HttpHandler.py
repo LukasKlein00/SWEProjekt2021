@@ -38,9 +38,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])  # <--- Größe der Daten
         post_data_raw = self.rfile.read(content_length)  # <--- Erfasst die Daten
         print(self.path)
+        print(post_data_raw)
         try:
             data = json.loads(post_data_raw)  # <--Daten als JSON-Objekt
-            print("data:" + data)
+            print('data', data)
         except:
             data = None
 
