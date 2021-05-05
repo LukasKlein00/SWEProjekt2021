@@ -490,14 +490,22 @@ class DatabaseHandler:
                                            West west,
                                            NpcID npc,
                                            ItemID item
-                                    FROM mudcake.Room
-                                    FULL JOIN mudcake.Npc ON mudcake.Room.NpcID=mudcake.Npc.NpcID
-                                    FULL JOIN mudcake.Item ON mudcake.Room.ItemID=mudcake.Item.ItemID
+                                    FROM 
+                                        mudcake.Room
+                                            JOIN 
+                                        mudcake.Npc
+                                            JOIN 
+                                        mudcake.Item
+                                            
                                     WHERE (DungeonID = '{dungeon_id}' )
                                     """)
         try:
             print(colored('DB:', 'yellow'), f'get rooms as dict. dungeonID: "{dungeon_id}"')
-            return self.dictionary_cursor.fetchall()
+            datta = self.dictionary_cursor.fetchall()
+            for data in datta:
+                print(data)
+            print(datta)
+            return datta
         except IOError:
             print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))
 
