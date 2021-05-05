@@ -282,6 +282,7 @@ export class BuilderComponent implements OnInit {
 
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
+      console.log(res)
       this.dungeon.rooms = res as Room[] ?? [];
     });
   }

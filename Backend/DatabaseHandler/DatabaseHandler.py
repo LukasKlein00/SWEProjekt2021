@@ -608,8 +608,18 @@ class DatabaseHandler:
     def get_all_rooms_by_dungeon_id(self, dungeonID: str):
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
-                                    SELECT RoomID, isStartingRoom,Description, Name, CoordinateX,
-                                           CoordinateY, North, East, South, West, NpcID, ItemID 
+                                    SELECT RoomID roomID,
+                                           isStartingRoom isStartRoom,
+                                           Description description,
+                                           Name name, 
+                                           CoordinateX x,
+                                           CoordinateY y,
+                                           North north,
+                                           East east,
+                                           South south,
+                                           West west,
+                                           NpcID npc,
+                                           ItemID item
                                     FROM mudcake.Room
                                     WHERE (DungeonID = '{dungeonID}' )
                                     """)
@@ -623,10 +633,10 @@ class DatabaseHandler:
     def get_all_classes_by_dungeon_id(self, dungeonID: str):
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
-                                    SELECT ClassID,
-                                           Name,
-                                           Description,
-                                           ItemID 
+                                    SELECT ClassID classID,
+                                           Name name,
+                                           Description description,
+                                           ItemID equipment
                                     FROM mudcake.Class
                                     WHERE (DungeonID ='{dungeonID}')
                                     """)
@@ -639,10 +649,10 @@ class DatabaseHandler:
     def get_all_races_by_dungeon_id(self, dungeonID: str):
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
-                                    SELECT RaceID,
-                                           Name,
-                                           Description,
-                                           DungeonID 
+                                    SELECT RaceID raceID,
+                                           Name name,
+                                           Description description,
+                                           DungeonID dungeonID 
                                     FROM mudcake.Race
                                     WHERE (DungeonID = '{dungeonID}' )
                                     """)
@@ -655,9 +665,9 @@ class DatabaseHandler:
     def get_all_item_by_dungeon_id(self, dungeonID: str):
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
-                                    SELECT ItemID,
-                                           Description,
-                                           Name 
+                                    SELECT ItemID itemID,
+                                           Description description,
+                                           Name name
                                     FROM mudcake.Item
                                     WHERE (DungeonID = '{dungeonID}')
                                     """)
@@ -670,10 +680,10 @@ class DatabaseHandler:
     def get_all_npc_by_dungeon_id(self, dungeonID: str):
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
-                                    SELECT NpcID,
-                                           Name,
-                                           Description,
-                                           ItemID       
+                                    SELECT NpcID npcID,
+                                           Name name,
+                                           Description description,
+                                           ItemID equipment       
                                     FROM mudcake.Npc
                                     WHERE (DungeonID = '{dungeonID}')
                                     """)
@@ -686,8 +696,8 @@ class DatabaseHandler:
     def get_access_list_by_dungeon_ID(self, dungeonID: str):
         dict_cursor = self.databasePath.cursor(dictionary=True)
         dict_cursor.execute(f"""
-                                    SELECT JSON_OBJECT( 'IsAllowed', IsAllowed,
-                                                        'UserID', UserID )
+                                    SELECT IsAllowed isAllowed,
+                                           UserID userID)
                                     FROM mudcake.AccessList
                                     WHERE (DungeonID = '{dungeonID}' )
                                     """,)

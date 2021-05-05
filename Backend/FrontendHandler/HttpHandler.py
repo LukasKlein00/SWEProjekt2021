@@ -65,7 +65,6 @@ class HTTPHandler(BaseHTTPRequestHandler):
             except:
                 pass
 
-            # Antwort senden? self.wfile.write(json.dumps("moin").encode(encoding='utf_8'))
 
         if self.path == '/login':
             self.__set_response()
@@ -94,12 +93,32 @@ class HTTPHandler(BaseHTTPRequestHandler):
             print("rooms as json returned: " + str(rooms))
             self.wfile.write(rooms)
 
+        if self.path == '/getRaces':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            races = dungeon_manager.get_all_from_races_as_json(data)
+            self.wfile.write(races)
+
+        if self.path == '/getClasses':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            classes = dungeon_manager.get_all_from_classes_as_json(data)
+            self.wfile.write(classes)
+
+        if self.path == '/getNpcs':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            rooms = dungeon_manager.get_all_from_npcs_as_json(data)
+            self.wfile.write(rooms)
+
+        if self.path == '/getItems':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            rooms = dungeon_manager.get_all_from_items_as_json(data)
+            self.wfile.write(rooms)
+
         if self.path == '/saveDungeon':
             self.__set_response()
-            """newDungeon = DungeonData(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
-                                             dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'],
-                                             private=data['private'],
-                                             dungeonMasterID=data['dungeonMasterID'])"""
             dungeon_manager = DungeonManager(data)
             print("successfully created DungeonManager!")
             dungeon_id = dungeon_manager.write_dungeon_to_database()

@@ -33,7 +33,8 @@ class DungeonManager:
         if data is not None:
             self.managed_dungeon = DungeonData(dungeonId=self.data['dungeonID'],
                                                dungeonMasterID=self.data['dungeonMasterID'],
-                                               maxPlayers=self.data['maxPlayers'], name=self.data['dungeonName'],
+                                               maxPlayers=self.data['maxPlayers'],
+                                               name=self.data['dungeonName'],
                                                description=self.data['dungeonDescription'],
                                                private=self.data['private'],
                                                accessList=self.data['accessList'])
@@ -340,7 +341,7 @@ class DungeonManager:
         return json.dumps(rooms).encode(encoding='utf_8')
 
     def get_all_from_classes_as_json(self, data):
-        classes = self.mDBHandler.get_all_rooms_by_dungeon_id(dungeonID=data)
+        classes = self.mDBHandler.get_all_classes_by_dungeon_id(dungeonID=data)
         print(classes)
         return json.dumps(classes).encode(encoding='utf_8')
 
