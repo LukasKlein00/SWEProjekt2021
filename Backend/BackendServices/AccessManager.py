@@ -12,6 +12,9 @@ class AccessManager:
         else:
             return None
 
+    def get_accesslist_for_dungeon(self):
+        raise NotImplementetError
+
     def send_access_request_to_dm(self):
         raise NotImplementedError
 
