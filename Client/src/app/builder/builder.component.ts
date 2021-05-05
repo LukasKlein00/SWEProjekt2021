@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ConsoleReporter } from 'jasmine';
 import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room, Access } from 'Testfiles/models für Schnittstellen';
 import { DungeonService } from '../services/dungeon.service';
 import { HttpService } from '../services/http.service';
@@ -270,16 +271,19 @@ export class BuilderComponent implements OnInit {
 
   saveDungeon() {
     this.loading = true;
-    
+
 
     const safeDungeon: Dungeon = Object.assign({}, this.dungeon);
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
+    console.log("gesavter Dungeon: ", safeDungeon);
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon)
       .subscribe(response => {
-        console.log(response)
-        this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
+        console.log("safeDungeon Response",response)
+        if (response) {
+          this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
+        }
         this.loading = false;
       });
 
@@ -308,54 +312,59 @@ export class BuilderComponent implements OnInit {
 
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
-      console.log(res)
-      this.dungeon.rooms = res as Room[] ?? [];
-    });
-  }
-
-  getRaces() {
-    if (this.dungeon.races = []) {
-      this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res as Race[])
-    }
-  }
-
-  getClasses() {
-    if (this.dungeon.classes = []) {
-      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
-    }
-  }
-
-  getItems() {
-    if (this.dungeon.races = []) {
-      this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res as Item[])
-    }
-  }
-
-  getNpcs() {
-    if (this.dungeon.npcs = []) {
-      this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res as Npc[])
-    }
-  }
-
-  getAccessList() {
-    if (this.dungeon.accessList = []) {
-      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res as Access[])
-    }
-  }
-
-  getDungeon(id) {
-    this.loading = true;
-    this.httpService.getDungeon(id).subscribe(res => {
-      this.dungeon.dungeonID = res[0][0];
-      this.dungeon.dungeonMasterID =res[0][1];
-      this.dungeon.dungeonName = res[0][2];
-      this.dungeon.dungeonDescription = res[0][3];
-      this.dungeon.private = Boolean(res[0][4]).valueOf();
-      this.dungeon.maxPlayers = res[0][5];
+      console.log(res);
+      res.map(r => {
+        const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
+        console.log("index", index);
+        r['isActive'] = true;
+        this.dungeon.rooms[index] = r;
+      });
       this.loading = false;
+  });
+}
 
-      console.log(this.dungeon);
-    })
+getRaces() {
+  if (this.dungeon.races = []) {
+    this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res as Race[])
   }
+}
+
+getClasses() {
+  if (this.dungeon.classes = []) {
+    this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
+  }
+}
+
+getItems() {
+  if (this.dungeon.races = []) {
+    this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res as Item[])
+  }
+}
+
+getNpcs() {
+  if (this.dungeon.npcs = []) {
+    this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res as Npc[])
+  }
+}
+
+getAccessList() {
+  if (this.dungeon.accessList = []) {
+    this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res as Access[])
+  }
+}
+
+getDungeon(id) {
+  this.loading = true;
+  this.httpService.getDungeon(id).subscribe(res => {
+    this.dungeon.dungeonID = res[0][0];
+    this.dungeon.dungeonMasterID = res[0][1];
+    this.dungeon.dungeonName = res[0][2];
+    this.dungeon.dungeonDescription = res[0][3];
+    this.dungeon.private = Boolean(res[0][4]).valueOf();
+    this.dungeon.maxPlayers = res[0][5];
+
+    console.log(this.dungeon);
+  })
+}
 }
 
