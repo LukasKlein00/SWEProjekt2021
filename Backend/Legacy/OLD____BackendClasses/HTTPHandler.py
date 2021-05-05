@@ -47,14 +47,14 @@ class HTTPHandler(BaseHTTPRequestHandler):
             newUser = User(userID=data['userID'], firstName=data['firstName'], lastName=data['lastName'],
                            eMail=data['email'], userName=data['username'], password=data['password'],
                            confirmation=False)
-            self.mDBHandler.registerUser(newUser)
+            self.mDBHandler.register_user(newUser)
 
             # Antwort senden? self.wfile.write(json.dumps("moin").encode(encoding='utf_8'))
 
         if self.path == '/login':
             self._set_response()
             newUser = User(userName=data['username'], password=data['password'])
-            returnedUser = self.mDBHandler.loginUser(newUser)
+            returnedUser = self.mDBHandler.login_user(newUser)
             if returnedUser:
                 response = {
                     'username': returnedUser.userName,
@@ -74,16 +74,16 @@ class HTTPHandler(BaseHTTPRequestHandler):
             newDungeon = Dungeon(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
                                  dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'], private=data['private'],
                                  dungeonMasterID=data['dungeonMasterID'])
-            dungeonID = self.mDBHandler.saveOrUpdateDungeon(newDungeon)
+            dungeonID = self.mDBHandler.save_or_update_dungeon(newDungeon)
             # noch items und so abspeichern
 
         if self.path == '/deleteDungeon':
             self._set_response()
             self.mDBHandler.deleteDungeonByID(data)
 
-        if self.path == '/deleteUser':
+        if self.path == '/delete_user':
             self._set_response()
-            self.mDBHandler.deleteUserByID(data)
+            self.mDBHandler.delete_user_by_id(data)
 
         if self.path == '/copyDungeon':
             print(data)

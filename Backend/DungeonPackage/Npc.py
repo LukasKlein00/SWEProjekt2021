@@ -3,7 +3,7 @@ from DatabaseHandler.DatabaseHandler import *
 
 
 class Npc:
-    def __init__(self, npc_id: str, dungeon_id: str, item: str = None, name: str = None, description: str = None ):
+    def __init__(self, npc_id: str= None, dungeon_id: str= None, item: str = None, name: str = None, description: str = None ):
         self.npc_id = npc_id
         self.item = item
         self.name = name
@@ -11,7 +11,7 @@ class Npc:
         self.dungeon_id = dungeon_id
         self.mDBHandler = DatabaseHandler()
 
-    def loadData(self, dungeonID: str):
+    def load_data(self, dungeonID: str):
         databaseNpc = self.mDBHandler.get_npc_by_dungeon_ID(dungeonID)
         self.npc_id = databaseNpc[0]
         self.name = databaseNpc[1]

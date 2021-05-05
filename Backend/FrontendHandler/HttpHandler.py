@@ -16,7 +16,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
     DungManager = DungeonManager()
 
     # übermittelt Einstellungen "Headers" des Requests
-    def _set_response(self, code: int = 200):
+    def __set_response(self, code: int = 200):
         self.send_response(code)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-type', 'application/json')
@@ -26,7 +26,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
     # OPTIONS Request: Wird vor jeder Request ausgeführt, um zu checken, ob die Request erlaubt ist
     def do_OPTIONS(self):
-        self._set_response()
+        self.__set_response()
 
         # GET Request: "Wird verwendet wenn Daten ausgegeben werden sollen"
 
@@ -38,14 +38,15 @@ class HTTPHandler(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length'])  # <--- Größe der Daten
         post_data_raw = self.rfile.read(content_length)  # <--- Erfasst die Daten
         print(self.path)
+        print(post_data_raw)
         try:
             data = json.loads(post_data_raw)  # <--Daten als JSON-Objekt
-            print(data)
+            print('data', data)
         except:
             data = None
 
         if self.path == '/confirm':
-            self._set_response()
+            self.__set_response()
             try:
                 self.AccManager.confirm_registration_token(data['token'])
             except:
@@ -53,86 +54,112 @@ class HTTPHandler(BaseHTTPRequestHandler):
                 pass
 
         if self.path == '/register':
-            self._set_response()
+            self.__set_response()
             print(self.path)
             try:
-                self.AccManager.registerUser(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
-                                    Username=data['username'], Email=data['email'], Password=data['password'],
-                                    IsConfirmed=False)
+                self.AccManager.register_user(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
+                                              Username=data['username'], Email=data['email'], Password=data['password'],
+                                              IsConfirmed=False)
 
                 self.AccManager.send_registration_email(data['email'], data['userID'])
             except:
                 pass
 
-            # Antwort senden? self.wfile.write(json.dumps("moin").encode(encoding='utf_8'))
 
         if self.path == '/login':
-            self._set_response()
+            self.__set_response()
             try:
-                response = self.AccManager.checkLoginCredentials(Username=data['username'], Password=data['password'])
+                response = self.AccManager.check_login_credentials(Username=data['username'], Password=data['password'])
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             except:
-                self._set_response(400)
+                self.__set_response(400)
 
         if self.path == '/getMyDungeons':
-            self._set_response()
+            self.__set_response()
             dungeon_manager = DungeonManager()
             dungeons = dungeon_manager.get_dungeon_by_id(data)
             self.wfile.write(json.dumps(dungeons).encode(encoding='utf_8'))
 
         if self.path == '/getDungeon':
-            self._set_response()
+            self.__set_response()
             dungeon_manager = DungeonManager()
             dungeon = dungeon_manager.get_dungeon_data_by_dungeon_id(data)
             self.wfile.write(json.dumps(dungeon).encode(encoding='utf_8'))
 
         if self.path == '/getRooms':
-            self._set_response()
-            #dungeon_manager = DungeonManager()
-            #rooms = dungeon_manager.get
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            rooms = dungeon_manager.get_all_from_room_as_json(data)
+            print("rooms as json returned: " + str(rooms))
+            self.wfile.write(rooms)
+
+        if self.path == '/getRaces':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            races = dungeon_manager.get_all_from_races_as_json(data)
+            self.wfile.write(races)
+
+        if self.path == '/getClasses':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            classes = dungeon_manager.get_all_from_classes_as_json(data)
+            self.wfile.write(classes)
+
+        if self.path == '/getNpcs':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            rooms = dungeon_manager.get_all_from_npcs_as_json(data)
+            self.wfile.write(rooms)
+
+        if self.path == '/getItems':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            rooms = dungeon_manager.get_all_from_items_as_json(data)
+            self.wfile.write(rooms)
 
         if self.path == '/saveDungeon':
-            self._set_response()
-            """newDungeon = DungeonData(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
-                                             dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'],
-                                             private=data['private'],
-                                             dungeonMasterID=data['dungeonMasterID'])"""
+            self.__set_response()
             dungeon_manager = DungeonManager(data)
+            print("successfully created DungeonManager!")
             dungeon_id = dungeon_manager.write_dungeon_to_database()
-            self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
+            print("successfully executed Database transaction! Dungeon ID: " + dungeon_id)
+            try:
+                self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
+            except IOError:
+                pass
             # noch items und so abspeichern
 
         if self.path == '/deleteDungeon':
-            self._set_response()
+            self.__set_response()
             dungeon_manager = DungeonManager()
             dungeon_manager.delete_dungeon(data)
 
-        if self.path == '/deleteUser':
-            self._set_response()
-            deletetransaction = self.AccManager.deleteUser(UserID=data)
+        if self.path == '/delete_user':
+            self.__set_response()
+            deletetransaction = self.AccManager.delete_user(UserID=data)
             if not deletetransaction:
-                self._set_response(400)
+                self.__set_response(400)
 
         if self.path == '/copyDungeon':
             print(data)
-            self._set_response()
+            self.__set_response()
             dungeon_manager = DungeonManager()
             dungeon_manager.copy_dungeon(data)
 
         if self.path == '/forgot':
-            self._set_response()
-            self.AccManager.sendPasswordResetEmail(UserEmail=data['email'])
+            self.__set_response()
+            self.AccManager.send_password_reset_email(UserEmail=data['email'])
 
         if self.path == '/reset':
-            self._set_response()
+            self.__set_response()
             print("data")
             print(data)
-            isPasswordChanged = self.AccManager.changePasswordInDatabase(UserID=data['token'], Password=data['password'])
+            isPasswordChanged = self.AccManager.change_password_in_database(UserID=data['token'], Password=data['password'])
             if not isPasswordChanged:
-                self._set_response(400)
+                self.__set_response(400)
 
         if self.path == '/check':
-            self._set_response()
+            self.__set_response()
             check = self.AccManager.check_logged_in_credentials(UserName=data['username'], UserID=data['userID'])
             if not check:
-                self._set_response(400)
+                self.__set_response(400)

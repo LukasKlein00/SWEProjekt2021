@@ -18,8 +18,8 @@ class AccountManager:
         '''
         self.mDBHandler = DatabaseHandler()
 
-    def registerUser(self, UserID: str, Firstname: str, Lastname: str, Username: str, Email: str, Password: str,
-                     IsConfirmed: bool) -> bool:
+    def register_user(self, UserID: str, Firstname: str, Lastname: str, Username: str, Email: str, Password: str,
+                      IsConfirmed: bool) -> bool:
         '''
         initiate new User and hand over to DatabaseHandler.
         :param UserID: id of user
@@ -33,7 +33,7 @@ class AccountManager:
         '''
         newUser = User(UserID, Firstname, Lastname, Username, Email, Password, IsConfirmed)
         # sendRegistrationEmail()
-        checkMethod = self.mDBHandler.registerUser(newUser)
+        checkMethod = self.mDBHandler.register_user(newUser)
         print(checkMethod)
         if checkMethod:
             return True
@@ -47,17 +47,17 @@ class AccountManager:
         '''
         print(email)
         email_sender = EmailSender(userEmail=email, userID=userID)
-        email_sender.sendEmail(messageType.registration)
+        email_sender.send_email(messageType.registration)
 
-    def checkLoginCredentials(self, Username: str, Password: str):
+    def check_login_credentials(self, Username: str, Password: str):
         '''
-        initiate user with input parameters and hand it over to DatabaseHandler method "loginUser", if it worked return username and id
+        initiate user with input parameters and hand it over to DatabaseHandler method "login_user", if it worked return username and id
         :param Username: name of user
         :param Password: password of user
         :return: username and id of corresponding user
         '''
         checkUser = User(userName=Username, password=Password)
-        returnedUserData = self.mDBHandler.loginUser(checkUser)
+        returnedUserData = self.mDBHandler.login_user(checkUser)
         returnedUser = User(userID=returnedUserData[1], userName=returnedUserData[0],
                             confirmation=bool(returnedUserData[2]))
         if returnedUser:
@@ -73,34 +73,34 @@ class AccountManager:
                 raise ValueError
             # self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
         # else:
-        # self._set_response(400)
+        # self.__set_response(400)
 
-    def sendPasswordResetEmail(self, UserEmail: str):
+    def send_password_reset_email(self, UserEmail: str):
         '''
         Gets UserId from DatabaseHandler and gives it to Emailsender
         :param UserID: id of user
         '''
-        userID = self.mDBHandler.getUserIdByEmail(UserEmail)
+        userID = self.mDBHandler.get_user_id_by_email(UserEmail)
         passwordVergessenEmail = EmailSender(UserEmail, userID)
-        passwordVergessenEmail.sendEmail(messageType.resetPassword)
+        passwordVergessenEmail.send_email(messageType.resetPassword)
 
-    def changePasswordInDatabase(self, UserID: str, Password: str):
+    def change_password_in_database(self, UserID: str, Password: str):
         '''
-        hand over UserID and Password to DatabaseHandler method "updatePasswordByUserID"
+        hand over UserID and Password to DatabaseHandler method "update_password_by_user_id"
         :param UserID: id of user
         :param Password: password if user
         :return: true if transaction was successful
         '''
-        updatedPassword = self.mDBHandler.updatePasswordByUserID(UserID, Password)
+        updatedPassword = self.mDBHandler.update_password_by_user_id(UserID, Password)
         return updatedPassword
 
-    def deleteUser(self, UserID: str):
+    def delete_user(self, UserID: str):
         '''
         hand over userid to DatabaseHandler method "deleteUserById"
         :param UserID: id of user
         :return: True
         '''
-        deletedUser = self.mDBHandler.deleteUserByID(UserID)
+        deletedUser = self.mDBHandler.delete_user_by_id(UserID)
         return deletedUser
 
     def confirm_registration_token(self, UserID: str):
@@ -118,5 +118,5 @@ class AccountManager:
         :return: return true if successful
         '''
         checkUser = User(userName=UserName, userID=UserID)
-        check = self.mDBHandler.checkUser(user=checkUser)
+        check = self.mDBHandler.check_user(user=checkUser)
         return check

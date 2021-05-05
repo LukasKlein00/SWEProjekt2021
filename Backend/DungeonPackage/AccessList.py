@@ -14,7 +14,7 @@ class AccessList:
         self.dungeonID = dungeonID
         self.mDBHandler = DatabaseHandler()
 
-    def addUserToAccessList(self, userID: str, isAllowed: bool):
+    def add_user_to_access_list(self, userID: str, isAllowed: bool):
         """
         adds a user to AccessList
         :param userID: id of user
@@ -23,7 +23,8 @@ class AccessList:
         self.accessList["userID"].append(userID)
         self.accessList["isAllowed"].append(isAllowed)
 
-    def loadData(self):
-        databaseAccessList = self.mDBHandler.get_access_list_by_dungeon_ID(self.dungeonID)
+    def load_data(self):
+        # TODO: Fix that shit
+        databaseAccessList = self.mDBHandler.user_status_on_access_list(self.userID, self.dungeonID)
         self.accessList['userID'].append(databaseAccessList[2])
         self.accessList['isAllowed'].append(bool(databaseAccessList[1]))

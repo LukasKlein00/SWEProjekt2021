@@ -14,12 +14,11 @@ class DatabaseHandler:
             host="193.196.53.67",
             port="1189",
             user="jack",
-            password="123123",
-            buffered = True
+            password="123123"
         ))
         self.cursor = self.databasePath.cursor()
 
-    def registerUser(self, user):
+    def register_user(self, user):
         """
         insert user to database after user registration
         :param user: a user object
@@ -40,7 +39,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def loginUser(self, user):
+    def login_user(self, user):
         """
         checks if user is already in database, when client tries to login
         :param user: user object
@@ -60,7 +59,7 @@ class DatabaseHandler:
         except IOError:
             return None
 
-    def saveFullDungeon(self, dungeon):
+    def save_full_dungeon(self, dungeon):
         raise NotImplementedError
 
     def copy_dungeon(self, dungeonID):
@@ -72,7 +71,7 @@ class DatabaseHandler:
         # get Dungeon by DungeonID and save with other ID!
         raise NotImplementedError
 
-    def saveOrUpdateDungeon(self, dungeon):
+    def save_or_update_dungeon(self, dungeon):
         query = f"""
         INSERT INTO mudcake.Dungeon
             (DungeonID, DungeonName, DungeonDescription, MaxPlayers, DungeonMasterID, Private)
@@ -96,13 +95,13 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def getEverything(self, dungeon):
+    def get_everything(self, dungeon):
         raise NotImplementedError
 
-    def getUserByID(self, userID: int):
+    def get_user_by_id(self, userID: int):
         raise NotImplementedError
 
-    def getUserIdByEmail(self, email: str):
+    def get_user_id_by_email(self, email: str):
         '''
         reads the userid from the database belonging to the corresponding email
         :param email: email
@@ -121,7 +120,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def getCharacterByID(self, characterID: int):
+    def get_character_by_id(self, characterID: int):
         raise NotImplementedError
 
     def get_dungeon_by_id(self, user_id: str):
@@ -143,7 +142,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def updatePasswordByUserID(self, userID: str, password: str):
+    def update_password_by_user_id(self, userID: str, password: str):
         """
         Updates UserPassword in Database
         :param userID: UserID
@@ -163,22 +162,22 @@ class DatabaseHandler:
         except IOError:
             return False
 
-    def getInventoryOfCharacter(self, character):
+    def get_inventory_of_character(self, character):
         raise NotImplementedError
 
-    def getItemsFromInventory(self):
+    def get_items_from_inventory(self):
         raise NotImplementedError
 
-    def getRoomByCharacterID(self, character):
+    def get_room_by_character_id(self, character):
         raise NotImplementedError
 
-    def userAlreadyInDungeon(self, characterID: int):
+    def user_already_in_dungeon(self, characterID: int):
         raise NotImplementedError
 
-    def writeGameStateToDatabase(self, dungeon):
+    def write_game_state_to_database(self, dungeon):
         raise NotImplementedError
 
-    def writeCharacterToDatabase(self, character):
+    def write_character_to_database(self, character):
         raise NotImplementedError
 
     def delete_dungeon_by_id(self, dungeon_id: str):
@@ -198,7 +197,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def deleteUserByID(self, userID):
+    def delete_user_by_id(self, userID):
         """
         deletes a user in database
         :param userID: id of the user
@@ -229,6 +228,8 @@ class DatabaseHandler:
                    (DungeonID, RaceID, Name, Description)
                VALUES 
                    ("{dungeon_id}", "{race.race_id}", "{race.name}", "{race.description}")
+                ON DUPLICATE KEY UPDATE
+                DungeonID=VALUES(DungeonID), RaceID=VALUES(RaceID), Name=VALUES(Name), Description=VALUES(Description)
                """
 
         try:
@@ -246,13 +247,16 @@ class DatabaseHandler:
 
         query = f"""
                       INSERT INTO mudcake.Class
-                          (DungeonID, ClassID, Name, Description)
+                          (DungeonID, ClassID, Name, Description, ItemID)
                       VALUES 
-                          ("{dungeon_id}", "{class_object.classID}", "{class_object.name}", 
-                            "{class_object.description}")
+                          (%s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE
+                    DungeonID = VALUES(DungeonID), ClassID=VALUES(ClassID), Name=VALUES(Name), 
+                            Description=VALUES(Description), ItemID = VALUES(ItemID)
                       """
+        variables = (dungeon_id, class_object.class_id, class_object.name, class_object.description, class_object.item_id)
         try:
-            self.cursor.execute(query)
+            self.cursor.execute(query, variables)
             self.databasePath.commit()
         except IOError:
             pass
@@ -272,6 +276,9 @@ class DatabaseHandler:
                                     North, East, South, West, isStartingRoom, NpcID, ItemID)
                              VALUES 
                                  (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                            ON DUPLICATE KEY UPDATE
+                            DungeonID = VALUES(DungeonID), RoomID = VALUES(RoomID), Name = VALUES(Name), Description = VALUES(Description), CoordinateX = VALUES(CoordinateX), CoordinateY=VALUES(CoordinateY),
+                            North=VALUES(North),East=VALUES(East),South=VALUES(South),West=VALUES(West),isStartingRoom=VALUES(isStartingRoom),NpcID=VALUES(NpcID),ItemID=VALUES(ItemID)
                              """
         variables = (
             dungeon_id, room.room_id, room.room_name, room.room_description, room.coordinate_x, room.coordinate_y,
@@ -319,6 +326,8 @@ class DatabaseHandler:
                                   (DungeonID, NpcID, Name, Description, ItemID)
                               VALUES 
                                 (%s,%s,%s,%s,%s)
+                            ON DUPLICATE KEY UPDATE
+                            DungeonID = VALUES(DungeonID), NpcID = VALUES(NpcID), Name = VALUES(Name), Description = VALUES(Description), ItemID = VALUES(ItemID)
     
                               """
         variables = (dungeon_id, npc.npc_id, npc.name, npc.description, npc.item)
@@ -340,6 +349,8 @@ class DatabaseHandler:
                                           (DungeonID, ItemID, Name, Description)
                                       VALUES 
                                           (%s,%s,%s,%s)
+                                    ON DUPLICATE KEY UPDATE 
+                                    DungeonID = VALUES(DungeonID), ItemID = VALUES(ItemID), Name = VALUES(Name), Description =VALUES(Description)
                                       """
         variables = (dungeon_id, item.item_id, item.name, item.description)
 
@@ -482,7 +493,7 @@ class DatabaseHandler:
         except IOError:
             pass
 
-    def checkUser(self, user):
+    def check_user(self, user):
         """
         checks if user is already in database, when client is already logged in
         :param user: user object
@@ -576,6 +587,122 @@ class DatabaseHandler:
                                     """, (userID, dungeonID))
         try:
             return self.cursor.fetchone()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    #################### NEW #######################
+
+    def get_all_rooms_by_dungeon_id_old(self, dungeonID: str):
+        self.cursor.execute(f"""
+                                    SELECT RoomID, isStartingRoom, Description, Name, CoordinateX, CoordinateY, North, East, South, West, NpcID, ItemID
+                                    FROM mudcake.Room
+                                    WHERE (DungeonID = '{dungeonID}' )
+                                    """)
+        try:
+            return self.cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_rooms_by_dungeon_id(self, dungeonID: str):
+        dict_cursor = self.databasePath.cursor(dictionary=True)
+        dict_cursor.execute(f"""
+                                    SELECT RoomID roomID,
+                                           isStartingRoom isStartRoom,
+                                           Description description,
+                                           Name name, 
+                                           CoordinateX x,
+                                           CoordinateY y,
+                                           North north,
+                                           East east,
+                                           South south,
+                                           West west,
+                                           NpcID npc,
+                                           ItemID item
+                                    FROM mudcake.Room
+                                    WHERE (DungeonID = '{dungeonID}' )
+                                    """)
+        try:
+            temp = dict_cursor.fetchall()
+            return temp
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_classes_by_dungeon_id(self, dungeonID: str):
+        dict_cursor = self.databasePath.cursor(dictionary=True)
+        dict_cursor.execute(f"""
+                                    SELECT ClassID classID,
+                                           Name name,
+                                           Description description,
+                                           ItemID equipment
+                                    FROM mudcake.Class
+                                    WHERE (DungeonID ='{dungeonID}')
+                                    """)
+        try:
+            return dict_cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_races_by_dungeon_id(self, dungeonID: str):
+        dict_cursor = self.databasePath.cursor(dictionary=True)
+        dict_cursor.execute(f"""
+                                    SELECT RaceID raceID,
+                                           Name name,
+                                           Description description,
+                                           DungeonID dungeonID 
+                                    FROM mudcake.Race
+                                    WHERE (DungeonID = '{dungeonID}' )
+                                    """)
+        try:
+            return dict_cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_item_by_dungeon_id(self, dungeonID: str):
+        dict_cursor = self.databasePath.cursor(dictionary=True)
+        dict_cursor.execute(f"""
+                                    SELECT ItemID itemID,
+                                           Description description,
+                                           Name name
+                                    FROM mudcake.Item
+                                    WHERE (DungeonID = '{dungeonID}')
+                                    """)
+        try:
+            return dict_cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_all_npc_by_dungeon_id(self, dungeonID: str):
+        dict_cursor = self.databasePath.cursor(dictionary=True)
+        dict_cursor.execute(f"""
+                                    SELECT NpcID npcID,
+                                           Name name,
+                                           Description description,
+                                           ItemID equipment       
+                                    FROM mudcake.Npc
+                                    WHERE (DungeonID = '{dungeonID}')
+                                    """)
+        try:
+            return dict_cursor.fetchall()
+        except IOError:
+            print("Error occurred by accessing AccessList")
+            raise IOError
+
+    def get_access_list_by_dungeon_ID(self, dungeonID: str):
+        dict_cursor = self.databasePath.cursor(dictionary=True)
+        dict_cursor.execute(f"""
+                                    SELECT IsAllowed isAllowed,
+                                           UserID userID)
+                                    FROM mudcake.AccessList
+                                    WHERE (DungeonID = '{dungeonID}' )
+                                    """,)
+        try:
+            return dict_cursor.fetchall()
         except IOError:
             print("Error occurred by accessing AccessList")
             raise IOError

@@ -14,6 +14,7 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   saveOrUpdateDungeon(dungeon: Dungeon) {
+    console.log(dungeon)
     return this.http.post(`${this.apiUrl}/saveDungeon`, dungeon);
   }
 
