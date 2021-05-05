@@ -6,6 +6,6 @@ class fileReader:
         with open(self.name) as file:
             return file.read()
 
-    def overwriteName(self, name: str):
+    def overwrite_name(self, name: str):
         self.name = name
         return self

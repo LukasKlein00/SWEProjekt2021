@@ -25,21 +25,21 @@ class ActiveDungeon:
         self.classes = classes
         self.dungeonData = dungeonData
 
-    def addItem(self, item: Item):
+    def add_item(self, item: Item):
         """
         adds an item to activeDungeon
         :param item: item object
         """
         self.items.append(item)
 
-    def addRace(self, race: Race):
+    def add_race(self, race: Race):
         """
         adds an race to activeDungeon
         :param race: race object
         """
         self.races.append(race)
 
-    def isDungeonMasterInGame(self) -> bool:
+    def is_dungeon_master_in_game(self) -> bool:
         """
         checks if dungeon master is in game
         :param item: item object
@@ -47,28 +47,28 @@ class ActiveDungeon:
         """
         return self.userIDs.contains(self.dungeonData.dungeonMasterID)
 
-    def addRoom(self, room: Room):
+    def add_room(self, room: Room):
         """
         adds an room to activeDungeon
         :param room: room object
         """
         self.rooms.append(room)
 
-    def addClass(self, dClass: Class):
+    def add_class(self, dClass: Class):
         """
         adds an class to activeDungeon
         :param item: item object
         """
         self.classes.append(dClass)
 
-    def loadData(self):
+    def load_data(self):
         raise NotImplementedError
 
-    def changeRaceVisibility(self):
+    def change_race_visibility(self):
         raise NotImplementedError
 
-    def changeClassVisibility(self):
+    def change_class_visibility(self):
         raise NotImplementedError
 
-    def moveCharacter(self):
+    def move_character(self):
         raise NotImplementedError

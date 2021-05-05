@@ -15,19 +15,19 @@ class DungeonData:
         self.accessList = accessList
         self.mDBHandler = DatabaseHandler()
 
-    def isDungeonMasterIn(self):
+    def is_dungeon_master_in(self):
         raise NotImplementedError
 
-    def addRoom(self):
+    def add_room(self):
         raise NotImplementedError
 
-    def addItemToRoom(self):
+    def add_item_to_room(self):
         raise NotImplementedError
 
-    def addNpcToRoom(self):
+    def add_npc_to_room(self):
         raise NotImplementedError
 
-    def loadData(self, dungeonID: str):
+    def load_data(self, dungeonID: str):
         databaseDungeonData = self.mDBHandler.get_dungeon_data_by_dungeon_ID(dungeonID)
         self.dungeon_id = databaseDungeonData[0]
         self.maxPlayers = databaseDungeonData[1]
@@ -36,9 +36,9 @@ class DungeonData:
         self.private = bool(databaseDungeonData[4])
         self.dungeonMasterID = databaseDungeonData[5]
 
-    def isPrivate(self):
+    def is_private(self):
         raise NotImplementedError
 
-    def overwriteDungeonMasterID(self):
+    def overwrite_dungeon_master_id(self):
         raise NotImplementedError
 

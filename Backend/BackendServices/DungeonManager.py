@@ -60,7 +60,7 @@ class DungeonManager:
         class_data = self.data['classes']
 
         # for dataForUser in data['accessList']:
-        # accessList.addUserToAccessList(dataForUser['user'], dataForUser['isAllowed'])
+        # accessList.add_user_to_access_list(dataForUser['user'], dataForUser['isAllowed'])
 
         for race in race_data:
             print(race)
@@ -165,20 +165,20 @@ class DungeonManager:
                                        items=self.item_list, dungeonData=self.managed_dungeon, races=self.race_list,
                                        userIDs=None, characterIDs=None)  # Darf das None sein? :D
         try:
-            self.mDBHandler.saveOrUpdateDungeon(active_dungeon)
+            self.mDBHandler.save_or_update_dungeon(active_dungeon)
             print("Dungeon saved")
            #for data in active_dungeon.races:
            #    print(data.name)
-            self._write_races_to_database()
+            self.__write_races_to_database()
             print("Races saved")
-            self._write_items_to_database()
+            self.__write_items_to_database()
             print("Items saved")
-            self._write_classes_to_database()
+            self.__write_classes_to_database()
             print("Classes saved")
-            self._write_npcs_to_database()
+            self.__write_npcs_to_database()
             print("Npcs saved")
             print(self.room_list)
-            self._write_rooms_to_database()
+            self.__write_rooms_to_database()
             print("Rooms saved")
             print("write dungeon to database: self.managed_dungeon.dungeon_id")
             return self.managed_dungeon.dungeon_id
@@ -192,7 +192,7 @@ class DungeonManager:
         if self.managed_dungeon.dungeon_id is None:
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
 
-    def _write_races_to_database(self):
+    def __write_races_to_database(self):
         """
         writes Races to Database
         """
@@ -203,7 +203,7 @@ class DungeonManager:
             except IOError:
                 pass
 
-    def _write_classes_to_database(self):
+    def __write_classes_to_database(self):
         """
         writes Classes to Database
         """
@@ -215,7 +215,7 @@ class DungeonManager:
             except IOError:
                 pass
 
-    def _write_rooms_to_database(self):
+    def __write_rooms_to_database(self):
         """
         writes Rooms to Database
         """
@@ -226,7 +226,7 @@ class DungeonManager:
             except IOError:
                 pass
 
-    def _write_items_to_database(self):
+    def __write_items_to_database(self):
         """
         writes Items to Database
         """
@@ -237,7 +237,7 @@ class DungeonManager:
             except IOError:
                 pass
 
-    def _write_npcs_to_database(self):
+    def __write_npcs_to_database(self):
         """
         writes Npcs to Database
         """
@@ -248,10 +248,10 @@ class DungeonManager:
             except IOError:
                 pass
 
-    def deleteDungeonFromDatabase(self, dungeonID: str):
+    def delete_dungeon_from_database(self, dungeonID: str):
         self.mDBHandler.deleteDungeonByID(dungeonID)
 
-    def _loadDungeonFromDatabase(self):
+    def __load_dungeon_from_database(self):
         ######
         raise NotImplementedError
 
@@ -294,7 +294,7 @@ class DungeonManager:
             print("Item List:")
             print(self.item_list)
             
-            rooms = self.mDBHandler.get_all_rooms_by_dungeon_ID(dungeon_id)
+            rooms = self.mDBHandler.get_all_rooms_by_dungeon_id(dungeon_id)
             for room in rooms:
                 copied_room = Room(room_id=room[0], room_name=room[1], room_description=room[2], coordinate_x=room[3], coordinate_y=room[4], north=room[5], east=room[6], south=room[7], west=room[8], is_start_room=room[9], npc_id=room[10], item_id=room[11], dungeon_id=self.managed_dungeon.dungeon_id)
                 self.room_list.append(copied_room)
@@ -328,34 +328,34 @@ class DungeonManager:
         except IOError:
             pass
 
-    def makeDungeonPrivate(self):
+    def make_dungeon_private(self):
         raise NotImplementedError
 
-    def makeDungeonPublic(self):
+    def make_dungeon_public(self):
         raise NotImplementedError
 
     def get_all_from_room_as_json(self, data):
-        rooms = self.mDBHandler.get_all_rooms_by_dungeon_ID(dungeonID=data)
+        rooms = self.mDBHandler.get_all_rooms_by_dungeon_id(dungeonID=data)
         print(rooms)
         return json.dumps(rooms).encode(encoding='utf_8')
 
     def get_all_from_classes_as_json(self, data):
-        classes = self.mDBHandler.get_all_rooms_by_dungeon_ID(dungeonID=data)
+        classes = self.mDBHandler.get_all_rooms_by_dungeon_id(dungeonID=data)
         print(classes)
         return json.dumps(classes).encode(encoding='utf_8')
 
     def get_all_from_races_as_json(self, data):
-        races = self.mDBHandler.get_all_races_by_dungeon_ID(dungeonID=data)
+        races = self.mDBHandler.get_all_races_by_dungeon_id(dungeonID=data)
         print(races)
         return json.dumps(races).encode(encoding='utf_8')
 
     def get_all_from_items_as_json(self, data):
-        items = self.mDBHandler.get_all_item_by_dungeon_ID(dungeonID=data)
+        items = self.mDBHandler.get_all_item_by_dungeon_id(dungeonID=data)
         print(items)
         return json.dumps(items).encode(encoding='utf_8')
 
     def get_all_from_npcs_as_json(self, data):
-        npcs = self.mDBHandler.get_all_npc_by_dungeon_ID(dungeonID=data)
+        npcs = self.mDBHandler.get_all_npc_by_dungeon_id(dungeonID=data)
         print(npcs)
         return json.dumps(npcs).encode(encoding='utf_8')
 

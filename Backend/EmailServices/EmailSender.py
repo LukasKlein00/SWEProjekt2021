@@ -20,7 +20,7 @@ class EmailSender:
         self.userID = userID
         self.email = "mudcakegame@gmail.com"
 
-    def __sendViaServerContext(self, msg: EmailMessage):
+    def __send_via_server_context(self, msg: EmailMessage):
         """Method to send emails via google gMail
 
         :param msg: preconfigured message in external method - EmailMessage
@@ -30,7 +30,7 @@ class EmailSender:
             server.login(self.email, bytes(b'$9PLnJ5NsB#!').decode('utf8', 'strict'))
             server.send_message(msg)
 
-    def sendEmail(self, mType: messageType):
+    def send_email(self, mType: messageType):
         """Prepares email with given context and initializes sending
 
         :param mType: type of message to be send - MessageType
@@ -50,10 +50,10 @@ class EmailSender:
                 content = content.replace("{Server}", "193.196.54.98")
 
             self.msg.set_content(content.replace("{UserToken}", self.userID))
-            self.msg["Subject"] = contentReader.overwriteName("EmailServices/confirmationEmailTemplates/subject").read()
+            self.msg["Subject"] = contentReader.overwrite_name("EmailServices/confirmationEmailTemplates/subject").read()
             self.msg["From"] = self.email
             self.msg["To"] = self.userEmail
-            self.__sendViaServerContext(self.msg)
+            self.__send_via_server_context(self.msg)
 
         if mType == messageType.resetPassword:
             contentReader = fileReader("EmailServices/resetPasswordEmailTemplates/content")
@@ -66,8 +66,8 @@ class EmailSender:
                 content = content.replace("{Server}", "193.196.54.98")
 
             self.msg.set_content(content.replace("{UserToken}", str(self.userID)))
-            self.msg["Subject"] = contentReader.overwriteName(
+            self.msg["Subject"] = contentReader.overwrite_name(
                 "EmailServices/resetPasswordEmailTemplates/subject").read()
             self.msg["From"] = self.email
             self.msg["To"] = self.userEmail
-            self.__sendViaServerContext(self.msg)
+            self.__send_via_server_context(self.msg)
