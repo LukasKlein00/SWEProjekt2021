@@ -31,7 +31,7 @@ class DungeonManager:
         self.item_list = []
         self.npc_list = []
         if data is not None:
-            self.managed_dungeon = DungeonData(dungeonId=self.data['dungeonID'],
+            self.managed_dungeon = DungeonData(dungeonId=self.data['dungeon_id'],
                                                dungeonMasterID=self.data['dungeonMasterID'],
                                                maxPlayers=self.data['maxPlayers'],
                                                name=self.data['dungeonName'],

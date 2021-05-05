@@ -44,7 +44,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/register':
             self._set_response()
-            newUser = User(userID=data['userID'], firstName=data['firstName'], lastName=data['lastName'],
+            newUser = User(userID=data['user_id'], firstName=data['firstName'], lastName=data['lastName'],
                            eMail=data['email'], userName=data['username'], password=data['password'],
                            confirmation=False)
             self.mDBHandler.register_user(newUser)
@@ -57,8 +57,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
             returnedUser = self.mDBHandler.login_user(newUser)
             if returnedUser:
                 response = {
-                    'username': returnedUser.userName,
-                    'userID': returnedUser.userID
+                    'username': returnedUser.username,
+                    'user_id': returnedUser.userID
                 }
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             else:
@@ -72,7 +72,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/saveDungeon':
             self._set_response()
             newDungeon = Dungeon(dungeonDescription=data['dungeonDescription'], dungeonName=data['dungeonName'],
-                                 dungeonID=data['dungeonID'], maxPlayers=data['maxPlayers'], private=data['private'],
+                                 dungeonID=data['dungeon_id'], maxPlayers=data['maxPlayers'], private=data['private'],
                                  dungeonMasterID=data['dungeonMasterID'])
             dungeonID = self.mDBHandler.save_or_update_dungeon(newDungeon)
             # noch items und so abspeichern
