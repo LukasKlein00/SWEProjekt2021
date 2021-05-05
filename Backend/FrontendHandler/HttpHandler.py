@@ -57,11 +57,11 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             print(self.path)
             try:
-                self.AccManager.register_user(user_id=data['user_id'], firstname=data['firstName'], lastname=data['lastName'],
-                                              username=data['username'], email=data['email'], password=data['password'],
-                                              is_confirmed=False)
+                self.AccManager.register_user(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
+                                              Username=data['username'], Email=data['email'], Password=data['password'],
+                                              IsConfirmed=False)
 
-                self.AccManager.send_registration_email(data['email'], data['user_id'])
+                self.AccManager.send_registration_email(data['email'], data['userID'])
             except:
                 pass
 
@@ -69,7 +69,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/login':
             self.__set_response()
             try:
-                response = self.AccManager.check_login_credentials(username=data['username'], password=data['password'])
+                response = self.AccManager.check_login_credentials(Username=data['username'], Password=data['password'])
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             except:
                 self.__set_response(400)
@@ -136,7 +136,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/delete_user':
             self.__set_response()
-            deletetransaction = self.AccManager.delete_user(user_id=data)
+            deletetransaction = self.AccManager.delete_user(UserID=data)
             if not deletetransaction:
                 self.__set_response(400)
 
@@ -148,18 +148,18 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/forgot':
             self.__set_response()
-            self.AccManager.send_password_reset_email(user_email=data['email'])
+            self.AccManager.send_password_reset_email(UserEmail=data['email'])
 
         if self.path == '/reset':
             self.__set_response()
             print("data")
             print(data)
-            isPasswordChanged = self.AccManager.change_password_in_database(user_id=data['token'], password=data['password'])
+            isPasswordChanged = self.AccManager.change_password_in_database(UserID=data['token'], Password=data['password'])
             if not isPasswordChanged:
                 self.__set_response(400)
 
         if self.path == '/check':
             self.__set_response()
-            check = self.AccManager.check_logged_in_credentials(user_name=data['username'], user_id=data['user_id'])
+            check = self.AccManager.check_logged_in_credentials(UserName=data['username'], UserID=data['userID'])
             if not check:
                 self.__set_response(400)
