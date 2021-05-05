@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from json import JSONEncoder as foreignEncoder
@@ -41,6 +42,7 @@ class DungeonManager:
             print("constructor:" + self.managed_dungeon.dungeon_id)
             self.parse_config_data()
         else:
+            print("data is none :)")
             self.managed_dungeon = DungeonData()
 
     def parse_config_data(self):
@@ -333,18 +335,34 @@ class DungeonManager:
         raise NotImplementedError
 
     def get_all_from_room_as_json(self, data):
-        temp_room_list = []
-        rooms = self.mDBHandler.get_all_rooms_by_dungeon_ID(data['dungeonID'])
-        for room in rooms:
-            for i in room:
-                temp_room_list.append(i)
-        # return temp_room_list # dumps(rooms).encode(encoding='utf_8')
+        rooms = self.mDBHandler.get_all_rooms_by_dungeon_ID(dungeonID=data)
+        print(rooms)
+        return json.dumps(rooms).encode(encoding='utf_8')
 
-        print(temp_room_list)
-    def get_all_from_classes_as_json(self):
-        raise NotImplementedError
+    def get_all_from_classes_as_json(self, data):
+        classes = self.mDBHandler.get_all_rooms_by_dungeon_ID(dungeonID=data)
+        print(classes)
+        return json.dumps(classes).encode(encoding='utf_8')
 
+    def get_all_from_races_as_json(self, data):
+        races = self.mDBHandler.get_all_races_by_dungeon_ID(dungeonID=data)
+        print(races)
+        return json.dumps(races).encode(encoding='utf_8')
 
-dungeon = {"dungeonID" : "8e691b24-789c-4176-8106-331c0b17efe3"}
+    def get_all_from_items_as_json(self, data):
+        items = self.mDBHandler.get_all_item_by_dungeon_ID(dungeonID=data)
+        print(items)
+        return json.dumps(items).encode(encoding='utf_8')
+
+    def get_all_from_npcs_as_json(self, data):
+        npcs = self.mDBHandler.get_all_npc_by_dungeon_ID(dungeonID=data)
+        print(npcs)
+        return json.dumps(npcs).encode(encoding='utf_8')
+
+dungeon = "8e691b24-789c-4176-8106-331c0b17efe3"
 test = DungeonManager()
 test.get_all_from_room_as_json(dungeon)
+test.get_all_from_classes_as_json(dungeon)
+test.get_all_from_items_as_json(dungeon)
+test.get_all_from_npcs_as_json(dungeon)
+test.get_all_from_races_as_json(dungeon)

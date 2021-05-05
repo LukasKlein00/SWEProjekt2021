@@ -40,7 +40,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         print(self.path)
         try:
             data = json.loads(post_data_raw)  # <--Daten als JSON-Objekt
-            print(data)
+            print("data:" + data)
         except:
             data = None
 
@@ -88,8 +88,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/getRooms':
             self._set_response()
-            #dungeon_manager = DungeonManager()
-            #rooms = dungeon_manager.get
+            dungeon_manager = DungeonManager()
+            rooms = dungeon_manager.get_all_from_room_as_json(data)
+            print("rooms as json returned: " + str(rooms))
+            self.wfile.write(rooms)
 
         if self.path == '/saveDungeon':
             self._set_response()
