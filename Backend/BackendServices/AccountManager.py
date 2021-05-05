@@ -108,7 +108,7 @@ class AccountManager:
         takes userID and change the isConfirmed field in Database from False to True
         :param UserID: id of user
         '''
-        self.db_handler.change_registration_status(userID=UserID)
+        self.db_handler.change_registration_status(user_id=UserID)
 
     def check_logged_in_credentials(self, user_id: str, user_name: str):
         '''
