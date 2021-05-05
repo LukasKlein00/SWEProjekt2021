@@ -75,32 +75,32 @@ class AccountManager:
         # else:
         # self.__set_response(400)
 
-    def send_password_reset_email(self, UserEmail: str):
+    def send_password_reset_email(self, user_email: str):
         '''
         Gets UserId from DatabaseHandler and gives it to Emailsender
         :param UserID: id of user
         '''
-        userID = self.db_handler.get_user_id_by_email(UserEmail)
-        passwordVergessenEmail = EmailSender(UserEmail, userID)
+        userID = self.db_handler.get_user_id_by_email(user_email)
+        passwordVergessenEmail = EmailSender(user_email, userID)
         passwordVergessenEmail.send_email(MessageType.resetPassword)
 
-    def change_password_in_database(self, UserID: str, Password: str):
+    def change_password_in_database(self, user_id: str, password: str):
         '''
         hand over UserID and Password to DatabaseHandler method "update_password_by_user_id"
-        :param UserID: id of user
-        :param Password: password if user
+        :param user_id: id of user
+        :param password: password if user
         :return: true if transaction was successful
         '''
-        updatedPassword = self.db_handler.update_password_by_user_id(UserID, Password)
+        updatedPassword = self.db_handler.update_password_by_user_id(user_id, password)
         return updatedPassword
 
-    def delete_user(self, UserID: str):
+    def delete_user(self, user_id: str):
         '''
         hand over userid to DatabaseHandler method "deleteUserById"
-        :param UserID: id of user
+        :param user_id: id of user
         :return: True
         '''
-        deletedUser = self.db_handler.delete_user_by_id(UserID)
+        deletedUser = self.db_handler.delete_user_by_id(user_id)
         return deletedUser
 
     def confirm_registration_token(self, UserID: str):
@@ -110,13 +110,13 @@ class AccountManager:
         '''
         self.db_handler.change_registration_status(userID=UserID)
 
-    def check_logged_in_credentials(self, UserID: str, UserName: str):
+    def check_logged_in_credentials(self, user_id: str, user_name: str):
         '''
         checks if user is already in database, when client is already logged in
-        :param UserID: id of user
-        :param UserName: username
+        :param user_id: id of user
+        :param user_name: username
         :return: return true if successful
         '''
-        checkUser = User(user_name=UserName, user_id=UserID)
+        checkUser = User(user_name=user_name, user_id=user_id)
         check = self.db_handler.check_user(user=checkUser)
         return check
