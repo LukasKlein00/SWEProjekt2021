@@ -17,7 +17,7 @@ class DatabaseHandler:
                     (%s, %s, %s, %s, %s, %s, %s) 
             """
         variables = (
-            user.userID, user.firstName, user.lastName, user.username, user.password, user.eMail, user.confirmation
+            user.user_id, user.first_name, user.last_name, user.username, user.password, user.e_mail, user.confirmation
         )
         try:
             cursor.execute(query, variables)
@@ -66,13 +66,13 @@ class DatabaseHandler:
             Private  = VALUES(Private)
                    """
         variables = (
-            d.dungeonID, d.dungeonName, d.dungeonDescription, d.maxPlayers, d.dungeonMasterID, d.private
+            d.dungeon_id, d.dungeonName, d.dungeonDescription, d.maxPlayers, d.dungeonMasterID, d.private
         )
         try:
             cursor.execute(query, variables)
-            d.dungeonID = cursor.lastrowid
+            d.dungeon_id = cursor.lastrowid
             self.databasePath.commit()
-            return d.dungeonID
+            return d.dungeon_id
 
         except IOError:
             pass

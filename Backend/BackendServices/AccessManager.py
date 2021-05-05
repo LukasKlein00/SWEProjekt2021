@@ -3,10 +3,10 @@ from DatabaseHandler.DatabaseHandler import *
 
 class AccessManager:
     def __init__(self):
-        self.mDBHandler = DatabaseHandler()
+        self.db_handler = DatabaseHandler()
 
     def __user_status_on_access_list(self, user_id: str, dungeon_id: str):
-        ret = self.mDBHandler.user_status_on_access_list(user_id, dungeon_id)
+        ret = self.db_handler.user_status_on_access_list(user_id, dungeon_id)
         if ret != None:
             return bool(ret[0])
         else:

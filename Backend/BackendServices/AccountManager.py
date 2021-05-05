@@ -4,7 +4,7 @@ from DatabaseHandler.User import User
 from DatabaseHandler.DatabaseHandler import DatabaseHandler
 
 from EmailServices.EmailSender import EmailSender
-from EmailServices.messageType import messageType
+from EmailServices.MessageType import MessageType
 
 
 class AccountManager:
@@ -16,24 +16,24 @@ class AccountManager:
         '''
         Constructor for AccountManager
         '''
-        self.mDBHandler = DatabaseHandler()
+        self.db_handler = DatabaseHandler()
 
-    def register_user(self, UserID: str, Firstname: str, Lastname: str, Username: str, Email: str, Password: str,
-                      IsConfirmed: bool) -> bool:
+    def register_user(self, user_id: str, first_name: str, last_name: str, user_name: str, e_mail: str, password: str,
+                      is_confirmed: bool) -> bool:
         '''
         initiate new User and hand over to DatabaseHandler.
-        :param UserID: id of user
-        :param Firstname: firstname of user
-        :param Lastname: lastname of user
-        :param Username: username
-        :param Email: users email
-        :param Password: user password
-        :param IsConfirmed: is the account already confirmed?
+        :param user_id: id of user
+        :param first_name: firstname of user
+        :param last_name: lastname of user
+        :param user_name: username
+        :param e_mail: users email
+        :param password: user password
+        :param is_confirmed: is the account already confirmed?
         :return: if DatabaseHandler transaction worked, return true
         '''
-        newUser = User(UserID, Firstname, Lastname, Username, Email, Password, IsConfirmed)
+        newUser = User(user_id, first_name, last_name, user_name, e_mail, password, is_confirmed)
         # sendRegistrationEmail()
-        checkMethod = self.mDBHandler.register_user(newUser)
+        checkMethod = self.db_handler.register_user(newUser)
         print(checkMethod)
         if checkMethod:
             return True
@@ -47,7 +47,7 @@ class AccountManager:
         '''
         print(email)
         email_sender = EmailSender(userEmail=email, userID=userID)
-        email_sender.send_email(messageType.registration)
+        email_sender.send_email(MessageType.registration)
 
     def check_login_credentials(self, Username: str, Password: str):
         '''
@@ -56,14 +56,14 @@ class AccountManager:
         :param Password: password of user
         :return: username and id of corresponding user
         '''
-        checkUser = User(userName=Username, password=Password)
-        returnedUserData = self.mDBHandler.login_user(checkUser)
-        returnedUser = User(userID=returnedUserData[1], userName=returnedUserData[0],
+        checkUser = User(user_name=Username, password=Password)
+        returnedUserData = self.db_handler.login_user(checkUser)
+        returnedUser = User(user_id=returnedUserData[1], user_name=returnedUserData[0],
                             confirmation=bool(returnedUserData[2]))
         if returnedUser:
             response = {
-                'username': returnedUser.userName,
-                'userID': returnedUser.userID,
+                'username': returnedUser.user_name,
+                'userID': returnedUser.user_id,
                 'confirmation': returnedUser.confirmation
             }
 
@@ -80,9 +80,9 @@ class AccountManager:
         Gets UserId from DatabaseHandler and gives it to Emailsender
         :param UserID: id of user
         '''
-        userID = self.mDBHandler.get_user_id_by_email(UserEmail)
+        userID = self.db_handler.get_user_id_by_email(UserEmail)
         passwordVergessenEmail = EmailSender(UserEmail, userID)
-        passwordVergessenEmail.send_email(messageType.resetPassword)
+        passwordVergessenEmail.send_email(MessageType.resetPassword)
 
     def change_password_in_database(self, UserID: str, Password: str):
         '''
@@ -91,7 +91,7 @@ class AccountManager:
         :param Password: password if user
         :return: true if transaction was successful
         '''
-        updatedPassword = self.mDBHandler.update_password_by_user_id(UserID, Password)
+        updatedPassword = self.db_handler.update_password_by_user_id(UserID, Password)
         return updatedPassword
 
     def delete_user(self, UserID: str):
@@ -100,7 +100,7 @@ class AccountManager:
         :param UserID: id of user
         :return: True
         '''
-        deletedUser = self.mDBHandler.delete_user_by_id(UserID)
+        deletedUser = self.db_handler.delete_user_by_id(UserID)
         return deletedUser
 
     def confirm_registration_token(self, UserID: str):
@@ -108,7 +108,7 @@ class AccountManager:
         takes userID and change the isConfirmed field in Database from False to True
         :param UserID: id of user
         '''
-        self.mDBHandler.change_registration_status(userID=UserID)
+        self.db_handler.change_registration_status(userID=UserID)
 
     def check_logged_in_credentials(self, UserID: str, UserName: str):
         '''
@@ -117,6 +117,6 @@ class AccountManager:
         :param UserName: username
         :return: return true if successful
         '''
-        checkUser = User(userName=UserName, userID=UserID)
-        check = self.mDBHandler.check_user(user=checkUser)
+        checkUser = User(user_name=UserName, user_id=UserID)
+        check = self.db_handler.check_user(user=checkUser)
         return check

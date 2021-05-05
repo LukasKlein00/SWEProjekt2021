@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class messageType(Enum):
+class MessageType(Enum):
     registration = 0
     reset_password = 1

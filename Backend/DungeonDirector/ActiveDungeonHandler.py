@@ -11,5 +11,5 @@ class ActiveDungeonHandler:
     def __init__(self):
         return
 
-    def init_dungeon(self, dungeonID: str):
-        accessList = AccessList(dungeonID)
+    def init_dungeon(self, dungeon_id: str):
+        access_list = AccessList(dungeon_id)

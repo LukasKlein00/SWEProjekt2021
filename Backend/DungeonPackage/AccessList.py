@@ -6,25 +6,25 @@ class AccessList:
     class for handling access list
     """
 
-    def __init__(self, dungeonID):
+    def __init__(self, dungeon_id):
         """
         constructor for class AccessList
         """
-        self.accessList = {"user_id": [], "isAllowed": []}
-        self.dungeonID = dungeonID
-        self.mDBHandler = DatabaseHandler()
+        self.access_list = {"user_id": [], "isAllowed": []}
+        self.dungeon_id = dungeon_id
+        self.db_handler = DatabaseHandler()
 
-    def add_user_to_access_list(self, userID: str, isAllowed: bool):
+    def add_user_to_access_list(self, user_id: str, is_allowed: bool):
         """
         adds a user to AccessList
-        :param userID: id of user
-        :param isAllowed: bool true=user on white list false=user on blacklist  
+        :param user_id: id of user
+        :param is_allowed: bool true=user on white list false=user on blacklist  
         """
-        self.accessList["user_id"].append(userID)
-        self.accessList["isAllowed"].append(isAllowed)
+        self.access_list["user_id"].append(user_id)
+        self.access_list["isAllowed"].append(is_allowed)
 
     def load_data(self):
         # TODO: Fix that shit
-        databaseAccessList = self.mDBHandler.user_status_on_access_list(self.userID, self.dungeonID)
-        self.accessList['user_id'].append(databaseAccessList[2])
-        self.accessList['isAllowed'].append(bool(databaseAccessList[1]))
+        database_access_list = self.db_handler.user_status_on_access_list(self.userID, self.dungeon_id)
+        self.access_list['user_id'].append(database_access_list[2])
+        self.access_list['isAllowed'].append(bool(database_access_list[1]))

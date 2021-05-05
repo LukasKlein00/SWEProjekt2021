@@ -31,7 +31,7 @@ class DatabaseHandler:
                     (%s, %s, %s, %s, %s, %s, %s) 
             """
         variables = (
-            user.userID, user.firstName, user.lastName, user.userName, user.password, user.eMail, user.confirmation
+            user.user_id, user.first_name, user.last_name, user.user_name, user.password, user.e_mail, user.confirmation
         )
         try:
             self.cursor.execute(query, variables)
@@ -51,7 +51,7 @@ class DatabaseHandler:
             From mudcake.User
             WHERE (UserName = %s AND Password = %s)
             """
-        variables = (user.userName, user.password)
+        variables = (user.user_name, user.password)
         self.cursor.execute(query, variables)
         try:
             queryData = self.cursor.fetchone()
@@ -76,9 +76,9 @@ class DatabaseHandler:
         INSERT INTO mudcake.Dungeon
             (DungeonID, DungeonName, DungeonDescription, MaxPlayers, DungeonMasterID, Private)
         VALUES 
-            ("{dungeon.dungeonData.dungeon_id}", "{dungeon.dungeonData.name}", "{dungeon.dungeonData.description}", 
-             "{dungeon.dungeonData.maxPlayers}", "{dungeon.dungeonData.dungeonMasterID}",
-             "{int(dungeon.dungeonData.private)}") 
+            ("{dungeon.dungeon_data.dungeon_id}", "{dungeon.dungeon_data.name}", "{dungeon.dungeon_data.description}", 
+             "{dungeon.dungeon_data.maxPlayers}", "{dungeon.dungeon_data.dungeonMasterID}",
+             "{int(dungeon.dungeon_data.private)}") 
         ON DUPLICATE KEY UPDATE 
             DungeonID  = VALUES(DungeonID),
             DungeonName  = VALUES(DungeonName),
@@ -88,9 +88,9 @@ class DatabaseHandler:
                    """
         try:
             self.cursor.execute(query)
-            dungeon.dungeonData.dungeonID = self.cursor.lastrowid
+            dungeon.dungeon_data.dungeon_id = self.cursor.lastrowid
             self.databasePath.commit()
-            return dungeon.dungeonData.dungeonID
+            return dungeon.dungeon_data.dungeon_id
 
         except IOError:
             pass
@@ -503,7 +503,7 @@ class DatabaseHandler:
         query = f"""
             SELECT * 
             From mudcake.User
-            WHERE (UserName = '{user.userName}' AND UserID = '{user.userID}' )
+            WHERE (UserName = '{user.user_name}' AND UserID = '{user.user_id}' )
             """
         self.cursor.execute(query)
         try:

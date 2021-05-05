@@ -58,7 +58,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             if returnedUser:
                 response = {
                     'username': returnedUser.username,
-                    'user_id': returnedUser.userID
+                    'user_id': returnedUser.user_id
                 }
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             else:

@@ -57,9 +57,9 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             print(self.path)
             try:
-                self.AccManager.register_user(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
-                                              Username=data['username'], Email=data['email'], Password=data['password'],
-                                              IsConfirmed=False)
+                self.AccManager.register_user(user_id=data['userID'], first_name=data['firstName'], last_name=data['lastName'],
+                                              user_name=data['username'], e_mail=data['email'], password=data['password'],
+                                              is_confirmed=False)
 
                 self.AccManager.send_registration_email(data['email'], data['userID'])
             except:
