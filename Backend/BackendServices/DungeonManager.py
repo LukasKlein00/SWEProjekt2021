@@ -1,8 +1,39 @@
-#File Header
+#!/usr/bin/env python
+__author__      = "Thomas Zimmermann"
+__copyright__   = "Copyright 2021, The MUDCake Project"
+__credits__     = "Hauke Presig, Jack Drillisch, Jan Gruchott, Lukas Klein, Robert Fendrich, Thomas Zimmermann"
+
+__license__     = """MIT License
+                     
+                     Copyright (c) 2021 MUDCake Project
+                     
+                     Permission is hereby granted, free of charge, to any person obtaining a copy
+                     of this software and associated documentation files (the "Software"), to deal
+                     in the Software without restriction, including without limitation the rights
+                     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                     copies of the Software, and to permit persons to whom the Software is
+                     furnished to do so, subject to the following conditions:
+                     
+                     The above copyright notice and this permission notice shall be included in all
+                     copies or substantial portions of the Software.
+                     
+                     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                     SOFTWARE."""
+
+__version__     = "1.0.0"
+__maintainer__  = "Thomas Zimmermann"
+__email__       = "mudcake@gmail.com"
+__status__      = "Development"
 
 
 import json
 import uuid
+import logging, sys
 
 from json import JSONEncoder as foreignEncoder
 
@@ -33,8 +64,11 @@ class DungeonManager:
         self.class_list = []
         self.item_list = []
         self.npc_list = []
+        self.fill_attributes(data)
+
+    def fill_attributes(self, data):
         if data:
-            #
+
             self.managed_dungeon = DungeonData(dungeon_id=self.data['dungeonID'],
                                                dungeon_master_id=self.data['dungeonMasterID'],
                                                max_players=self.data['maxPlayers'],
@@ -77,22 +111,14 @@ class DungeonManager:
         for item in items_data:
             print(item)
             new_item = Item(name=item['name'], description=item['description'])
-            check_for_item_id = 'itemID' in item
-            if check_for_item_id:
-                new_item.item_id = item['itemID']
-            else:
-                new_item.item_id = str(uuid.uuid4())
+            new_item.item_id = item['itemID'] if 'itemID' in item else str(uuid.uuid4())
             self.item_list.append(new_item)
 
         for npc in npcs_data:
             print(npc)
             new_npc = Npc(npc_id=npc['npcID'], name=npc['name'],
                           description=npc['description'], dungeon_id=self.managed_dungeon.dungeon_id)
-
-            if npc['equipment'] is None:
-                new_npc.item = None
-            else:
-                new_npc.item = npc['equipment']['itemID']
+            new_npc.item = None if npc['equipment'] is None else new_npc.item = npc['equipment']['itemID']
             self.npc_list.append(new_npc)
 
         for classes in class_data:
