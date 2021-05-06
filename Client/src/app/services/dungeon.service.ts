@@ -74,6 +74,7 @@ export class DungeonService {
       private: false,
       accessList: [],
     }
+    console.log("return", dungeon)
     return dungeon; 
     } else {
       let dungeon: Dungeon = {         
