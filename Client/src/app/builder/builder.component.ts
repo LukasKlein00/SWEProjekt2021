@@ -272,7 +272,7 @@ export class BuilderComponent implements OnInit {
     this.loading = true;
 
 
-    const safeDungeon: Dungeon = Object.assign({}, this.dungeon);
+    const safeDungeon: Dungeon = JSON.parse( JSON.stringify( this.dungeon ) )
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     console.log("gesavter Dungeon: ", safeDungeon);
@@ -312,7 +312,7 @@ export class BuilderComponent implements OnInit {
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
       console.log(res);
-      if(Array.isArray(res)){
+      if (Array.isArray(res)){
       res.map(r => {
         const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
         console.log("index", index);
