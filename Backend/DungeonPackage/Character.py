@@ -16,8 +16,8 @@ class Character:
         self.inventory = inventory
         self.db_handler = DatabaseHandler()
 
-    def load_data(self, dungeonID: str):
-        databaseCharacterData = self.db_handler.get_character_by_dungeon_ID(dungeonID)
+    def load_data(self, dungeon_id: str):
+        databaseCharacterData = self.db_handler.get_character_by_dungeon_ID(dungeon_id)
         self.character_id = databaseCharacterData[0]
         self.life_points = databaseCharacterData[1]
         self.name = databaseCharacterData[2]

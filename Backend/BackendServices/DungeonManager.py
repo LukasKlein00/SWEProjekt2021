@@ -1,3 +1,6 @@
+#File Header
+
+
 import json
 import uuid
 
@@ -30,7 +33,8 @@ class DungeonManager:
         self.class_list = []
         self.item_list = []
         self.npc_list = []
-        if data is not None:
+        if data:
+            #
             self.managed_dungeon = DungeonData(dungeon_id=self.data['dungeonID'],
                                                dungeon_master_id=self.data['dungeonMasterID'],
                                                max_players=self.data['maxPlayers'],
@@ -43,7 +47,7 @@ class DungeonManager:
             print("constructor:" + self.managed_dungeon.dungeon_id)
             self.parse_config_data()
         else:
-            print("data is none :)")
+            print("data is none")
             self.managed_dungeon = DungeonData()
 
     def parse_config_data(self):
@@ -114,7 +118,7 @@ class DungeonManager:
             new_room = Room(coordinate_x=room['x'], coordinate_y=room['y'], north=room['north'], east=room['east'],
                             south=room['south'], west=room['west'], dungeon_id=self.managed_dungeon.dungeon_id)
 
-            check_for_name = 'name' in room
+
             check_for_room_id = 'roomID' in room
             if check_for_room_id:
                 new_room.room_id = room['roomID']
@@ -122,10 +126,13 @@ class DungeonManager:
             else:
                 new_room.room_id = str(uuid.uuid4())
                 print("roomID generated!")
+
+            check_for_name = 'name' in room
             if check_for_name:
                 new_room.room_name = room['name']
             else:
                 new_room.room_name = None
+
             check_for_description = 'description' in room
             if check_for_description:
                 new_room.room_description = room['description']
@@ -158,12 +165,10 @@ class DungeonManager:
         """
         active_dungeon = ActiveDungeon(rooms=self.room_list, classes=self.class_list, npcs=self.npc_list,
                                        items=self.item_list, dungeon_data=self.managed_dungeon, races=self.race_list,
-                                       user_ids=None, character_ids=None)  # Darf das None sein? :D
+                                       user_ids=None, character_ids=None)
         try:
             self.db_handler.save_or_update_dungeon(active_dungeon)
             print("Dungeon saved")
-           #for data in active_dungeon.races:
-           #    print(data.name)
             self.__write_races_to_database()
             print("Races saved")
             self.__write_items_to_database()

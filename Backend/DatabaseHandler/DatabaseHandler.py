@@ -83,7 +83,6 @@ class DatabaseHandler:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"save or update dungeon '{dungeon.dungeon_data.dungeon_id}'")
             return dungeon.dungeon_data.dungeon_id
-
         except IOError:
             print(colored('DB: save or update dungeon failed', 'red'))
             pass
@@ -581,4 +580,3 @@ class DatabaseHandler:
             return self.dictionary_cursor.fetchall()
         except IOError:
             print(colored(f'DB: get accesslist as dict failed. dungeonID: "{dungeon_id}"', 'red'))
-#༼ つ ◕_◕ ༽つ gib good grade ☜(ﾟヮﾟ☜)
