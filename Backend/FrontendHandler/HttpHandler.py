@@ -12,8 +12,8 @@ from DungeonPackage.ActiveDungeon import *
 
 class HTTPHandler(BaseHTTPRequestHandler):
 
-    AccManager = AccountManager()
-    DungManager = DungeonManager()
+    acc_manager = AccountManager()
+    dung_manager = DungeonManager()
 
     # übermittelt Einstellungen "Headers" des Requests
     def __set_response(self, code: int = 200):
@@ -48,7 +48,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/confirm':
             self.__set_response()
             try:
-                self.AccManager.confirm_registration_token(data['token'])
+                self.acc_manager.confirm_registration_token(data['token'])
             except:
                 print("/confirm received but error")
                 pass
@@ -57,11 +57,11 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             print(self.path)
             try:
-                self.AccManager.register_user(UserID=data['userID'], Firstname=data['firstName'], Lastname=data['lastName'],
-                                              Username=data['username'], Email=data['email'], Password=data['password'],
-                                              IsConfirmed=False)
+                self.acc_manager.register_user(user_id=data['userID'], first_name=data['firstName'], last_name=data['lastName'],
+                                               user_name=data['username'], e_mail=data['email'], password=data['password'],
+                                               is_confirmed=False)
 
-                self.AccManager.send_registration_email(data['email'], data['userID'])
+                self.acc_manager.send_registration_email(data['email'], data['userID'])
             except:
                 pass
 
@@ -69,7 +69,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/login':
             self.__set_response()
             try:
-                response = self.AccManager.check_login_credentials(Username=data['username'], Password=data['password'])
+                response = self.acc_manager.check_login_credentials(Username=data['username'], Password=data['password'])
                 self.wfile.write(json.dumps(response).encode(encoding='utf_8'))
             except:
                 self.__set_response(400)
@@ -120,14 +120,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/saveDungeon':
             self.__set_response()
             dungeon_manager = DungeonManager(data)
-            print("successfully created DungeonManager!")
+            #print("successfully created DungeonManager!")
             dungeon_id = dungeon_manager.write_dungeon_to_database()
-            print("successfully executed Database transaction! Dungeon ID: " + dungeon_id)
+            #print("successfully executed Database transaction! Dungeon ID: " + dungeon_id)
             try:
                 self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
             except IOError:
                 pass
-            # noch items und so abspeichern
 
         if self.path == '/deleteDungeon':
             self.__set_response()
@@ -136,8 +135,8 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/delete_user':
             self.__set_response()
-            deletetransaction = self.AccManager.delete_user(UserID=data)
-            if not deletetransaction:
+            delete_transaction = self.acc_manager.delete_user(user_id=data)
+            if not delete_transaction:
                 self.__set_response(400)
 
         if self.path == '/copyDungeon':
@@ -148,18 +147,18 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/forgot':
             self.__set_response()
-            self.AccManager.send_password_reset_email(UserEmail=data['email'])
+            self.acc_manager.send_password_reset_email(user_email=data['email'])
 
         if self.path == '/reset':
             self.__set_response()
             print("data")
             print(data)
-            isPasswordChanged = self.AccManager.change_password_in_database(UserID=data['token'], Password=data['password'])
-            if not isPasswordChanged:
+            is_password_changed = self.acc_manager.change_password_in_database(user_id=data['token'], password=data['password'])
+            if not is_password_changed:
                 self.__set_response(400)
 
         if self.path == '/check':
             self.__set_response()
-            check = self.AccManager.check_logged_in_credentials(UserName=data['username'], UserID=data['userID'])
+            check = self.acc_manager.check_logged_in_credentials(user_name=data['username'], user_id=data['userID'])
             if not check:
                 self.__set_response(400)

@@ -9,12 +9,12 @@ class Npc:
         self.name = name
         self.description = description
         self.dungeon_id = dungeon_id
-        self.mDBHandler = DatabaseHandler()
+        self.db_handler = DatabaseHandler()
 
-    def load_data(self, dungeonID: str):
-        databaseNpc = self.mDBHandler.get_npc_by_dungeon_ID(dungeonID)
-        self.npc_id = databaseNpc[0]
-        self.name = databaseNpc[1]
-        self.description = databaseNpc[2]
-        self.dungeon_id = dungeonID
-        self.item = databaseNpc[4]
+    def load_data(self, dungeon_id: str):
+        database_npc = self.db_handler.get_npc_by_dungeon_id(dungeon_id)
+        self.npc_id = database_npc[0]
+        self.name = database_npc[1]
+        self.description = database_npc[2]
+        self.dungeon_id = dungeon_id
+        self.item = database_npc[4]

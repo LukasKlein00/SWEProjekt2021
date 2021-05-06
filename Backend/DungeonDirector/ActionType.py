@@ -2,5 +2,5 @@ from enum import Enum
 
 
 class ActionType(Enum):
-    DungeonMaster = 0
-    UserAction = 1
+    dungeon_master = 0
+    user_action = 1

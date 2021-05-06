@@ -3,26 +3,26 @@ from DungeonPackage.Inventory import *
 
 
 class Character:
-    def __init__(self, characterID: str, lifePoints: int, name: str, description: str, classID: int, raceID: int,
-                 userID: str, discoveredMapID: int, inventory: Inventory = None):
-        self.characterID = characterID
-        self.lifePoints = lifePoints
+    def __init__(self, character_id: str, life_points: int, name: str, description: str, class_id: int, race_id: int,
+                 user_id: str, discovered_map_id: int, inventory: Inventory = None):
+        self.character_id = character_id
+        self.life_points = life_points
         self.name = name
         self.description = description
-        self.classID = classID
-        self.raceID = raceID
-        self.userID = userID
-        self.discoveredMap = discoveredMapID
+        self.class_id = class_id
+        self.race_id = race_id
+        self.user_id = user_id
+        self.discovered_map = discovered_map_id
         self.inventory = inventory
-        self.mDBHandler = DatabaseHandler()
+        self.db_handler = DatabaseHandler()
 
-    def load_data(self, dungeonID: str):
-        databaseCharacterData = self.mDBHandler.get_character_by_dungeon_ID(dungeonID)
-        self.characterID = databaseCharacterData[0]
-        self.lifePoints = databaseCharacterData[1]
+    def load_data(self, dungeon_id: str):
+        databaseCharacterData = self.db_handler.get_character_by_dungeon_ID(dungeon_id)
+        self.character_id = databaseCharacterData[0]
+        self.life_points = databaseCharacterData[1]
         self.name = databaseCharacterData[2]
         self.description = databaseCharacterData[3]
-        self.classID = databaseCharacterData[4]
-        self.raceID = databaseCharacterData[5]
-        self.userID = databaseCharacterData[6]
-        self.discoveredMap = databaseCharacterData[7]
+        self.class_id = databaseCharacterData[4]
+        self.race_id = databaseCharacterData[5]
+        self.user_id = databaseCharacterData[6]
+        self.discovered_map = databaseCharacterData[7]

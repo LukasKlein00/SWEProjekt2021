@@ -10,9 +10,9 @@ class Class:
         self.item_id = item_id
         self.mDBHandler = DatabaseHandler()
 
-    def load_data(self, dungeonID: str):
-        databaseClassData = self.mDBHandler.get_class_by_dungeon_ID(dungeonID)
-        self.class_id = databaseClassData[0]
-        self.name = databaseClassData[1]
-        self.description = databaseClassData[2]
-        self.dungeon_id = databaseClassData[3]
+    def load_data(self, dungeon_id: str):
+        database_class_data = self.mDBHandler.get_class_by_dungeon_id(dungeon_id)
+        self.class_id = database_class_data[0]
+        self.name = database_class_data[1]
+        self.description = database_class_data[2]
+        self.dungeon_id = database_class_data[3]

@@ -1,4 +1,4 @@
-class fileReader:
+class FileReader:
     def __init__(self, name: str):
         self.name = name
 

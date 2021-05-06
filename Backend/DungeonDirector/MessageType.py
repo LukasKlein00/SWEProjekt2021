@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class MessageType(Enum):
-    Whisper = 0
-    Room = 1
-    Broadcast = 2
-    DungeonMaster = 3
+    whisper = 0
+    room = 1
+    broadcast = 2
+    dungeon_master = 3

@@ -10,20 +10,20 @@ class ActiveDungeon:
     """
     class for handling active dungeons
     """
-    def __init__(self, userIDs: [int] = None, characterIDs: [int] = None, rooms: [Room] = None, npcs: [Npc] = None,
+    def __init__(self, user_ids: [int] = None, character_ids: [int] = None, rooms: [Room] = None, npcs: [Npc] = None,
                  items: [Item] = None, races: [Race] = None,
-                 classes: [Class] = None, dungeonData: DungeonData = None):
+                 classes: [Class] = None, dungeon_data: DungeonData = None):
         """
         constructor for ActiveDungeon class
         """
-        self.userIDs = userIDs
-        self.characterIDs = characterIDs
+        self.user_ids = user_ids
+        self.character_ids = character_ids
         self.rooms = rooms
         self.npcs = npcs
         self.items = items
         self.races = races
         self.classes = classes
-        self.dungeonData = dungeonData
+        self.dungeon_data = dungeon_data
 
     def add_item(self, item: Item):
         """
@@ -45,7 +45,7 @@ class ActiveDungeon:
         :param item: item object
         :return: True if so
         """
-        return self.userIDs.contains(self.dungeonData.dungeonMasterID)
+        return self.user_ids.contains(self.dungeon_data.dungeon_master_id)
 
     def add_room(self, room: Room):
         """
@@ -54,12 +54,12 @@ class ActiveDungeon:
         """
         self.rooms.append(room)
 
-    def add_class(self, dClass: Class):
+    def add_class(self, d_class: Class):
         """
         adds an class to activeDungeon
         :param item: item object
         """
-        self.classes.append(dClass)
+        self.classes.append(d_class)
 
     def load_data(self):
         raise NotImplementedError
