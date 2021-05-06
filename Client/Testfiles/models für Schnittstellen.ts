@@ -20,20 +20,20 @@ export class Access {
 }
 
 export class Room {
-    name?: string;
+    name: string;
     x: number;
     y: number;
-    north?: boolean;
-    south?: boolean;
-    east?: boolean;
-    west?: boolean;
-    item?: Item;
-    npc?: Npc;
+    north: boolean;
+    south: boolean;
+    east: boolean;
+    west: boolean;
+    item: Item;
+    npc: Npc;
     players?: Player[];
-    isStartRoom?: boolean;
+    isStartRoom: boolean;
     isActive?: boolean;
     isViewed?: boolean;
-    description?: string;
+    description: string;
 }
 
 export class Race {
