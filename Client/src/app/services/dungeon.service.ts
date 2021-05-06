@@ -100,6 +100,11 @@ export class DungeonService {
       east: true,
       south: true,
       west: true,
+      description: undefined,
+      isStartRoom: false,
+      item: undefined,
+      npc: undefined,
+      name: undefined
     }
   }
 }
