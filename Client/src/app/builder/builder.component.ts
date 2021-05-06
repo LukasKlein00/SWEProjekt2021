@@ -163,6 +163,7 @@ export class BuilderComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.dungeon = this.DungeonService.createNewDungeon(this.dungeonSize);
+    console.log("init", this.dungeon);
     this.rooms = this.dungeon.rooms;
     if (id) {
       this.getDungeon(id);
@@ -178,6 +179,7 @@ export class BuilderComponent implements OnInit {
       delay: 5000,
       autohide: true
     });
+    console.log("after init", this.dungeon);
   }
 
   newClass() {
@@ -223,15 +225,19 @@ export class BuilderComponent implements OnInit {
   }
 
   newNpc() {
+    console.log("new Npcs", this.dungeon);
     return this.DungeonService.createNewNpc();
   }
 
   addNpc() {
+    console.log("add Npcs", this.dungeon);
     this.dungeon.npcs.push(this.selectedNpc);
+    console.log("npcs list", this.dungeon.npcs)
     this.selectedNpc = this.newNpc()
   }
 
   editNpc(n: Npc) {
+    console.log("edit Npcs", this.dungeon);
     this.selectedNpc = n;
     this.dungeon.npcs.splice(this.dungeon.npcs.indexOf(n), 1);
   }
@@ -272,14 +278,14 @@ export class BuilderComponent implements OnInit {
     this.loading = true;
 
 
-    const safeDungeon: Dungeon = JSON.parse( JSON.stringify( this.dungeon ) )
+    const safeDungeon: Dungeon = JSON.parse(JSON.stringify(this.dungeon))
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     console.log("gesavter Dungeon: ", safeDungeon);
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon)
       .subscribe(response => {
-        console.log("safeDungeon Response",response)
+        console.log("safeDungeon Response", response)
         if (response) {
           this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
         }
@@ -311,61 +317,68 @@ export class BuilderComponent implements OnInit {
 
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
-      console.log(res);
-      if (Array.isArray(res)){
-      res.map(r => {
-        const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
-        console.log("index", index);
-        r['isActive'] = true;
-        this.dungeon.rooms[index] = r;
+      console.log("rooms response", res);
+      if (Array.isArray(res)) {
+        console.log("array arrived");
+        res.map(r => {
+          const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
+          console.log("index", index);
+          r['isActive'] = true;
+          this.dungeon.rooms[index] = r;
+        });
+      }
+      this.loading = false;
+    });
+  }
+
+  getRaces() {
+    if (this.dungeon.races = []) {
+      this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res as Race[])
+    }
+  }
+
+  getClasses() {
+    if (this.dungeon.classes = []) {
+      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
+    }
+  }
+
+  getItems() {
+    if (this.dungeon.races = []) {
+      this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res as Item[])
+    }
+  }
+
+  getNpcs() {
+    console.log("getNpcs", this.dungeon);
+    if (this.dungeon.npcs = []) {
+      console.log("npcs ist leer")
+      this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res =>  {
+        if (Array.isArray(res)) {
+          this.dungeon.npcs = res as Npc[]
+        }
       });
     }
-      this.loading = false;
-  });
-}
-
-getRaces() {
-  if (this.dungeon.races = []) {
-    this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res as Race[])
   }
-}
 
-getClasses() {
-  if (this.dungeon.classes = []) {
-    this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
+  getAccessList() {
+    if (this.dungeon.accessList = []) {
+      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res as Access[])
+    }
   }
-}
 
-getItems() {
-  if (this.dungeon.races = []) {
-    this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res as Item[])
+  getDungeon(id) {
+    this.loading = true;
+    this.httpService.getDungeon(id).subscribe(res => {
+      this.dungeon.dungeonID = res[0][0];
+      this.dungeon.dungeonMasterID = res[0][1];
+      this.dungeon.dungeonName = res[0][2];
+      this.dungeon.dungeonDescription = res[0][3];
+      this.dungeon.private = Boolean(res[0][4]).valueOf();
+      this.dungeon.maxPlayers = res[0][5];
+
+      console.log("after get Dungeon", this.dungeon);
+    })
   }
-}
-
-getNpcs() {
-  if (this.dungeon.npcs = []) {
-    this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res as Npc[])
-  }
-}
-
-getAccessList() {
-  if (this.dungeon.accessList = []) {
-    this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res as Access[])
-  }
-}
-
-getDungeon(id) {
-  this.loading = true;
-  this.httpService.getDungeon(id).subscribe(res => {
-    this.dungeon.dungeonID = res[0][0];
-    this.dungeon.dungeonMasterID = res[0][1];
-    this.dungeon.dungeonName = res[0][2];
-    this.dungeon.dungeonDescription = res[0][3];
-    this.dungeon.private = Boolean(res[0][4]).valueOf();
-    this.dungeon.maxPlayers = res[0][5];
-
-    console.log(this.dungeon);
-  })
-}
 }
 
