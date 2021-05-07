@@ -33,10 +33,8 @@ import eventlet
 import socketio
 class SocketIOHandler:
     def __init__(self):
-        self.sio = socketio.Server()
-        self.app = socketio.WSGIApp(self.sio, static_files={
-            '/': './index.html'
-        })
+        self.sio = socketio.Server(cors_allowed_origins='*')
+        self.app = socketio.WSGIApp(self.sio)
 
 
         @self.sio.event
@@ -44,9 +42,9 @@ class SocketIOHandler:
             print('connect: ', sid)
 
         @self.sio.event
-        def my_message(sid, data):
+        def message(sid, data):
             print('message: ', data)
-            self.sio.emit('onmessage')
+            self.sio.emit('message')
 
         @self.sio.event
         def disconnect(sid):
