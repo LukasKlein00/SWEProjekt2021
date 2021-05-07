@@ -28,7 +28,7 @@ def start_WS():
     loop.run_until_complete(start_server)
     loop.run_forever()"""
     socketio = SocketIOHandler()
-    eventlet.wsgi.server(eventlet.listen(('localhost', 5000)), socketio.app)
+    eventlet.wsgi.server(eventlet.listen(('localhost', 1187)), socketio.app)
 
 
 if __name__ == '__main__':
