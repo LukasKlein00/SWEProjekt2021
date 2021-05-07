@@ -22,8 +22,13 @@ export class WebsocketService {
   }
 
   getMessage() {
-    return this.socket.fromEvent('message').pipe(map((data) => data)) //data.msg
+    return this.socket.fromEvent('message').pipe(map((data) => data))
   }
+
+  getPublishedDungeons(){
+    return this.socket.fromEvent('make_dungeon_available').pipe(map((data) => data))
+  }
+  
 }
 
 
