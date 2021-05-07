@@ -62,6 +62,7 @@ export class HomeComponent implements OnInit {
     dungeonMasterID: "3",
   }]
   myMUDs: Dungeon[] = []
+  avDungeons;
 
   filters = ['all','public','private'];
   selectedFilter = this.filters[0];
@@ -74,6 +75,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getCreatedDungeons()
     this.WebSocketService.getMessage().subscribe(r => console.log("socketservice", r));
+    this.WebSocketService.getPublishedDungeons().subscribe(r => {this.avDungeons = r;
+    console.log("availableDUngeons", r)});
     this.WebSocketService.sendMessage("moin");
 
   }
