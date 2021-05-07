@@ -28,8 +28,9 @@ import { ForgotComponent } from './forgot/forgot.component';
 import { ErrorComponent } from './error/error.component';
 import { LoaderComponent } from './loader/loader.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
 
-const config: SocketIoConfig = { url: 'http://localhost:1187/', options: {} };
+const config: SocketIoConfig = { url: environment.websocketUrl, options: {} };
 
 
 @NgModule({
