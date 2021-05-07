@@ -27,9 +27,6 @@ import { ResetComponent } from './reset/reset.component';
 import { ForgotComponent } from './forgot/forgot.component';
 import { ErrorComponent } from './error/error.component';
 import { LoaderComponent } from './loader/loader.component';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-
-const config: SocketIoConfig = { url: 'http://localhost:1187/', options: {} };
 
 
 @NgModule({
@@ -63,11 +60,8 @@ const config: SocketIoConfig = { url: 'http://localhost:1187/', options: {} };
     MatDialogModule,
     MatSlideToggleModule,
     NgbModule,
-    MatBadgeModule,
-    SocketIoModule.forRoot(config)
-    
+    MatBadgeModule
   ],
-  
   providers: [],
   bootstrap: [AppComponent]
 })
