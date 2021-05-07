@@ -265,6 +265,12 @@ class DungeonManager:
             pass
 
     def copy_dungeon(self, dungeon_id):
+        '''
+        :param dungeon_id: DungeonID to copy from
+        :type dungeon_id: str
+        :return: none
+        :rtype: none
+        '''
         self.room_list = []
         self.race_list = []
         self.class_list = []
@@ -289,14 +295,14 @@ class DungeonManager:
             print("Item List:")
             print(self.item_list)
             
-            rooms = self.db_handler.get_all_rooms_by_dungeon_id(dungeon_id)
+            rooms = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id)
             for room in rooms:
                 copied_room = Room(room_id=room[0], room_name=room[1], room_description=room[2], coordinate_x=room[3], coordinate_y=room[4], north=room[5], east=room[6], south=room[7], west=room[8], is_start_room=room[9], npc_id=room[10], item_id=room[11], dungeon_id=self.managed_dungeon.dungeon_id)
                 self.room_list.append(copied_room)
             print("Room List:")
             print(self.room_list)
 
-            races = self.db_handler.get_race_by_dungeon_id(dungeon_id)
+            races = self.db_handler.get_race_by_dungeon_id_(dungeon_id)
             for race in races:
                 copied_race = Race(race_id=race[0], name=race[1], description=race[2], dungeon_id=self.managed_dungeon.dungeon_id)
                 self.race_list.append(copied_race)

@@ -1,4 +1,6 @@
-from FrontendHandler.WebsocketHandler import WebSocketHandler
+import eventlet
+
+from FrontendHandler.WebsocketHandler import SocketIOHandler
 import websockets
 import asyncio
 from http.server import HTTPServer
@@ -18,13 +20,15 @@ def start_HTTP():
 
 
 def start_WS():
-    ws = WebSocketHandler
+    """ws = WebSocketHandler
     loop = asyncio.new_event_loop()
     print('Starting WebsocketServer... \n')
     start_server = websockets.serve(ws.handle, '', 1187, loop=loop)
     print('WebsocketServer is running!')
     loop.run_until_complete(start_server)
-    loop.run_forever()
+    loop.run_forever()"""
+    socketio = SocketIOHandler()
+    eventlet.wsgi.server(eventlet.listen(('localhost', 5000)), socketio.app)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ import websockets
 import json
 
 
-class WebSocketHandler:
+"""class WebSocketHandler:
     def __init__(self):
         self.all_connections = set()
 
@@ -26,4 +26,28 @@ class WebSocketHandler:
 
         finally:
             #Beim Disconnecten trägt sich die Instanz aus dem Set aus
-            self.all_connections.discard(websocket)
+            self.all_connections.discard(websocket)"""
+
+
+import eventlet
+import socketio
+class SocketIOHandler:
+    def __init__(self):
+        self.sio = socketio.Server()
+        self.app = socketio.WSGIApp(self.sio, static_files={
+            '/': './index.html'
+        })
+
+
+        @self.sio.event
+        def connect(sid, environ):
+            print('connect: ', sid)
+
+        @self.sio.event
+        def my_message(sid, data):
+            print('message: ', data)
+            self.sio.emit('onmessage')
+
+        @self.sio.event
+        def disconnect(sid):
+            print('disconnect: ', sid)
