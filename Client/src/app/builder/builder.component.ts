@@ -4,6 +4,7 @@ import { Class, Item, Dungeon, Npc, Race, requestForMaster, Room, Access } from 
 import { DungeonService } from '../services/dungeon.service';
 import { HttpService } from '../services/http.service';
 import { ToastService } from '../services/toast.service';
+import { WebsocketService } from '../services/websocket.service';
 
 @Component({
   selector: 'app-builder',
@@ -158,6 +159,7 @@ export class BuilderComponent implements OnInit {
     private DungeonService: DungeonService,
     private httpService: HttpService,
     private route: ActivatedRoute,
+    private websocketService: WebsocketService,
   ) { }
 
   ngOnInit(): void {
@@ -296,7 +298,7 @@ export class BuilderComponent implements OnInit {
 
   publishDungeon() {
     this.saveDungeon();
-    //sende MUD an joinable Lobbies
+    this.websocketService.sendPublish(this.dungeon.dungeonID);
   }
 
   selectRoom(r: Room) {

@@ -1,38 +1,28 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { WebsocketObject } from 'Testfiles/models für Schnittstellen';
-import { WebsocketBuilder } from 'websocket-ts/lib';
-import { PythonJSON } from '../test/test.component';
+import { Socket } from 'ngx-socket-io';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebsocketService {
-  socket: any;
-  status = 'unknown';
-  readonly uri = environment.websocketUrl;
 
-  constructor() { 
-    this.socket = new WebsocketBuilder(this.uri)
-    .onOpen(() => { console.log('opened'); this.status = 'Online'; })
-    .onClose(() => { console.log('closed'); this.status = 'Offline (closed)'; })
-    .onError(() => { console.log('error'); this.status = 'Offline (error)'; })
-    .onMessage((i, ev) => { this.unloadData(ev.data);})
-    .onRetry(() => { console.log('retry'); })
-    .build();
+
+  constructor(
+    private socket: Socket
+  ) {}
+
+  sendMessage(msg: string) {
+    this.socket.emit('message',msg);
   }
 
-  unloadData(incomingData) {
-    const data: PythonJSON = JSON.parse(incomingData);
-    console.log(data);
+  sendPublish(id) {
+    this.socket.emit('publish',id)
   }
 
-  sendData(methode, content) {
-    let outgoingData: WebsocketObject = {
-      method: methode,
-      content: content,
-    }
-    this.socket.send(JSON.stringify(outgoingData));
+  getMessage() {
+    return this.socket.fromEvent('message').pipe(map((data) => data)) //data.msg
   }
 }
 
