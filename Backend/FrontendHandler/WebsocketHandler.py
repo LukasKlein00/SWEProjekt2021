@@ -46,6 +46,8 @@ class SocketIOHandler:
 
         @self.sio.event
         def connect(sid, environ):
+            self.sio.emit('make_dungeon_available', json.dumps(self.activeDungeonHandler.active_dungeons),
+                          broadcast=True)
             jans_crack_hauscount = 0
             thommys_trap_hauscount = 0
             print('connect: ', sid)
@@ -78,7 +80,7 @@ class SocketIOHandler:
                             "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
                             "private": dungeon_data.private}
             print(colored(dungeon_dict, 'green'))
-            self.sio.emit('make_dungeon_available', json.dumps(dungeon_dict), broadcast=True)
+            self.sio.emit('make_dungeon_available', json.dumps(self.activeDungeonHandler.active_dungeons), broadcast=True)
             print(colored("publish successful", 'green'))
 
         @self.sio.event
