@@ -14,6 +14,7 @@ MYSQL_PORT = "1189"
 
 class MockDB(TestCase):
 
+    @classmethod
     def SetupClass(cls):
         ref = mysql.connector.connect(
             host=MYSQL_HOST,
@@ -80,9 +81,9 @@ class MockDB(TestCase):
         @classmethod
         def tearDownClass(cls):
             ref = mysql.connector.connect(
-                host="193.196.53.67",
-                user="jack",
-                password="123123"
+                host=MYSQL_HOST,
+                user=MYSQL_USER,
+                password=MYSQL_PASSWORD,
             )
             cursor = ref.cursor(dictionary=True)
 
