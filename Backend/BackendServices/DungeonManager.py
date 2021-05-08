@@ -168,19 +168,17 @@ class DungeonManager:
                                        user_ids=None, character_ids=None)
         try:
             self.db_handler.save_or_update_dungeon(active_dungeon)
-            print("Dungeon saved")
+
             self.__write_races_to_database()
-            print("Races saved")
+
             self.__write_items_to_database()
-            print("Items saved")
+
             self.__write_classes_to_database()
-            print("Classes saved")
+
             self.__write_npcs_to_database()
-            print("Npcs saved")
-            print(self.room_list)
+
             self.__write_rooms_to_database()
-            print("Rooms saved")
-            print("write dungeon to database: self.managed_dungeon.dungeon_id")
+
             return self.managed_dungeon.dungeon_id
         except:
             pass
@@ -196,7 +194,7 @@ class DungeonManager:
         """
         writes Races to Database
         """
-        print(self.race_list)
+
         for race in self.race_list:
             try:
                 self.db_handler.write_race_to_database(race=race, dungeon_id=self.managed_dungeon.dungeon_id)
@@ -207,7 +205,7 @@ class DungeonManager:
         """
         writes Classes to Database
         """
-        print(self.class_list)
+
         for classes in self.class_list:
             try:
                 self.db_handler.write_class_to_database(class_object=classes,
@@ -219,7 +217,7 @@ class DungeonManager:
         """
         writes Rooms to Database
         """
-        print(self.room_list)
+
         for room in self.room_list:
             try:
                 self.db_handler.write_room_to_database(room=room, dungeon_id=self.managed_dungeon.dungeon_id)
@@ -230,7 +228,7 @@ class DungeonManager:
         """
         writes Items to Database
         """
-        print(self.item_list)
+
         for item in self.item_list:
             try:
                 self.db_handler.write_item_to_database(item=item, dungeon_id=self.managed_dungeon.dungeon_id)
@@ -241,7 +239,7 @@ class DungeonManager:
         """
         writes Npcs to Database
         """
-        print(self.npc_list)
+
         for npc in self.npc_list:
             try:
                 self.db_handler.write_npc_to_database(npc=npc, dungeon_id=self.managed_dungeon.dungeon_id)

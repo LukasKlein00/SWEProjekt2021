@@ -423,7 +423,9 @@ class DatabaseHandler:
                     """)
         try:
             print(colored('DB: ', 'yellow'), f'get dungeon data by dungeon id "{dungeon_id}"')
-            return self.cursor.fetchall()
+            queryData = self.cursor.fetchall()
+            print(queryData)
+            return queryData
         except IOError:
             pass
 
