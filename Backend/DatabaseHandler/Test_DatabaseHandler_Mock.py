@@ -8,7 +8,7 @@ import utils
 
 MYSQL_USER = "jack"
 MYSQL_PASSWORD = "123123"
-MYSQL_DB = "mudcake"
+MYSQL_DB = "mudcake_test"
 MYSQL_HOST = "193.196.53.67"
 MYSQL_PORT = "1189"
 
