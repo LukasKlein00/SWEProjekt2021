@@ -9,7 +9,13 @@ from DungeonPackage.AccessList import AccessList
 
 class ActiveDungeonHandler:
     def __init__(self):
-        return
+        self.active_active_dungeon_ids = []
+        self.active_active_dungeons = []
 
     def init_dungeon(self, dungeon_id: str):
-        access_list = AccessList(dungeon_id)
+        access_list_object = AccessList(dungeon_id).load_data()
+        active_dungeon_object = ActiveDungeon()
+
+    def dungeon_join(self, dungeon_id):
+        self.active_active_dungeon_ids.append(dungeon_id)
+        self.active_active_dungeons.append(self.init_dungeon(dungeon_id))
