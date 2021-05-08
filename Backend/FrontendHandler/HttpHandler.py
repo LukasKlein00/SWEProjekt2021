@@ -123,6 +123,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             dungeon_id = dungeon_manager.write_dungeon_to_database()
             #print("successfully executed Database transaction! Dungeon ID: " + dungeon_id)
             try:
+                print(json.dumps(dungeon_id).encode(encoding='utf_8'))
                 self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
             except IOError:
                 pass

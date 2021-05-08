@@ -6,6 +6,7 @@ import random
 from termcolor import colored
 
 from DungeonPackage.DungeonData import DungeonData
+from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
 
 """class WebSocketHandler:
     def __init__(self):
@@ -40,6 +41,7 @@ class SocketIOHandler:
         self.sio = socketio.Server(cors_allowed_origins='*')
         self.app = socketio.WSGIApp(self.sio)
         self.active_dungeons = []
+        self.activeDungeonHandler = ActiveDungeonHandler()
 
 
         @self.sio.event
@@ -68,8 +70,9 @@ class SocketIOHandler:
         @self.sio.event
         def publish(sid, data):
             self.sio.enter_room(sid, data)
+            self.activeDungeonHandler.dungeon_join(data)
             dungeon_data = DungeonData(dungeon_id=data)
-            dungeon_data.load_data(dungeon_id=data)
+            dungeon_data.load_data(data)
             dungeon_dict = {"dungeonID": dungeon_data.dungeon_id, "dungeonMasterID": dungeon_data.dungeon_master_id,
                             "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
                             "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
