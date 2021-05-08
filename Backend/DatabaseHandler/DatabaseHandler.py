@@ -289,7 +289,7 @@ class DatabaseHandler:
                                     (%s,%s,%s,%s,%s)
                                 ON DUPLICATE KEY UPDATE
                                 DungeonID = VALUES(DungeonID), NpcID = VALUES(NpcID), NpcName = VALUES(Name), NpcDescription = VALUES(Description), ItemID = VALUES(ItemID)
-                              """)
+                              """, (dungeon_id, npc.npc_id, npc.name, npc.description, npc.item))
         try:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"write npc to database '{npc}'")
@@ -424,7 +424,9 @@ class DatabaseHandler:
                     """)
         try:
             print(colored('DB: ', 'yellow'), f'get dungeon data by dungeon id "{dungeon_id}"')
-            return self.cursor.fetchall()
+            queryData = self.cursor.fetchall()
+            print(queryData)
+            return queryData
         except IOError:
             pass
 

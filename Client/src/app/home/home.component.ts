@@ -1,6 +1,8 @@
+import { utf8Encode } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Dungeon } from 'Testfiles/models für Schnittstellen';
 import { HttpService } from '../services/http.service';
+import { WebsocketService } from '../services/websocket.service';
 
 @Component({
   selector: 'app-home',
@@ -61,16 +63,22 @@ export class HomeComponent implements OnInit {
     dungeonMasterID: "3",
   }]
   myMUDs: Dungeon[] = []
+  avDungeons;
 
   filters = ['all','public','private'];
   selectedFilter = this.filters[0];
 
   constructor(
-    private httpService: HttpService
+    private httpService: HttpService,
+    private WebSocketService: WebsocketService
   ) { }
 
   ngOnInit(): void {
     this.getCreatedDungeons()
+    this.WebSocketService.getMessage().subscribe(r => console.log("socketservice", r));
+    this.WebSocketService.getPublishedDungeons().subscribe((r: string) => this.avDungeons = JSON.parse(r));
+    this.WebSocketService.sendMessage("moin");
+
   }
   
   getCreatedDungeons(){
