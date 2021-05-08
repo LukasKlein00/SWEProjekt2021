@@ -15,7 +15,7 @@ MYSQL_PORT = "1189"
 class MockDB(TestCase):
 
     @classmethod
-    def SetupClass(cls):
+    def setupClass(cls):
         ref = mysql.connector.connect(
             host=MYSQL_HOST,
             port=MYSQL_PORT,
@@ -78,22 +78,22 @@ class MockDB(TestCase):
         }
         cls.mock_db_config = patch.dict(utils.config, test_config)
 
-        @classmethod
-        def tearDownClass(cls):
-            ref = mysql.connector.connect(
-                host=MYSQL_HOST,
-                user=MYSQL_USER,
-                password=MYSQL_PASSWORD,
-            )
-            cursor = ref.cursor(dictionary=True)
+    @classmethod
+    def tearDownClass(cls):
+        ref = mysql.connector.connect(
+            host=MYSQL_HOST,
+            user=MYSQL_USER,
+            password=MYSQL_PASSWORD,
+        )
+        cursor = ref.cursor(dictionary=True)
 
-            # drop test database
-            try:
-                cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
-                ref.commit()
-                cursor.close()
-            except mysql.connector.Error as err:
-                print("Database {} does not exists. Dropping db failed".format(MYSQL_DB))
-            ref.close()
+        # drop test database
+        try:
+            cursor.execute("DROP DATABASE {}".format(MYSQL_DB))
+            ref.commit()
+            cursor.close()
+        except mysql.connector.Error as err:
+            print("Database {} does not exists. Dropping db failed".format(MYSQL_DB))
+        ref.close()
 
 
