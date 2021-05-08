@@ -1,14 +1,12 @@
 @import "./../sccVariables.scss";
 
 .chat {
-    position: relative;
-    max-height: calc(100% - 60px);
     overflow-y: auto;
 }
 
-.card {
-    height: 100%;
-    overflow-x: hidden;
+.chat-container {
+    display: grid;
+    grid-template-rows: 350px 44px;
 }
 
 .chatinput {

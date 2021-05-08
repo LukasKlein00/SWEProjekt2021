@@ -92,7 +92,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .col-12-min-map {
-    margin-top: 1.5rem;
+    margin: 1em;
     width: 100%;
     height: $map-size;
     overflow: auto;
@@ -100,7 +100,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-width: 992px) { .col-12-min-map {
     margin-top: 1.5rem;
-    width: calc(94% - 400px);
+    width: calc(90% - 400px);
     height: $map-size;
     overflow: auto;
 } }
