@@ -276,7 +276,7 @@ export class BuilderComponent implements OnInit {
     }
   }
 
-  saveDungeon() {
+  saveDungeon(publish = false) {
     this.loading = true;
 
 
@@ -291,14 +291,17 @@ export class BuilderComponent implements OnInit {
         if (response) {
           this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
         }
+        if (publish ) {
+          console.log("publishing...")
+          this.websocketService.sendPublish(this.dungeon.dungeonID);
+        }
         this.loading = false;
       });
 
   }
 
   publishDungeon() {
-    this.saveDungeon();
-    this.websocketService.sendPublish(this.dungeon.dungeonID);
+    this.saveDungeon(true);
   }
 
   selectRoom(r: Room) {
