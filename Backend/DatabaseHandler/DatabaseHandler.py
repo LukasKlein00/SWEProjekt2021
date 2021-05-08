@@ -403,14 +403,15 @@ class DatabaseHandler:
 
     def get_access_list_by_dungeon_id(self, dungeon_id: str):
 
-        self.cursor.execute(f"""
-                    SELECT UserID, isAllowed
+        self.dictionary_cursor.execute(f"""
+                    SELECT  UserID userID, 
+                            isAllowed
                     From mudcake.AccessList
                     WHERE (DungeonID = '{dungeon_id}')
                     """)
         try:
             print(colored('DB: ', 'yellow'), f'get AccessList by dungeon id "{dungeon_id}"')
-            return self.cursor.fetchall()
+            return self.dictionary_cursor.fetchall()
         except IOError:
             pass
 

@@ -10,7 +10,7 @@ class AccessList:
         """
         constructor for class AccessList
         """
-        self.access_list = {"user_id": [], "isAllowed": []}
+        self.access_list = []
         self.dungeon_id = dungeon_id
         self.db_handler = DatabaseHandler()
 
@@ -20,11 +20,15 @@ class AccessList:
         :param user_id: id of user
         :param is_allowed: bool true=user on white list false=user on blacklist  
         """
-        self.access_list["user_id"].append(user_id)
-        self.access_list["isAllowed"].append(is_allowed)
+        self.access_list.append({"user_id": user_id, "is_allowed":is_allowed})
 
     def load_data(self):
-        # TODO: Fix that shit
-        database_access_list = self.db_handler.user_status_on_access_list(self.userID, self.dungeon_id)
-        self.access_list['user_id'].append(database_access_list[2])
-        self.access_list['isAllowed'].append(bool(database_access_list[1]))
+        """Part of the lazy loading process.
+        Fills the AccessList class with data from the database.
+
+        Returns:
+            void: This Method only fills its own parameters
+        """
+        for user in self.db_handler.get_access_list_by_dungeon_id(self.dungeon_id):
+            self.access_list.append({"user_id": user['userID'], "is_allowed": bool(user['isAllowed'])})
+        return self

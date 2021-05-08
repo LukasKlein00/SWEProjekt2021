@@ -128,6 +128,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
             except IOError:
                 pass
 
+        if self.path == "/publishDungeon":
+            self.__set_response()
+            # TODO: add publish Dungeon functionality
+
         if self.path == '/deleteDungeon':
             self.__set_response()
             dungeon_manager = DungeonManager()
