@@ -37,6 +37,10 @@ html, body {
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.mat-dialog-container {
+    padding: 0px !important;
+}
+
 .toast {
     background-color: $color-2;
     color: $text-color-1
@@ -86,3 +90,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .card-border {
     border: 3px solid $color-1;
 }
+
+.col-12-min-map {
+    margin-top: 1.5rem;
+    width: 100%;
+    height: $map-size;
+    overflow: auto;
+}
+
+@media (min-width: 992px) { .col-12-min-map {
+    margin-top: 1.5rem;
+    width: calc(94% - 400px);
+    height: $map-size;
+    overflow: auto;
+} }
