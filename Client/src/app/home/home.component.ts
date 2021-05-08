@@ -1,3 +1,4 @@
+import { utf8Encode } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Dungeon } from 'Testfiles/models für Schnittstellen';
 import { HttpService } from '../services/http.service';
@@ -75,8 +76,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getCreatedDungeons()
     this.WebSocketService.getMessage().subscribe(r => console.log("socketservice", r));
-    this.WebSocketService.getPublishedDungeons().subscribe(r => {this.avDungeons = r;
-    console.log("availableDUngeons", r)});
+    this.WebSocketService.getPublishedDungeons().subscribe((r: string) => this.avDungeons = JSON.parse(r));
     this.WebSocketService.sendMessage("moin");
 
   }

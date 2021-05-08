@@ -75,7 +75,7 @@ class SocketIOHandler:
                             "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
                             "private": dungeon_data.private}
             print(colored(dungeon_dict, 'green'))
-            self.sio.emit('make_dungeon_available', json.dumps(dungeon_dict).encode(encoding='utf_8'), broadcast=True)
+            self.sio.emit('make_dungeon_available', json.dumps(dungeon_dict), broadcast=True)
             print(colored("publish successful", 'green'))
 
         @self.sio.event
