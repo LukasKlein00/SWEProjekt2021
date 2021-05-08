@@ -7,10 +7,10 @@ class Item:
         self.name = name
         self.description = description
         self.dungeon_id = dungeon_id
-        self.db_handler = DatabaseHandler()
 
     def load_data(self, dungeonID):
-        database_item = self.db_handler.get_item_by_dungeon_id(dungeonID)
+        db_handler = DatabaseHandler()
+        database_item = db_handler.get_item_by_dungeon_id(dungeonID)
         self.item_id = database_item[0]
         self.description = database_item[1]
         self.name = database_item[2]

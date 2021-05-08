@@ -9,7 +9,7 @@ class ActiveDungeonHandler:
 
     def __init_dungeon(self, dungeon_id: str):
         return dict({'dungeon_data_object': DungeonData().load_data(dungeon_id),
-                     'access_list_object': AccessList(dungeon_id=dungeon_id),
+                     'access_list_object': AccessList(dungeon_id=dungeon_id).load_data(),
                      'races_objects': dict(),                       #race_object['race_ID'] -> race_object
                      'classes_objects': dict(),                     #classes_object['class_ID'] -> class_object
                      'items_objects': dict(),                       #items_object['item_ID'] -> item_object

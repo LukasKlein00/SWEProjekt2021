@@ -31,7 +31,19 @@ from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
 
         finally:
             #Beim Disconnecten trägt sich die Instanz aus dem Set aus
-            self.all_connections.discard(websocket)"""
+            self.all_connections.discard(websocket)
+            
+                        jans_crack_hauscount = 0
+            thommys_trap_hauscount = 0
+            print('connect: ', sid)
+            if random.random() > 0.5:
+                self.sio.enter_room(sid, 'Jans Crackhaus')
+                jans_crack_hauscount += 1
+                self.sio.emit('room_count', jans_crack_hauscount, to='Jans Crackhaus')
+            else:
+                self.sio.enter_room(sid, 'Thommys Traphaus')
+                thommys_trap_hauscount += 1
+                self.sio.emit('room_count', thommys_trap_hauscount, to='Thommys Traphaus')"""
 
 
 import eventlet
@@ -46,19 +58,20 @@ class SocketIOHandler:
 
         @self.sio.event
         def connect(sid, environ):
-            self.sio.emit('make_dungeon_available', json.dumps(self.activeDungeonHandler.active_dungeons),
-                          broadcast=True)
-            jans_crack_hauscount = 0
-            thommys_trap_hauscount = 0
-            print('connect: ', sid)
-            if random.random() > 0.5:
-                self.sio.enter_room(sid, 'Jans Crackhaus')
-                jans_crack_hauscount += 1
-                self.sio.emit('room_count', jans_crack_hauscount, to='Jans Crackhaus')
-            else:
-                self.sio.enter_room(sid, 'Thommys Traphaus')
-                thommys_trap_hauscount += 1
-                self.sio.emit('room_count', thommys_trap_hauscount, to='Thommys Traphaus')
+            dungeon_data_list = []
+            print(colored(f"Dungeon Data List: {dungeon_data_list}", 'red'))
+            print(colored(f"Dungeon Handler List: {self.activeDungeonHandler.active_dungeon_ids}", 'red'))
+            for dungeon_ID  in self.activeDungeonHandler.active_dungeon_ids:
+                dungeon_data = DungeonData(dungeon_id=dungeon_ID)
+                dungeon_dict = {"dungeonID": dungeon_data.dungeon_id, "dungeonMasterID": dungeon_data.dungeon_master_id,
+                                "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
+                                "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
+                                "private": dungeon_data.private}
+                dungeon_data_list.append(dungeon_dict)
+                print(colored(dungeon_dict, 'green'))
+            if len(dungeon_data_list) != 0:
+                self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
+                print(colored("publish successful", 'green'))
 
         @self.sio.event
         def message(sid, data):
@@ -73,15 +86,6 @@ class SocketIOHandler:
         def publish(sid, data):
             self.sio.enter_room(sid, data)
             self.activeDungeonHandler.dungeon_join(data)
-            dungeon_data = DungeonData(dungeon_id=data)
-            dungeon_data.load_data(data)
-            dungeon_dict = {"dungeonID": dungeon_data.dungeon_id, "dungeonMasterID": dungeon_data.dungeon_master_id,
-                            "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
-                            "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
-                            "private": dungeon_data.private}
-            print(colored(dungeon_dict, 'green'))
-            self.sio.emit('make_dungeon_available', json.dumps(self.activeDungeonHandler.active_dungeons), broadcast=True)
-            print(colored("publish successful", 'green'))
 
         @self.sio.event
         def disconnect(sid):

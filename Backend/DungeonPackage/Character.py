@@ -14,10 +14,10 @@ class Character:
         self.user_id = user_id
         self.discovered_map = discovered_map_id
         self.inventory = inventory
-        self.db_handler = DatabaseHandler()
 
     def load_data(self, dungeon_id: str):
-        databaseCharacterData = self.db_handler.get_character_by_dungeon_ID(dungeon_id)
+        db_handler = DatabaseHandler()
+        databaseCharacterData = db_handler.get_character_by_dungeon_ID(dungeon_id)
         self.character_id = databaseCharacterData[0]
         self.life_points = databaseCharacterData[1]
         self.name = databaseCharacterData[2]
