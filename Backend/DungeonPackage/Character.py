@@ -3,8 +3,8 @@ from DungeonPackage.Inventory import *
 
 
 class Character:
-    def __init__(self, character_id: str, life_points: int, name: str, description: str, class_id: int, race_id: int,
-                 user_id: str, discovered_map_id: int, inventory: Inventory = None):
+    def __init__(self, character_id: str = None, life_points: int = None, name: str = None, description: str = None, class_id: int = None, race_id: int = None,
+                 user_id: str = None, discovered_map_id: int = None, inventory: Inventory = None):
         self.character_id = character_id
         self.life_points = life_points
         self.name = name

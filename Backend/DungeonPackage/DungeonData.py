@@ -32,6 +32,12 @@ class DungeonData:
         db_handler = DatabaseHandler()
         database_dungeon_data_raw = db_handler.get_dungeon_data_by_dungeon_id(dungeon_id)
         database_dungeon_data = list(sum(database_dungeon_data_raw, ()))
+        print("DataRAW")
+        for dataRaw in database_dungeon_data_raw:
+            print(dataRaw)
+        print("DATA")
+        for data in database_dungeon_data:
+            print(data)
         self.dungeon_id = database_dungeon_data[0]
         self.max_players = database_dungeon_data[5]
         self.name = database_dungeon_data[2]
