@@ -86,6 +86,7 @@ class SocketIOHandler:
         def publish(sid, data):
             self.sio.enter_room(sid, data)
             self.activeDungeonHandler.dungeon_join(data)
+            self.activeDungeonHandler.sid_of_dungeon_master[data] = sid
 
         @self.sio.event
         def disconnect(sid):

@@ -5,6 +5,7 @@ from DungeonPackage.AccessList import AccessList
 class ActiveDungeonHandler:
     def __init__(self):
         self.active_dungeon_ids = []
+        self.sid_of_dungeon_master = dict()                         #sid_of_dungeon_master['dungeonID'] -> sidOfDungeonMaster
         self.active_dungeons = dict()                               #avtive_dungeons['dungeonID'] -> activeDungeon
 
     def __init_dungeon(self, dungeon_id: str):
