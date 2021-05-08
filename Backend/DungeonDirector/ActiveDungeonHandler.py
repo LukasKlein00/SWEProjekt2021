@@ -19,8 +19,9 @@ class ActiveDungeonHandler:
                      'active_dungeon_object': ActiveDungeon()})
 
     def dungeon_join(self, dungeon_id):
-        self.active_dungeon_ids.append(dungeon_id)
-        self.active_dungeons[dungeon_id] = self.__init_dungeon(dungeon_id)
+        if not self.active_dungeon_ids.__contains__(dungeon_id):
+            self.active_dungeon_ids.append(dungeon_id)
+            self.active_dungeons[dungeon_id] = self.__init_dungeon(dungeon_id)
 
     def dungeon_leave(self, dungeon_id):
         self.active_dungeon_ids.remove(dungeon_id)
