@@ -79,7 +79,6 @@ class DatabaseHandler:
                                     Private  = VALUES(Private)
                             """)
         try:
-            dungeon.dungeon_data.dungeon_id = self.cursor.lastrowid
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"save or update dungeon '{dungeon.dungeon_data.dungeon_id}'")
             return dungeon.dungeon_data.dungeon_id
@@ -494,10 +493,6 @@ class DatabaseHandler:
                                            ItemID item
                                     FROM 
                                         mudcake.Room
-                                            JOIN 
-                                        mudcake.Npc
-                                            JOIN 
-                                        mudcake.Item
                                             
                                     WHERE (DungeonID = '{dungeon_id}' )
                                     """)
