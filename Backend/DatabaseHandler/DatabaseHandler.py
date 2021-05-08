@@ -2,6 +2,8 @@ import mysql
 from mysql.connector import MySQLConnection
 from termcolor import colored
 
+from DungeonPackage.Character import Character
+
 
 class DatabaseHandler:
     """
@@ -273,6 +275,28 @@ class DatabaseHandler:
             return True
         except IOError:
             return False
+
+    def write_character_to_database(self, character: Character, dungeon_id):
+        self.cursor.execute(f"""
+                            INSERT INTO mudcake.Character 
+                            (DungeonID, UserID, CharacterID, Lifepoints, CharacterName, CharacterDescription, ClassID, 
+                            RaceID, ClassID, RoomID) 
+                            VALUES
+                                (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                            ON DUPLICATE KEY UPDATE
+                            DungeonID = VALUES(DungeonID), UserID=VALUES(UserID), CharacterID=VALUES(CharacterID),
+                            Lifepoints = VALUES(Lifepoints), CharacterName=VALUES(CharacterName), 
+                            CharacterDescription=VALUES(CharacterDescription), ClassID=VALUES(ClassID), 
+                            RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID)""",
+                            (dungeon_id, character.user_id, character.character_id, character.life_points, character.name,
+                             character.description,character.race_id,character.class_id,character.room_id)
+                            )
+        try:
+            self.database_path.commit()
+            print(colored('DB:', 'yellow'), f"write character to database '{character}'")
+        except IOError:
+            pass
+
 
     def write_npc_to_database(self, npc, dungeon_id):
         '''
@@ -578,3 +602,4 @@ class DatabaseHandler:
             return self.dictionary_cursor.fetchall()
         except IOError:
             print(colored(f'DB: get accesslist as dict failed. dungeonID: "{dungeon_id}"', 'red'))
+

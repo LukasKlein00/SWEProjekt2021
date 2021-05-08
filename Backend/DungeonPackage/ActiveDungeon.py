@@ -1,3 +1,4 @@
+from DungeonPackage.Character import Character
 from DungeonPackage.Class import Class as Class
 from DungeonPackage.DungeonData import DungeonData as DungeonData
 from DungeonPackage.Item import Item as Item
@@ -10,7 +11,7 @@ class ActiveDungeon:
     """
     class for handling active dungeons
     """
-    def __init__(self, user_ids: [int] = None, character_ids: [int] = None, rooms: [Room] = None, npcs: [Npc] = None,
+    def __init__(self, user_ids: [str] = None, character_ids: [str] = None, rooms: [Room] = None, npcs: [Npc] = None,
                  items: [Item] = None, races: [Race] = None,
                  classes: [Class] = None, dungeon_data: DungeonData = None):
         """
@@ -60,6 +61,16 @@ class ActiveDungeon:
         :param item: item object
         """
         self.classes.append(d_class)
+
+    def add_character(self, character: Character):
+        """ adds a character object to the active dungeon
+
+        Args:
+            character (Character): character to be added to the active dungeon
+
+        Returns: void
+        """
+        self.character_ids.append(character.character_id)
 
     def load_data(self):
         raise NotImplementedError
