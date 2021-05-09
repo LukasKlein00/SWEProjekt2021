@@ -12,7 +12,6 @@ class AccessList:
         """
         self.access_list = []
         self.dungeon_id = dungeon_id
-        self.db_handler = DatabaseHandler()
 
     def add_user_to_access_list(self, user_id: str, is_allowed: bool):
         """
@@ -29,6 +28,7 @@ class AccessList:
         Returns:
             void: This Method only fills its own parameters
         """
-        for user in self.db_handler.get_access_list_by_dungeon_id(self.dungeon_id):
+        db_handler = DatabaseHandler()
+        for user in db_handler.get_access_list_by_dungeon_id(self.dungeon_id):
             self.access_list.append({"user_id": user['userID'], "is_allowed": bool(user['isAllowed'])})
         return self

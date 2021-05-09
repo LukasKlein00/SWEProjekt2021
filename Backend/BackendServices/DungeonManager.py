@@ -8,6 +8,7 @@ from json import JSONEncoder as foreignEncoder
 
 from DatabaseHandler.DatabaseHandler import DatabaseHandler
 from DungeonPackage.ActiveDungeon import ActiveDungeon
+from DungeonPackage.Character import Character
 from DungeonPackage.Class import Class
 from DungeonPackage.DungeonData import DungeonData
 from DungeonPackage.Item import Item
@@ -245,6 +246,21 @@ class DungeonManager:
                 self.db_handler.write_npc_to_database(npc=npc, dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
+
+    def write_character_to_database(self, character: Character):
+        """ writes a given character to the database
+
+        Args:
+            character (Character): character to be written to the database
+
+        Returns: void
+        """
+        try:
+            self.db_handler.write_character_to_database(character, character.dungeon_id)
+        except IOError:
+            pass
+
+
 
     def __load_dungeon_from_database(self):
         ######

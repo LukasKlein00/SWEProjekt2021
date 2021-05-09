@@ -8,10 +8,10 @@ class Race:
         self.name = name
         self.description = description
         self.dungeon_id = dungeon_id
-        self.db_handler = DatabaseHandler()
 
     def load_data(self, dungeon_id: str):
-        database_race = self.db_handler.get_race_by_dungeon_id(dungeon_id)
+        db_handler = DatabaseHandler()
+        database_race = db_handler.get_race_by_dungeon_id(dungeon_id)
         self.race_id = database_race[0]
         self.name = database_race[1]
         self.description = database_race[2]
