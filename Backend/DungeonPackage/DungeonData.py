@@ -46,6 +46,8 @@ class DungeonData:
         self.dungeon_master_id = database_dungeon_data[1]
         return self
 
+        return self
+
     def is_private(self):
         raise NotImplementedError
 

@@ -1,7 +1,12 @@
+import { Route } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Dungeon, Player, Room } from 'Testfiles/models für Schnittstellen';
+import { ActivatedRoute } from '@angular/router';
+import { Class, Dungeon, Player, Race, Room } from 'Testfiles/models für Schnittstellen';
 import { CreateCharacterComponent } from '../create-character/create-character.component';
+import { DungeonService } from '../services/dungeon.service';
+import { HttpService } from '../services/http.service';
+import { WebsocketService } from '../services/websocket.service';
 
 @Component({
   selector: 'app-play',
@@ -11,6 +16,7 @@ import { CreateCharacterComponent } from '../create-character/create-character.c
 export class PlayComponent implements OnInit {
 
   world: Dungeon;
+  loading;
   rooms: Room[];
   currentRoom: Room;
   player: Player = {
@@ -31,12 +37,23 @@ export class PlayComponent implements OnInit {
     inventar: []
   };
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private DungeonService: DungeonService,
+    private httpService: HttpService,
+    private socketService: WebsocketService) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('blub')) {
-      this.world = JSON.parse(localStorage.getItem('blub'));
-      this.rooms = this.world.rooms;
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log("id",id)
+    if (id) {
+      if (this.checkCharakter(id)) {
+
+      } else {
+        this.getCharakterCreationData(id);
+        this.openDialog();
+
+      }
     }
     this.currentRoom = {
       name: "NewRoom 5 5",
@@ -53,7 +70,6 @@ export class PlayComponent implements OnInit {
       isActive: true,
       description: "Starting Room Description"
   }
-    this.openDialog();
   }
 
   openDialog() {
@@ -66,6 +82,42 @@ export class PlayComponent implements OnInit {
       this.player = result;
 
     });
+  }
+
+  getCharakterCreationData(dID) {
+    this.loading = true;
+    
+this.socketService.getClasses(dID).subscribe((res) => {
+  console.log("classes",res);
+  if (res) {
+    
+    this.world['class'] = res as Class[];
+  }
+})
+this.socketService.getRaces(dID).subscribe((res) => {
+  console.log("races",res)
+  this.loading = false;
+  if (res) {
+    
+    this.world['races'] = res as Race[];
+  }
+})
+  }
+
+  checkCharakter(dID) {
+    this.loading = true;
+    console.log("checking Char...")
+    let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe( (res) => {
+      console.log("GETcHAR",res);
+      this.loading = false
+      if (res) {
+        return true 
+      } else {
+        return false
+      }
+    })
+
+    return check
   }
   
     

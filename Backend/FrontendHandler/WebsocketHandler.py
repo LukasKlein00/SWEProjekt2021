@@ -28,7 +28,7 @@ class SocketIOHandler:
             print(colored(f"Dungeon Data List: {dungeon_data_list}", 'red'))
             print(colored(f"Dungeon Handler List: {self.activeDungeonHandler.active_dungeon_ids}", 'red'))
             for dungeon_ID  in self.activeDungeonHandler.active_dungeon_ids:
-                dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_ID)
+                dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
                 dungeon_dict = {"dungeonID": dungeon_data.dungeon_id, "dungeonMasterID": dungeon_data.dungeon_master_id,
                                 "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
                                 "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
