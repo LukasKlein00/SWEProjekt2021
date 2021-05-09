@@ -44,6 +44,7 @@ class DungeonData:
         self.description = database_dungeon_data[3]
         self.private = bool(database_dungeon_data[4])
         self.dungeon_master_id = database_dungeon_data[1]
+        return self
 
         return self
 

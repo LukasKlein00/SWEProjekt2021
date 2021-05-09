@@ -119,7 +119,7 @@ class DungeonManager:
             logging.debug(npc)
             new_npc = Npc(npc_id=npc['npcID'], name=npc['name'],
                           description=npc['description'], dungeon_id=self.managed_dungeon.dungeon_id)
-            #new_npc.item = [] if (npc['equipment'] is None) else new_npc.item = npc['equipment']['itemID']
+            new_npc.item = None if npc['equipment'] is None else npc['equipment']['itemID']
             self.npc_list.append(new_npc)
 
         for classes in class_data:
