@@ -344,7 +344,7 @@ export class BuilderComponent implements OnInit {
 
   getClasses() {
     if (this.dungeon.classes = []) {
-      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
+      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
     }
   }
 
