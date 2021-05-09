@@ -338,19 +338,19 @@ export class BuilderComponent implements OnInit {
 
   getRaces() {
     if (this.dungeon.races = []) {
-      this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res as Race[])
+      this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res)
     }
   }
 
   getClasses() {
     if (this.dungeon.classes = []) {
-      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res as Class[])
+      this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
     }
   }
 
   getItems() {
-    if (this.dungeon.races = []) {
-      this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res as Item[])
+    if (this.dungeon.items = []) {
+      this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res)
     }
   }
 
@@ -358,17 +358,13 @@ export class BuilderComponent implements OnInit {
     console.log("getNpcs", this.dungeon);
     if (this.dungeon.npcs = []) {
       console.log("npcs ist leer")
-      this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res =>  {
-        if (Array.isArray(res)) {
-          this.dungeon.npcs = res as Npc[]
-        }
-      });
+      this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res);
     }
   }
 
   getAccessList() {
     if (this.dungeon.accessList = []) {
-      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res as Access[])
+      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res)
     }
   }
 
