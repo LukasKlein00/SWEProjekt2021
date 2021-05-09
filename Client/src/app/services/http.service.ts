@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Access, Class, Dungeon, Item, Npc, Room } from 'Testfiles/models für Schnittstellen';
+import { Access, Class, Dungeon, Item, Npc, Race, Room } from 'Testfiles/models für Schnittstellen';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +47,7 @@ export class HttpService {
   }
 
   getRaces(id) {
-    return this.http.post<Room[]>(`${this.apiUrl}/getRaces`, JSON.stringify(id));
+    return this.http.post<Race[]>(`${this.apiUrl}/getRaces`, JSON.stringify(id));
   }
 
   getItems(id) {
