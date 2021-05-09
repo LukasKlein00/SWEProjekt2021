@@ -3,6 +3,7 @@ import uuid
 
 from termcolor import colored
 
+from BackendServices.AccessManager import AccessManager
 from BackendServices.DungeonManager import DungeonManager
 from DungeonPackage.DungeonData import DungeonData, Character
 from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
@@ -16,6 +17,7 @@ class SocketIOHandler:
         self.active_dungeons = []
         self.activeDungeonHandler = ActiveDungeonHandler()
         self.dungeon_manager = DungeonManager()
+        self.access_magager = AccessManager()
 
 
         @self.sio.event
@@ -49,10 +51,14 @@ class SocketIOHandler:
 
         @self.sio.event
         def join_dungeon(sid, data):                    #Data = Dict aus DungeonID und UserID/Name
-            self.sio.enter_room(sid, data['dungeonID'])
-            session = self.sio.get_session(sid)
-            session['dungeonID'] = data['dungeonID']
-            self.sio.emit('user_joined', f"'{session['userName']}' joined")
+            if self.access_magager.user_status_on_access_list(data['userID'], data['dungeonID']):
+                self.sio.enter_room(sid, data['dungeonID'])
+                session = self.sio.get_session(sid)
+                session['dungeonID'] = data['dungeonID']
+                self.sio.emit('user_joined', f"'{session['userName']}' joined")
+            else:
+                self.sio.send({'userID': data['userID'],
+                               'status': 'awaitsJoin'}, self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])
             #übermittel klassen & rassen
 
         @self.sio.event
