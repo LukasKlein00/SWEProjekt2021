@@ -274,6 +274,7 @@ class DatabaseHandler:
             print(colored('DB:', 'yellow'), f"changes registrations status from user: '{user_id}'")
             return True
         except IOError:
+            print(colored(f"DB: changing registration status from user: '{user_id}' failed", 'red'))
             return False
 
     def write_character_to_database(self, character: Character, dungeon_id):
@@ -317,6 +318,7 @@ class DatabaseHandler:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"write npc to database '{npc}'")
         except IOError:
+            print(colored(f"DB: write item to database failed, npc: '{npc}'", 'red'))
             pass
 
     def write_item_to_database(self, item, dungeon_id):
@@ -436,6 +438,7 @@ class DatabaseHandler:
             print(colored('DB: ', 'yellow'), f'get AccessList by dungeon id "{dungeon_id}"')
             return self.dictionary_cursor.fetchall()
         except IOError:
+            print(colored(f"DB: write AccessList to database failed, dungeon id: '{dungeon_id}'", 'red'))
             pass
 
     def get_dungeon_data_by_dungeon_id(self, dungeon_id: str):
@@ -451,6 +454,7 @@ class DatabaseHandler:
             print(queryData)
             return queryData
         except IOError:
+            print(colored(f"DB: get character by dungeon id failed, dungeon id: '{dungeon_id}'", 'red'))
             pass
 
     def get_inventory_by_character_id(self, character_id: str):
