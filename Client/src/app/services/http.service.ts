@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Class, Dungeon } from 'Testfiles/models für Schnittstellen';
+import { Access, Class, Dungeon, Item, Npc, Room } from 'Testfiles/models für Schnittstellen';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class HttpService {
   }
 
   getRooms(id) {
-    return this.http.post(`${this.apiUrl}/getRooms`, JSON.stringify(id));
+    return this.http.post<Room[]>(`${this.apiUrl}/getRooms`, JSON.stringify(id));
   }
 
   getClasses(id) {
@@ -47,19 +47,19 @@ export class HttpService {
   }
 
   getRaces(id) {
-    return this.http.post(`${this.apiUrl}/getRaces`, JSON.stringify(id));
+    return this.http.post<Room[]>(`${this.apiUrl}/getRaces`, JSON.stringify(id));
   }
 
   getItems(id) {
-    return this.http.post(`${this.apiUrl}/getItems`, JSON.stringify(id));
+    return this.http.post<Item[]>(`${this.apiUrl}/getItems`, JSON.stringify(id));
   }
 
   getNpcs(id) {
-    return this.http.post(`${this.apiUrl}/getNpcs`, JSON.stringify(id));
+    return this.http.post<Npc[]>(`${this.apiUrl}/getNpcs`, JSON.stringify(id));
   }
 
   getAccessList(id) {
-    return this.http.post(`${this.apiUrl}/getAccessList`, JSON.stringify(id));
+    return this.http.post<Access[]>(`${this.apiUrl}/getAccessList`, JSON.stringify(id));
   }
 
 }
