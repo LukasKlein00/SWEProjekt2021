@@ -337,33 +337,33 @@ export class BuilderComponent implements OnInit {
   }
 
   getRaces() {
-    if (this.dungeon.races = []) {
+    if (this.dungeon.races.length == 0) {
       this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res)
     }
   }
 
   getClasses() {
-    if (this.dungeon.classes = []) {
+    if (this.dungeon.classes.length == 0) {
       this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
     }
   }
 
   getItems() {
-    if (this.dungeon.items = []) {
+    if (this.dungeon.items.length == 0) {
+      console.log("load items");
       this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res)
     }
   }
 
   getNpcs() {
-    console.log("getNpcs", this.dungeon);
-    if (this.dungeon.npcs = []) {
+    if (this.dungeon.npcs.length == 0) {
       console.log("npcs ist leer")
       this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res);
     }
   }
 
   getAccessList() {
-    if (this.dungeon.accessList = []) {
+    if (this.dungeon.accessList.length == 0) {
       this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res)
     }
   }
