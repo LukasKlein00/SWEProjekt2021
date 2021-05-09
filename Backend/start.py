@@ -1,3 +1,5 @@
+import socket
+
 import eventlet
 
 from FrontendHandler.WebsocketHandler import SocketIOHandler
@@ -27,8 +29,15 @@ def start_WS():
     print('WebsocketServer is running!')
     loop.run_until_complete(start_server)
     loop.run_forever()"""
+    ip = ""
     socketio = SocketIOHandler()
-    eventlet.wsgi.server(eventlet.listen(('localhost', 1187)), socketio.app)
+    host_name = socket.gethostname()
+    if str(socket.gethostbyname(host_name)) != "193.196.53.67":
+        ip = ip.replace("{Server}", "localhost:4200")
+    else:
+        ip = ip.replace("{Server}", "193.196.54.98")
+
+    eventlet.wsgi.server(eventlet.listen((ip, 1187)), socketio.app)
 
 
 if __name__ == '__main__':
