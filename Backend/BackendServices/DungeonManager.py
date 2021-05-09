@@ -95,6 +95,7 @@ class DungeonManager:
         npcs_data = self.data['npcs']
         room_data = self.data['rooms']
         class_data = self.data['classes']
+        print(class_data)
 
         for race in race_data:
             logging.debug(race)
@@ -378,14 +379,32 @@ class DungeonManager:
         raise NotImplementedError
 
     def get_all_from_room_as_json(self, data):
-        rooms = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=data)
-        logging.debug(rooms)
-        return json.dumps(rooms).encode(encoding='utf_8')
+        rooms_dict = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=data)
+        print(rooms_dict)
+        room_list = []
+        for room_dict in rooms_dict:
+            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
+                     'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
+                     'north': room_dict['north'],'east':room_dict['east'], 'south':room_dict['south'],
+                     'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                                                        'description': room_dict['npcDescription'], 'equipment': {'itemID': room_dict['npcItemID'],
+                                                                                                                  'name': room_dict['npcItemName'],
+                                                                                                                  'description': room_dict['npcItemDesc']}},
+                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'], 'description': room_dict['roomItemDescription']}}
+            room_list.append(room)
+        logging.debug(room_list)
+        return json.dumps(room_list).encode(encoding='utf_8')
 
     def get_all_from_classes_as_json(self, data):
-        classes = self.db_handler.get_all_classes_by_dungeon_id_as_dict(dungeon_id=data)
-        logging.debug(classes)
-        return json.dumps(classes).encode(encoding='utf_8')
+        classes_dict = self.db_handler.get_all_classes_by_dungeon_id_as_dict(dungeon_id=data)
+        class_list = []
+        for class_dict in classes_dict:
+            class_data = {'classID': class_dict['classID'], 'name': class_dict['name'], 'description': class_dict['description'],
+                          'equipment': {'itemID': class_dict['itemID'], 'name': class_dict['itemName'],
+                                        'description': class_dict['itemDescription']}}
+            class_list.append(class_data)
+        logging.debug(class_list)
+        return json.dumps(class_list).encode(encoding='utf_8')
 
     def get_all_from_races_as_json(self, data):
         races = self.db_handler.get_all_races_by_dungeon_id_as_dict(dungeon_id=data)
@@ -398,6 +417,12 @@ class DungeonManager:
         return json.dumps(items).encode(encoding='utf_8')
 
     def get_all_from_npcs_as_json(self, data):
-        npcs = self.db_handler.get_all_npc_by_dungeon_id_as_dict(dungeon_id=data)
-        logging.debug(npcs)
-        return json.dumps(npcs).encode(encoding='utf_8')
+        npcs_dict = self.db_handler.get_all_npc_by_dungeon_id_as_dict(dungeon_id=data)
+        npc_list = []
+        for npc_dict in npcs_dict:
+            npc = {'npcID': npc_dict['npcID'], 'name': npc_dict['name'], 'description': npc_dict['description'],
+                   'equipment': {'itemID': npc_dict['itemID'], 'name': npc_dict['itemName'], 'description': npc_dict['itemDescription']}
+                   }
+            npc_list.append(npc)
+        logging.debug(npc_list)
+        return json.dumps(npc_list).encode(encoding='utf_8')

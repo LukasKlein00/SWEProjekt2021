@@ -506,23 +506,36 @@ class DatabaseHandler:
     #################### NEW #######################
 
     def get_all_rooms_by_dungeon_id_as_dict(self, dungeon_id: str):
-        self.dictionary_cursor.execute(f"""
-                                    SELECT RoomID roomID,
-                                           isStartingRoom isStartRoom,
-                                           RoomDescription description,
-                                           RoomName name, 
-                                           CoordinateX x,
-                                           CoordinateY y,
-                                           North north,
-                                           East east,
-                                           South south,
-                                           West west,
-                                           NpcID npc,
-                                           ItemID item
-                                    FROM 
+        self.dictionary_cursor.execute(
+                                   f"""
+                                    Select
+                                        RoomID roomID,
+                                        RoomName roomName,
+                                        RoomDescription roomDescription,
+                                        CoordinateX x,
+                                        CoordinateY y,
+                                        North north,
+                                        East east,
+                                        South south,
+                                        West west,
+                                        NpcID npcID,
+                                        NpcName npcName,
+                                        NpcDescription npcDescription,
+                                        RoomItem.ItemID roomItemID,
+                                        RoomItem.ItemName roomItemName,
+                                        RoomItem.ItemDescription roomItemDescription,
+                                        Item.ItemID npcItemID,
+                                        Item.ItemDescription npcItemDesc,
+                                        Item.ItemName npcItemName
+                                    From
                                         mudcake.Room
-                                            
-                                    WHERE (DungeonID = '{dungeon_id}' )
+                                    LEFT JOIN
+                                        mudcake.Npc USING (NpcID)
+                                    LEFT JOIN
+                                        mudcake.Item ON Npc.ItemID = Item.ItemID
+                                    LEFT JOIN
+                                        mudcake.Item as RoomItem ON Room.ItemID = RoomItem.ItemID
+                                    WHERE (Room.DungeonID = '{dungeon_id}')
                                     """)
         try:
             print(colored('DB:', 'yellow'), f'get rooms as dict. dungeonID: "{dungeon_id}"')
@@ -539,8 +552,11 @@ class DatabaseHandler:
                                     SELECT ClassID classID,
                                            ClassName name,
                                            ClassDescription description,
-                                           ItemID equipment
+                                           Item.ItemID itemID,
+                                            Item.ItemName itemName,
+                                            Item.ItemDescription itemDescription
                                     FROM mudcake.Class
+                                    LEFT JOIN mudcake.Item ON Class.ItemID = Item.ItemID
                                     WHERE (DungeonID ='{dungeon_id}')
                                     """)
         try:
@@ -583,9 +599,11 @@ class DatabaseHandler:
                                     SELECT NpcID npcID,
                                            NpcName name,
                                            NpcDescription description,
-                                           ItemID equipment       
+                                           Item.ItemID itemID,
+                                           Item.ItemName itemName,
+                                            Item.ItemDescription itemDescription
                                     FROM mudcake.Npc
-                                    FULL JOIN mudcake.Item ON mudcake.Npc.ItemID=mudcake.Item.ItemID
+                                    LEFT JOIN mudcake.Item ON mudcake.Npc.ItemID=mudcake.Item.ItemID
                                     WHERE (DungeonID = '{dungeon_id}')
                                     """)
         try:
