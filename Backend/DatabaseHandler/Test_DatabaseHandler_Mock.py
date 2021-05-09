@@ -99,8 +99,8 @@ class MockDB(TestCase):
         `NpcID`) REFERENCES `Npc` (`NpcID`) ON DELETE CASCADE ON UPDATE CASCADE ) / CREATE TABLE `User` ( `UserID` 
         varchar(45) NOT NULL, `FirstName` varchar(45) DEFAULT NULL, `LastName` varchar(45) DEFAULT NULL, `UserName` 
         varchar(45) DEFAULT NULL, `Password` varchar(45) DEFAULT NULL, `Email` varchar(45) DEFAULT NULL, 
-        `isConfirmed` tinyint DEFAULT NULL, PRIMARY KEY (`UserID`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 
-        COLLATE=utf8mb4_0900_ai_ci;
+        `isConfirmed` tinyint DEFAULT NULL, PRIMARY KEY (`UserID`) ) 
+        ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
         """
         try:
             cursor.execute(query)
@@ -115,16 +115,16 @@ class MockDB(TestCase):
 
         # insert data
 
-        insert_data_query = """INSERT INTO `test_table` (`id`, `text`, `int`) VALUES
-                              ('1', 'test_text', 1),
-                              ('2', 'test_text_2',2)"""
-        try:
-            cursor.execute(insert_data_query)
-            ref.commit()
-        except mysql.connector.Error as err:
-            print("Data insertion to test_table failed \n" + err)
-        cursor.close()
-        ref.close()
+        # insert_data_query = """INSERT INTO `test_table` (`id`, `text`, `int`) VALUES
+        #                       ('1', 'test_text', 1),
+        #                       ('2', 'test_text_2',2)"""
+        # try:
+        #     cursor.execute(insert_data_query)
+        #     ref.commit()
+        # except mysql.connector.Error as err:
+        #     print("Data insertion to test_table failed \n" + err)
+        # cursor.close()
+        # ref.close()
 
         test_config = {
             'host': MYSQL_HOST,
