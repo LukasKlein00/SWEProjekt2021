@@ -557,7 +557,7 @@ class DatabaseHandler:
                                             Item.ItemDescription itemDescription
                                     FROM mudcake.Class
                                     LEFT JOIN mudcake.Item ON Class.ItemID = Item.ItemID
-                                    WHERE (DungeonID ='{dungeon_id}')
+                                    WHERE (Class.DungeonID ='{dungeon_id}')
                                     """)
         try:
             print(colored('DB: ', 'yellow'), f'get classes as dict. dungeonID "{dungeon_id}"')
@@ -604,7 +604,7 @@ class DatabaseHandler:
                                             Item.ItemDescription itemDescription
                                     FROM mudcake.Npc
                                     LEFT JOIN mudcake.Item ON mudcake.Npc.ItemID=mudcake.Item.ItemID
-                                    WHERE (DungeonID = '{dungeon_id}')
+                                    WHERE (Npc.DungeonID = '{dungeon_id}')
                                     """)
         try:
             print(colored('DB: ', 'yellow'), f'get npc as dict. dungeonID: "{dungeon_id}"')
