@@ -32,7 +32,7 @@ export class AuthentificationService {
       .pipe(map(user => {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
-        this.websocketService.sendUserID(user.userID)
+        this.websocketService.sendUserID(user)
         this.currentUserSubject.next(user);
         return user;
       }));

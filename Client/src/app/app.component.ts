@@ -23,7 +23,7 @@ export class AppComponent implements AfterViewChecked, OnInit{
   
   ngOnInit() {
     if (this.currentUser) {
-      this.websocketService.sendUserID(this.currentUser.userID);
+      this.websocketService.sendUserID(this.currentUser);
       this.authentificationService.check().subscribe(response => {
       },
       error => {

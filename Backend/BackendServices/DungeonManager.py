@@ -434,5 +434,4 @@ class DungeonManager:
             char_config.append(self.get_all_from_races_as_json(data['dungeonID']))
             return char_config
         except:
-            print("Wolfgang pass auf!")
             pass
