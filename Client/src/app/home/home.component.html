@@ -6,6 +6,10 @@
                     <ng-option [value]="filter" *ngFor="let filter of filters">{{filter}}</ng-option>
                 </ng-select>
             </div>
+            <div class="m-3">
+                <h5 *ngIf="!availableMUDs">Waiting For Active Lobbies...</h5>
+            </div>
+            
             <div *ngFor="let dungeon of availableMUDs" class="card m-3 bg-dark max-col-lg-4 card-backdrop card-border">
                 <div class="card-body">
                     <h5>{{dungeon.dungeonName}} <span *ngIf="dungeon.private" class="badge badge-danger">private</span>  </h5>
@@ -14,7 +18,6 @@
                     <button class="btn btn-success mt-1" [routerLink]="['/play',{id: dungeon.dungeonID}]">JOIN</button>
                 </div>
             </div>
-            {{ avDungeons | json }}
         </div> 
         <div class="col-lg-3 col-12 row">
             <h3 class="col-12">My MUDs</h3>

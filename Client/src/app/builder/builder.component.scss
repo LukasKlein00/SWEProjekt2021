@@ -71,3 +71,11 @@
 .nav-link {
     color: white;
 }
+
+.quickmenu {
+    background-color: $color-2;
+    position: fixed;
+    bottom: 5%;
+    right: 0%;
+    border-right: unset;
+}

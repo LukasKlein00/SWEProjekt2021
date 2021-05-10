@@ -92,6 +92,13 @@ export class HomeComponent implements OnInit {
     'Aufwandserfassung_MUDCAKE_Woche8.xlsx',
   ];
 
+  files9 = [
+    'Storyplanung_MUDCAKE_Version1.xlsx',
+  ];
+  files9p = [
+    'Statusbericht_MUDCAKE_Woche9.pdf',
+    'Aufwandserfassung_MUDCAKE_Woche9.xlsx',
+  ];
 
   constructor() { }
 

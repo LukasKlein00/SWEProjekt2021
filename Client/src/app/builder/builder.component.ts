@@ -323,15 +323,12 @@ export class BuilderComponent implements OnInit {
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
       console.log("rooms response", res);
-      if (Array.isArray(res)) {
-        console.log("array arrived");
         res.map(r => {
           const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
           console.log("index", index);
           r['isActive'] = true;
           this.dungeon.rooms[index] = r;
         });
-      }
       this.loading = false;
     });
   }
