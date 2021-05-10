@@ -51,7 +51,6 @@ export class PlayComponent implements OnInit {
 
       } else {
         this.getCharakterCreationData(id);
-        this.openDialog();
 
       }
     }
@@ -87,19 +86,10 @@ export class PlayComponent implements OnInit {
   getCharakterCreationData(dID) {
     this.loading = true;
     
-this.socketService.getClasses(dID).subscribe((res) => {
-  console.log("classes",res);
-  if (res) {
+this.socketService.getCharConfig(dID).subscribe((res) => {
+  if (res = null) {
+    this.openDialog();
     
-    this.world['class'] = res as Class[];
-  }
-})
-this.socketService.getRaces(dID).subscribe((res) => {
-  console.log("races",res)
-  this.loading = false;
-  if (res) {
-    
-    this.world['races'] = res as Race[];
   }
 })
   }
@@ -107,7 +97,7 @@ this.socketService.getRaces(dID).subscribe((res) => {
   checkCharakter(dID) {
     this.loading = true;
     console.log("checking Char...")
-    let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe( (res) => {
+    /* let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe( (res) => {
       console.log("GETcHAR",res);
       this.loading = false
       if (res) {
@@ -117,7 +107,8 @@ this.socketService.getRaces(dID).subscribe((res) => {
       }
     })
 
-    return check
+    return check */
+    return false
   }
   
     
