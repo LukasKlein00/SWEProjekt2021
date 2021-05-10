@@ -14,7 +14,8 @@ export class WebsocketService {
   ) {}
 
   sendUserID(id) {
-    this.socket.emit('connect',id);
+    console.log("sending UserID to connect")
+    this.socket.emit('on_login',id);
   }
 
   sendPublish(id) {
