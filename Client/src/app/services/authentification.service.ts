@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import * as uuid from 'uuid';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ export class AuthentificationService {
   private readonly apiUrl = environment.httpUrl;
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
+  
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private websocketService: WebsocketService) {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+    
   }
 
   public get currentUserValue() {
@@ -28,6 +32,7 @@ export class AuthentificationService {
       .pipe(map(user => {
         // store user details and token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));
+        this.websocketService.sendUserID(user.userID)
         this.currentUserSubject.next(user);
         return user;
       }));

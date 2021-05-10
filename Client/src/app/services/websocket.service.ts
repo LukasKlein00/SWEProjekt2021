@@ -13,8 +13,8 @@ export class WebsocketService {
     private socket: Socket
   ) {}
 
-  sendMessage(msg: string) {
-    this.socket.emit('message',msg);
+  sendUserID(id) {
+    this.socket.emit('connect',id);
   }
 
   sendPublish(id) {
@@ -40,7 +40,6 @@ export class WebsocketService {
   }
 
   getRooms(){
-    
     return this.socket.fromEvent('get_rooms').pipe(map((data) => data))
   }
 
