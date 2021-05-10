@@ -13,8 +13,9 @@ export class WebsocketService {
     private socket: Socket
   ) {}
 
-  sendMessage(msg: string) {
-    this.socket.emit('message',msg);
+  sendUserID(id) {
+    console.log("sending UserID to connect")
+    this.socket.emit('on_login',id);
   }
 
   sendPublish(id) {
@@ -40,7 +41,6 @@ export class WebsocketService {
   }
 
   getRooms(){
-    
     return this.socket.fromEvent('get_rooms').pipe(map((data) => data))
   }
 

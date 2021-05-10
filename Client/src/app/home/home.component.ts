@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
       this.availableMUDs = JSON.parse(r);
       console.log("avDungeons", r);
     });
-    this.WebSocketService.sendMessage("moin");
   }
 
   getCreatedDungeons() {

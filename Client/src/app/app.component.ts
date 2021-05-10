@@ -1,5 +1,6 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthentificationService } from './services/authentification.service';
+import { WebsocketService } from './services/websocket.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,8 @@ export class AppComponent implements AfterViewChecked, OnInit{
 
   constructor(
     private authentificationService: AuthentificationService,
-    private cdRef:ChangeDetectorRef
+    private cdRef:ChangeDetectorRef,
+    private websocketService: WebsocketService,
     ){}
   ngAfterViewChecked(): void {
     this.currentUser = this.authentificationService.currentUserValue;
@@ -21,6 +23,7 @@ export class AppComponent implements AfterViewChecked, OnInit{
   
   ngOnInit() {
     if (this.currentUser) {
+      this.websocketService.sendUserID(this.currentUser.userID);
       this.authentificationService.check().subscribe(response => {
       },
       error => {
