@@ -2,8 +2,6 @@ import mysql
 from mysql.connector import MySQLConnection
 from termcolor import colored
 
-from DungeonPackage.Character import Character
-
 
 class DatabaseHandler:
     """
@@ -277,7 +275,7 @@ class DatabaseHandler:
             print(colored(f"DB: changing registration status from user: '{user_id}' failed", 'red'))
             return False
 
-    def write_character_to_database(self, character: Character, dungeon_id):
+    def write_character_to_database(self, character, dungeon_id):
         self.cursor.execute(f"""
                             INSERT INTO mudcake.Character 
                             (DungeonID, UserID, CharacterID, Lifepoints, CharacterName, CharacterDescription, ClassID, 

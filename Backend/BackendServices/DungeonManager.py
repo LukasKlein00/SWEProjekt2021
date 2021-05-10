@@ -404,12 +404,12 @@ class DungeonManager:
                                         'description': class_dict['itemDescription']}}
             class_list.append(class_data)
         logging.debug(class_list)
-        return json.dumps(class_list).encode(encoding='utf_8')
+        return class_list
 
     def get_all_from_races_as_json(self, data):
         races = self.db_handler.get_all_races_by_dungeon_id_as_dict(dungeon_id=data)
         logging.debug(races)
-        return json.dumps(races).encode(encoding='utf_8')
+        return races
 
     def get_all_from_items_as_json(self, data):
         items = self.db_handler.get_all_item_by_dungeon_id_as_dict(dungeon_id=data)
@@ -426,3 +426,13 @@ class DungeonManager:
             npc_list.append(npc)
         logging.debug(npc_list)
         return json.dumps(npc_list).encode(encoding='utf_8')
+
+    def get_character_config(self, data):
+        try:
+            char_config = []
+            char_config.append(self.get_all_from_classes_as_json(data['dungeonID']))
+            char_config.append(self.get_all_from_races_as_json(data['dungeonID']))
+            return char_config
+        except:
+            print("Wolfgang pass auf!")
+            pass

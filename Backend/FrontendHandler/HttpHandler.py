@@ -95,13 +95,13 @@ class HTTPHandler(BaseHTTPRequestHandler):
         if self.path == '/getRaces':
             self.__set_response()
             dungeon_manager = DungeonManager()
-            races = dungeon_manager.get_all_from_races_as_json(data)
+            races = json.dumps(dungeon_manager.get_all_from_races_as_json(data)).encode(encoding='utf_8')
             self.wfile.write(races)
 
         if self.path == '/getClasses':
             self.__set_response()
             dungeon_manager = DungeonManager()
-            classes = dungeon_manager.get_all_from_classes_as_json(data)
+            classes = json.dumps(dungeon_manager.get_all_from_classes_as_json(data)).encode(encoding='utf_8')
             self.wfile.write(classes)
 
         if self.path == '/getNpcs':
