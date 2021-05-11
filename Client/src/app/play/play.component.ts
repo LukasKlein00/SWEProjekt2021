@@ -45,14 +45,9 @@ export class PlayComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log("id",id)
+    console.log("id", id)
     if (id) {
-      if (this.checkCharakter(id)) {
-
-      } else {
-        this.getCharakterCreationData(id);
-
-      }
+      this.checkCharakter(id);
     }
     this.currentRoom = {
       name: "NewRoom 5 5",
@@ -68,7 +63,7 @@ export class PlayComponent implements OnInit {
       isStartRoom: true,
       isActive: true,
       description: "Starting Room Description"
-  }
+    }
   }
 
   openDialog() {
@@ -85,32 +80,31 @@ export class PlayComponent implements OnInit {
 
   getCharakterCreationData(dID) {
     this.loading = true;
-    
-this.socketService.getCharConfig(dID).subscribe((res) => {
-  if (res = null) {
-    this.openDialog();
-    
-  }
-})
+
+
   }
 
   checkCharakter(dID) {
     this.loading = true;
     console.log("checking Char...")
-    /* let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe( (res) => {
-      console.log("GETcHAR",res);
-      this.loading = false
-      if (res) {
-        return true 
+    let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res) => {
+      console.log("GETcHAR", res);
+      if (res != "false") {
+        console.log("char loading")
       } else {
-        return false
+        this.socketService.getCharConfig(dID).subscribe((res) => {
+          console.log("get CharConf", res)
+          if (res != null) {
+            this.loading = false;
+            this.openDialog();
+
+          }
+        })
       }
-    })
-
-    return check */
-    return false
+    });
   }
-  
-    
-
 }
+
+
+
+
