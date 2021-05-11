@@ -467,6 +467,19 @@ class DatabaseHandler:
             print(colored(f"DB: get character by dungeon id failed, dungeon id: '{dungeon_id}'", 'red'))
             pass
 
+    def get_discovered_rooms_by_user_dungeon_id(self, dungeon_id: str, user_id: str):
+
+        self.cursor.execute(f"""
+                        SELECT *
+                        FROM mudcake.DiscoveredRoom
+                        WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')
+                        """)
+        try:
+            print(colored('DB: ', 'yellow'), f'getting discovered rooms by dungeon and user. dungeonID: "{dungeon_id}"')
+            return self.cursor.fetchone()
+        except IOError:
+            pass
+
     def get_inventory_by_dungeon_user_id(self, dungeon_id: str, user_id: str):
 
         self.cursor.execute(f"""
