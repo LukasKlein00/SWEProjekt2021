@@ -7,7 +7,7 @@
                 </ng-select>
             </div>
             <div class="m-3">
-                <h5 *ngIf="!availableMUDs || availableMUDs == []">Waiting For Active Lobbies...</h5>
+                <h5 *ngIf="!availableMUDs || availableMUDs.length == 0">Waiting For Active Lobbies...</h5>
             </div>
             
             <div *ngFor="let dungeon of availableMUDs" class="card m-3 bg-dark max-col-lg-4 card-backdrop card-border">

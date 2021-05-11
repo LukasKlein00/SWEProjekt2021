@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
     );
     this.WebSocketService.getPublishedDungeons().subscribe((r: string) => {
       this.availableMUDs = JSON.parse(r);
-      console.log("avDungeons", r);
+      console.log("availableMuds", this.availableMUDs);
     });
   }
 
