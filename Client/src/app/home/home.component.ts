@@ -24,9 +24,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCreatedDungeons();
-    this.WebSocketService.getMessage().subscribe((r) =>
-      console.log("socketservice", r)
-    );
+    this.WebSocketService.sendPublishedDungeonRequest();
     this.WebSocketService.getPublishedDungeons().subscribe((r: string) => {
       this.availableMUDs = JSON.parse(r);
       console.log("availableMuds", this.availableMUDs);

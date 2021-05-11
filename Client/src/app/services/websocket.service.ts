@@ -23,6 +23,10 @@ export class WebsocketService {
     this.socket.emit('publish',id)
   }
 
+  sendPublishedDungeonRequest() {
+    this.socket.emit('on_home')
+  }
+
   getMessage() {
     return this.socket.fromEvent('message').pipe(map((data) => data))
   }
@@ -41,8 +45,8 @@ export class WebsocketService {
   }
 
   getCharacter(dungeonID, userID){
-    this.socket.emit('get_character',{dungeonID, userID})
-    return this.socket.fromEvent('get_character').pipe(map((data) => {
+    this.socket.emit('get_character_in_dungeon',{dungeonID, userID})
+    return this.socket.fromEvent('get_character_in_dungeon').pipe(map((data) => {
       return data}))
   }
 }
