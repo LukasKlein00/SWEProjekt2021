@@ -37,11 +37,13 @@ export class Room {
 }
 
 export class Race {
+    raceID?: string;
     name: string;
     description: string;
 }
 
 export class Class {
+    classID?: string;
     name: string;
     description: string;
     equipment: Item;

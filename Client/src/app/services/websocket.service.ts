@@ -36,8 +36,8 @@ export class WebsocketService {
   }
 
   getCharConfig(dungeonID){
-    this.socket.emit('get_character_config',dungeonID)
-    return this.socket.fromEvent('get_character_config').pipe(map((data) => {console.log("charConf", data); return data}))
+    this.socket.emit('get_character_config',{dungeonID})
+    return this.socket.fromEvent('get_character_config').pipe(map((data) => {return data}))
   }
 
   getRooms(){
