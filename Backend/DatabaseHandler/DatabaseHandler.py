@@ -278,17 +278,17 @@ class DatabaseHandler:
     def write_character_to_database(self, character, dungeon_id):
         self.cursor.execute(f"""
                             INSERT INTO mudcake.Character 
-                            (DungeonID, UserID, CharacterID, Lifepoints, CharacterName, CharacterDescription, ClassID, 
+                            (DungeonID, UserID, Lifepoints, CharacterName, CharacterDescription, ClassID, 
                             RaceID, ClassID, RoomID) 
                             VALUES
-                                (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                                (%s,%s,%s,%s,%s,%s,%s,%s,%s)
                             ON DUPLICATE KEY UPDATE
-                            DungeonID = VALUES(DungeonID), UserID=VALUES(UserID), CharacterID=VALUES(CharacterID),
+                            DungeonID = VALUES(DungeonID), UserID=VALUES(UserID),
                             Lifepoints = VALUES(Lifepoints), CharacterName=VALUES(CharacterName), 
                             CharacterDescription=VALUES(CharacterDescription), ClassID=VALUES(ClassID), 
                             RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID)""",
-                            (dungeon_id, character.user_id, character.character_id, character.life_points, character.name,
-                             character.description,character.race_id,character.class_id,character.room_id)
+                            (dungeon_id, character.user_id, character.life_points, character.name,
+                             character.description, character.race_id, character.class_id, character.room_id)
                             )
         try:
             self.database_path.commit()
@@ -343,12 +343,24 @@ class DatabaseHandler:
     def get_character_by_dungeon_ID(self, dungeon_id: str):
 
         self.cursor.execute(f"""
-                    SELECT CharacterID, Lifepoints, CharacterName, CharacterDescription, ClassID, RaceID, UserID, DiscoverdMapID, RoomID
+                    SELECT Lifepoints, CharacterName, CharacterDescription, ClassID, RaceID, UserID, RoomID
                     From mudcake.Character
                     WHERE (DungeonID = '{dungeon_id}')
                     """)
         try:
             print(colored('DB:', 'yellow'), f"get characters by dungeon id: '{dungeon_id}'")
+            return self.cursor.fetchall()
+        except IOError:
+            pass
+
+    def get_character_by_user_id(self, user_id: str, dungeon_id: str):
+        self.dictionary_cursor.execute(f"""
+                                    SELECT *
+                                    FROM mudcake.Character
+                                    WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')    
+                                    """)
+        try:
+            print(colored('DB:', 'yellow'), f"get character by user id: '{user_id}'")
             return self.cursor.fetchall()
         except IOError:
             pass
@@ -455,15 +467,15 @@ class DatabaseHandler:
             print(colored(f"DB: get character by dungeon id failed, dungeon id: '{dungeon_id}'", 'red'))
             pass
 
-    def get_inventory_by_character_id(self, character_id: str):
+    def get_inventory_by_dungeon_user_id(self, dungeon_id: str, user_id: str):
 
         self.cursor.execute(f"""
                     SELECT *
                     From mudcake.Inventory
-                    WHERE (CharacterID = '{character_id}')
+                    WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')
                     """)
         try:
-            print(colored('DB: ', 'yellow'), f'getting inventory by characterID. characterID: "{character_id}"')
+            print(colored('DB: ', 'yellow'), f'getting inventory by dungeon and user. dungeonID: "{dungeon_id}"')
             return self.cursor.fetchone()
         except IOError:
             pass

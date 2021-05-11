@@ -2,7 +2,7 @@ import json
 import uuid
 
 from termcolor import colored
-
+from json import JSONEncoder
 from BackendServices.AccessManager import AccessManager
 from BackendServices.DungeonManager import DungeonManager
 from DungeonPackage.DungeonData import DungeonData
@@ -10,6 +10,9 @@ from DungeonPackage.Character import Character
 from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
 import socketio
 
+
+# TODO: user access management
+# TODO: Jack: event auf main page -> main page called -> für refresh von available dungeons
 
 class SocketIOHandler:
     def __init__(self):
@@ -22,10 +25,8 @@ class SocketIOHandler:
 
         @self.sio.event
         def on_login(sid, data):
-            print("Hats geklappt?: ", data)
             self.sio.save_session(sid, {'userID': data['userID'], 'userName': data['username']})
             print(self.sio.get_session(sid))
-            #TODO: mit jack besprechen (spätestens bei login sid mit userid connecten)
 
         @self.sio.event
         def connect(sid, environ, data):
@@ -54,7 +55,8 @@ class SocketIOHandler:
                         dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
                         dungeon_dict = {"dungeonID": dungeon_data.dungeon_id,
                                         "dungeonMasterID": dungeon_data.dungeon_master_id,
-                                        "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
+                                        "dungeonName": dungeon_data.name,
+                                        "dungeonDescription": dungeon_data.description,
                                         "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
                                         "private": dungeon_data.private}
                         dungeon_data_list.append(dungeon_dict)
@@ -71,6 +73,13 @@ class SocketIOHandler:
             self.sio.emit('message')
 
         @self.sio.event
+        def on_leave_dungeon(sid, data):
+            raise NotImplementedError
+            # characterdaten speichern (mit room )
+            # lobby avDungeons refreshen
+            # in dungeon -> players -1
+
+        @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
             if self.access_manager.user_status_on_access_list(data['userID'], data['dungeonID']):
                 self.sio.enter_room(sid, data['dungeonID'])
@@ -78,11 +87,11 @@ class SocketIOHandler:
                 session['dungeonID'] = data['dungeonID']
                 self.sio.emit('user_joined', f"'{session['userName']}' joined")
             else:
-                #TODO: Jack reden: Dungeon master anzeigen
+                # TODO: Jack reden: Dungeon master anzeigen (toast)
                 self.sio.emit('JoinRequest', data['userID'],
                               to=self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])
 
-            # übermittel klassen & rassen
+            # übermittelt klassen & rassen
 
         @self.sio.event
         def create_character(sid, data):
@@ -115,7 +124,18 @@ class SocketIOHandler:
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True, skip_sid=sid)
                 print(colored("publish successful", 'green'))
 
-        #TODO: get character -> character if none -> false
+        # TODO: ausprobieren JACK!!!
+
+        @self.sio.event
+        def get_character_in_dungeon(sid, data):
+            session = self.sio.get_session(sid)
+            character = Character().load_data(session["userID"], data["dungeonID"])
+            print("Character: ")
+            print(character)
+            if character:
+                self.sio.emit("get_character_in_dungeon", json.dumps(character.__dict__), to=sid)
+            else:
+                self.sio.emit("get_character_in_dungeon", json.dumps(False), to=sid)
 
         @self.sio.event
         def get_character_config(sid, data):
