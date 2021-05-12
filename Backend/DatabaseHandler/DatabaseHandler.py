@@ -639,7 +639,7 @@ class DatabaseHandler:
     def get_access_list_by_dungeon_id_as_dict(self, dungeon_id: str):
         self.dictionary_cursor.execute(f"""
                                     SELECT IsAllowed isAllowed,
-                                           UserName userName
+                                           UserName name
                                     FROM mudcake.AccessList
                                     WHERE (DungeonID = '{dungeon_id}' )
                                     """, )
@@ -652,10 +652,10 @@ class DatabaseHandler:
     def write_user_to_acceslist(self, access_list_user, dungeon_id):
         self.cursor.execute(f"""
                                         INSERT INTO mudcake.AccessList
-                                        DungeonID, Username, IsAllowed
+                                        (DungeonID, UserName, IsAllowed)
                                         VALUES
                                         (%s,%s,%s)
-                            """, (dungeon_id, access_list_user['username'], access_list_user['is_allowed']))
+                            """, (dungeon_id, access_list_user['user_name'], access_list_user['is_allowed']))
         try:
             print(colored('DB: ', 'yellow'), f'write accesslist to database. dungeonID: "{dungeon_id}"')
             self.database_path.commit()

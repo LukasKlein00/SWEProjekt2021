@@ -190,7 +190,7 @@ class DungeonManager:
             self.room_list.append(new_room)
 
             for ac_l in accesslist_data:
-                self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['userName'],
+                self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['name'],
                                                                        is_allowed=ac_l['isAllowed'])
 
     def write_dungeon_to_database(self):
@@ -449,6 +449,8 @@ class DungeonManager:
     def get_accesslist(self, dungeon_id):
         try:
             access_list = self.db_handler.get_access_list_by_dungeon_id_as_dict(dungeon_id)
+            for entry in access_list:
+                entry['isAllowed'] = bool(entry['isAllowed'])
             print(access_list)
         except IOError:
             pass

@@ -6,7 +6,7 @@ class AccessList:
     class for handling access list
     """
 
-    def __init__(self, dungeon_id):
+    def __init__(self, dungeon_id: str = None):
         """
         constructor for class AccessList
         """
