@@ -13,6 +13,8 @@ import socketio
 
 # TODO: user access management
 
+
+
 class SocketIOHandler:
     def __init__(self):
         self.sio = socketio.Server(cors_allowed_origins='*')
@@ -23,8 +25,15 @@ class SocketIOHandler:
         self.access_manager = AccessManager()
 
         @self.sio.event
+        def send_join_request_answer(sid, data):
+            answer = data["isAllowed"]
+            user_sid = self.activeDungeonHandler.user_sid[data['userID']]
+            self.sio.emit("on_join_request_answer", answer, to=user_sid)
+
+        @self.sio.event
         def on_login(sid, data):
             self.sio.save_session(sid, {'userID': data['userID'], 'userName': data['username']})
+            self.activeDungeonHandler.user_sid[data['userID']] = sid
             print(self.sio.get_session(sid))
 
         @self.sio.event
