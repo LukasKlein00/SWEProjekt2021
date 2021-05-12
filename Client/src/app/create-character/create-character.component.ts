@@ -1,7 +1,7 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
-import { Dungeon, Player} from 'Testfiles/models für Schnittstellen';
+import { Dungeon, Item, Player} from 'Testfiles/models für Schnittstellen';
 
 @Component({
   selector: 'app-create-character',
@@ -14,21 +14,18 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
   formisinvalid = true;
   player: Player = {
     name: '',
-    equipment: null,
     description: '',
-    dungeonID: 1,
+    dungeonID: '',
     race: {
       name: '',
-      description: '',
+      description: ''
     },
     class: {
       name: '',
       description: '',
-      equipment: null
+      equipment: null,
     },
-    userID: 1,
-    health: 100,
-    inventar: []
+    userID: '',
   };
 
   constructor(
@@ -36,6 +33,8 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
     private cdRef:ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.player.dungeonID = this.World.dungeonID;
+    this.player.userID = JSON.parse(localStorage.getItem('currentUser')).userID;
   }
 
   ngAfterViewChecked() {

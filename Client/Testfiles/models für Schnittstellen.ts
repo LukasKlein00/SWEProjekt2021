@@ -65,13 +65,13 @@ export class Npc {
 export class Player {
     name: string;
     description?: string;
-    userID: number;
-    health: number;
-    inventar: Item[];
-    equipment: Item;
+    userID: string;
+    health?: number;
+    inventar?: Item[];
+    equipment?: Item;
     race: Race;
     class: Class;
-    dungeonID: number;
+    dungeonID: string;
 }
 
 export class SubmitPlayer {

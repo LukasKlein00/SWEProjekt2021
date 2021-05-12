@@ -22,7 +22,7 @@ export class PlayComponent implements OnInit {
   player: Player = {
     name: '',
     equipment: null,
-    dungeonID: 1,
+    dungeonID: '1',
     race: {
       name: '',
       description: '',
@@ -32,7 +32,7 @@ export class PlayComponent implements OnInit {
       description: '',
       equipment: null
     },
-    userID: 1,
+    userID: '1',
     health: 100,
     inventar: []
   };
@@ -48,6 +48,7 @@ export class PlayComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.world['dungeonID'] = id;
       this.checkCharakter(id);
     }
     this.currentRoom = {
@@ -75,6 +76,7 @@ export class PlayComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.player = result;
+      console.log("player created:",this.player)
       this.socketService.sendCharacter(this.player);
 
     });
