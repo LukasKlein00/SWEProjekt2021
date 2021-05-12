@@ -7,7 +7,7 @@ class ActiveDungeonHandler:
         self.active_dungeon_ids = []
         self.sid_of_dungeon_master = dict()                         #sid_of_dungeon_master['dungeonID'] -> sidOfDungeonMaster
         self.active_dungeons = dict()                               #active_dungeons['dungeonID'] -> activeDungeon
-        self.user_sid = dict()                                      #user_sid['user_id'] -> user_sid
+        self.user_sid = dict()                                      #user_sid['user_id'] -> [user_sid]
 
     def __init_dungeon(self, dungeon_id: str):
         return dict({'dungeon_data_object': DungeonData().load_data(dungeon_id),

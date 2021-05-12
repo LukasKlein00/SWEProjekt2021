@@ -27,15 +27,17 @@ class SocketIOHandler:
         @self.sio.event
         def send_join_request_answer(sid, data):
             answer = data["isAllowed"]
-            user_sid = self.activeDungeonHandler.user_sid[data['userID']]
-            print("userID", user_sid)
-            self.sio.emit("on_join_request_answer", answer, to=user_sid)
+            for socket in self.activeDungeonHandler.user_sid[data['userID']]:
+                self.sio.emit("on_join_request_answer", answer, to=socket)
 
         @self.sio.event
         def on_login(sid, data):
             self.sio.save_session(sid, {'userID': data['userID'], 'userName': data['username']})
-            self.activeDungeonHandler.user_sid[data['userID']] = sid
-            print(self.sio.get_session(sid))
+            self.activeDungeonHandler.user_sid[data['userID']] = []
+            array = self.activeDungeonHandler.user_sid[data['userID']]
+            array.append(sid)
+            self.activeDungeonHandler.user_sid[data['userID']] = array
+            print("USERSIDS:", self.activeDungeonHandler.user_sid[data['userID']])
 
         @self.sio.event
         def on_home(sid):
