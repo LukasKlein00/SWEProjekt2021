@@ -1,7 +1,6 @@
 import mysql
 import mysql.connector
 from mysql.connector import errorcode
-import unittest
 from mock import patch
 from unittest import TestCase
 import utils
@@ -115,24 +114,24 @@ class MockDB(TestCase):
 
         # insert data
 
-        # insert_data_query = """INSERT INTO `test_table` (`id`, `text`, `int`) VALUES
-        #                       ('1', 'test_text', 1),
-        #                       ('2', 'test_text_2',2)"""
-        # try:
-        #     cursor.execute(insert_data_query)
-        #     ref.commit()
-        # except mysql.connector.Error as err:
-        #     print("Data insertion to test_table failed \n" + err)
-        # cursor.close()
-        # ref.close()
+        insert_data_query = """INSERT INTO `test_table` (`id`, `text`, `int`) VALUES
+                              ('1', 'test_text', 1),
+                              ('2', 'test_text_2',2)"""
+        try:
+            cursor.execute(insert_data_query)
+            ref.commit()
+        except mysql.connector.Error as err:
+            print("Data insertion to test_table failed \n" + err)
+        cursor.close()
+        ref.close()
 
-        test_config = {
+        testconfig = {
             'host': MYSQL_HOST,
             'user': MYSQL_USER,
             'password': MYSQL_PASSWORD,
             'database': MYSQL_DB,
         }
-        cls.mock_db_config = patch.dict(utils.config, test_config)
+        cls.mock_db_config = patch.dict(utils.config, testconfig)
 
     @classmethod
     def tearDownClass(cls):
