@@ -520,7 +520,7 @@ class DatabaseHandler:
                                     SELECT IsAllowed
                                     FROM mudcake.AccessList
                                     WHERE (DungeonID = %s AND UserName = %s )
-                                    """, (user_name, dungeon_id))
+                                    """, (dungeon_id, user_name))
         try:
             return self.cursor.fetchone()
         except IOError:

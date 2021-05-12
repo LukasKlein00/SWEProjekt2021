@@ -15,6 +15,9 @@ class HTTPHandler(BaseHTTPRequestHandler):
     acc_manager = AccountManager()
     dung_manager = DungeonManager()
 
+    def log_message(self, format, *args):
+        return
+
     # übermittelt Einstellungen "Headers" des Requests
     def __set_response(self, code: int = 200):
         self.send_response(code)

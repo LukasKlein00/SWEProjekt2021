@@ -17,7 +17,8 @@ import socketio
 
 class SocketIOHandler:
     def __init__(self):
-        self.sio = socketio.Server(cors_allowed_origins='*')
+        self.sio = socketio.Server(cors_allowed_origins='*', async_mode='eventlet')
+        self.sio.logger.disabled = True
         self.app = socketio.WSGIApp(self.sio)
         self.active_dungeons = []
         self.activeDungeonHandler = ActiveDungeonHandler()
@@ -122,13 +123,17 @@ class SocketIOHandler:
 
         @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
-            print("####",sid)
+            print("####", sid)
             session = self.sio.get_session(sid)
-            if self.access_manager.user_status_on_access_list(data['userID'], data['dungeonID'], session['userName']):
+            user_status = self.access_manager.user_status_on_access_list(data['dungeonID'], session['userName'])
+            if user_status:
                 self.sio.enter_room(sid, data['dungeonID'])
                 session['dungeonID'] = data['dungeonID']
                 self.sio.emit('user_joined', f"'{session['userName']}' joined")
-            else:
+            elif user_status is False:
+                print("wat isn jetzt passiert")
+                pass
+            elif not user_status:
                 # TODO: Jack reden: Dungeon master anzeigen (toast)
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
                               to=self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])

@@ -1,3 +1,4 @@
+import logging
 import socket
 
 import eventlet
@@ -37,10 +38,13 @@ def start_WS():
     else:
         ip = ip.replace("{Server}", "193.196.54.98")
 
-    eventlet.wsgi.server(eventlet.listen((ip, 1187)), socketio.app)
+    eventlet.wsgi.server(eventlet.listen((ip, 1187)), socketio.app, log_output=False)
 
 
 if __name__ == '__main__':
+    logging.getLogger('socketio').setLevel(logging.ERROR)
+    logging.getLogger('engineio').setLevel(logging.ERROR)
     Thread(target=start_HTTP).start()
     Thread(target=start_WS).start()
+
 
