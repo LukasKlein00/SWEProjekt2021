@@ -31,15 +31,17 @@ class SocketIOHandler:
         def on_home(sid):
             dungeon_data_list = []
             for dungeon_ID in self.activeDungeonHandler.active_dungeon_ids:
-                dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
-                dungeon_dict = {"dungeonID": dungeon_data.dungeon_id, "dungeonMasterID": dungeon_data.dungeon_master_id,
-                                "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
-                                "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
-                                "private": dungeon_data.private}
-                dungeon_data_list.append(dungeon_dict)
-                print(colored(dungeon_dict, 'green'))
-                self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), to=sid)
-                print(colored("publish successful", 'green'))
+                if self.activeDungeonHandler.sid_of_dungeon_master[dungeon_ID] != sid:
+                    dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
+                    dungeon_dict = {"dungeonID": dungeon_data.dungeon_id,
+                                    "dungeonMasterID": dungeon_data.dungeon_master_id,
+                                    "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
+                                    "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
+                                    "private": dungeon_data.private}
+                    dungeon_data_list.append(dungeon_dict)
+                    print(colored(dungeon_dict, 'green'))
+            self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), to=sid)
+            print(colored("publish successful", 'green'))
 
         @self.sio.event
         def connect(sid, environ, data):
@@ -47,17 +49,22 @@ class SocketIOHandler:
             print(colored(f"Dungeon Data List: {dungeon_data_list}", 'red'))
             print(colored(f"Dungeon Handler List: {self.activeDungeonHandler.active_dungeon_ids}", 'red'))
             for dungeon_ID in self.activeDungeonHandler.active_dungeon_ids:
-                dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
-                dungeon_dict = {"dungeonID": dungeon_data.dungeon_id, "dungeonMasterID": dungeon_data.dungeon_master_id,
-                                "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
-                                "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
-                                "private": dungeon_data.private}
-                dungeon_data_list.append(dungeon_dict)
-                print(colored(dungeon_dict, 'green'))
+                if self.activeDungeonHandler.sid_of_dungeon_master[dungeon_ID] != sid:
+                    dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
+                    dungeon_dict = {"dungeonID": dungeon_data.dungeon_id,
+                                    "dungeonMasterID": dungeon_data.dungeon_master_id,
+                                    "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
+                                    "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
+                                    "private": dungeon_data.private}
+                    dungeon_data_list.append(dungeon_dict)
+                    print(colored(dungeon_dict, 'green'))
             if len(dungeon_data_list) != 0:
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
                 print(colored("publish successful", 'green'))
 
+
+        #TODO: mit jack klären, dass aktive dungeons die vom dungeonmaster verlassen wurden beim dungeon master als
+        # aktiv gekennzeicnet werden und dungeon ein beenden button bekommen
         @self.sio.event
         def disconnect(sid):
             if sid in self.activeDungeonHandler.sid_of_dungeon_master.values():
@@ -141,6 +148,8 @@ class SocketIOHandler:
         @self.sio.event
         def get_character_in_dungeon(sid, data):
             session = self.sio.get_session(sid)
+            print("kleiner Test am Rande:")
+            print(session["userID"], data["dungeonID"])
             character = Character().load_data(session["userID"], data["dungeonID"])
             print("Character: ")
             print(character)
@@ -163,3 +172,8 @@ class SocketIOHandler:
         def get_races(sid, data):
             json_obj = json.dumps(self.dungeon_manager.get_all_from_races_as_json(data))
             self.sio.emit('racesData', json_obj, sid)
+
+        @self.sio.event
+        def change_dungeonmaster(sid, data):
+            session = self.sio.get_session()
+            self.sio.emit("make_dungeonmaster", None, to=data['userID'])
