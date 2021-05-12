@@ -132,7 +132,7 @@ class SocketIOHandler:
                 self.sio.emit('user_joined', f"'{session['userName']}' joined")
             elif user_status is False:
                 print("wat isn jetzt passiert")
-                pass
+                self.sio.emit("on_join_request_answer", json.dumps(False), to=sid)
             elif not user_status:
                 # TODO: Jack reden: Dungeon master anzeigen (toast)
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
