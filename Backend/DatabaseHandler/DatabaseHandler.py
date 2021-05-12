@@ -655,6 +655,10 @@ class DatabaseHandler:
                                         (DungeonID, UserName, IsAllowed)
                                         VALUES
                                         (%s,%s,%s)
+                                        ON DUPLICATE KEY UPDATE
+                                        DungeonID = VALUES(DungeonID)
+                                        UserName = VALUES(UserName)
+                                        isAllowed = VALUES(isAllowed)
                             """, (dungeon_id, access_list_user['user_name'], access_list_user['is_allowed']))
         try:
             print(colored('DB: ', 'yellow'), f'write accesslist to database. dungeonID: "{dungeon_id}"')
