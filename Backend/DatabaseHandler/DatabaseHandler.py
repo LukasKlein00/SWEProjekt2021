@@ -439,7 +439,7 @@ class DatabaseHandler:
     def get_access_list_by_dungeon_id(self, dungeon_id: str):
 
         self.dictionary_cursor.execute(f"""
-                    SELECT  UserID userID, 
+                    SELECT  UserName userName, 
                             isAllowed
                     From mudcake.AccessList
                     WHERE (DungeonID = '{dungeon_id}')
@@ -514,12 +514,12 @@ class DatabaseHandler:
         except IOError:
             return False
 
-    def user_status_on_access_list(self, user_id: str, dungeon_id: str):
+    def user_status_on_access_list(self, user_name: str, dungeon_id: str):
         self.cursor.execute(f"""
                                     SELECT IsAllowed
                                     FROM mudcake.AccessList
-                                    WHERE (DungeonID = %s AND UserID = %s )
-                                    """, (user_id, dungeon_id))
+                                    WHERE (DungeonID = %s AND UserName = %s )
+                                    """, (user_name, dungeon_id))
         try:
             return self.cursor.fetchone()
         except IOError:
