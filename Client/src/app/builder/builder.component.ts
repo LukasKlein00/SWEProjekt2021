@@ -196,7 +196,9 @@ export class BuilderComponent implements OnInit {
         this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
         this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res);
         this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res)
-        this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res)
+        this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => {
+          console.log("accessList",res);
+          this.dungeon.accessList = res})
         this.loading = false;
       });
 
@@ -261,7 +263,13 @@ export class BuilderComponent implements OnInit {
 
   getAccessList() {
     if (this.dungeon.accessList.length == 0) {
-      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res)
+      this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => {
+        console.log("accesList", res)
+        if (res) {
+          this.dungeon.accessList = res
+        }
+        }
+        )
     }
   }
 

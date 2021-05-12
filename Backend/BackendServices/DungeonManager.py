@@ -78,7 +78,7 @@ class DungeonManager:
                                                name=self.data['dungeonName'],
                                                description=self.data['dungeonDescription'],
                                                private=self.data['private'],
-                                               access_list=AccessList())
+                                               access_list=AccessList(data['dungeonID']))
 
             self.check_for_dungeon_id()
             logging.debug("constructor: " + self.managed_dungeon.dungeon_id)
