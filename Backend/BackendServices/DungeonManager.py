@@ -451,6 +451,6 @@ class DungeonManager:
             access_list = self.db_handler.get_access_list_by_dungeon_id_as_dict(dungeon_id)
             for entry in access_list:
                 entry['isAllowed'] = bool(entry['isAllowed'])
-            print(access_list)
+            return access_list
         except IOError:
             pass
