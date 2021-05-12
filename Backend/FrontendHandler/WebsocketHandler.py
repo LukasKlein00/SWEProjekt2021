@@ -100,6 +100,15 @@ class SocketIOHandler:
             # in dungeon -> players -1
 
         @self.sio.event
+        def send_character_config(sid, character):
+            session = self.sio.get_session(sid)
+            #TODO: inventory (class startitem)
+            character_obj = Character(life_points=character["health"], name=character["name"], description=character["description"], class_id=character["class"]["classID"], race_id=character["race"]["raceID"], user_id=character["userID"], dungeon_id=character["dungeonID"])
+            session["character"] = character_obj
+            dungeon_manager = DungeonManager()
+            dungeon_manager.write_character_to_database(character_obj)
+
+        @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
             session = self.sio.get_session(sid)
             if self.access_manager.user_status_on_access_list(data['userID'], data['dungeonID']):
@@ -161,16 +170,19 @@ class SocketIOHandler:
         @self.sio.event
         def get_character_config(sid, data):
             json_obj = json.dumps(self.dungeon_manager.get_character_config(data))
+            print("get charracter: ", json_obj)
             self.sio.emit('get_character_config', json_obj, sid)
 
         @self.sio.event
         def get_classes(sid, data):
             json_obj = json.dumps(self.dungeon_manager.get_all_from_classes_as_json(data))
+            print("get classses: ", json_obj)
             self.sio.emit('classesData', json_obj, sid)
 
         @self.sio.event
         def get_races(sid, data):
             json_obj = json.dumps(self.dungeon_manager.get_all_from_races_as_json(data))
+            print("get racces: ", json_obj)
             self.sio.emit('racesData', json_obj, sid)
 
         @self.sio.event
