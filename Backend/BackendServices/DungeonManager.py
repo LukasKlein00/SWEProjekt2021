@@ -37,6 +37,7 @@ import logging, sys
 from json import JSONEncoder as foreignEncoder
 
 from DatabaseHandler.DatabaseHandler import DatabaseHandler
+from DungeonPackage.AccessList import AccessList
 from DungeonPackage.ActiveDungeon import ActiveDungeon
 from DungeonPackage.Character import Character
 from DungeonPackage.Class import Class
@@ -65,6 +66,7 @@ class DungeonManager:
         self.class_list = []
         self.item_list = []
         self.npc_list = []
+        self.accesslist = []
         self.fill_attributes(data)
 
     def fill_attributes(self, data):
@@ -76,7 +78,7 @@ class DungeonManager:
                                                name=self.data['dungeonName'],
                                                description=self.data['dungeonDescription'],
                                                private=self.data['private'],
-                                               access_list=self.data['accessList'])
+                                               access_list=AccessList())
 
             self.check_for_dungeon_id()
             logging.debug("constructor: " + self.managed_dungeon.dungeon_id)
@@ -95,6 +97,7 @@ class DungeonManager:
         npcs_data = self.data['npcs']
         room_data = self.data['rooms']
         class_data = self.data['classes']
+        accesslist_data = self.data['accessList']
         print(class_data)
 
         for race in race_data:
@@ -186,6 +189,10 @@ class DungeonManager:
 
             self.room_list.append(new_room)
 
+            for ac_l in accesslist_data:
+                self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['userName'],
+                                                                       is_allowed=ac_l['isAllowed'])
+
     def write_dungeon_to_database(self):
         """
         writes whole Dungeon to Database
@@ -208,6 +215,7 @@ class DungeonManager:
             self.__write_rooms_to_database()
             logging.debug("Rooms saved")
             logging.debug("write dungeon to database: self.managed_dungeon.dungeon_id")
+            self.write_accesslist_to_database()
             return self.managed_dungeon.dungeon_id
         except:
             pass
@@ -287,7 +295,9 @@ class DungeonManager:
                 self.db_handler.write_npc_to_database(npc=npc, dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
-
+    def write_accesslist_to_database(self):
+        for user in self.managed_dungeon.access_list.access_list:
+            self.db_handler.write_user_to_acceslist(access_list_user=user, dungeon_id = self.managed_dungeon.dungeon_id)
     def __load_dungeon_from_database(self):
         ######
         raise NotImplementedError
@@ -434,4 +444,11 @@ class DungeonManager:
             char_config.append(self.get_all_from_races_as_json(data['dungeonID']))
             return char_config
         except:
+            pass
+
+    def get_accesslist(self, dungeon_id):
+        try:
+            access_list = self.db_handler.get_access_list_by_dungeon_id_as_dict(dungeon_id)
+            print(access_list)
+        except IOError:
             pass

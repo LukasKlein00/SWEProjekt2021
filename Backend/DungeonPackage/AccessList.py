@@ -19,7 +19,7 @@ class AccessList:
         :param user_id: id of user
         :param is_allowed: bool true=user on white list false=user on blacklist  
         """
-        self.access_list.append({"user_id": user_name, "is_allowed":is_allowed})
+        self.access_list.append({"user_name": user_name, "is_allowed":is_allowed})
 
     def load_data(self):
         """Part of the lazy loading process.
