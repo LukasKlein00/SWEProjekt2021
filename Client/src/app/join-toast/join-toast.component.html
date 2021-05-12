@@ -4,7 +4,7 @@
       [class]="toast.classname"
       [autohide]="toast.autohide"
       [delay]="toast.delay || 5000"
-      (hide)="toastService.remove(toast)"
+      (hide)="toastService.remove(toast, false)"
     >
       <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
         <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
@@ -12,7 +12,7 @@
 
       <ng-template #text>{{ toast.textOrTpl }}</ng-template><br>
       <div class="row justify-content-around">
-        <a style="color: lightgreen" (click)="toastService.remove(toast)">allow</a>
-        <a style="color: lightcoral" (click)="toastService.remove(toast)">decline</a>
+        <a style="color: lightgreen" (click)="toastService.remove(toast, true)">allow</a>
+        <a style="color: lightcoral" (click)="toastService.remove(toast, false)">decline</a>
       </div>
 </ngb-toast>

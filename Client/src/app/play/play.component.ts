@@ -43,9 +43,10 @@ export class PlayComponent implements OnInit {
     private httpService: HttpService,
     private socketService: WebsocketService) { }
 
+    //auf privat prüfen -> Request
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log("id", id)
     if (id) {
       this.checkCharakter(id);
     }
@@ -74,14 +75,13 @@ export class PlayComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.player = result;
+      this.socketService.sendCharacter(this.player);
 
     });
   }
 
   getCharakterCreationData(dID) {
     this.loading = true;
-
-
   }
 
   checkCharakter(dID) {

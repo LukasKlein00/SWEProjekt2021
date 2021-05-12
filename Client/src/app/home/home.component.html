@@ -15,7 +15,7 @@
                     <h5>{{dungeon.dungeonName}} <span *ngIf="dungeon.private" class="badge badge-danger">private</span>  </h5>
                     <h6>({{dungeon.currentPlayers}}/{{dungeon.maxPlayers}}) Players</h6>
                     <div class="line-clamp-3">{{dungeon.dungeonDescription}}</div>
-                    <button class="btn btn-success mt-1" [routerLink]="['/play',{id: dungeon.dungeonID}]">JOIN</button>
+                    <button class="btn btn-success mt-1" (click)="joinDungeon(dungeon)">JOIN</button>
                 </div>
             </div>
         </div> 
@@ -42,3 +42,4 @@
 </div>
 
 <app-loader *ngIf="loading"></app-loader>
+<app-loader [loadingText]="'Waiting for DungeonMaster'" *ngIf="joinLoad"></app-loader>

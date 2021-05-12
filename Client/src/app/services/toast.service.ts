@@ -1,9 +1,16 @@
 import { Injectable, TemplateRef } from '@angular/core';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
+
+  constructor(
+    private socket: WebsocketService
+  ){
+
+  }
 
   toasts: any[] = [];
 
@@ -13,7 +20,8 @@ export class ToastService {
   }
 
   // Callback method to remove Toast DOM element from view
-  remove(toast) {
+  remove(toast, isAllowed: boolean) {
     this.toasts = this.toasts.filter(t => t !== toast);
+    this.socket.sendRequestAnswer(toast.userID, isAllowed);
   }
 }
