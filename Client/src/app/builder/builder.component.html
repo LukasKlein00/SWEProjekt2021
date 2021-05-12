@@ -193,17 +193,17 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let user of dungeon.accessList">
-                    <td>{{user.name}}</td>
+                    <td>
+                        {{user.name}}
+                    </td>
                     <td>
                       <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" (click)="user.isAllowed = true"
-                          [ngClass]="{
+                        <button type="button" class="btn btn-secondary" (click)="user.isAllowed = true" [ngClass]="{
                         'btn-success': user.isAllowed
                       }">Allowed</button>
-                        <button type="button" class="btn btn-secondary" (click)="user.isAllowed = false"
-                          [ngClass]="{
+                        <button type="button" class="btn btn-secondary" (click)="user.isAllowed = false" [ngClass]="{
                         'btn-danger': !user.isAllowed
-                      }">Disallowed</button>
+                      }">Forbidden</button>
                       </div>
                     </td>
                     <td>

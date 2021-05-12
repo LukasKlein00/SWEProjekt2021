@@ -47,7 +47,6 @@ export class WebsocketService {
 
   getJoinRequestAnswer(){
     return this.socket.fromEvent('on_join_request_answer').pipe(map((data) => {
-      console.log("return answer", data)
       return data}))
   }
 
