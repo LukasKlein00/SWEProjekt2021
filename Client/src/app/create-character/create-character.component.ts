@@ -26,6 +26,7 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
       equipment: null,
     },
     userID: '',
+    health: 100,
   };
 
   constructor(

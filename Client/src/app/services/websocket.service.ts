@@ -33,6 +33,7 @@ export class WebsocketService {
   }
 
   sendJoinRequest(dungeonID, userID) {
+    console.log("sending Request")
     this.socket.emit('join_dungeon',{dungeonID, userID});
   }
 
@@ -45,7 +46,9 @@ export class WebsocketService {
   }
 
   getJoinRequestAnswer(){
-    return this.socket.fromEvent('on_join_request_answer').pipe(map((data) => data))
+    return this.socket.fromEvent('on_join_request_answer').pipe(map((data) => {
+      console.log("return answer", data)
+      return data}))
   }
 
   getPublishedDungeons(){

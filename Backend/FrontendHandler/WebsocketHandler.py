@@ -13,6 +13,8 @@ import socketio
 
 # TODO: user access management
 
+
+
 class SocketIOHandler:
     def __init__(self):
         self.sio = socketio.Server(cors_allowed_origins='*')
@@ -23,8 +25,16 @@ class SocketIOHandler:
         self.access_manager = AccessManager()
 
         @self.sio.event
+        def send_join_request_answer(sid, data):
+            answer = data["isAllowed"]
+            user_sid = self.activeDungeonHandler.user_sid[data['userID']]
+            print("userID", user_sid)
+            self.sio.emit("on_join_request_answer", answer, to=user_sid)
+
+        @self.sio.event
         def on_login(sid, data):
             self.sio.save_session(sid, {'userID': data['userID'], 'userName': data['username']})
+            self.activeDungeonHandler.user_sid[data['userID']] = sid
             print(self.sio.get_session(sid))
 
         @self.sio.event
@@ -110,8 +120,9 @@ class SocketIOHandler:
 
         @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
+            print("####",sid)
             session = self.sio.get_session(sid)
-            if self.access_manager.user_status_on_access_list(data['userID'], data['dungeonID']):
+            if self.access_manager.user_status_on_access_list(data['userID'], data['dungeonID'], session['userName']):
                 self.sio.enter_room(sid, data['dungeonID'])
                 session['dungeonID'] = data['dungeonID']
                 self.sio.emit('user_joined', f"'{session['userName']}' joined")
@@ -157,7 +168,7 @@ class SocketIOHandler:
         @self.sio.event
         def get_character_in_dungeon(sid, data):
             session = self.sio.get_session(sid)
-            print("kleiner Test am Rande:")
+            print("kleiner Test am Rande:", session)
             print(session["userID"], data["dungeonID"])
             character = Character().load_data(session["userID"], data["dungeonID"])
             print("Character: ")
