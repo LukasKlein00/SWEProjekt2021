@@ -294,6 +294,12 @@ export class BuilderComponent implements OnInit {
           console.log("publishing...")
           this.websocketService.sendPublish(this.dungeon.dungeonID);
         }
+        //fixing bug with Duplicate cause of NONE id
+        this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res)
+        this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
+        this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res);
+        this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res)
+        this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res)
         this.loading = false;
       });
 
@@ -324,7 +330,6 @@ export class BuilderComponent implements OnInit {
       console.log("rooms response", res);
       res.map(r => {
         const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
-        console.log("index", index);
         r['isActive'] = true;
         this.dungeon.rooms[index] = r;
       });
