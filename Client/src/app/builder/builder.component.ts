@@ -192,13 +192,31 @@ export class BuilderComponent implements OnInit {
           this.websocketService.sendPublish(this.dungeon.dungeonID);
         }
         //fixing bug with Duplicate cause of NONE id
-        this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res)
-        this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
-        this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res);
-        this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res)
+        this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => {
+          if (res) {
+            this.dungeon.races = res
+          }
+        })
+        this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => {
+          if (res) {
+            this.dungeon.classes = res
+          }
+        })
+        this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => {
+          if (res) {
+            this.dungeon.npcs = res
+          }
+        });
+        this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => {
+          if (res) {
+            this.dungeon.items = res
+          }
+        })
         this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => {
-          console.log("accessList",res);
-          this.dungeon.accessList = res})
+          if (res) {
+            this.dungeon.accessList = res
+          }
+        })
         this.loading = false;
       });
 
@@ -268,8 +286,8 @@ export class BuilderComponent implements OnInit {
         if (res) {
           this.dungeon.accessList = res
         }
-        }
-        )
+      }
+      )
     }
   }
 
