@@ -46,6 +46,7 @@ export class PlayComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     console.log("id", id)
+    this.socketService.sendJoinRequest(id, JSON.parse(localStorage.getItem('currentUser')).userID );
     if (id) {
       this.checkCharakter(id);
     }
@@ -74,14 +75,13 @@ export class PlayComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.player = result;
+      this.socketService.sendCharacter(this.player);
 
     });
   }
 
   getCharakterCreationData(dID) {
     this.loading = true;
-
-
   }
 
   checkCharakter(dID) {

@@ -171,6 +171,7 @@ export class BuilderComponent implements OnInit {
       this.getDungeon(id);
       this.getRooms(id);
     }
+    this.websocketService.getJoinRequests().subscribe((res) => console.log("joinRequests",res))
     this.toastService.show('John wants to join', {
       classname: 'toast',
       delay: 7000,

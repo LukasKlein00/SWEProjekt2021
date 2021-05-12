@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { Dungeon, Player} from 'Testfiles/models für Schnittstellen';
@@ -31,7 +31,9 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
     inventar: []
   };
 
-  constructor(@Inject(MAT_DIALOG_DATA) public World: Dungeon) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public World: Dungeon,
+    private cdRef:ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
@@ -42,6 +44,7 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
     } else {
       this.formisinvalid = true;
     }
+    this.cdRef.detectChanges();
   }
 
 }
