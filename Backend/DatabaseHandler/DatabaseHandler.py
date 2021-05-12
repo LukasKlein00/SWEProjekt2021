@@ -74,6 +74,7 @@ class DatabaseHandler:
                                 ON DUPLICATE KEY UPDATE 
                                     DungeonID  = VALUES(DungeonID),
                                     DungeonName  = VALUES(DungeonName),
+                                    MaxPlayers = VALUES(MaxPlayers),
                                     DungeonDescription = VALUES(DungeonDescription),
                                     DungeonMasterID  = VALUES(DungeonMasterID),
                                     Private  = VALUES(Private)
@@ -647,4 +648,17 @@ class DatabaseHandler:
             return self.dictionary_cursor.fetchall()
         except IOError:
             print(colored(f'DB: get accesslist as dict failed. dungeonID: "{dungeon_id}"', 'red'))
+
+    def write_user_to_acceslist(self, access_list_user, dungeon_id):
+        self.cursor.execute(f"""
+                                        INSERT INTO mudcake.AccessList
+                                        DungeonID, Username, IsAllowed
+                                        VALUES
+                                        (%s,%s,%s)
+                            """, (dungeon_id, access_list_user['username'], access_list_user['is_allowed']))
+        try:
+            print(colored('DB: ', 'yellow'), f'write accesslist to database. dungeonID: "{dungeon_id}"')
+            self.database_path.commit()
+        except IOError:
+            print(colored(f'DB: write accesslist to database failed. dungeonID: "{dungeon_id}"', 'red'))
 

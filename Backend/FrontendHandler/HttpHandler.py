@@ -116,6 +116,12 @@ class HTTPHandler(BaseHTTPRequestHandler):
             rooms = dungeon_manager.get_all_from_items_as_json(data)
             self.wfile.write(rooms)
 
+        if self.path == '/getAccessList':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            access_list = dungeon_manager.get_accesslist(data)
+            self.wfile.write(access_list)
+
         if self.path == '/saveDungeon':
             self.__set_response()
             dungeon_manager = DungeonManager(data)
