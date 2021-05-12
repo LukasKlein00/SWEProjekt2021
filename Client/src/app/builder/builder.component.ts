@@ -41,6 +41,7 @@ export class BuilderComponent implements OnInit {
       x: 1,
       y: 4,
     }]
+  insertedUsername;
   dungeonSize = 13;
   dungeon: Dungeon;
   rooms: Room[] = []
@@ -211,7 +212,6 @@ export class BuilderComponent implements OnInit {
   }
 
   submitRequest(req: requestForMaster) {
-    this.dungeon.rooms[req.y][req.x]['isViewed'] = false;
     this.requests.splice(this.requests.indexOf(req), 1);
   }
   onItemSelect(item: any) {
@@ -277,6 +277,25 @@ export class BuilderComponent implements OnInit {
 
       console.log("after get Dungeon", this.dungeon);
     })
+  }
+
+  submitAccess() {
+    if (this.insertedUsername.length != 0) {
+      if (!this.dungeon.accessList.find(x => x.name == this.insertedUsername)) {
+        this.dungeon.accessList.push({
+          name: this.insertedUsername,
+          isAllowed: true,
+        });
+        this.insertedUsername = null;
+      }
+    }
+  }
+
+  removeFromAccess(user) {
+    const index = this.dungeon.accessList.indexOf(user, 0);
+    if (index > -1) {
+      this.dungeon.accessList.splice(index, 1);
+    }
   }
 }
 
