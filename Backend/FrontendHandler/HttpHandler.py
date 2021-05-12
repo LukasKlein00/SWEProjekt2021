@@ -120,7 +120,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             dungeon_manager = DungeonManager()
             access_list = dungeon_manager.get_accesslist(data)
-            self.wfile.write(access_list)
+            try:
+                self.wfile.write(json.dumps(access_list).encode(encoding='utf_8'))
+            except:
+                pass
 
         if self.path == '/saveDungeon':
             self.__set_response()

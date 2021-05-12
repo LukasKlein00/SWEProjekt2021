@@ -639,7 +639,7 @@ class DatabaseHandler:
     def get_access_list_by_dungeon_id_as_dict(self, dungeon_id: str):
         self.dictionary_cursor.execute(f"""
                                     SELECT IsAllowed isAllowed,
-                                           UserID userID)
+                                           UserName userName
                                     FROM mudcake.AccessList
                                     WHERE (DungeonID = '{dungeon_id}' )
                                     """, )
