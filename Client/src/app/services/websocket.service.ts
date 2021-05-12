@@ -24,6 +24,10 @@ export class WebsocketService {
     this.socket.emit('publish',id)
   }
 
+  sendRequestAnswer(userID, isAllowed) {
+    this.socket.emit('send_join_request_answer', {userID, isAllowed})
+  }
+
   sendPublishedDungeonRequest() {
     this.socket.emit('on_home')
   }

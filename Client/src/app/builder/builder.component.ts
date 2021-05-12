@@ -171,18 +171,16 @@ export class BuilderComponent implements OnInit {
       this.getDungeon(id);
       this.getRooms(id);
     }
-    this.websocketService.getJoinRequests().subscribe((res) => console.log("joinRequests",res))
-    this.toastService.show('John wants to join', {
-      classname: 'toast',
-      delay: 7000,
-      autohide: true
-    });
-    this.toastService.show('Elli wants to join', {
-      classname: 'toast',
-      delay: 5000,
-      autohide: true
-    });
-    console.log("after init", this.dungeon);
+    this.websocketService.getJoinRequests().subscribe((res: string) => {
+      res = JSON.parse(res);
+      this.toastService.show(`${res[1]} wants to join`, {
+        classname: 'toast',
+        delay: 20000,
+        autohide: true,
+        userID: res[0]
+      });
+    }
+    );
   }
 
   newClass() {
@@ -292,7 +290,7 @@ export class BuilderComponent implements OnInit {
         if (response) {
           this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
         }
-        if (publish ) {
+        if (publish) {
           console.log("publishing...")
           this.websocketService.sendPublish(this.dungeon.dungeonID);
         }
@@ -324,12 +322,12 @@ export class BuilderComponent implements OnInit {
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
       console.log("rooms response", res);
-        res.map(r => {
-          const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
-          console.log("index", index);
-          r['isActive'] = true;
-          this.dungeon.rooms[index] = r;
-        });
+      res.map(r => {
+        const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
+        console.log("index", index);
+        r['isActive'] = true;
+        this.dungeon.rooms[index] = r;
+      });
       this.loading = false;
     });
   }
