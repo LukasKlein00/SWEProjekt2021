@@ -102,10 +102,11 @@ class SocketIOHandler:
         @self.sio.event
         def send_character_config(sid, character):
             session = self.sio.get_session(sid)
-            print("Character Data: ")
-            print(character)
-            #character = Character(character[""])
-
+            #TODO: inventory (class startitem)
+            character_obj = Character(life_points=character["health"], name=character["name"], description=character["description"], class_id=character["class"]["classID"], race_id=character["race"]["raceID"], user_id=character["userID"], dungeon_id=character["dungeonID"])
+            session["character"] = character_obj
+            dungeon_manager = DungeonManager()
+            dungeon_manager.write_character_to_database(character_obj)
 
         @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
