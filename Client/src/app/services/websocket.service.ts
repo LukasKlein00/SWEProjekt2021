@@ -14,21 +14,38 @@ export class WebsocketService {
     private socket: Socket
   ) {}
 
-  sendUserID(id) {
+  sendUserID(user) {
     console.log("sending UserID to connect")
-    this.socket.emit('on_login',id);
+    this.socket.emit('on_login',user);
+    console.log("sending User", user);
   }
 
   sendPublish(id) {
     this.socket.emit('publish',id)
   }
 
+  sendRequestAnswer(userID, isAllowed) {
+    this.socket.emit('send_join_request_answer', {userID, isAllowed})
+  }
+
   sendPublishedDungeonRequest() {
     this.socket.emit('on_home')
   }
 
-  getMessage() {
-    return this.socket.fromEvent('message').pipe(map((data) => data))
+  sendJoinRequest(dungeonID, userID) {
+    this.socket.emit('join_dungeon',{dungeonID, userID});
+  }
+
+  sendCharacter(player) {
+    this.socket.emit('send_character_config',player)
+  }
+
+  getJoinRequests() {
+    return this.socket.fromEvent('JoinRequest').pipe(map((data) => data))
+  }
+
+  getJoinRequestAnswer(){
+    return this.socket.fromEvent('on_join_request_answer').pipe(map((data) => data))
   }
 
   getPublishedDungeons(){
@@ -36,8 +53,8 @@ export class WebsocketService {
   }
 
   getCharConfig(dungeonID){
-    this.socket.emit('get_character_config',dungeonID)
-    return this.socket.fromEvent('get_character_config').pipe(map((data) => {console.log("charConf", data); return data}))
+    this.socket.emit('get_character_config',{dungeonID})
+    return this.socket.fromEvent('get_character_config').pipe(map((data) => {return data}))
   }
 
   getRooms(){

@@ -171,17 +171,16 @@ export class BuilderComponent implements OnInit {
       this.getDungeon(id);
       this.getRooms(id);
     }
-    this.toastService.show('John wants to join', {
-      classname: 'toast',
-      delay: 7000,
-      autohide: true
-    });
-    this.toastService.show('Elli wants to join', {
-      classname: 'toast',
-      delay: 5000,
-      autohide: true
-    });
-    console.log("after init", this.dungeon);
+    this.websocketService.getJoinRequests().subscribe((res: string) => {
+      res = JSON.parse(res);
+      this.toastService.show(`${res[1]} wants to join`, {
+        classname: 'toast',
+        delay: 20000,
+        autohide: true,
+        userID: res[0]
+      });
+    }
+    );
   }
 
   newClass() {
@@ -291,10 +290,16 @@ export class BuilderComponent implements OnInit {
         if (response) {
           this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
         }
-        if (publish ) {
+        if (publish) {
           console.log("publishing...")
           this.websocketService.sendPublish(this.dungeon.dungeonID);
         }
+        //fixing bug with Duplicate cause of NONE id
+        this.httpService.getRaces(this.dungeon.dungeonID).subscribe(res => this.dungeon.races = res)
+        this.httpService.getClasses(this.dungeon.dungeonID).subscribe(res => this.dungeon.classes = res)
+        this.httpService.getNpcs(this.dungeon.dungeonID).subscribe(res => this.dungeon.npcs = res);
+        this.httpService.getItems(this.dungeon.dungeonID).subscribe(res => this.dungeon.items = res)
+        this.httpService.getAccessList(this.dungeon.dungeonID).subscribe(res => this.dungeon.accessList = res)
         this.loading = false;
       });
 
@@ -323,12 +328,11 @@ export class BuilderComponent implements OnInit {
   getRooms(id) {
     this.httpService.getRooms(id).subscribe(res => {
       console.log("rooms response", res);
-        res.map(r => {
-          const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
-          console.log("index", index);
-          r['isActive'] = true;
-          this.dungeon.rooms[index] = r;
-        });
+      res.map(r => {
+        const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
+        r['isActive'] = true;
+        this.dungeon.rooms[index] = r;
+      });
       this.loading = false;
     });
   }

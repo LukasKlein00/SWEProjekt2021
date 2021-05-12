@@ -15,7 +15,7 @@ import { WebsocketService } from '../services/websocket.service';
 })
 export class PlayComponent implements OnInit {
 
-  world: Dungeon;
+  world: Dungeon = {};
   loading;
   rooms: Room[];
   currentRoom: Room;
@@ -43,9 +43,10 @@ export class PlayComponent implements OnInit {
     private httpService: HttpService,
     private socketService: WebsocketService) { }
 
+    //auf privat prüfen -> Request
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    console.log("id", id)
     if (id) {
       this.checkCharakter(id);
     }
@@ -74,14 +75,13 @@ export class PlayComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.player = result;
+      this.socketService.sendCharacter(this.player);
 
     });
   }
 
   getCharakterCreationData(dID) {
     this.loading = true;
-
-
   }
 
   checkCharakter(dID) {
@@ -92,10 +92,32 @@ export class PlayComponent implements OnInit {
       if (res != "false") {
         console.log("char loading")
       } else {
-        this.socketService.getCharConfig(dID).subscribe((res) => {
+        this.socketService.getCharConfig(dID).subscribe((res: string) => {
           console.log("get CharConf", res)
           if (res != null) {
             this.loading = false;
+            const k = JSON.parse(res)
+            console.log(k[0]);
+            console.log(k[1]);
+            this.world['classes'] = [];
+            this.world['races'] = [];
+            k[0].forEach(element => {
+              this.world.classes.push({
+                classID: element['classID'],
+                name: element['name'],
+                description: element['description'],
+                equipment: element['equipment']
+              })
+            });
+            k[1].forEach(element => {
+              console.log(element);
+              this.world['races'].push({
+                raceID: element['raceID'],
+                name: element['name'],
+                description: element['description'],
+              })
+            });
+            console.log(this.world)
             this.openDialog();
 
           }
