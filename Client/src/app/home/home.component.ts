@@ -73,7 +73,7 @@ export class HomeComponent implements OnInit {
       this.WebSocketService.getJoinRequestAnswer().subscribe( (res: string) => {
         res = JSON.parse(res);
         console.log("joinRes", res)
-        if (res != "false") {
+        if (res == "true") {
           this.router.navigate(['/play',{id: dungeon.dungeonID}])
         }
         this.joinLoad = false;
