@@ -44,6 +44,10 @@ export class WebsocketService {
     return this.socket.fromEvent('JoinRequest').pipe(map((data) => data))
   }
 
+  getJoinRequestAnswer(){
+    return this.socket.fromEvent('on_join_request_answer').pipe(map((data) => data))
+  }
+
   getPublishedDungeons(){
     return this.socket.fromEvent('make_dungeon_available').pipe(map((data) => data))
   }

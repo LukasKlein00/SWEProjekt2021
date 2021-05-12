@@ -1,5 +1,6 @@
 import { utf8Encode } from "@angular/compiler/src/util";
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Dungeon } from "Testfiles/models für Schnittstellen";
 import { HttpService } from "../services/http.service";
 import { WebsocketService } from "../services/websocket.service";
@@ -11,15 +12,18 @@ import { WebsocketService } from "../services/websocket.service";
 })
 export class HomeComponent implements OnInit {
   loading = false;
+  joinLoad = false;
   availableMUDs: Dungeon[];
   myMUDs: Dungeon[];
 
   filters = ["all", "public", "private"];
   selectedFilter = this.filters[0];
+  
 
   constructor(
     private httpService: HttpService,
-    private WebSocketService: WebsocketService
+    private WebSocketService: WebsocketService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +64,22 @@ export class HomeComponent implements OnInit {
     this.httpService.deleteDungeon(d.dungeonID).subscribe((response) => {
       this.getCreatedDungeons();
     });
+  }
+
+  joinDungeon(dungeon) {
+    if (dungeon.private) {
+      this.joinLoad = true;
+      this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
+      this.WebSocketService.getJoinRequestAnswer().subscribe( (res: string) => {
+        res = JSON.parse(res);
+        console.log("joinRes", res)
+        if (res != "false") {
+          this.router.navigate(['/play',{id: dungeon.dungeonID}])
+        }
+        this.joinLoad = false;
+      })
+    } else {
+      this.router.navigate(['/play',{id: dungeon.dungeonID}])
+    }
   }
 }
