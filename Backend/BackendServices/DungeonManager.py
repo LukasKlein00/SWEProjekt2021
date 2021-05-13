@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+# region HEADER
+# !/usr/bin/env python
 __author__ = "Thomas Zimmermann"
 __copyright__ = "Copyright 2021, The MUDCake Project"
 __credits__ = "Hauke Presig, Jack Drillisch, Jan Gruchott, Lukas Klein, Robert Fendrich, Thomas Zimmermann"
@@ -29,12 +30,11 @@ __version__ = "1.0.0"
 __maintainer__ = "Thomas Zimmermann"
 __email__ = "mudcake@gmail.com"
 __status__ = "Development"
-
+# endregion
 import json
 import uuid
-import logging, sys
-
-from json import JSONEncoder as foreignEncoder
+import logging
+import sys
 
 from DatabaseHandler.DatabaseHandler import DatabaseHandler
 from DungeonPackage.AccessList import AccessList
@@ -49,14 +49,23 @@ from DungeonPackage.Room import Room
 
 
 class DungeonManager:
-    """
-    class for handling dungeon data
+    """ Main class for handling everything dungeon based
+
     """
 
     def __init__(self, data=None):
         """
-        constructor for dungeon manager
+
+        Args:
+            data (json, optional): A JSON Object which contains all necessary information for a dungeon
+                                    - List of all Rooms which are saved as an dictionary
+                                    - List of all Races which are saved as an dictionary
+                                    - List of all Classes which are saved as an dictionary
+                                    - List of all Items which are saved as an dictionary
+                                    - List of all Npcs which are saved as an dictionary
+                                    - Accesslist which contains all users which are saved on there
         """
+        self.managed_dungeon = DungeonData()
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         self.data = data
 
@@ -70,6 +79,18 @@ class DungeonManager:
         self.fill_attributes(data)
 
     def fill_attributes(self, data):
+        """ Fills attributes which may not be given in the init
+
+        Args:
+            data (json, optional): A JSON Object which contains all necessary information for a dungeon
+                                    - List of all Rooms which are saved as an dictionary
+                                    - List of all Races which are saved as an dictionary
+                                    - List of all Classes which are saved as an dictionary
+                                    - List of all Items which are saved as an dictionary
+                                    - List of all Npcs which are saved as an dictionary
+                                    - Accesslist which contains all users which are saved on there
+
+        """
         if data:
 
             self.managed_dungeon = DungeonData(dungeon_id=self.data['dungeonID'],
@@ -85,11 +106,10 @@ class DungeonManager:
             self.parse_config_data()
         else:
             logging.debug("data is none")
-            self.managed_dungeon = DungeonData()
 
     def parse_config_data(self):
-        """
-        deserializes the dungeon json and adds the deserialized elements to corresponding lists  
+        """ Parses the config data of every json list into an Object
+
         """
 
         race_data = self.data['races']
@@ -191,11 +211,13 @@ class DungeonManager:
 
             for ac_l in accesslist_data:
                 self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['name'],
-                                                                       is_allowed=ac_l['isAllowed'])
+                                                                            is_allowed=ac_l['isAllowed'])
 
     def write_dungeon_to_database(self):
-        """
-        writes whole Dungeon to Database
+        """ Writes the dungeon to the database.
+
+        All data which gets used here is from the already initialised object
+
         """
         active_dungeon = ActiveDungeon(rooms=self.room_list, classes=self.class_list, npcs=self.npc_list,
                                        items=self.item_list, dungeon_data=self.managed_dungeon, races=self.race_list,
@@ -217,19 +239,21 @@ class DungeonManager:
             logging.debug("write dungeon to database: self.managed_dungeon.dungeon_id")
             self.write_accesslist_to_database()
             return self.managed_dungeon.dungeon_id
-        except:
+        except IOError:
             pass
 
     def check_for_dungeon_id(self):
-        """
-        writes if Dungeon has an id already. if not, it creates one
+        """ Checks if the user already has an id
+
+        If not the methods creates one and sets it as the dungeon id of the managed dungeon
+
         """
         if self.managed_dungeon.dungeon_id is None:
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
 
     def __write_races_to_database(self):
-        """
-        writes Races to Database
+        """ Private method that writes a list of races to the database via the database handler
+
         """
         logging.debug(self.race_list)
         for race in self.race_list:
@@ -239,8 +263,8 @@ class DungeonManager:
                 pass
 
     def __write_classes_to_database(self):
-        """
-        writes Classes to Database
+        """ Private method that writes a list of classes to the database via the database handler
+
         """
         logging.debug(self.class_list)
         for classes in self.class_list:
@@ -251,8 +275,8 @@ class DungeonManager:
                 pass
 
     def __write_rooms_to_database(self):
-        """
-        writes Rooms to Database
+        """ Private method that writes a list of rooms to the database via the database handler
+
         """
         logging.debug(self.room_list)
         for room in self.room_list:
@@ -275,8 +299,8 @@ class DungeonManager:
             pass
 
     def __write_items_to_database(self):
-        """
-        writes Items to Database
+        """ Private method that writes a list of items to the database via the database handler
+
         """
         logging.debug(self.item_list)
         for item in self.item_list:
@@ -286,8 +310,8 @@ class DungeonManager:
                 pass
 
     def __write_npcs_to_database(self):
-        """
-        writes Npcs to Database
+        """ Private method that writes a list of npcs to the database via the database handler
+
         """
         logging.debug(self.npc_list)
         for npc in self.npc_list:
@@ -295,26 +319,58 @@ class DungeonManager:
                 self.db_handler.write_npc_to_database(npc=npc, dungeon_id=self.managed_dungeon.dungeon_id)
             except IOError:
                 pass
+
     def write_accesslist_to_database(self):
+        """ Private method that writes a list of users in the accesslist to the database via the database handler
+
+        """
         for user in self.managed_dungeon.access_list.access_list:
-            self.db_handler.write_user_to_acceslist(access_list_user=user, dungeon_id = self.managed_dungeon.dungeon_id)
-    def __load_dungeon_from_database(self):
-        ######
-        raise NotImplementedError
+            self.db_handler.write_user_to_acceslist(access_list_user=user, dungeon_id=self.managed_dungeon.dungeon_id)
 
     def get_dungeon_by_id(self, user_id_data):
+        """ Gets the dungeons via the user id
+
+        Args:
+            user_id_data (str): The user id which holds the dungeons
+
+        Returns:
+            All dungeons which the user has created
+
+        """
         return self.db_handler.get_dungeon_by_id(user_id_data)
 
     def get_dungeon_data_by_dungeon_id(self, dungeon_id):
+        """ Retrieves first glance data of the dungeon via the id
+
+        Args:
+            dungeon_id (str): Dungeon of the dungeon id which needs data
+
+        Returns:
+            DungeonID, DungeonMasterID, DungeonName, DungeonDescription, the private status
+            and the max players of the given dungeon
+
+        """
         return self.db_handler.get_dungeon_data_by_dungeon_id(dungeon_id)
 
     def delete_dungeon(self, dungeon_id):
+        """ Deletes a dungeon via the id in the database
+
+        Args:
+            dungeon_id (str): The dungeon id which is supposed to be deleted
+
+        """
         try:
             self.db_handler.delete_dungeon_by_id(dungeon_id)
         except IOError:
             pass
 
     def copy_dungeon(self, dungeon_id):
+        """ Copy's a given dungeon via the dungeon id
+
+        Args:
+            dungeon_id (str): The dungeon which is supposed to be copied
+
+        """
         self.room_list = []
         self.race_list = []
         self.class_list = []
@@ -322,7 +378,7 @@ class DungeonManager:
         self.npc_list = []
         try:
             dungeon = self.db_handler.get_dungeon_data_by_dungeon_id(dungeon_id)
-            logging.debug("Dungeon: " , dungeon)
+            logging.debug("Dungeon: ", dungeon)
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
             self.managed_dungeon.dungeon_master_id = dungeon[0][1]
             self.managed_dungeon.name = dungeon[0][2] + " - copy"
@@ -341,7 +397,8 @@ class DungeonManager:
 
             rooms = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id)
             for room in rooms:
-                copied_room = Room(room_id=room['roomID'], room_name=room['roomName'], room_description=room['roomDescription'],
+                copied_room = Room(room_id=room['roomID'], room_name=room['roomName'],
+                                   room_description=room['roomDescription'],
                                    coordinate_x=room['x'], coordinate_y=room['y'], north=room['north'],
                                    east=room['east'], south=room['south'], west=room['west'],
                                    is_start_room=room['isStartRoom'], npc_id=room['npcID'], item_id=room['roomItemID'],
@@ -382,42 +439,63 @@ class DungeonManager:
         except IOError:
             pass
 
-    def make_dungeon_private(self):
-        raise NotImplementedError
-
-    def make_dungeon_public(self):
-        raise NotImplementedError
-
     def get_start_rooms_in_dungeon(self, dungeon_id: str):
+        """ Gets all start rooms of a dungeon based on the dungeon id
+
+        Args:
+            dungeon_id (str): Dungeon id of the dungeon
+
+        Returns:
+            All starting rooms in a dungeon
+        """
         all_starting_rooms = []
         for room in self.get_all_from_room_as_json(dungeon_id):
-            if room['isStartRoom'] == True:
+            if room['isStartRoom']:
                 all_starting_rooms.append(room)
         return all_starting_rooms
 
-
     def get_all_from_room_as_json(self, data):
+        """ Gets all room data as json from dungeon id
+
+        Args:
+            data (str): Dungeon id of the dungeon
+
+        Returns:
+            All Rooms in the dungeon as list
+        """
         rooms_dict = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=data)
         print(rooms_dict)
         room_list = []
         for room_dict in rooms_dict:
-            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'], 'isStartRoom': room_dict['isStartRoom'],
+            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
+                    'isStartRoom': room_dict['isStartRoom'],
                      'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
-                     'north': room_dict['north'],'east':room_dict['east'], 'south':room_dict['south'],
+                     'north': room_dict['north'], 'east': room_dict['east'], 'south': room_dict['south'],
                      'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
-                                                        'description': room_dict['npcDescription'], 'equipment': {'itemID': room_dict['npcItemID'],
-                                                                                                                  'name': room_dict['npcItemName'],
-                                                                                                                  'description': room_dict['npcItemDesc']}},
-                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'], 'description': room_dict['roomItemDescription']}}
+                                                        'description': room_dict['npcDescription'],
+                                                        'equipment': {'itemID': room_dict['npcItemID'],
+                                                                      'name': room_dict['npcItemName'],
+                                                                      'description': room_dict['npcItemDesc']}},
+                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'],
+                              'description': room_dict['roomItemDescription']}}
             room_list.append(room)
         logging.debug(room_list)
         return room_list
 
     def get_all_from_classes_as_json(self, data):
+        """ Gets all classes as json from dungeon id
+
+        Args:
+            data (str): Dungeon id of the dungeon
+
+        Returns:
+            All Classes in the dungeon as list
+        """
         classes_dict = self.db_handler.get_all_classes_by_dungeon_id_as_dict(dungeon_id=data)
         class_list = []
         for class_dict in classes_dict:
-            class_data = {'classID': class_dict['classID'], 'name': class_dict['name'], 'description': class_dict['description'],
+            class_data = {'classID': class_dict['classID'], 'name': class_dict['name'],
+                          'description': class_dict['description'],
                           'equipment': {'itemID': class_dict['itemID'], 'name': class_dict['itemName'],
                                         'description': class_dict['itemDescription']}}
             class_list.append(class_data)
@@ -425,11 +503,27 @@ class DungeonManager:
         return class_list
 
     def get_all_from_races_as_json(self, data):
+        """ Gets all races as json from dungeon id
+
+        Args:
+            data (str): Dungeon id of the dungeon
+
+        Returns:
+            All Races in the dungeon as list
+        """
         races = self.db_handler.get_all_races_by_dungeon_id_as_dict(dungeon_id=data)
         logging.debug(races)
         return races
 
     def get_all_from_items_as_json(self, data):
+        """ Gets all items as json from dungeon id
+
+        Args:
+            data (str): Dungeon id of the dungeon
+
+        Returns:
+            All items in the dungeon as JSON
+        """
         items = self.db_handler.get_all_item_by_dungeon_id_as_dict(dungeon_id=data)
         logging.debug(items)
         return json.dumps(items).encode(encoding='utf_8')
@@ -439,22 +533,37 @@ class DungeonManager:
         npc_list = []
         for npc_dict in npcs_dict:
             npc = {'npcID': npc_dict['npcID'], 'name': npc_dict['name'], 'description': npc_dict['description'],
-                   'equipment': {'itemID': npc_dict['itemID'], 'name': npc_dict['itemName'], 'description': npc_dict['itemDescription']}
+                   'equipment': {'itemID': npc_dict['itemID'], 'name': npc_dict['itemName'],
+                                 'description': npc_dict['itemDescription']}
                    }
             npc_list.append(npc)
         logging.debug(npc_list)
         return json.dumps(npc_list).encode(encoding='utf_8')
 
     def get_character_config(self, data):
+        """ Gets the Races and Classes in a dungeon together as one json
+
+        Args:
+            data (str): Dungeon id of the dungeon
+
+        Returns:
+            List of all races and classes from one dungeon
+        """
         try:
-            char_config = []
-            char_config.append(self.get_all_from_classes_as_json(data['dungeonID']))
-            char_config.append(self.get_all_from_races_as_json(data['dungeonID']))
+            char_config = [self.get_all_from_classes_as_json(data), self.get_all_from_races_as_json(data)]
             return char_config
-        except:
+        except IOError:
             pass
 
     def get_accesslist(self, dungeon_id):
+        """ Gets an accesslist of a specific dungeon
+
+        Args:
+            dungeon_id (str): Dungeon id of the dungeon
+
+        Returns:
+            Accesslist of the dungeon
+        """
         try:
             access_list = self.db_handler.get_access_list_by_dungeon_id_as_dict(dungeon_id)
             for entry in access_list:
@@ -464,5 +573,13 @@ class DungeonManager:
             pass
 
     def get_item_by_class_id(self, class_id: str):
+        """ Gets an item via the class id
+
+        Args:
+            class_id (str): Id of the class which has an item
+
+        Returns:
+            Item object
+        """
         item_data = self.db_handler.get_item_by_class_id(class_id)
         return Item(item_id=item_data['itemID'], name=item_data['itemName'], description=item_data['itemDescription'])

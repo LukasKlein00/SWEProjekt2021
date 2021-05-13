@@ -324,7 +324,7 @@ class SocketIOHandler:
 
         @self.sio.event
         def get_character_config(sid, data):
-            json_obj = json.dumps(self.dungeon_manager.get_character_config(data))
+            json_obj = json.dumps(self.dungeon_manager.get_character_config(data['dungeonID']))
             print("get charracter: ", json_obj)
             self.sio.emit('get_character_config', json_obj, sid)
 
