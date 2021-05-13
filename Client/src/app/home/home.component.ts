@@ -70,25 +70,27 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   joinDungeon(dungeon) {
-    if (dungeon.private) {
-      this.joinLoad = true;
-      this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
-      this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: string) => {
-        console.log("joinRes:", res)
-        if (res == "false"){
-          console.log("res is false")
-        }
-        if (res == "true") {
-          console.log("res is true")
-          this.router.navigate(['/play',{id: dungeon.dungeonID}])
-        } 
-        if (res != "true" && res != "false") {
-          console.log("res is wierd")
-        }
-        this.joinLoad = false;
-      });
+    if (localStorage.getItem('currentUser')) {
+      if (dungeon.private) {
+        this.joinLoad = true;
+        this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
+        this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: boolean) => {
+          console.log("joinRes:", res)
+          console.log("type:",typeof(res))
+          if (res == false){
+            console.log("res is false")
+          }
+          if (res == true) {
+            console.log("res is true")
+            this.router.navigate(['/play',{id: dungeon.dungeonID}])
+          } 
+          this.joinLoad = false;
+        });
+      } else {
+        this.router.navigate(['/play',{id: dungeon.dungeonID}])
+      }
     } else {
-      this.router.navigate(['/play',{id: dungeon.dungeonID}])
+      this.router.navigate(['/login'])
     }
   }
 

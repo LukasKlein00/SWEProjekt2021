@@ -1,7 +1,8 @@
 import { Route } from '@angular/compiler/src/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Class, Dungeon, Player, Race, Room } from 'Testfiles/models für Schnittstellen';
 import { CreateCharacterComponent } from '../create-character/create-character.component';
 import { DungeonService } from '../services/dungeon.service';
@@ -13,7 +14,10 @@ import { WebsocketService } from '../services/websocket.service';
   templateUrl: './play.component.html',
   styleUrls: ['./play.component.scss']
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit, OnDestroy {
+
+  sub1: Subscription;
+  sub2: Subscription;
 
   world: Dungeon = {};
   loading;
@@ -81,9 +85,14 @@ export class PlayComponent implements OnInit {
     });
   }
 
-  getCharakterCreationData(dID) {
-    this.loading = true;
+  getCharacterOverwiew() {
+    this.sub1 = this.socketService.getCharacterData(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
   }
+
+  getDiscoveredRooms() {
+    this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
+  }
+
 
   checkCharakter(dID) {
     this.loading = true;
@@ -124,7 +133,14 @@ export class PlayComponent implements OnInit {
           }
         })
       }
+      this.getCharacterOverwiew();
+      this.getDiscoveredRooms();
     });
+  }
+
+  ngOnDestroy(){
+    this.sub1.unsubscribe();
+    this.sub2.unsubscribe();
   }
 }
 
