@@ -6,6 +6,7 @@ from json import JSONEncoder
 from BackendServices.AccessManager import AccessManager
 from BackendServices.DungeonManager import DungeonManager
 from DungeonPackage.ActiveDungeon import ActiveDungeon
+from DungeonPackage.Class import Class
 from DungeonPackage.DungeonData import DungeonData
 from DungeonPackage.Character import Character
 from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
@@ -14,6 +15,7 @@ import random
 
 
 # TODO: user access management
+from DungeonPackage.Race import Race
 
 
 class SocketIOHandler:
@@ -194,7 +196,7 @@ class SocketIOHandler:
             # TODO: inventory (class startitem)
             character_obj = Character(room_id=starting_room['roomID'], life_points=character["health"],
                                       name=character["name"], description=character["description"],
-                                      class_id=character["class"]["classID"], race_id=character["race"]["raceID"],
+                                      class_obj=Class(class_id=character["class"]["classID"]), race=Race(race_id=character["race"]["raceID"]),
                                       user_id=character["userID"], dungeon_id=dungeon_id, character_id=str(uuid.uuid4()))
             session["character"] = character_obj
             self.dungeon_manager.write_character_to_database(character_obj)

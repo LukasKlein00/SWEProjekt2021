@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.joinLoad = true;
         this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
         this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: boolean) => {
+          res = JSON.parse(res)
           console.log("joinRes:", res)
           console.log("type:",typeof(res))
           if (res == false){

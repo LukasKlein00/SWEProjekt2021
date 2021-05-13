@@ -290,7 +290,7 @@ class DatabaseHandler:
                             RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID), 
                             CharacterID=VALUES(CharacterID)""",
                             (dungeon_id, character.user_id, character.life_points, character.name,
-                             character.description, character.race_id, character.class_id, character.room_id,
+                             character.description, character.race.race_id, character.class_obj.class_id, character.room_id,
                              character.character_id))
         try:
             self.database_path.commit()
