@@ -92,8 +92,9 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             dungeon_manager = DungeonManager()
             rooms = dungeon_manager.get_all_from_room_as_json(data)
-            print("rooms as json returned: " + str(rooms))
-            self.wfile.write(rooms)
+            rooms_json = json.dumps(rooms).encode(encoding='utf_8')
+            print("rooms as json returned: " + str(rooms_json))
+            self.wfile.write(rooms_json)
 
         if self.path == '/getRaces':
             self.__set_response()

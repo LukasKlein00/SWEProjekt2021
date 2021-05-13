@@ -388,6 +388,14 @@ class DungeonManager:
     def make_dungeon_public(self):
         raise NotImplementedError
 
+    def get_start_rooms_in_dungeon(self, dungeon_id: str):
+        all_starting_rooms = []
+        for room in self.get_all_from_room_as_json(dungeon_id):
+            if room['isStartRoom'] == True:
+                all_starting_rooms.append(room)
+        return all_starting_rooms
+
+
     def get_all_from_room_as_json(self, data):
         rooms_dict = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=data)
         print(rooms_dict)
@@ -403,7 +411,7 @@ class DungeonManager:
                      'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'], 'description': room_dict['roomItemDescription']}}
             room_list.append(room)
         logging.debug(room_list)
-        return json.dumps(room_list).encode(encoding='utf_8')
+        return room_list
 
     def get_all_from_classes_as_json(self, data):
         classes_dict = self.db_handler.get_all_classes_by_dungeon_id_as_dict(dungeon_id=data)
