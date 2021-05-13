@@ -68,7 +68,6 @@ export class Player {
     userID: string;
     health?: number;
     inventar?: Item[];
-    equipment?: Item;
     race: Race;
     class: Class;
     dungeonID: string;

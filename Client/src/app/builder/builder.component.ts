@@ -32,10 +32,6 @@ export class BuilderComponent implements OnInit, OnDestroy {
           name: 'salty Potatos',
           description: '',
         }],
-        equipment: {
-          name: 'damaged sword',
-          description: '',
-        },
         race: null,
         class: null,
         dungeonID: null,

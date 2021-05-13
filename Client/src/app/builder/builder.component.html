@@ -105,30 +105,16 @@
                     </div>
                   </div>
                   
-                  
-                  <!-- <mat-slide-toggle [(ngModel)]="selectedRoom.east" style="grid-column: 3; grid-row: 2;">east
-                  </mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="selectedRoom.south"
-                    style="grid-column: 2; grid-row: 3; justify-self: center;">south</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="selectedRoom.west"
-                    style="grid-column: 1; grid-row: 2; justify-self: right;">west</mat-slide-toggle>
-                    <div style="grid-column: 2; grid-row: 2; justify-self: center;">
-                      startroom:
-                      <input type="checkbox" [checked]="selectedRoom.isStartRoom" (change)="
-                          selectedRoom.isStartRoom = !selectedRoom.isStartRoom
-                        " />
-                    </div> -->
-                  
                 </div>
                 <div class="col-12 col-xl-7">
                   Items:
-                  <ng-select [(ngModel)]="selectedRoom.item">
+                  <ng-select [(ngModel)]="selectedRoom.item" appendTo="body">
                     <ng-option [value]="item" *ngFor="let item of dungeon.items">{{
                       item.name
                       }}</ng-option>
                   </ng-select><br />
                   NPC:
-                  <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
+                  <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found" appendTo="body">
                     <ng-option [value]="npc" *ngFor="let npc of dungeon.npcs">{{
                       npc.name
                       }}</ng-option>
@@ -162,7 +148,7 @@
               ClassDescription:
               <textarea class="w-100" [(ngModel)]="selectedClass.description"></textarea><br /><br />
               equipment:
-              <ng-select [(ngModel)]="selectedClass.equipment">
+              <ng-select [(ngModel)]="selectedClass.equipment" appendTo="body">
                 <ng-option [value]="item" *ngFor="let item of dungeon.items">{{
                   item.name
                   }}</ng-option>
@@ -202,7 +188,7 @@
               NpcDescription:
               <textarea class="w-100" [(ngModel)]="selectedNpc.description"></textarea><br /><br />
               equipment:
-              <ng-select [(ngModel)]="selectedNpc.equipment">
+              <ng-select [(ngModel)]="selectedNpc.equipment" appendTo="body">
                 <ng-option [value]="item" *ngFor="let item of dungeon.items">{{
                   item.name
                   }}</ng-option>
@@ -317,14 +303,6 @@
 
                     <div class="tab-pane fade" id="{{ 'nav-inventory' + i }}" role="tabpanel"
                       aria-labelledby="nav-inventory-tab">
-                      <div>
-                        Equipment:
-                        <ng-select [(ngModel)]="request.requester.equipment.name">
-                          <ng-option [value]="item" *ngFor="let item of dungeon.items">
-                            {{ item.name }}</ng-option>
-                        </ng-select>
-                      </div>
-                      <br />
                       <div>
                         Inventory
                         <ng-select [multiple]="true" [items]="dungeon.items" bindLabel="name" bindValue=""
