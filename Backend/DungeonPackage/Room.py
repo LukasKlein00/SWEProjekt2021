@@ -3,7 +3,7 @@ class Room:
                  room_description: str = None, room_name: str = None,
                  is_start_room: bool = False, north: bool = True, south: bool = True, west: bool = True,
                  east: bool = True,
-                 user_ids: [str] = None, npc_id: str = None, item_id: str = None):
+                 user_ids: [str] = [], npc_id: str = None, item_id: str = None):
 
         self.user_ids = user_ids
         self.coordinate_x = coordinate_x
