@@ -5,14 +5,15 @@ from termcolor import colored
 from json import JSONEncoder
 from BackendServices.AccessManager import AccessManager
 from BackendServices.DungeonManager import DungeonManager
+from DungeonPackage.ActiveDungeon import ActiveDungeon
 from DungeonPackage.DungeonData import DungeonData
 from DungeonPackage.Character import Character
 from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
 import socketio
+import random
 
 
 # TODO: user access management
-
 
 
 class SocketIOHandler:
@@ -20,7 +21,6 @@ class SocketIOHandler:
         self.sio = socketio.Server(cors_allowed_origins='*', async_mode='eventlet')
         self.sio.logger.disabled = True
         self.app = socketio.WSGIApp(self.sio)
-        self.active_dungeons = []
         self.activeDungeonHandler = ActiveDungeonHandler()
         self.dungeon_manager = DungeonManager()
         self.access_manager = AccessManager()
@@ -75,8 +75,7 @@ class SocketIOHandler:
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
                 print(colored("publish successful", 'green'))
 
-
-        #TODO: mit jack klären, dass aktive dungeons die vom dungeonmaster verlassen wurden beim dungeon master als
+        # TODO: mit jack klären, dass aktive dungeons die vom dungeonmaster verlassen wurden beim dungeon master als
         # aktiv gekennzeicnet werden und dungeon ein beenden button bekommen
         @self.sio.event
         def disconnect(sid):
@@ -114,27 +113,49 @@ class SocketIOHandler:
 
         @self.sio.event
         def send_character_config(sid, character):
-            session = self.sio.get_session(sid)
-            #TODO: inventory (class startitem)
-            character_obj = Character(life_points=character["health"], name=character["name"], description=character["description"], class_id=character["class"]["classID"], race_id=character["race"]["raceID"], user_id=character["userID"], dungeon_id=character["dungeonID"])
-            session["character"] = character_obj
-            dungeon_manager = DungeonManager()
-            dungeon_manager.write_character_to_database(character_obj)
+            dungeon_id = character["dungeonID"]
 
-        @self.sio.event
+            ##### Adding user to starting room in active dungeon #####
+            # Determine starting room
+            all_start_rooms = self.dungeon_manager.get_start_rooms_in_dungeon(dungeon_id=dungeon_id)
+            starting_room = random.choice(all_start_rooms)
+
+            # Adding user to starting room in backend
+            current_dungeon = ActiveDungeon(
+                self.activeDungeonHandler.active_dungeons[dungeon_id]['active_dungeon_object'])
+            current_dungeon.load_rooms(dungeon_id)
+            all_rooms_in_dungeon = current_dungeon.rooms
+            print(all_rooms_in_dungeon)
+            for room in all_rooms_in_dungeon[1:]:
+                print(room)
+                if room['roomID'] == starting_room['roomID']:
+                    room.append(character["userID"])
+
+            ##########################################################
+
+            session = self.sio.get_session(sid)
+            # TODO: inventory (class startitem)
+            character_obj = Character(room_id=starting_room['roomID'], life_points=character["health"],
+                                      name=character["name"], description=character["description"],
+                                      class_id=character["class"]["classID"], race_id=character["race"]["raceID"],
+                                      user_id=character["userID"], dungeon_id=dungeon_id)
+            session["character"] = character_obj
+            self.dungeon_manager.write_character_to_database(character_obj)
+            self.sio.emit('character_joined_room',
+                          json.dumps({'startRoom': starting_room, 'allOtherRoomsToLoad': all_rooms_in_dungeon}), sid=sid)
+
+        @ self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
-            print("####", sid)
             session = self.sio.get_session(sid)
             user_status = self.access_manager.user_status_on_access_list(data['dungeonID'], session['userName'])
             if user_status:
                 self.sio.enter_room(sid, data['dungeonID'])
                 session['dungeonID'] = data['dungeonID']
-                self.sio.emit('user_joined', f"'{session['userName']}' joined")
+                self.sio.emit("on_join_request_answer", json.dumps(True), to=sid)
             elif user_status is False:
                 print("wat isn jetzt passiert")
                 self.sio.emit("on_join_request_answer", json.dumps(False), to=sid)
             elif not user_status:
-                # TODO: Jack reden: Dungeon master anzeigen (toast)
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
                               to=self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])
 

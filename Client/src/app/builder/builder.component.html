@@ -68,15 +68,57 @@
               RoomDescription:
               <textarea class="w-100" [(ngModel)]="selectedRoom.description"></textarea><br /><br />
               <div class="col-12 m-0 p-0 row">
+                
                 <div class="col-12 roomdirections col-xl-5">
-                  <mat-slide-toggle [(ngModel)]="selectedRoom.north"
-                    style="grid-column: 2; grid-row: 1; justify-self: center;">north</mat-slide-toggle>
-                  <mat-slide-toggle [(ngModel)]="selectedRoom.east" style="grid-column: 3; grid-row: 2;">east
+                  <div class="row" style="grid-column: 2; grid-row: 1; justify-self: center;">
+                    <div class="col-12 text-center">north</div>
+                    <div class="col-12 text-center">
+                      <mat-slide-toggle [(ngModel)]="selectedRoom.north"></mat-slide-toggle>
+                    </div>
+                  </div>
+
+                  <div class="row" style="grid-column: 3; grid-row: 2; justify-self: center;">
+                    <div class="col-12 text-center">east</div>
+                    <div class="col-12 text-center">
+                      <mat-slide-toggle [(ngModel)]="selectedRoom.east"></mat-slide-toggle>
+                    </div>
+                  </div>
+
+                  <div class="row" style="grid-column: 1; grid-row: 2; justify-self: center;">
+                    <div class="col-12 text-center">west</div>
+                    <div class="col-12 text-center">
+                      <mat-slide-toggle [(ngModel)]="selectedRoom.west"></mat-slide-toggle>
+                    </div>
+                  </div>
+
+                  <div class="row" style="grid-column: 2; grid-row: 3; justify-self: center;">
+                    <div class="col-12 text-center">south</div>
+                    <div class="col-12 text-center">
+                      <mat-slide-toggle [(ngModel)]="selectedRoom.south"></mat-slide-toggle>
+                    </div>
+                  </div>
+
+                  <div style="grid-column: 2; grid-row: 2; justify-self: center; align-self: center;">
+                    <div class="col-12 text-center">StartRoom</div>
+                    <div class="col-12 text-center">
+                      <mat-slide-toggle color="primary" [(ngModel)]="selectedRoom.isStartRoom"></mat-slide-toggle>
+                    </div>
+                  </div>
+                  
+                  
+                  <!-- <mat-slide-toggle [(ngModel)]="selectedRoom.east" style="grid-column: 3; grid-row: 2;">east
                   </mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="selectedRoom.south"
                     style="grid-column: 2; grid-row: 3; justify-self: center;">south</mat-slide-toggle>
                   <mat-slide-toggle [(ngModel)]="selectedRoom.west"
                     style="grid-column: 1; grid-row: 2; justify-self: right;">west</mat-slide-toggle>
+                    <div style="grid-column: 2; grid-row: 2; justify-self: center;">
+                      startroom:
+                      <input type="checkbox" [checked]="selectedRoom.isStartRoom" (change)="
+                          selectedRoom.isStartRoom = !selectedRoom.isStartRoom
+                        " />
+                    </div> -->
+                  
                 </div>
                 <div class="col-12 col-xl-7">
                   Items:

@@ -191,8 +191,19 @@ export class BuilderComponent implements OnInit, OnDestroy {
           this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
         }
         if (publish) {
-          console.log("publishing...")
-          this.websocketService.sendPublish(this.dungeon.dungeonID);
+          let hasStartRoom = false;
+          this.rooms.forEach(room => {
+            if (room.isStartRoom) {
+              hasStartRoom = true;
+            }
+          })
+          if (hasStartRoom) {
+            console.log("publishing...")
+            this.websocketService.sendPublish(this.dungeon.dungeonID);
+          } else {
+            window.alert("You Need To Add At Least 1 Start Room Before Publishing")
+          }
+          
         }
         //fixing bug with Duplicate cause of NONE id
         this.httpService.getRaces(this.dungeon.dungeonID).pipe(first()).subscribe(res => {
