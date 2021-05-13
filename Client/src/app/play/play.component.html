@@ -34,10 +34,10 @@
                         <div class="row">
                             <h3 class="col-12">PlayerInfo</h3>
                             <div class="col-5">
-                            <p>Name: {{player.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{player.health}}"></meter></p>
+                            <p>Name: {{player?.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{player.health}}"></meter></p>
                             <p>Description: {{player.description}}</p>
-                            <p>Race: {{player.race.name}}</p>
-                            <p>Class: {{player.class.name}}</p>
+                            <p>Race: {{player.race?.name}}</p>
+                            <p>Class: {{player.class?.name}}</p>
                             </div>
                             <div class="col-5">
                                 <p>Inventory:</p>

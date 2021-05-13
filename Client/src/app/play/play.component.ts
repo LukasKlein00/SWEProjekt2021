@@ -86,10 +86,12 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   getCharacterOverwiew() {
+    console.log("requesting char data...")
     this.sub1 = this.socketService.getCharacterData(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
   }
 
   getDiscoveredRooms() {
+    console.log("requesting room data...")
     this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
   }
 
@@ -98,9 +100,11 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.loading = true;
     console.log("checking Char...")
     let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res) => {
-      console.log("GETcHAR", res);
+      console.log("get Char Response", res);
       if (res != "false") {
-        console.log("char loading")
+        this.loading = false;
+        this.player = JSON.parse(res as string);
+        
       } else {
         this.socketService.getCharConfig(dID).subscribe((res: string) => {
           console.log("get CharConf", res)
