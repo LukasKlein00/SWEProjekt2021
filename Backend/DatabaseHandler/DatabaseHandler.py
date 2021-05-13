@@ -279,14 +279,14 @@ class DatabaseHandler:
     def write_character_to_database(self, character, dungeon_id):
         self.cursor.execute(f"""
                             INSERT INTO mudcake.Character 
-                            (DungeonID, UserID, Lifepoints, CharacterName, CharacterDescription, ClassID, 
+                            (DungeonID, UserID, Lifepoints, CharacterName, CharacterDescription, 
                             RaceID, ClassID, RoomID) 
                             VALUES
-                                (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                                (%s,%s,%s,%s,%s,%s,%s,%s)
                             ON DUPLICATE KEY UPDATE
                             DungeonID = VALUES(DungeonID), UserID=VALUES(UserID),
                             Lifepoints = VALUES(Lifepoints), CharacterName=VALUES(CharacterName), 
-                            CharacterDescription=VALUES(CharacterDescription), ClassID=VALUES(ClassID), 
+                            CharacterDescription=VALUES(CharacterDescription),
                             RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID)""",
                             (dungeon_id, character.user_id, character.life_points, character.name,
                              character.description, character.race_id, character.class_id, character.room_id)

@@ -135,6 +135,7 @@ class SocketIOHandler:
                 self.sio.emit("on_join_request_answer", json.dumps(False), to=sid)
             elif not user_status:
                 # TODO: Jack reden: Dungeon master anzeigen (toast)
+                print("User will joinen:", sid)
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
                               to=self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])
 
