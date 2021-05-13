@@ -8,13 +8,13 @@
       <textarea class="w-100" [(ngModel)]="player.description"></textarea
       ><br /><br />
       Choose your Race
-      <ng-select [(ngModel)]="player.race" [clearable]="false">
+      <ng-select [(ngModel)]="player.race" [clearable]="false" appendTo="body">
         <ng-option *ngFor="let race of World.races" [value]="race">{{
           race.name
         }}</ng-option> </ng-select
       ><br />
       Choose your Class
-      <ng-select [(ngModel)]="player.class" [clearable]="false">
+      <ng-select [(ngModel)]="player.class" [clearable]="false" appendTo="body">
         <ng-option
           [value]="class"
           *ngFor="let class of World.classes"

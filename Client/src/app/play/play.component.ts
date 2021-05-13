@@ -21,7 +21,6 @@ export class PlayComponent implements OnInit {
   currentRoom: Room;
   player: Player = {
     name: '',
-    equipment: null,
     dungeonID: '1',
     race: {
       name: '',
