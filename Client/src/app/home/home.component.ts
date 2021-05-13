@@ -81,7 +81,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (res == "true") {
           console.log("res is true")
           this.router.navigate(['/play',{id: dungeon.dungeonID}])
-        } else {
+        } 
+        if (res != "true" && res != "false") {
           console.log("res is wierd")
         }
         this.joinLoad = false;
