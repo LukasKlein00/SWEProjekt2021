@@ -536,6 +536,7 @@ class DatabaseHandler:
                                         RoomID roomID,
                                         RoomName roomName,
                                         RoomDescription roomDescription,
+                                        isStartingRoom isStartRoom,
                                         CoordinateX x,
                                         CoordinateY y,
                                         North north,

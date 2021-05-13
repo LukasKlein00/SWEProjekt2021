@@ -322,7 +322,7 @@ class DungeonManager:
         self.npc_list = []
         try:
             dungeon = self.db_handler.get_dungeon_data_by_dungeon_id(dungeon_id)
-            logging.debug("Dungeon: " + dungeon)
+            logging.debug("Dungeon: " , dungeon)
             self.managed_dungeon.dungeon_id = str(uuid.uuid4())
             self.managed_dungeon.dungeon_master_id = dungeon[0][1]
             self.managed_dungeon.name = dungeon[0][2] + " - copy"
@@ -341,10 +341,10 @@ class DungeonManager:
 
             rooms = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id)
             for room in rooms:
-                copied_room = Room(room_id=room['roomID'], room_name=room['name'], room_description=room['description'],
+                copied_room = Room(room_id=room['roomID'], room_name=room['roomName'], room_description=room['roomDescription'],
                                    coordinate_x=room['x'], coordinate_y=room['y'], north=room['north'],
                                    east=room['east'], south=room['south'], west=room['west'],
-                                   is_start_room=room['isStartRoom'], npc_id=room['npc'], item_id=room['item'],
+                                   is_start_room=room['isStartRoom'], npc_id=room['npcID'], item_id=room['roomItemID'],
                                    dungeon_id=self.managed_dungeon.dungeon_id)
                 self.room_list.append(copied_room)
             logging.debug("Room List:")
@@ -393,7 +393,7 @@ class DungeonManager:
         print(rooms_dict)
         room_list = []
         for room_dict in rooms_dict:
-            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
+            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'], 'isStartRoom': room_dict['isStartRoom'],
                      'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
                      'north': room_dict['north'],'east':room_dict['east'], 'south':room_dict['south'],
                      'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
