@@ -154,7 +154,7 @@ class SocketIOHandler:
                 self.sio.emit("on_join_request_answer", json.dumps(True), to=sid)
             elif user_status is False:
                 print("wat isn jetzt passiert")
-                self.sio.emit("on_join_request_answer", json.dumps(None), to=sid)
+                self.sio.emit("on_join_request_answer", json.dumps(False), to=sid)
             elif not user_status:
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
                               to=self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])
