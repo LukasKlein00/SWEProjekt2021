@@ -80,6 +80,23 @@ export class WebsocketService {
     return this.socket.fromEvent('get_character_data').pipe(map((data) => {
       return data}))
   }
+
+  sendDirection(dungeonID, userID, direction){
+    this.socket.emit('move_to_room',{dungeonID, userID, direction})
+  }
+
+  sendMasterRequest(dungeonID, userID, message){
+    this.socket.emit('dungeon_master_request',{dungeonID, userID, message})
+  }
+
+  sendMessageToRoom(dungeonID, userName, roomID, message){
+    this.socket.emit('send_message_to_room',{dungeonID, userName, roomID, message})
+  }
+
+  getChat(){
+    return this.socket.fromEvent('get_chat').pipe(map((data) => {
+      return data}))
+  }
 }
 
 
