@@ -115,8 +115,7 @@ class SocketIOHandler:
         def send_character_config(sid, character):
             dungeon_id = character["dungeonID"]
 
-            ##### Adding user to starting room in active dungeon #####
-            # Determine starting room
+            #region Adding user to starting room in active dungeon
             all_start_rooms = self.dungeon_manager.get_start_rooms_in_dungeon(dungeon_id=dungeon_id)
             starting_room = random.choice(all_start_rooms)
 
@@ -125,22 +124,28 @@ class SocketIOHandler:
                 self.activeDungeonHandler.active_dungeons[dungeon_id]['active_dungeon_object'])
             current_dungeon.load_rooms(dungeon_id)
             all_rooms_in_dungeon = current_dungeon.rooms
-            print(all_rooms_in_dungeon)
-            for room in all_rooms_in_dungeon[1:]:
+            all_room_objects_in_dungeon = current_dungeon.rooms_objects
+            for room in all_room_objects_in_dungeon[1:]:
                 print(room)
-                if room['roomID'] == starting_room['roomID']:
-                    room.append(character["userID"])
-
-            ##########################################################
+                if room.room_id == starting_room['roomID']:
+                    room.user_ids.append(character["userID"])
+            #endregion
 
             session = self.sio.get_session(sid)
             # TODO: inventory (class startitem)
             character_obj = Character(room_id=starting_room['roomID'], life_points=character["health"],
                                       name=character["name"], description=character["description"],
                                       class_id=character["class"]["classID"], race_id=character["race"]["raceID"],
-                                      user_id=character["userID"], dungeon_id=dungeon_id)
+                                      user_id=character["userID"], dungeon_id=dungeon_id, character_id=str(uuid.uuid4()))
             session["character"] = character_obj
             self.dungeon_manager.write_character_to_database(character_obj)
+
+
+            #region Adding class startitem to user inventory when first joining
+            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
+            character_obj.add_item_to_inventory(item.item_id)
+            #endregion
+
             self.sio.emit('character_joined_room',
                           json.dumps({'startRoom': starting_room, 'allOtherRoomsToLoad': all_rooms_in_dungeon}), sid=sid)
 

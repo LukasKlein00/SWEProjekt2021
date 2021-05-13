@@ -1,4 +1,4 @@
-from DatabaseHandler.DatabaseHandler import *
+from DatabaseHandler.DatabaseHandler import DatabaseHandler
 from DungeonPackage.Inventory import *
 
 
@@ -16,6 +16,7 @@ class Character:
         self.dungeon_id = dungeon_id
         self.character_id = character_id
         self.discovered_rooms = discovered_rooms
+        self.db_handler = DatabaseHandler()
 
     def load_data(self, user_id: str, dungeon_id: str):
         db_handler = DatabaseHandler()
@@ -32,3 +33,6 @@ class Character:
             return self
         except:
             return None
+
+    def add_item_to_inventory(self, item_id: str):
+        self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)

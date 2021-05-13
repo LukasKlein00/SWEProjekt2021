@@ -21,6 +21,7 @@ class ActiveDungeon:
         self.user_ids = user_ids
         self.character_ids = character_ids
         self.rooms = [rooms]
+        self.rooms_objects = []
         self.npcs = npcs
         self.items = items
         self.races = races
@@ -99,8 +100,11 @@ class ActiveDungeon:
                      'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'], 'description': room_dict['roomItemDescription']}}
             self.rooms.append(room)
 
-    def parse_rooms(self):
-        room_dict = self.rooms
+        self.__parse_rooms(rooms_dict)
+
+    def __parse_rooms(self, room_dict):
         for room in room_dict:
-            Room(room_id=room['roomID'], room_name=room['roomName'], is_start_room=room['isStartRoom'],
-                 room_description=room['roomDescription'], coordinate_x=room['x'], coordinate_y=room['y'])
+            done_room = Room(room_id=room['roomID'], room_name=room['roomName'], is_start_room=room['isStartRoom'],
+                             room_description=room['roomDescription'], coordinate_x=room['x'], coordinate_y=room['y'],
+                             north=room['north'], east=room['east'], south=room['south'], west=room['west'])
+            self.rooms_objects.append(done_room)

@@ -462,3 +462,7 @@ class DungeonManager:
             return access_list
         except IOError:
             pass
+
+    def get_item_by_class_id(self, class_id: str):
+        item_data = self.db_handler.get_item_by_class_id(class_id)
+        return Item(item_id=item_data['itemID'], name=item_data['itemName'], description=item_data['itemDescription'])

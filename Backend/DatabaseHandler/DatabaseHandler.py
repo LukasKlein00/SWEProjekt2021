@@ -667,3 +667,34 @@ class DatabaseHandler:
         except IOError:
             print(colored(f'DB: write accesslist to database failed. dungeonID: "{dungeon_id}"', 'red'))
 
+    def get_item_by_class_id(self, class_id: str):
+        self.dictionary_cursor.execute(f"""
+                                    SELECT Item.ItemID itemID, 
+                                    Item.ItemName itemName, 
+                                    Item.ItemDescription itemDescription
+                                    
+                                    FROM mudcake.Class
+                                    LEFT JOIN
+                                        mudcake.Item 
+                                            ON Class.ItemID = Item.ItemID 
+                                
+                                    WHERE Class.ClassID = '{class_id}'
+                                    """)
+        try:
+            return self.dictionary_cursor.fetchone()
+        except IOError:
+            print("Fetching Item from Class failed")
+            pass
+
+    def add_item_to_inventory(self, item_id: str, user_id: str, dungeon_id: str):
+        self.cursor.execute(f"""
+                         INSERT INTO mudcake.Inventory
+                         (ItemID, UserID, DungeonID)
+                         Values
+                         ('{item_id}', '{user_id}', '{dungeon_id}')
+                        """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            print("Error occurred during add_item_to_inventory")
+            pass
