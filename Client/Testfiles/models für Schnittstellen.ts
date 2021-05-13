@@ -34,6 +34,7 @@ export class Room {
     isActive?: boolean;
     isViewed?: boolean;
     description: string;
+    roomID?: string;
 }
 
 export class Race {
