@@ -71,6 +71,10 @@ export class Player {
     race: Race;
     class: Class;
     dungeonID: string;
+    characterID?: string;
+    classID?: string;
+    raceID?: string;
+    roomID?: string;
 }
 
 export class SubmitPlayer {
