@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { AuthentificationService } from '../services/authentification.service';
 import { HttpService } from '../services/http.service';
 
@@ -26,7 +27,7 @@ export class ProfilComponent implements OnInit {
   }
 
   deleteUser(){
-    this.httpService.deleteUser(this.user.userID).subscribe((response) => {
+    this.httpService.deleteUser(this.user.userID).pipe(first()).subscribe((response) => {
       localStorage.removeItem('currentUser');
       window.location.reload()
     });;

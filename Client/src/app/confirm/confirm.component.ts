@@ -1,6 +1,7 @@
 import { tokenName } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthentificationService } from '../services/authentification.service';
 
 @Component({
@@ -8,10 +9,11 @@ import { AuthentificationService } from '../services/authentification.service';
   templateUrl: './confirm.component.html',
   styleUrls: ['./confirm.component.scss']
 })
-export class ConfirmComponent implements OnInit {
+export class ConfirmComponent implements OnInit, OnDestroy {
 
   token: string;
   confirmed;
+  sub1 : Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -19,7 +21,7 @@ export class ConfirmComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(p => {
+    this.sub1 = this.route.queryParams.subscribe(p => {
       this.token = p['token'];
       if (this.token){
         setTimeout(()=>{                         
@@ -37,5 +39,9 @@ export class ConfirmComponent implements OnInit {
       error => {
         this.confirmed = false;
       });
+  }
+
+  ngOnDestroy() {
+    this.sub1.unsubscribe();
   }
 }
