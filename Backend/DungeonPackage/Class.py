@@ -11,7 +11,7 @@ class Class:
 
     def load_data(self, dungeon_id: str):
         db_handler = DatabaseHandler()
-        database_class_data = mDBHandler.get_class_by_dungeon_id(dungeon_id)
+        database_class_data = db_handler.get_class_by_dungeon_id(dungeon_id)
         self.class_id = database_class_data[0]
         self.name = database_class_data[1]
         self.description = database_class_data[2]

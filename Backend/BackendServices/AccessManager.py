@@ -7,6 +7,7 @@ class AccessManager:
 
     def user_status_on_access_list(self, dungeon_id: str, user_name: str):
         ret = self.db_handler.user_status_on_access_list(user_name, dungeon_id)
+        print("ret is ne rat ", ret)
         return bool(ret[0]) if ret else None
       #if ret:
       #    ret_zerro = bool(ret[0])

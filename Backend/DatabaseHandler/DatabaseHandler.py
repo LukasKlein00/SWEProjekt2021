@@ -357,9 +357,24 @@ class DatabaseHandler:
 
     def get_character_by_user_id(self, user_id: str, dungeon_id: str):
         self.dictionary_cursor.execute(f"""
-                                    SELECT *
+                                    SELECT 
+                                    Character.CharacterID characterID,
+                                    Character.CharacterName name,
+                                    Character.CharacterDescription description,
+                                    Character.Lifepoints health,
+                                    Character.RoomID roomID,
+                                    CharClass.ClassID classID,
+                                    CharClass.ClassName className,
+                                    CharClass.ClassDescription classDescription,
+                                    CharRace.RaceID raceID,
+                                    CharRace.RaceName raceName,
+                                    CharRace.RaceDescription raceDescription
                                     FROM mudcake.Character
-                                    WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')    
+                                    LEFT JOIN
+                                    mudcake.Class AS CharClass ON Character.ClassID = CharClass.ClassID
+                                    LEFT JOIN
+                                    mudcake.Race AS CharRace ON Character.RaceID = CharRace.RaceID
+                                    WHERE (Character.DungeonID = '{dungeon_id}' AND Character.UserID = '{user_id}')    
                                     """)
         try:
             print(colored('DB:', 'yellow'), f"get character by user id: '{user_id}'")
