@@ -123,6 +123,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             dungeon_manager = DungeonManager()
             access_list = dungeon_manager.get_accesslist(data)
+            print(access_list)
             self.wfile.write(json.dumps(access_list).encode(encoding='utf_8'))
             print("acceslist sent")
 
