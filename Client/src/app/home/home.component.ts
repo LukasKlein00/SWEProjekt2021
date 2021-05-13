@@ -1,6 +1,8 @@
 import { utf8Encode } from "@angular/compiler/src/util";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { Subscription } from "rxjs";
+import { first } from "rxjs/operators";
 import { Dungeon } from "Testfiles/models für Schnittstellen";
 import { HttpService } from "../services/http.service";
 import { WebsocketService } from "../services/websocket.service";
@@ -10,11 +12,12 @@ import { WebsocketService } from "../services/websocket.service";
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   loading = false;
   joinLoad = false;
   availableMUDs: Dungeon[];
   myMUDs: Dungeon[];
+  sub1: Subscription;
 
   filters = ["all", "public", "private"];
   selectedFilter = this.filters[0];
@@ -29,7 +32,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getCreatedDungeons();
     this.WebSocketService.sendPublishedDungeonRequest();
-    this.WebSocketService.getPublishedDungeons().subscribe((r: string) => {
+    this.sub1 = this.WebSocketService.getPublishedDungeons().subscribe((r: string) => {
       this.availableMUDs = JSON.parse(r);
       console.log("availableMuds", this.availableMUDs);
     });
@@ -38,7 +41,7 @@ export class HomeComponent implements OnInit {
   getCreatedDungeons() {
     this.myMUDs = [];
     if (localStorage.getItem("currentUser")) {
-      this.httpService.getCreatedDungeons().subscribe((response) => {
+      this.httpService.getCreatedDungeons().pipe(first()).subscribe((response) => {
         Object.keys(response).forEach((key) => {
           this.myMUDs.push({
             dungeonID: response[key][0],
@@ -54,14 +57,14 @@ export class HomeComponent implements OnInit {
 
   copyDungeon(d: Dungeon) {
     this.loading = true;
-    this.httpService.copyDungeon(d.dungeonID).subscribe((response) => {
+    this.httpService.copyDungeon(d.dungeonID).pipe(first()).subscribe((response) => {
       this.getCreatedDungeons();
     });
   }
 
   deleteDungeon(d: Dungeon) {
     this.loading = true;
-    this.httpService.deleteDungeon(d.dungeonID).subscribe((response) => {
+    this.httpService.deleteDungeon(d.dungeonID).pipe(first()).subscribe((response) => {
       this.getCreatedDungeons();
     });
   }
@@ -70,7 +73,7 @@ export class HomeComponent implements OnInit {
     if (dungeon.private) {
       this.joinLoad = true;
       this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
-      this.WebSocketService.getJoinRequestAnswer().subscribe( (res: string) => {
+      this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: string) => {
         console.log("joinRes IF", res)
         if (res) {
           this.router.navigate(['/play',{id: dungeon.dungeonID}])
@@ -80,5 +83,9 @@ export class HomeComponent implements OnInit {
     } else {
       this.router.navigate(['/play',{id: dungeon.dungeonID}])
     }
+  }
+
+  ngOnDestroy() {
+    this.sub1.unsubscribe();
   }
 }

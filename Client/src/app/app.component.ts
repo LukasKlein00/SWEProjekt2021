@@ -1,4 +1,5 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthentificationService } from './services/authentification.service';
 import { WebsocketService } from './services/websocket.service';
 
@@ -7,9 +8,10 @@ import { WebsocketService } from './services/websocket.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewChecked, OnInit{
+export class AppComponent implements AfterViewChecked, OnInit, OnDestroy{
   title = 'Client';
   currentUser = this.authentificationService.currentUserValue
+  sub1: Subscription;
 
   constructor(
     private authentificationService: AuthentificationService,
@@ -24,7 +26,7 @@ export class AppComponent implements AfterViewChecked, OnInit{
   ngOnInit() {
     if (this.currentUser) {
       this.websocketService.sendUserID(this.currentUser);
-      this.authentificationService.check().subscribe(response => {
+      this.sub1 = this.authentificationService.check().subscribe(response => {
       },
       error => {
         this.logout();
@@ -34,5 +36,9 @@ export class AppComponent implements AfterViewChecked, OnInit{
 
   logout() {
     this.authentificationService.logout();
+  }
+
+  ngOnDestroy(){
+    this.sub1.unsubscribe();
   }
 }
