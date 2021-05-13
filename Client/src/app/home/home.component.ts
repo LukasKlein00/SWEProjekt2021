@@ -76,7 +76,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: string) => {
         console.log("joinRes IF", res)
         if (res) {
-          this.router.navigate(['/play',{id: dungeon.dungeonID}])
+          if (res = "false") {
+            this.joinLoad = false;
+          } else {
+            this.router.navigate(['/play',{id: dungeon.dungeonID}])
+          }
         }
         this.joinLoad = false;
       })
