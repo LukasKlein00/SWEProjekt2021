@@ -499,14 +499,18 @@ class DatabaseHandler:
 
     def get_inventory_by_dungeon_user_id(self, dungeon_id: str, user_id: str):
 
-        self.cursor.execute(f"""
-                    SELECT *
+        self.dictionary_cursor.execute(f"""
+                    SELECT 
+                    InventoryItem.ItemName itemName,
+                    InventoryItem.ItemDescription itemDescription
                     From mudcake.Inventory
-                    WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')
+                    LEFT JOIN 
+                    mudcake.Item as InventoryItem ON Inventory.ItemID = InventoryItem.ItemID
+                    WHERE (Inventory.DungeonID = '{dungeon_id}' AND Inventory.UserID = '{user_id}')
                     """)
         try:
             print(colored('DB: ', 'yellow'), f'getting inventory by dungeon and user. dungeonID: "{dungeon_id}"')
-            return self.cursor.fetchall()
+            return self.dictionary_cursor.fetchall()
         except IOError:
             pass
 
