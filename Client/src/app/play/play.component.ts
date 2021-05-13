@@ -98,9 +98,11 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.loading = true;
     console.log("checking Char...")
     let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res) => {
-      console.log("GETcHAR", res);
+      console.log("get Char Response", res);
       if (res != "false") {
-        console.log("char loading")
+        this.loading = false;
+        this.player = JSON.parse(res as string);
+        
       } else {
         this.socketService.getCharConfig(dID).subscribe((res: string) => {
           console.log("get CharConf", res)
