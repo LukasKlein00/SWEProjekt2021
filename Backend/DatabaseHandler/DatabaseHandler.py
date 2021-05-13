@@ -280,17 +280,18 @@ class DatabaseHandler:
         self.cursor.execute(f"""
                             INSERT INTO mudcake.Character 
                             (DungeonID, UserID, Lifepoints, CharacterName, CharacterDescription, 
-                            RaceID, ClassID, RoomID) 
+                            RaceID, ClassID, RoomID, CharacterID) 
                             VALUES
-                                (%s,%s,%s,%s,%s,%s,%s,%s)
+                                (%s,%s,%s,%s,%s,%s,%s,%s, %s)
                             ON DUPLICATE KEY UPDATE
                             DungeonID = VALUES(DungeonID), UserID=VALUES(UserID),
                             Lifepoints = VALUES(Lifepoints), CharacterName=VALUES(CharacterName), 
                             CharacterDescription=VALUES(CharacterDescription),
-                            RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID)""",
+                            RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID), 
+                            CharacterID=VALUES(CharacterID)""",
                             (dungeon_id, character.user_id, character.life_points, character.name,
-                             character.description, character.race_id, character.class_id, character.room_id)
-                            )
+                             character.description, character.race_id, character.class_id, character.room_id,
+                             character.character_id))
         try:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"write character to database '{character}'")
@@ -362,7 +363,7 @@ class DatabaseHandler:
                                     """)
         try:
             print(colored('DB:', 'yellow'), f"get character by user id: '{user_id}'")
-            return self.cursor.fetchall()
+            return self.dictionary_cursor.fetchone()
         except IOError:
             pass
 
@@ -490,7 +491,7 @@ class DatabaseHandler:
                     """)
         try:
             print(colored('DB: ', 'yellow'), f'getting inventory by dungeon and user. dungeonID: "{dungeon_id}"')
-            return self.cursor.fetchone()
+            return self.cursor.fetchall()
         except IOError:
             pass
 
@@ -667,3 +668,34 @@ class DatabaseHandler:
         except IOError:
             print(colored(f'DB: write accesslist to database failed. dungeonID: "{dungeon_id}"', 'red'))
 
+    def get_item_by_class_id(self, class_id: str):
+        self.dictionary_cursor.execute(f"""
+                                    SELECT Item.ItemID itemID, 
+                                    Item.ItemName itemName, 
+                                    Item.ItemDescription itemDescription
+                                    
+                                    FROM mudcake.Class
+                                    LEFT JOIN
+                                        mudcake.Item 
+                                            ON Class.ItemID = Item.ItemID 
+                                
+                                    WHERE Class.ClassID = '{class_id}'
+                                    """)
+        try:
+            return self.dictionary_cursor.fetchone()
+        except IOError:
+            print("Fetching Item from Class failed")
+            pass
+
+    def add_item_to_inventory(self, item_id: str, user_id: str, dungeon_id: str):
+        self.cursor.execute(f"""
+                         INSERT INTO mudcake.Inventory
+                         (ItemID, UserID, DungeonID)
+                         Values
+                         ('{item_id}', '{user_id}', '{dungeon_id}')
+                        """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            print("Error occurred during add_item_to_inventory")
+            pass
