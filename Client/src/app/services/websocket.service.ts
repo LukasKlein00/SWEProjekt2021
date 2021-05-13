@@ -68,6 +68,19 @@ export class WebsocketService {
     return this.socket.fromEvent('get_character_in_dungeon').pipe(map((data) => {
       return data}))
   }
+
+  getDiscoveredMap(dungeonID, userID){
+    this.socket.emit('get_discovered_map',{dungeonID, userID})
+    return this.socket.fromEvent('get_discovered_map').pipe(map((data) => {
+      return data}))
+  }
+
+  getCharacterData(dungeonID, userID){
+    this.socket.emit('get_character_data',{dungeonID, userID})
+    return this.socket.fromEvent('get_character_data').pipe(map((data) => {
+      return data}))
+  }
 }
+
 
 
