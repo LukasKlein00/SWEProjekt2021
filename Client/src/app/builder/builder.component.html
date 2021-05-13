@@ -67,31 +67,32 @@
               <input class="w-100" [(ngModel)]="selectedRoom.name" /><br /><br />
               RoomDescription:
               <textarea class="w-100" [(ngModel)]="selectedRoom.description"></textarea><br /><br />
-              <div class="row m-0">
-                <mat-slide-toggle [(ngModel)]="selectedRoom.north">north</mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="selectedRoom.east">east</mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="selectedRoom.south">south</mat-slide-toggle>
-                <mat-slide-toggle [(ngModel)]="selectedRoom.west">west</mat-slide-toggle>
-                <div style="margin-left: 30px">
-                  startroom:
-                  <input type="checkbox" [checked]="selectedRoom.isStartRoom" (change)="
-                      selectedRoom.isStartRoom = !selectedRoom.isStartRoom
-                    " />
+              <div class="col-12 m-0 p-0 row">
+                <div class="col-12 roomdirections col-xl-5">
+                  <mat-slide-toggle [(ngModel)]="selectedRoom.north"
+                    style="grid-column: 2; grid-row: 1; justify-self: center;">north</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="selectedRoom.east" style="grid-column: 3; grid-row: 2;">east
+                  </mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="selectedRoom.south"
+                    style="grid-column: 2; grid-row: 3; justify-self: center;">south</mat-slide-toggle>
+                  <mat-slide-toggle [(ngModel)]="selectedRoom.west"
+                    style="grid-column: 1; grid-row: 2; justify-self: right;">west</mat-slide-toggle>
+                </div>
+                <div class="col-12 col-xl-7">
+                  Items:
+                  <ng-select [(ngModel)]="selectedRoom.item">
+                    <ng-option [value]="item" *ngFor="let item of dungeon.items">{{
+                      item.name
+                      }}</ng-option>
+                  </ng-select><br />
+                  NPC:
+                  <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
+                    <ng-option [value]="npc" *ngFor="let npc of dungeon.npcs">{{
+                      npc.name
+                      }}</ng-option>
+                  </ng-select>
                 </div>
               </div>
-              <br />
-              Items:
-              <ng-select [(ngModel)]="selectedRoom.item">
-                <ng-option [value]="item" *ngFor="let item of dungeon.items">{{
-                  item.name
-                  }}</ng-option>
-              </ng-select><br />
-              NPC:
-              <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found">
-                <ng-option [value]="npc" *ngFor="let npc of dungeon.npcs">{{
-                  npc.name
-                  }}</ng-option>
-              </ng-select>
             </div>
           </div>
 
@@ -194,7 +195,7 @@
                 <tbody>
                   <tr *ngFor="let user of dungeon.accessList">
                     <td>
-                        {{user.name}}
+                      {{user.name}}
                     </td>
                     <td>
                       <div class="btn-group">

@@ -40,6 +40,12 @@
     background-color: rgb(228, 174, 104);
 }
 
+.roomdirections {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+}
 
 .chat-input {
     position: absolute;
