@@ -32,7 +32,13 @@ class Character:
             self.dungeon_id = dungeon_id
             return self
         except:
+            print("Ich bin eine exception")
             return None
 
     def add_item_to_inventory(self, item_id: str):
         self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)
+
+    def to_dict(self):
+        return {'characterID': self.character_id, 'name': self.name, 'description': self.description,
+                'health': self.life_points, 'classID': self.class_id, 'raceID': self.race_id,
+                'userID': self.user_id, 'roomID': self.room_id, 'inventory': self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)}

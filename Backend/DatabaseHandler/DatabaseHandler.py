@@ -280,17 +280,18 @@ class DatabaseHandler:
         self.cursor.execute(f"""
                             INSERT INTO mudcake.Character 
                             (DungeonID, UserID, Lifepoints, CharacterName, CharacterDescription, 
-                            RaceID, ClassID, RoomID) 
+                            RaceID, ClassID, RoomID, CharacterID) 
                             VALUES
-                                (%s,%s,%s,%s,%s,%s,%s,%s)
+                                (%s,%s,%s,%s,%s,%s,%s,%s, %s)
                             ON DUPLICATE KEY UPDATE
                             DungeonID = VALUES(DungeonID), UserID=VALUES(UserID),
                             Lifepoints = VALUES(Lifepoints), CharacterName=VALUES(CharacterName), 
                             CharacterDescription=VALUES(CharacterDescription),
-                            RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID)""",
+                            RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID), 
+                            CharacterID=VALUES(CharacterID)""",
                             (dungeon_id, character.user_id, character.life_points, character.name,
-                             character.description, character.race_id, character.class_id, character.room_id)
-                            )
+                             character.description, character.race_id, character.class_id, character.room_id,
+                             character.character_id))
         try:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"write character to database '{character}'")
@@ -362,7 +363,7 @@ class DatabaseHandler:
                                     """)
         try:
             print(colored('DB:', 'yellow'), f"get character by user id: '{user_id}'")
-            return self.cursor.fetchall()
+            return self.dictionary_cursor.fetchone()
         except IOError:
             pass
 
@@ -490,7 +491,7 @@ class DatabaseHandler:
                     """)
         try:
             print(colored('DB: ', 'yellow'), f'getting inventory by dungeon and user. dungeonID: "{dungeon_id}"')
-            return self.cursor.fetchone()
+            return self.cursor.fetchall()
         except IOError:
             pass
 
