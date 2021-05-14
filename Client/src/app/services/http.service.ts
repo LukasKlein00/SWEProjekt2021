@@ -63,6 +63,7 @@ export class HttpService {
   }
 
   deleteAccess(userName, dungeonID){
+    console.log("deleAccess entered")
     return this.http.post(`${this.apiUrl}/deleteAccess`, {userName, dungeonID});
   }
 
