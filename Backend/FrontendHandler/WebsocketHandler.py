@@ -179,8 +179,10 @@ class SocketIOHandler:
 
             try:
                 session = self.sio.get_session(sid)
-                count = self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']]
-                self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']] = count-+ 1
+                if 'dungeonID' in session:
+                    count = self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']]
+                    if count != 0:
+                        self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']] = count-+ 1
                 dungeon_data_list = []
                 #region UpdateDungeon
                 for dungeon_ID in self.activeDungeonHandler.active_dungeon_ids:
@@ -219,7 +221,6 @@ class SocketIOHandler:
             current_dungeon = ActiveDungeon(
                 self.activeDungeonHandler.active_dungeons[dungeon_id]['active_dungeon_object'])
             current_dungeon.load_rooms(dungeon_id)
-            all_rooms_in_dungeon = current_dungeon.rooms
             all_room_objects_in_dungeon = current_dungeon.rooms_objects
 
             session = self.sio.get_session(sid)
@@ -242,7 +243,7 @@ class SocketIOHandler:
 
 
             #region Adding class startitem to user inventory when first joining
-            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
+            item = self.dungeon_manager.get_item_by_class_id(character_obj.class_obj.class_id)
             character_obj.add_item_to_inventory(item.item_id)
             #endregion
 
@@ -333,6 +334,7 @@ class SocketIOHandler:
             if character:
                 print("HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB")
                 print(character.to_dict())
+                session['character'] = character
                 self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid)
             else:
                 print("Kein bock :)")
@@ -363,22 +365,30 @@ class SocketIOHandler:
 
         @self.sio.event
         def move_to_room(sid, data):
+            room_data = dict()
             print("kommt was an?: ", data)
             character = self.sio.get_session(sid)['character']
             current_room = character.room_id
 
             current_dungeon = ActiveDungeon(
-                self.activeDungeonHandler.active_dungeons(data['dungeon_id'])['active_dungeon_object'])
+                self.activeDungeonHandler.active_dungeons[data['dungeonID']]['active_dungeon_object'])
+            current_dungeon.load_rooms(data['dungeonID'])
 
-            room_data = next(room for room in current_dungeon.rooms if room["roomID"] == current_room)
+            for room in current_dungeon.room_dick_list:
+                print("forschleife room:", room)
+                if room["roomID"] == current_room:
+                    room_data = room
+
             print(room_data)
+            for item in current_dungeon.classes:
+                print("Classes: ", item)
 
             y_coordinate = room_data['y']
             x_coordinate = room_data['x']
 
             if room_data[data['direction']] is True:
                 if data['direction'] == 'north':
-                    for room in current_dungeon.rooms:
+                    for room in current_dungeon.room_dick_list:
                         if x_coordinate == room['x'] and (y_coordinate + 1) == room['y']:
                             character.room_id = room['roomID']
                             self.sio.emit('get_chat', json.dumps({'msg': "I'm in danger chuckles", 'pre': "Jack :", 'color': "red"}), to=sid)
@@ -386,21 +396,21 @@ class SocketIOHandler:
                         else:
                             self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
                 elif data['direction'] == 'east':
-                    for room in current_dungeon.rooms:
+                    for room in current_dungeon.room_dick_list:
                         if (x_coordinate + 1) == room['x'] and y_coordinate == room['y']:
                             character.room_id = room['roomID']
                             self.sio.emit('character_moved', json.dumps(room), to=sid)
                         else:
                             self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
                 elif data['direction'] == 'south':
-                    for room in current_dungeon.rooms:
+                    for room in current_dungeon.room_dick_list:
                         if x_coordinate == room['x'] and (y_coordinate - 1) == room['y']:
                             character.room_id = room['roomID']
                             self.sio.emit('character_moved', json.dumps(room), to=sid)
                         else:
                             self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
                 elif data['direction'] == 'west':
-                    for room in current_dungeon.rooms:
+                    for room in current_dungeon.room_dick_list:
                         if (x_coordinate - 1) == room['x'] and y_coordinate == room['y']:
                             character.room_id = room['roomID']
                             self.sio.emit('character_moved', json.dumps(room), to=sid)

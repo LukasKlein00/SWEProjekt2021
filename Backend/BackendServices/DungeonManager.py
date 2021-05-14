@@ -209,9 +209,9 @@ class DungeonManager:
 
             self.room_list.append(new_room)
 
-            for ac_l in accesslist_data:
-                self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['name'],
-                                                                            is_allowed=ac_l['isAllowed'])
+        for ac_l in accesslist_data:
+            self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['name'],
+                                                                     is_allowed=ac_l['isAllowed'])
 
     def write_dungeon_to_database(self):
         """ Writes the dungeon to the database.
@@ -324,6 +324,7 @@ class DungeonManager:
         """ Private method that writes a list of users in the accesslist to the database via the database handler
 
         """
+        print("?")
         for user in self.managed_dungeon.access_list.access_list:
             self.db_handler.write_user_to_acceslist(access_list_user=user, dungeon_id=self.managed_dungeon.dungeon_id)
 

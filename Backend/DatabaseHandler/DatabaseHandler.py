@@ -745,8 +745,12 @@ class DatabaseHandler:
         self.cursor.execute(f"""
                          INSERT INTO mudcake.Inventory
                          (ItemID, UserID, DungeonID)
-                         Values
+                         VALUES
                          ('{item_id}', '{user_id}', '{dungeon_id}')
+                         ON DUPLICATE KEY UPDATE
+                         ItemID = VALUES(ItemID)
+                         UserID = VALUES(UserID)
+                         DungeonID = VALUES(DungeonID)
                         """)
         try:
             self.database_path.commit()

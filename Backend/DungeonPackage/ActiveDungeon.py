@@ -53,6 +53,7 @@ class ActiveDungeon:
         self.user_ids = user_ids
         self.character_ids = character_ids
         self.rooms = [rooms]
+        self.room_dick_list = []
         self.rooms_objects = []
         self.npcs = npcs
         self.items = items
@@ -130,7 +131,7 @@ class ActiveDungeon:
                                                                                                                   'name': room_dict['npcItemName'],
                                                                                                                   'description': room_dict['npcItemDesc']}},
                      'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'], 'description': room_dict['roomItemDescription']}}
-            self.rooms.append(room)
+            self.room_dick_list.append(room)
 
         self.__parse_rooms(rooms_dict)
 
