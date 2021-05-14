@@ -157,7 +157,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/deleteAccess':
             self.__set_response()
-            print("/delete")
+            print("this is the delete accesslist stuff yep yep")
             dungeon_manager = DungeonManager()
             dungeon_manager.delete_user_from_accesslist(data)
 
