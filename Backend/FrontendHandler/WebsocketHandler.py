@@ -59,6 +59,14 @@ class SocketIOHandler:
         self.access_manager = AccessManager()
 
         @self.sio.event
+        def move_to_room(sid, data):
+            raise NotImplementedError
+
+        @self.sio.event
+        def dungeon_master_request(sid, data):
+            raise NotImplementedError
+
+        @self.sio.event
         def send_join_request_answer(sid, data):
             answer = data["isAllowed"]
             session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
@@ -213,13 +221,6 @@ class SocketIOHandler:
             current_dungeon.load_rooms(dungeon_id)
             all_rooms_in_dungeon = current_dungeon.rooms
             all_room_objects_in_dungeon = current_dungeon.rooms_objects
-            for room in all_room_objects_in_dungeon[1:]:
-                print(room)
-                if room.room_id == starting_room['roomID']:
-                    room.user_ids.append(character["userID"])
-                    character = self.sio.get_session(sid)['character']
-                    character.room_id = room.room_id
-            #endregion
 
             session = self.sio.get_session(sid)
             # TODO: inventory (class startitem)
@@ -228,6 +229,15 @@ class SocketIOHandler:
                                       class_obj=Class(class_id=character["class"]["classID"]), race=Race(race_id=character["race"]["raceID"]),
                                       user_id=character["userID"], dungeon_id=dungeon_id, character_id=str(uuid.uuid4()))
             session["character"] = character_obj
+
+            for room in all_room_objects_in_dungeon[1:]:
+                print(room)
+                if room.room_id == starting_room['roomID']:
+                    room.user_ids.append(character["userID"])
+                    character = self.sio.get_session(sid)['character']
+                    character.room_id = room.room_id
+            #endregion
+
             self.dungeon_manager.write_character_to_database(character_obj)
 
 
@@ -236,8 +246,13 @@ class SocketIOHandler:
             character_obj.add_item_to_inventory(item.item_id)
             #endregion
 
-            self.sio.emit('character_joined_room',
-                          json.dumps({'startRoom': starting_room, 'allOtherRoomsToLoad': all_rooms_in_dungeon}), sid=sid)
+            # self.sio.emit('character_joined_room',
+            #               json.dumps({'startRoom': starting_room, 'allOtherRoomsToLoad': all_rooms_in_dungeon}), sid=sid)
+
+        @self.sio.event
+        def character_joins_room(sid, character):
+            raise NotImplementedError
+
 
         @ self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
