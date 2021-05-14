@@ -583,3 +583,9 @@ class DungeonManager:
         """
         item_data = self.db_handler.get_item_by_class_id(class_id)
         return Item(item_id=item_data['itemID'], name=item_data['itemName'], description=item_data['itemDescription'])
+
+    def delete_user_from_accesslist(self, data):
+        try:
+            self.db_handler.delete_user_from_accesslist(username=data['userName'], dungeon_id=data['dungeonID'])
+        except IOError:
+            pass

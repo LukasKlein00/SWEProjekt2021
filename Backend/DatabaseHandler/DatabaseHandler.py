@@ -753,3 +753,15 @@ class DatabaseHandler:
         except IOError:
             print("Error occurred during add_item_to_inventory")
             pass
+
+    def delete_user_from_accesslist(self, username, dungeon_id):
+        self.cursor.execute(f"""
+                                DELETE 
+                                FROM mudcake.AccessList
+                                WHERE UserName = '{username}' AND DungeonID = '{dungeon_id}'
+                               """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            print("Error occurred during add_item_to_inventory")
+            pass
