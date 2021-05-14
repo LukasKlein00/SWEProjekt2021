@@ -159,15 +159,3 @@ export class requestForMaster {
     y: number;
 }
 
-
-//objekte nicht benutzt, nur das man weiß, dass diese Requests kommen :)
-
-export class DungeonRequest {
-    dungeonID: number;
-}
-
-export class AuthorisationWithToken {
-    token: string;
-}
-
-
