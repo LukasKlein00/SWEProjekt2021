@@ -141,6 +141,7 @@ class SocketIOHandler:
 
         # TODO: mit jack klären, dass aktive dungeons die vom dungeonmaster verlassen wurden beim dungeon master als
         # aktiv gekennzeicnet werden und dungeon ein beenden button bekommen
+
         @self.sio.event
         def disconnect(sid):
             # self.sio.leave_room(sid, self.sio.get_session(sid)['dungeonID'])
@@ -187,13 +188,8 @@ class SocketIOHandler:
                     print(colored(dungeon_dict, 'green'))
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
                 #endregion
-            except:
+            except IOError:
                 pass
-
-            @self.sio.event
-            def message(sid, data):
-                print('message: ', data)
-                self.sio.emit('message')
 
         @self.sio.event
         def on_leave_dungeon(sid, data):
@@ -346,3 +342,16 @@ class SocketIOHandler:
         def change_dungeonmaster(sid, data):
             session = self.sio.get_session()
             self.sio.emit("make_dungeonmaster", None, to=data['userID'])
+
+        @self.sio.event
+        def move_to_room(data):
+            # data = {dungeonID, userID, direction}
+            # ist Raum in gewünschte richtung offen?
+            # ist da ein Raum?
+            # if so -> move character id from roomID(alt) to roomID(neu)
+            # geb zurück neue koordinaten für frontend
+            raise NotImplementedError
+
+        @self.sio.event
+        def dungeon_master_request(data):
+            raise NotImplementedError
