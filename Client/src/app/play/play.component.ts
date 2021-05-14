@@ -92,7 +92,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   getDiscoveredRooms() {
     console.log("requesting room data...")
-    this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
+    this.sub2 = this.socketService.getDiscoveredMap(this.player).subscribe(res => console.log("character overview", res))
   }
 
 
@@ -104,6 +104,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       if (res != "false") {
         this.loading = false;
         this.player = JSON.parse(res as string);
+        this.player['dungeonID'] = this.world.dungeonID;
         
       } else {
         this.socketService.getCharConfig(dID).subscribe((res: string) => {

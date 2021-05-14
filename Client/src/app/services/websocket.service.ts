@@ -69,9 +69,9 @@ export class WebsocketService {
       return data}))
   }
 
-  getDiscoveredMap(dungeonID, userID){
-    this.socket.emit('get_discovered_map',{dungeonID, userID})
-    return this.socket.fromEvent('get_discovered_map').pipe(map((data) => {
+  getDiscoveredMap(player){
+    this.socket.emit('send_character_config',player)
+    return this.socket.fromEvent('character_joined_room').pipe(map((data) => {
       return data}))
   }
 
@@ -91,6 +91,14 @@ export class WebsocketService {
 
   sendMessageToRoom(dungeonID, userName, roomID, message){
     this.socket.emit('send_message_to_room',{dungeonID, userName, roomID, message})
+  }
+
+  sendMessageToMaster(dungeonID, userName, message){
+    this.socket.emit('send_message_to_master',{dungeonID, userName, message})
+  }
+
+  sendWhisperToRoom(dungeonID, userName, message){
+    this.socket.emit('send_whisper_to_room',{dungeonID, userName, message})
   }
 
   getChat(){
