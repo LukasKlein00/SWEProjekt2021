@@ -61,7 +61,7 @@ class SocketIOHandler:
         @self.sio.event
         def send_join_request_answer(sid, data):
             answer = data["isAllowed"]
-            session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']])
+            session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
             for socket in self.activeDungeonHandler.user_sid[data['userID']]:
                 self.sio.emit("on_join_request_answer", answer, to=socket)
             count = self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']]
@@ -217,6 +217,8 @@ class SocketIOHandler:
                 print(room)
                 if room.room_id == starting_room['roomID']:
                     room.user_ids.append(character["userID"])
+                    character = self.sio.get_session(sid)['character']
+                    character.room_id = room.room_id
             #endregion
 
             session = self.sio.get_session(sid)
@@ -243,6 +245,7 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             user_status = self.access_manager.user_status_on_access_list(data['dungeonID'], session['userName'])
             session['dungeonID'] = data['dungeonID']
+            print("User Status: ", user_status)
             if user_status:
                 self.sio.enter_room(sid, data['dungeonID'])
                 count = self.activeDungeonHandler.user_count_in_dungeon[data['dungeonID']]
@@ -344,9 +347,30 @@ class SocketIOHandler:
             self.sio.emit("make_dungeonmaster", None, to=data['userID'])
 
         @self.sio.event
-        def move_to_room(data):
+        def move_to_room(sid, data):
             # data = {dungeonID, userID, direction}
-            # ist Raum in gewünschte richtung offen?
+            character = self.sio.get_session(sid)['character']
+            current_room = character.room_id
+
+            current_dungeon = ActiveDungeon(
+                self.activeDungeonHandler.active_dungeons(data['dungeon_id'])['active_dungeon_object'])
+
+            room_data = next(room for room in current_dungeon.rooms if room["roomID"] == current_room)
+            print(room_data)
+
+            y_coordinate = room_data['y']
+            x_coordinate = room_data['x']
+
+            if room_data[data['direction']] is True:
+                if data['direction'] == 'north':
+                    for room in current_dungeon.rooms:
+                        if x_coordinate == room['x'] and (y_coordinate + 1) == room['y']:
+                            character.room_id = room['roomID']
+
+                        else:
+                            self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
+
+             # ist Raum in gewünschte richtung offen?
             # ist da ein Raum?
             # if so -> move character id from roomID(alt) to roomID(neu)
             # geb zurück neue koordinaten für frontend
