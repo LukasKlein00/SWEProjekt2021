@@ -74,14 +74,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (dungeon.private) {
         this.joinLoad = true;
         this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
-        this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: boolean) => {
-          res = JSON.parse(res)
+        this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: string) => {
           console.log("joinRes:", res)
-          console.log("type:",typeof(res))
-          if (res == false){
+          let check: boolean = JSON.parse(res)
+          console.log("type:",typeof(check))
+          if (check == false){
             console.log("res is false")
           }
-          if (res == true) {
+          if (check == true) {
             console.log("res is true")
             this.router.navigate(['/play',{id: dungeon.dungeonID}])
           } 
