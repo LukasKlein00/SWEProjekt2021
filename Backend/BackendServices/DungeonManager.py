@@ -118,7 +118,6 @@ class DungeonManager:
         room_data = self.data['rooms']
         class_data = self.data['classes']
         accesslist_data = self.data['accessList']
-        print(class_data)
 
         for race in race_data:
             logging.debug(race)
@@ -233,7 +232,6 @@ class DungeonManager:
             logging.debug("Classes saved")
             self.__write_npcs_to_database()
             logging.debug("Npcs saved")
-            print(self.room_list)
             self.__write_rooms_to_database()
             logging.debug("Rooms saved")
             logging.debug("write dungeon to database: self.managed_dungeon.dungeon_id")
@@ -324,7 +322,6 @@ class DungeonManager:
         """ Private method that writes a list of users in the accesslist to the database via the database handler
 
         """
-        print("?")
         for user in self.managed_dungeon.access_list.access_list:
             self.db_handler.write_user_to_acceslist(access_list_user=user, dungeon_id=self.managed_dungeon.dungeon_id)
 
@@ -465,7 +462,6 @@ class DungeonManager:
             All Rooms in the dungeon as list
         """
         rooms_dict = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=data)
-        print(rooms_dict)
         room_list = []
         for room_dict in rooms_dict:
             room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
