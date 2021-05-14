@@ -69,9 +69,9 @@ export class WebsocketService {
       return data}))
   }
 
-  getDiscoveredMap(dungeonID, userID){
-    this.socket.emit('get_discovered_map',{dungeonID, userID})
-    return this.socket.fromEvent('get_discovered_map').pipe(map((data) => {
+  getDiscoveredMap(player){
+    this.socket.emit('send_character_config',player)
+    return this.socket.fromEvent('character_joined_room').pipe(map((data) => {
       return data}))
   }
 
