@@ -348,7 +348,7 @@ class SocketIOHandler:
 
         @self.sio.event
         def move_to_room(sid, data):
-            # data = {dungeonID, userID, direction}
+            print("kommt was an?: ", data)
             character = self.sio.get_session(sid)['character']
             current_room = character.room_id
 
@@ -366,15 +366,33 @@ class SocketIOHandler:
                     for room in current_dungeon.rooms:
                         if x_coordinate == room['x'] and (y_coordinate + 1) == room['y']:
                             character.room_id = room['roomID']
-
+                            self.sio.emit('get_chat', json.dumps({'msg': "I'm in danger chuckles", 'pre': "Jack :", 'color': "red"}), to=sid)
+                            self.sio.emit('character_moved', json.dumps(room), to=sid)
                         else:
                             self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
-
-             # ist Raum in gewünschte richtung offen?
-            # ist da ein Raum?
-            # if so -> move character id from roomID(alt) to roomID(neu)
-            # geb zurück neue koordinaten für frontend
-            raise NotImplementedError
+                elif data['direction'] == 'east':
+                    for room in current_dungeon.rooms:
+                        if (x_coordinate + 1) == room['x'] and y_coordinate == room['y']:
+                            character.room_id = room['roomID']
+                            self.sio.emit('character_moved', json.dumps(room), to=sid)
+                        else:
+                            self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
+                elif data['direction'] == 'south':
+                    for room in current_dungeon.rooms:
+                        if x_coordinate == room['x'] and (y_coordinate - 1) == room['y']:
+                            character.room_id = room['roomID']
+                            self.sio.emit('character_moved', json.dumps(room), to=sid)
+                        else:
+                            self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
+                elif data['direction'] == 'west':
+                    for room in current_dungeon.rooms:
+                        if (x_coordinate - 1) == room['x'] and y_coordinate == room['y']:
+                            character.room_id = room['roomID']
+                            self.sio.emit('character_moved', json.dumps(room), to=sid)
+                        else:
+                            self.sio.emit('no_room_in_this_direction', json.dumps(False), to=sid)
+            else:
+                self.sio.emit('no_exit_in_this_direction', json.dumps(False), to=sid)
 
         @self.sio.event
         def dungeon_master_request(data):
