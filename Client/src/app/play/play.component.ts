@@ -18,6 +18,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   sub1: Subscription;
   sub2: Subscription;
+  sub3: Subscription;
 
   world: Dungeon = {};
   loading;
@@ -81,7 +82,6 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.player = result;
       console.log("player created:",this.player)
       this.socketService.sendCharacter(this.player);
-
     });
   }
 
@@ -92,7 +92,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   getDiscoveredRooms() {
     console.log("requesting room data...")
-    this.sub2 = this.socketService.getDiscoveredMap(this.player).subscribe(res => console.log("character overview", res))
+    this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
   }
 
 

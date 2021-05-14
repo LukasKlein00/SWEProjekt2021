@@ -328,6 +328,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   removeFromAccess(user) {
+    this.httpService.deleteAccess(user.name, this.dungeon.dungeonID);
+    this.getAccessList();
     const index = this.dungeon.accessList.indexOf(user, 0);
     if (index > -1) {
       this.dungeon.accessList.splice(index, 1);

@@ -62,4 +62,8 @@ export class HttpService {
     return this.http.post<Access[]>(`${this.apiUrl}/getAccessList`, JSON.stringify(id));
   }
 
+  deleteAccess(userName, dungeonID){
+    return this.http.post(`${this.apiUrl}/deleteAccess`, {userName, dungeonID});
+  }
+
 }
