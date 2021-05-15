@@ -510,7 +510,7 @@ class DatabaseHandler:
         try:
             print(colored('DB: ', 'yellow'), f'get dungeon data by dungeon id "{dungeon_id}"')
             queryData = self.cursor.fetchall()
-            print(queryData)
+            print("QueryData: ", queryData)
             return queryData
         except IOError:
             print(colored(f"DB: get character by dungeon id failed, dungeon id: '{dungeon_id}'", 'red'))
@@ -639,9 +639,6 @@ class DatabaseHandler:
         try:
             print(colored('DB:', 'yellow'), f'get rooms as dict. dungeonID: "{dungeon_id}"')
             datta = self.dictionary_cursor.fetchall()
-            for data in datta:
-                print(data)
-            print(datta)
             return datta
         except IOError:
             print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))

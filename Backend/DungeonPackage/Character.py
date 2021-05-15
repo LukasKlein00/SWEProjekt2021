@@ -69,6 +69,7 @@ class Character:
             self.user_id = user_id
             # TODO: self.discovered_map = databaseCharacterData["RoomID"]
             self.dungeon_id = dungeon_id
+            self.room_id = databaseCharacterData["roomID"]
             return self
         except:
             return None
