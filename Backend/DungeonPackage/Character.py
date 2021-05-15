@@ -77,8 +77,10 @@ class Character:
             self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room_id)
 
     def load_discovered_rooms_from_database(self):
-        for room_id in self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)['roomID']:
-            self.discovered_rooms.append(room_id)
+        rooms = self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)
+        print(rooms)
+        for room in self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id):
+            self.discovered_rooms.append(room['roomID'])
 
     def to_dict(self):
         return {'characterID': self.character_id, 'name': self.name, 'description': self.description,
