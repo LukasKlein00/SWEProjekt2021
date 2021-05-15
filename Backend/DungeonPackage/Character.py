@@ -72,6 +72,16 @@ class Character:
     def add_item_to_inventory(self, item_id: str):
         self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)
 
+    def discovered_rooms_to_database(self):
+        for room_id in self.discovered_rooms:
+            self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room_id)
+
+    def load_discovered_rooms_from_database(self):
+        rooms = self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)
+        print(rooms)
+        for room in self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id):
+            self.discovered_rooms.append(room['roomID'])
+
     def to_dict(self):
         return {'characterID': self.character_id, 'name': self.name, 'description': self.description,
                 'health': self.life_points, 'class': {'classID': self.class_obj.class_id, 'name': self.class_obj.name, 'description': self.class_obj.description}, 'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},

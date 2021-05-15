@@ -155,6 +155,12 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(access_list).encode(encoding='utf_8'))
             print("acceslist sent")
 
+        if self.path == '/deleteAccess':
+            self.__set_response()
+            print("this is the delete accesslist stuff yep yep")
+            dungeon_manager = DungeonManager()
+            dungeon_manager.delete_user_from_accesslist(data)
+
 
         if self.path == '/saveDungeon':
             self.__set_response()
