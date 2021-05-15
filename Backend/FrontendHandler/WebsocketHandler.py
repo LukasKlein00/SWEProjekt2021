@@ -253,6 +253,7 @@ class SocketIOHandler:
             character_obj = Character(life_points=character["health"],
                                       name=character["name"], description=character["description"],
                                       user_id=character["userID"], dungeon_id=character['dungeonID'])
+            character_obj.discovered_rooms_to_database()
             character_obj.load_discovered_rooms_from_database()
             all_discovered_rooms_ids_by_character = character_obj.discovered_rooms
             all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
@@ -399,19 +400,3 @@ class SocketIOHandler:
         @self.sio.event
         def dungeon_master_request(data):
             raise NotImplementedError
-
-
-if __name__ == '__main__':
-    dungeon_manager = DungeonManager()
-    character = {'health': 100, 'name': 'JackBoi', 'description': 'ein cooler Char',
-                 'userID': '609f121b-e5d5-4eeb-a9c1-6713bffe4a15', 'dungeonID': '1b01d7cf-bf8a-44a2-b7a6-26aca1fd5690'}
-    character_obj = Character(life_points=character["health"],
-                              name=character["name"], description=character["description"],
-                              user_id=character["userID"], dungeon_id=character['dungeonID'])
-    character_obj.discovered_rooms_to_database()
-    character_obj.load_discovered_rooms_from_database()
-    all_discovered_rooms_ids_by_character = character_obj.discovered_rooms
-    all_discovered_rooms = dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
-                                                                       character['dungeonID'])
-    print('character_joined_room', json.dumps(all_discovered_rooms))
-    # self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)

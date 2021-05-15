@@ -680,7 +680,7 @@ class DatabaseHandler:
                                     """)
         try:
             print(colored('DB:', 'yellow'), f'get rooms as dict. dungeonID: "{dungeon_id}"')
-            datta = self.dictionary_cursor.fetchall()
+            datta = self.dictionary_cursor.fetchone()
             return datta
         except IOError:
             print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))
