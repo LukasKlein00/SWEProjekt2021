@@ -1,5 +1,7 @@
 @import "./../sccVariables.scss";
 
+$roomway: white;
+
 .roomMap{
     overflow-y: auto;
     overflow-x: auto;
@@ -19,7 +21,47 @@
     
     width: 25px;
     height: 25px;
-    border: 1px solid black;
+    outline: 1px solid black;
+}
+
+.north {
+    content: "";
+    position: absolute;
+    height: 3px !important;
+    width: 7px !important;
+    margin-top: -3px;
+    margin-left: 9px;
+    background-color: $roomway;
+}
+
+.west {
+    content: "";
+    position: absolute;
+    height: 7px !important;
+    width: 3px !important;
+    margin-top: 9px;
+    margin-left: -3px;
+    background-color: $roomway;
+}
+
+.east {
+    content: "";
+    position: absolute;
+    height: 7px !important;
+    width: 3px !important;
+    margin-top: 9px;
+    margin-left: 25px;
+    background-color: $roomway;
+}
+
+.south {
+    content: "";
+    position: absolute;
+    height: 3px !important;
+    width: 7px !important;
+    margin-top: 25px;
+    margin-left: 9px;
+    background-color: $roomway;
 }
 
 .startRoom {
@@ -27,7 +69,7 @@
 }
 
 .selectedRoom {
-    border: 4px solid white;
+    outline: 4px solid orangered;
 }
 
 .room {

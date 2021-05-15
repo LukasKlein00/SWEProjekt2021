@@ -1,5 +1,7 @@
 @import "./../sccVariables.scss";
 
+$roomway: white;
+
 .roomMap{
     overflow-y: auto;
     overflow-x: auto;
@@ -10,6 +12,10 @@
     display: grid;
     grid-template-columns: repeat(15, 30px [col-start]);
     grid-template-rows: repeat(15, 30px [row-start]);
+}
+
+.isInRoom{
+    background-color: rgb(243, 138, 0);
 }
 
 .roomCell{
@@ -31,4 +37,44 @@
 
 .activeRoom {
     background-color: rgb(228, 174, 104);
+}
+
+.north {
+    content: "";
+    position: absolute;
+    height: 3px !important;
+    width: 7px !important;
+    margin-top: -3px;
+    margin-left: 9px;
+    background-color: $roomway;
+}
+
+.west {
+    content: "";
+    position: absolute;
+    height: 7px !important;
+    width: 3px !important;
+    margin-top: 9px;
+    margin-left: -3px;
+    background-color: $roomway;
+}
+
+.east {
+    content: "";
+    position: absolute;
+    height: 7px !important;
+    width: 3px !important;
+    margin-top: 9px;
+    margin-left: 25px;
+    background-color: $roomway;
+}
+
+.south {
+    content: "";
+    position: absolute;
+    height: 3px !important;
+    width: 7px !important;
+    margin-top: 25px;
+    margin-left: 9px;
+    background-color: $roomway;
 }
