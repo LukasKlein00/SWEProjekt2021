@@ -239,7 +239,8 @@ class SocketIOHandler:
 
             # region Adding class startitem to user inventory when first joining
             item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
-            character_obj.add_item_to_inventory(item.item_id)
+            if item.item_id:
+                character_obj.add_item_to_inventory(item.item_id)
             # endregion
 
         @self.sio.event
@@ -249,7 +250,6 @@ class SocketIOHandler:
             all_discovered_rooms_ids_by_character = character.discovered_rooms
             all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
                                                                                character.dungeon_id)
-            print(json.dumps(all_discovered_rooms))
             self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
 
         @self.sio.event
