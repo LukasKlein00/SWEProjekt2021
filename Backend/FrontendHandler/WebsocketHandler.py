@@ -233,17 +233,21 @@ class SocketIOHandler:
                     room.user_ids.append(character["userID"])
                     character_obj.room_id = room.room_id
                     character_obj.discovered_rooms.append(room.room_id)
+                    self.dungeon_manager.write_character_to_database(character_obj)
                     character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
             # endregion
             session["character"] = character_obj
 
-            self.dungeon_manager.write_character_to_database(character_obj)
+
 
             # region Adding class startitem to user inventory when first joining
             item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
-            if item.item_id:
+            try:
                 character_obj.inventory.add_item_to_inventory(item.item_id)
+            except AttributeError:
+                print("Da war das item wohl none ¯\_(ツ)_/¯")
+                pass
             # endregion
 
         @self.sio.event
@@ -407,8 +411,9 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             character = session['character']
             room_to_send = character.room_id
-            msg = {'pre': character.name, 'msg': data['message']}
+            msg = {'pre': character.name + ": ", 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), room=room_to_send)
+            print("send_message_to_ROOONMR WURDE EMITTET YO")
 
         @self.sio.event
         def send_message_to_all(sid, data):

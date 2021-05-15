@@ -77,8 +77,11 @@ class Character:
         self.db_handler.set_character_health(health, user_id=self.user_id, dungeon_id=self.dungeon_id)
 
     def discovered_rooms_to_database(self):
-        for room_id in self.discovered_rooms:
-            self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room_id)
+        try:
+            for room_id in self.discovered_rooms:
+                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room_id)
+        except IOError:
+            pass
 
     def load_discovered_rooms_from_database(self):
         rooms = self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)
