@@ -518,14 +518,32 @@ class DatabaseHandler:
 
     def get_discovered_rooms_by_user_dungeon_id(self, dungeon_id: str, user_id: str):
 
-        self.cursor.execute(f"""
-                        SELECT *
+        self.dictionary_cursor.execute(f"""
+                        SELECT  UserID userID,
+                                DungeonID dungeonID,
+                                RoomID roomID
                         FROM mudcake.DiscoveredRoom
                         WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')
                         """)
         try:
             print(colored('DB: ', 'yellow'), f'getting discovered rooms by dungeon and user. dungeonID: "{dungeon_id}"')
-            return self.cursor.fetchone()
+            return self.dictionary_cursor.fetchall()
+        except IOError:
+            pass
+
+    def write_discovered_room_to_database(self, dungeon_id: str, user_id: str, room_id: str):
+        self.cursor.execute(f"""
+                        INSERT INTO mudcake.DiscoveredRoom
+                            (RoomID, UserID, DungeonID)
+                        VALUES
+                            ('{room_id}', '{user_id}', '{dungeon_id}')
+                        ON DUPLICATE KEY UPDATE
+                            RoomID=VALUES(RoomID),
+                            UserID=VALUES(UserID),
+                            DungeonID=VALUES(DungeonID)
+                        """)
+        try:
+            self.database_path.commit()
         except IOError:
             pass
 
@@ -623,6 +641,46 @@ class DatabaseHandler:
             for data in datta:
                 print(data)
             print(datta)
+            return datta
+        except IOError:
+            print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))
+
+    def get_room_by_room_id_as_dict(self, dungeon_id: str, room_id: str):
+        self.dictionary_cursor.execute(
+                                   f"""
+                                    Select
+                                        RoomID roomID,
+                                        RoomName roomName,
+                                        RoomDescription roomDescription,
+                                        isStartingRoom isStartRoom,
+                                        CoordinateX x,
+                                        CoordinateY y,
+                                        North north,
+                                        East east,
+                                        South south,
+                                        West west,
+                                        NpcID npcID,
+                                        NpcName npcName,
+                                        NpcDescription npcDescription,
+                                        RoomItem.ItemID roomItemID,
+                                        RoomItem.ItemName roomItemName,
+                                        RoomItem.ItemDescription roomItemDescription,
+                                        Item.ItemID npcItemID,
+                                        Item.ItemDescription npcItemDesc,
+                                        Item.ItemName npcItemName
+                                    From
+                                        mudcake.Room
+                                    LEFT JOIN
+                                        mudcake.Npc USING (NpcID)
+                                    LEFT JOIN
+                                        mudcake.Item ON Npc.ItemID = Item.ItemID
+                                    LEFT JOIN
+                                        mudcake.Item as RoomItem ON Room.ItemID = RoomItem.ItemID
+                                    WHERE (Room.DungeonID = '{dungeon_id}' AND Room.RoomID = '{room_id}')
+                                    """)
+        try:
+            print(colored('DB:', 'yellow'), f'get rooms as dict. dungeonID: "{dungeon_id}"')
+            datta = self.dictionary_cursor.fetchone()
             return datta
         except IOError:
             print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))
@@ -752,6 +810,18 @@ class DatabaseHandler:
                          UserID = VALUES(UserID),
                          DungeonID = VALUES(DungeonID)
                         """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            print("Error occurred during add_item_to_inventory")
+            pass
+
+    def delete_user_from_accesslist(self, username, dungeon_id):
+        self.cursor.execute(f"""
+                                DELETE 
+                                FROM mudcake.AccessList
+                                WHERE UserName = '{username}' AND DungeonID = '{dungeon_id}'
+                               """)
         try:
             self.database_path.commit()
         except IOError:

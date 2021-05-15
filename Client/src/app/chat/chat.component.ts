@@ -16,6 +16,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   @Input() dungeonID: any;
   @Input() roomID: any;
+  @Input() isDungeonMaster: boolean = false;
 
   userID = JSON.parse(localStorage.getItem("currentUser")).userID;
   userName = JSON.parse(localStorage.getItem("currentUser")).username;
@@ -36,9 +37,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   chat(event) {
-    
+
     if (event && event.key === 'Enter' && this.text != '') {
-      this.checkChatEvent()
+      if (!this.isDungeonMaster) {
+        this.checkChatEvent()
+      } else {
+        this.checkDungeonMasterEvent();
+      }
       this.text = '';
     }
     const messageBody = document.querySelector('#messageBody');
@@ -53,10 +58,35 @@ export class ChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkDungeonMasterEvent() {
+    if (this.text[0] == '/') {
+      this.checkDungeonMasterAction()
+    } else {
+      this.allChat()
+    }
+  }
+
+  checkDungeonMasterAction() {
+    let entry = this.text.slice(1).toLowerCase()
+    console.log("DMcommand", entry)
+
+    if (entry.startsWith("whisper ")) {
+      entry = entry.slice(8);
+      console.log("whisper:", entry);
+      this.socket.sendWhisperToPlayer(this.dungeonID, entry);
+    } else if (entry == "help" || entry == "h") {
+      this.writeHelp(true);
+    } else {
+      this.chatMessages.push({
+        msg: "Unknown Command",
+        color: "red"
+      })
+    }
+  }
+
   checkAction() {
     let entry = this.text.slice(1).toLowerCase()
     console.log("command", entry)
-
     if (entry.startsWith("dm ")) {
       entry = entry.slice(3);
       console.log("dm:", entry);
@@ -99,8 +129,17 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   }
-  writeHelp() {
-    this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
+  writeHelp(isDM = false) {
+    if (isDM) {
+      this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
+      { msg: "use '/' followed by text to execute a command" },
+      {},
+      { msg: "help | h: return the HELP menu" },
+      {},
+      { msg: "whisper <name> <message>: chat with <name> in the same room" },
+      { msg: "<<< HELP MENU >>>", color: "yellow" },);
+    } else {
+      this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
       { msg: "use '/' followed by text to execute a command" },
       {},
       { msg: "help | h: return the HELP menu" },
@@ -111,11 +150,12 @@ export class ChatComponent implements OnInit, OnDestroy {
       { msg: "west | w: tries to enter the room to the west" },
       {},
       { msg: "dm: chat directly with the Dungeon Master" },
-      { msg: "whisper <name>: chat with <name> in the same room" },
+      { msg: "whisper <name> <message>: chat with <name> in the same room" },
       {},
       { msg: "<your action>: sends <your action> as an action request to the Dungeon Master" },
       { msg: "<<< HELP MENU >>>", color: "yellow" },
     )
+    }
   }
 
   roomChat() {
@@ -125,6 +165,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       pre: this.userName + " :",
       msg: this.text,
     });
+  }
+
+  allChat() {
+    console.log("send to all: ", this.text)
+    this.socket.sendMessageToAll(this.dungeonID, this.text)
   }
 
   ngOnDestroy() {

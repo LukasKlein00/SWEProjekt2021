@@ -93,12 +93,20 @@ export class WebsocketService {
     this.socket.emit('send_message_to_room',{dungeonID, userName, roomID, message})
   }
 
+  sendMessageToAll(dungeonID, message){
+    this.socket.emit('send_message_to_all',{dungeonID, message})
+  }
+
   sendMessageToMaster(dungeonID, userName, message){
     this.socket.emit('send_message_to_master',{dungeonID, userName, message})
   }
 
   sendWhisperToRoom(dungeonID, userName, message){
     this.socket.emit('send_whisper_to_room',{dungeonID, userName, message})
+  }
+
+  sendWhisperToPlayer(dungeonID, message){
+    this.socket.emit('send_whisper_to_player',{dungeonID, message})
   }
 
   getChat(){

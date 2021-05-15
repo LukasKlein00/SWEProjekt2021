@@ -479,6 +479,32 @@ class DungeonManager:
         logging.debug(room_list)
         return room_list
 
+    def get_data_for_room_list(self, room_ids: [str], dungeon_id: str):
+        """ Gets all room data as json from dungeon id
+
+        Args:
+            data (str): Dungeon id of the dungeon
+
+        Returns:
+            All Rooms in the dungeon as list
+        """
+        room_list = []
+        for id in room_ids:
+            room_dict = self.db_handler.get_room_by_room_id_as_dict(dungeon_id=dungeon_id, room_id=id)
+            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
+                    'isStartRoom': room_dict['isStartRoom'],
+                     'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
+                     'north': room_dict['north'], 'east': room_dict['east'], 'south': room_dict['south'],
+                     'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                                                        'description': room_dict['npcDescription'],
+                                                        'equipment': {'itemID': room_dict['npcItemID'],
+                                                                      'name': room_dict['npcItemName'],
+                                                                      'description': room_dict['npcItemDesc']}},
+                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'],
+                              'description': room_dict['roomItemDescription']}}
+            room_list.append(room)
+        return room_list
+
     def get_all_from_classes_as_json(self, data):
         """ Gets all classes as json from dungeon id
 
@@ -580,3 +606,9 @@ class DungeonManager:
         """
         item_data = self.db_handler.get_item_by_class_id(class_id)
         return Item(item_id=item_data['itemID'], name=item_data['itemName'], description=item_data['itemDescription'])
+
+    def delete_user_from_accesslist(self, data):
+        try:
+            self.db_handler.delete_user_from_accesslist(username=data['userName'], dungeon_id=data['dungeonID'])
+        except IOError:
+            pass
