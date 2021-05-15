@@ -92,7 +92,12 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   getDiscoveredRooms() {
     console.log("requesting room data...")
-    this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
+    this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res: string) => {
+      console.log("rooms res", res)
+      this.rooms = JSON.parse(res)
+      this.rooms.forEach(r => r['isActive'] = true);
+      console.log("rooms variable", this.rooms)
+    })
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { WebsocketService } from '../services/websocket.service';
 
@@ -18,6 +18,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Input() roomID: any;
   @Input() isDungeonMaster: boolean = false;
 
+  @Input() unreadMessages: number = 0;
+  @Output() ChatMessageEvent = new EventEmitter<number>();
+
   userID = JSON.parse(localStorage.getItem("currentUser")).userID;
   userName = JSON.parse(localStorage.getItem("currentUser")).username;
 
@@ -31,9 +34,14 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.sub1 = this.socket.getChat().subscribe((msg: string) => {
       console.log("received msg: ", msg)
       this.chatMessages.push(JSON.parse(msg));
+      this.inscreaseChatNumber();
       const messageBody = document.querySelector('#messageBody');
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     });
+  }
+
+  inscreaseChatNumber() {
+    this.ChatMessageEvent.emit(this.unreadMessages + 1);
   }
 
   chat(event) {

@@ -35,8 +35,8 @@
               href="#nav-access-rights" role="tab" aria-controls="nav-access-rights" aria-selected="false"
               (click)="getAccessList()">Access Rights</a>
             <a class="nav-item nav-link text-white" id="nav-chat-tab" data-toggle="tab" href="#nav-chat" role="tab"
-              aria-controls="nav-chat" aria-selected="false">
-              <span matBadge="3" matBadgeColor="warn" matBadgeSize="small" matBadgeOverlap="false">Chat</span></a>
+              aria-controls="nav-chat" aria-selected="false" (click)="chatMessages = 0">
+              <span >Chat</span></a><div [matBadge]="chatMessages" [matBadgeHidden]="(chatMessages == 0)" matBadgeColor="warn" matBadgeSize="small" matBadgeOverlap="false" [matBadgePosition]="'before'"></div>
           </div>
         </nav>
 
@@ -246,7 +246,7 @@
 
           <div class="tab-pane fade" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab">
             <div *ngIf="dungeon" class="chat">
-              <app-chat [styles]="{'grid-template-rows': '236px 44px','border': 'none'}" [isDungeonMaster]="true"></app-chat>
+              <app-chat [styles]="{'grid-template-rows': '236px 44px','border': 'none'}" [isDungeonMaster]="true" [unreadMessages]="chatMessages" (ChatMessageEvent)="receiveMessage($event)"></app-chat>
             </div>
           </div>
         </div>
