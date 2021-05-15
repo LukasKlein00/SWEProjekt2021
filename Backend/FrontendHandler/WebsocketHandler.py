@@ -346,6 +346,7 @@ class SocketIOHandler:
             if character:
                 print("HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB")
                 print(character.to_dict())
+                session['character'] = character
                 self.sio.enter_room(sid, character.room_id)
                 self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid)
             else:
