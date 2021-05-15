@@ -15,17 +15,17 @@
             </div>
         </div>
         <div class="col-12-min-map">
-            <app-chat [dungeonID]="world.dungeonID" [roomID]="currentRoom.roomID"></app-chat>
+            <app-chat [dungeonID]="world.dungeonID" [roomID]="currentRoom?.roomID"></app-chat>
         </div>
         <div class="info col-12">
             <div class="row">
                 <div class="col-lg-6 col-12">
                     <div class="roomInfo card bg-dark card-border col-12 m-1">
-                        <h3>Room: {{currentRoom.name}} </h3>
-                        <p>Discription: {{currentRoom.description}}</p>
-                        <p>Item: {{currentRoom.item}}</p>
-                        <p>NPC: {{currentRoom.npc}}</p>
-                        <p>Players: {{currentRoom.players}}</p>
+                        <h3>Room: {{currentRoom?.name}} </h3>
+                        <p>Discription: {{currentRoom?.description}}</p>
+                        <p>Item: {{currentRoom?.item}}</p>
+                        <p>NPC: {{currentRoom?.npc}}</p>
+                        <p>Players: {{currentRoom?.players}}</p>
                     </div>
                 </div>
 
