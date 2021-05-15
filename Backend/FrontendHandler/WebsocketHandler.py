@@ -202,6 +202,7 @@ class SocketIOHandler:
 
         @self.sio.event
         def send_character_config(sid, character):
+            print("send_character_config")
             dungeon_id = character["dungeonID"]
 
             # region Adding user to starting room in active dungeon
@@ -224,7 +225,6 @@ class SocketIOHandler:
                                       race=Race(race_id=character["race"]["raceID"]),
                                       user_id=character["userID"], dungeon_id=dungeon_id,
                                       character_id=str(uuid.uuid4()))
-            session["character"] = character_obj
 
             for room in all_room_objects_in_dungeon[1:]:
                 if room.room_id == starting_room['roomID']:
@@ -234,6 +234,7 @@ class SocketIOHandler:
                     character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
             # endregion
+            session["character"] = character_obj
 
             self.dungeon_manager.write_character_to_database(character_obj)
 
@@ -245,6 +246,7 @@ class SocketIOHandler:
 
         @self.sio.event
         def character_joined_room(sid, data):
+            print("character_joined")
             character = self.sio.get_session(sid)['character']
             character.load_discovered_rooms_from_database()
             all_discovered_rooms_ids_by_character = character.discovered_rooms
@@ -292,6 +294,7 @@ class SocketIOHandler:
                                   class_id=data['classID'], race_id=data['raceID'], room_id=data['roomID'],
                                   dungeon_id=session['dungeonID'], character_id=str(uuid.uuid4()))
             session['characterID'] = character.character_id
+            session['character'] = character
             self.dungeon_manager.write_character_to_database(character)
 
         @self.sio.event
