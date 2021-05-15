@@ -473,7 +473,7 @@ class DungeonManager:
                                                         'equipment': {'itemID': room_dict['npcItemID'],
                                                                       'name': room_dict['npcItemName'],
                                                                       'description': room_dict['npcItemDesc']}},
-                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'],
+                     'item': {'itemID': room_dict['roomItemID'], 'name': room_dict['roomItemName'],
                               'description': room_dict['roomItemDescription']}}
             room_list.append(room)
         logging.debug(room_list)
