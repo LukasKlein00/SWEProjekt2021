@@ -395,7 +395,7 @@ class SocketIOHandler:
                                 character.room_id = room['roomID']
                                 self.sio.enter_room(sid, character.room_id)
                                 discovered_rooms.append(room)
-                                #self.sio.emit('') TODO: highlighting
+                                # self.sio.emit('') TODO: highlighting
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
                                 pass
@@ -479,8 +479,8 @@ class SocketIOHandler:
         @self.sio.event
         def dungeon_master_request_answer_to_user(sid, data, character):
             new_health = data['health']
-            #session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
-            #character = session['character']
+            # session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
+            # character = session['character']
             received_character_inventory = data['character']['inventory']
             character_inventory = Inventory(character.inventory)
             character_inventory.get_inventory()
@@ -503,6 +503,39 @@ class SocketIOHandler:
         #    receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
         #    for user_session in self.activeDungeonHandler.active_dungeons[data['dungeonID']]
 
+
+def dungeon_master_request_answer_to_user(sid, data,
+                                          character):  # data = dungeonID, userID, health, character with inventory
+    new_health = data['health']
+    # session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
+    # character = session['character']
+    received_character_inventory = data['character']['inventory']
+    inventory = Inventory(dungeon_id=data['dungeonID'],
+                          user_id=data['userID'])
+    inventory.get_inventory()
+    character.inventory = inventory
+    temp_inventory = dict()
+
+    # for item_object in character.inventory.items:
+    #if {'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4',
+    #    'description': 'wirklich groß :O', 'name': 'Großer Stock'} in character.inventory.items:
+    #    print("Hallo oder so")
+
+    for item in received_character_inventory:
+        if item['itemID'] not in character.inventory.items:
+            character.inventory.add_item_to_inventory(item['itemID'])
+
+    for item in character.inventory.items:
+        if item not in received_character_inventory:
+            character.inventory.remove_item_from_inventory(item['itemID'])
+
+    character.life_points = new_health
+
+
 if __name__ == '__main__':
     character = Character().load_data('a3f79b86-b83c-471c-a778-8f0414e56746', 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596')
-    {'health': 50, 'character': {'charname':'Peopel', 'inventory':  [{'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4'}, {'itemID': '32a2c836-462e-4571-9e1d-858a2ef3f3e3'}]}}
+    input = {'dungeonID': 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596', 'userID': 'a3f79b86-b83c-471c-a778-8f0414e56746',
+             'health': 50, 'character': {'charname': 'Peopel',
+                                         'inventory': [{'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4',
+                                                        'description': 'wirklich groß :O', 'name': 'Großer Stock'}]}}
+    dungeon_master_request_answer_to_user(None, input, character)
