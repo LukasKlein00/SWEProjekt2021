@@ -249,6 +249,7 @@ class SocketIOHandler:
             all_discovered_rooms_ids_by_character = character.discovered_rooms
             all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
                                                                                character.dungeon_id)
+            print(json.dumps(all_discovered_rooms))
             self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
 
         @self.sio.event
