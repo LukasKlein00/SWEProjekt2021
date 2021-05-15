@@ -34,11 +34,14 @@ from DatabaseHandler.DatabaseHandler import DatabaseHandler
 from DungeonPackage.Class import Class
 from DungeonPackage.Inventory import *
 from DungeonPackage.Race import Race
+from DungeonPackage.Item import Item
 
 
 class Character:
-    def __init__(self, life_points: int = 100, name: str = None, description: str = None, class_obj: Class = None, race: Race = None,
-                 user_id: str = None, room_id: str = None, inventory: Inventory = None, dungeon_id: str = None, discovered_rooms: [str] = [], character_id:str = None):
+    def __init__(self, life_points: int = 100, name: str = None, description: str = None, class_obj: Class = None,
+                 race: Race = None,
+                 user_id: str = None, room_id: str = None, inventory: Inventory = None, dungeon_id: str = None,
+                 discovered_rooms: [str] = [], character_id: str = None):
         self.life_points = life_points
         self.name = name
         self.description = description
@@ -59,17 +62,19 @@ class Character:
             self.life_points = databaseCharacterData["health"]
             self.name = databaseCharacterData["name"]
             self.description = databaseCharacterData["description"]
-            self.class_obj = Class(class_id=databaseCharacterData["classID"], name=databaseCharacterData['className'], description=databaseCharacterData['classDescription'])
-            self.race = Race(race_id=databaseCharacterData["raceID"], name=databaseCharacterData['raceName'], description=databaseCharacterData['raceDescription'])
+            self.class_obj = Class(class_id=databaseCharacterData["classID"], name=databaseCharacterData['className'],
+                                   description=databaseCharacterData['classDescription'])
+            self.race = Race(race_id=databaseCharacterData["raceID"], name=databaseCharacterData['raceName'],
+                             description=databaseCharacterData['raceDescription'])
             self.user_id = user_id
-            #TODO: self.discovered_map = databaseCharacterData["RoomID"]
+            # TODO: self.discovered_map = databaseCharacterData["RoomID"]
             self.dungeon_id = dungeon_id
             return self
         except:
             return None
 
-    def add_item_to_inventory(self, item_id: str):
-        self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)
+    def set_health(self, health: int):
+        self.db_handler.set_character_health(health, user_id=self.user_id, dungeon_id=self.dungeon_id)
 
     def discovered_rooms_to_database(self):
         for room_id in self.discovered_rooms:
@@ -82,5 +87,8 @@ class Character:
 
     def to_dict(self):
         return {'characterID': self.character_id, 'name': self.name, 'description': self.description,
-                'health': self.life_points, 'class': {'classID': self.class_obj.class_id, 'name': self.class_obj.name, 'description': self.class_obj.description}, 'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},
-                'userID': self.user_id, 'roomID': self.room_id, 'inventory': self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)}
+                'health': self.life_points, 'class': {'classID': self.class_obj.class_id, 'name': self.class_obj.name,
+                                                      'description': self.class_obj.description},
+                'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},
+                'userID': self.user_id, 'roomID': self.room_id,
+                'inventory': self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)}

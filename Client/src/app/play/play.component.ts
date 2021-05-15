@@ -82,6 +82,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.player = result;
       console.log("player created:",this.player)
       this.socketService.sendCharacter(this.player);
+      this.getDiscoveredRooms()
     });
   }
 

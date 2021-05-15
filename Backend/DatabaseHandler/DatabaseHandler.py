@@ -550,7 +550,8 @@ class DatabaseHandler:
     def get_inventory_by_dungeon_user_id(self, dungeon_id: str, user_id: str):
 
         self.dictionary_cursor.execute(f"""
-                    SELECT 
+                    SELECT
+                    InventoryItem.ItemID itemID, 
                     InventoryItem.ItemName itemName,
                     InventoryItem.ItemDescription itemDescription
                     From mudcake.Inventory
@@ -827,3 +828,21 @@ class DatabaseHandler:
         except IOError:
             print("Error occurred during add_item_to_inventory")
             pass
+
+    def remove_item_from_inventory(self, item_id: str, user_id: str, dungeon_id: str):
+        self.cursor.execute(f"""
+                                DELETE
+                                FROM mudcake.Inventory
+                                WHERE ItemID = '{item_id}' AND UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                            """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            pass
+
+    def set_character_health(self, lifepoints: int, user_id: str, dungeon_id: str):
+        self.cursor.execute(f"""
+                                UPDATE mudcake.Character
+                                SET Lifepoints = '{lifepoints}'
+                                WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                            """)

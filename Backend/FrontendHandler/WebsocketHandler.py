@@ -31,6 +31,7 @@ __email__ = "mudcake@gmail.com"
 __status__ = "Development"
 
 import json
+import logging
 import random
 import uuid
 import re
@@ -52,6 +53,7 @@ import socketio
 import random
 
 # TODO: user access management
+from DungeonPackage.Inventory import Inventory
 from DungeonPackage.Race import Race
 
 
@@ -174,8 +176,9 @@ class SocketIOHandler:
 
             try:
                 session = self.sio.get_session(sid)
-                count = self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']]
-                self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']] = count - + 1
+                if 'dungeonID' in session:
+                    count = self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']]
+                    self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']] = count - + 1
                 dungeon_data_list = []
                 # region UpdateDungeon
                 for dungeon_ID in self.activeDungeonHandler.active_dungeon_ids:
@@ -202,7 +205,6 @@ class SocketIOHandler:
 
         @self.sio.event
         def send_character_config(sid, character):
-            print("send_character_config")
             dungeon_id = character["dungeonID"]
 
             # region Adding user to starting room in active dungeon
@@ -241,18 +243,20 @@ class SocketIOHandler:
             # region Adding class startitem to user inventory when first joining
             item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
             if item.item_id:
-                character_obj.add_item_to_inventory(item.item_id)
+                character_obj.inventory.add_item_to_inventory(item.item_id)
             # endregion
 
         @self.sio.event
         def character_joined_room(sid, data):
-            print("character_joined")
-            character = self.sio.get_session(sid)['character']
-            character.load_discovered_rooms_from_database()
-            all_discovered_rooms_ids_by_character = character.discovered_rooms
-            all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
-                                                                               character.dungeon_id)
-            self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
+            try:
+                character = self.sio.get_session(sid)['character']
+                character.load_discovered_rooms_from_database()
+                all_discovered_rooms_ids_by_character = character.discovered_rooms
+                all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
+                                                                                   character.dungeon_id)
+                self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
+            except KeyError:
+                logging.error("Character couldn't be loaded first time")
 
         @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
@@ -411,6 +415,26 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             msg = {'pre': session['userName'], 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
+
+        @self.sio.event
+        def dungeon_master_request_answer_to_user(sid, data):
+            character = self.sio.get_session(sid)['character']
+            new_health = data['health']
+            received_character_inventory = data['character']['inventory']
+            character_inventory = Inventory(character.inventory)
+            character_inventory.get_inventory()
+
+            for item in received_character_inventory:
+                if item not in character_inventory:
+                    character_inventory.add_item_to_inventory(item['itemID'])
+
+            for item in character_inventory.items:
+                if item not in received_character_inventory:
+                    character_inventory.remove_item_from_inventory(item['itemID'])
+
+            character.set_health(new_health)
+
+
 
         #@self.sio.event
         #def send_whisper_to_player(sid, data):
