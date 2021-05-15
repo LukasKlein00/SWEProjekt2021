@@ -28,9 +28,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.sub1 = this.socket.getChat().subscribe(msg => {
-      this.chatMessages.push(msg);
-      console.log("MSG: ", msg);
+    this.sub1 = this.socket.getChat().subscribe((msg: string) => {
+      console.log("received msg: ", msg)
+      this.chatMessages.push(JSON.parse(msg));
       const messageBody = document.querySelector('#messageBody');
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     });
@@ -132,39 +132,34 @@ export class ChatComponent implements OnInit, OnDestroy {
   writeHelp(isDM = false) {
     if (isDM) {
       this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
-      { msg: "use '/' followed by text to execute a command" },
-      {},
-      { msg: "help | h: return the HELP menu" },
-      {},
-      { msg: "whisper <name> <message>: chat with <name> in the same room" },
-      { msg: "<<< HELP MENU >>>", color: "yellow" },);
+        { msg: "use '/' followed by text to execute a command" },
+        {},
+        { msg: "help | h: return the HELP menu" },
+        {},
+        { msg: 'whisper "name" <message>: chat with <name> in the same room' },
+        { msg: "<<< HELP MENU >>>", color: "yellow" });
     } else {
       this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
-      { msg: "use '/' followed by text to execute a command" },
-      {},
-      { msg: "help | h: return the HELP menu" },
-      {},
-      { msg: "north | n: tries to enter the room to the north" },
-      { msg: "east | e: tries to enter the room to the east" },
-      { msg: "south | s: tries to enter the room to the south" },
-      { msg: "west | w: tries to enter the room to the west" },
-      {},
-      { msg: "dm: chat directly with the Dungeon Master" },
-      { msg: "whisper <name> <message>: chat with <name> in the same room" },
-      {},
-      { msg: "<your action>: sends <your action> as an action request to the Dungeon Master" },
-      { msg: "<<< HELP MENU >>>", color: "yellow" },
-    )
+        { msg: "use '/' followed by text to execute a command" },
+        {},
+        { msg: "help | h: return the HELP menu" },
+        {},
+        { msg: "north | n: tries to enter the room to the north" },
+        { msg: "east | e: tries to enter the room to the east" },
+        { msg: "south | s: tries to enter the room to the south" },
+        { msg: "west | w: tries to enter the room to the west" },
+        {},
+        { msg: "dm: chat directly with the Dungeon Master" },
+        { msg: 'whisper "name" <message>: chat with <name> in the same room' },
+        {},
+        { msg: "<your action>: sends <your action> as an action request to the Dungeon Master" },
+        { msg: "<<< HELP MENU >>>", color: "yellow" },
+      )
     }
   }
 
   roomChat() {
     this.socket.sendMessageToRoom(this.dungeonID, this.userID, this.roomID, this.text)
-    //zum Testen
-    this.chatMessages.push({
-      pre: this.userName + " :",
-      msg: this.text,
-    });
   }
 
   allChat() {
