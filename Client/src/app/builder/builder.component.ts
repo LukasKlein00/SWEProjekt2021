@@ -192,8 +192,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
     this.httpService.saveOrUpdateDungeon(safeDungeon).pipe(first())
       .subscribe(response => {
         console.log("safeDungeon Response", response)
+        
         if (response) {
-          this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
+          this.dungeon.dungeonID = response.toString();
+          this.getRooms(this.dungeon.dungeonID) //setzt die von Backend erstellte DungeonID
         }
         if (publish) {
           let hasStartRoom = false;
