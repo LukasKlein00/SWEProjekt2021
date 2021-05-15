@@ -9,8 +9,13 @@
                 [ngClass]="{
                     'activeRoom':room.isActive && !room.isStartRoom,
                     'startRoom':room.isActive && room.isStartRoom,
-                    'viewedRoom':room.isViewed
-                }"></div>
+                    'viewedRoom':room.isViewed,
+                    'isInRoom': (room.x == currentRoom?.x &&  room.y == currentRoom?.y)
+                }">
+                <div class="north" *ngIf="room.north"></div>
+                <div class="east" *ngIf="room.east"></div>
+                <div class="south" *ngIf="room.south"></div>
+                <div class="west" *ngIf="room.west"></div></div>
 
             </div>
         </div>
