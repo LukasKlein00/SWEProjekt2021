@@ -223,7 +223,6 @@ class SocketIOHandler:
                                       race=Race(race_id=character["race"]["raceID"]),
                                       user_id=character["userID"], dungeon_id=dungeon_id,
                                       character_id=str(uuid.uuid4()))
-            session["character"] = character_obj
 
             for room in all_room_objects_in_dungeon[1:]:
                 if room.room_id == starting_room['roomID']:
@@ -233,6 +232,7 @@ class SocketIOHandler:
                     character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
             # endregion
+            session["character"] = character_obj
 
             self.dungeon_manager.write_character_to_database(character_obj)
 
