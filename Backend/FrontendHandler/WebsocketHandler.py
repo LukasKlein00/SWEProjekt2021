@@ -229,10 +229,9 @@ class SocketIOHandler:
             for room in all_room_objects_in_dungeon[1:]:
                 if room.room_id == starting_room['roomID']:
                     room.user_ids.append(character["userID"])
-                    character = self.sio.get_session(sid)['character']
-                    character.room_id = room.room_id
-                    character.discovered_rooms.append(room.room_id)
-                    character.discovered_rooms_to_database()
+                    character_obj.room_id = room.room_id
+                    character_obj.discovered_rooms.append(room.room_id)
+                    character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
             # endregion
 
@@ -244,14 +243,12 @@ class SocketIOHandler:
             # endregion
 
         @self.sio.event
-        def character_joins_dungeon(sid, character):
-            character_obj = Character(life_points=character["health"],
-                                      name=character["name"], description=character["description"],
-                                      user_id=character["userID"], dungeon_id=character['dungeonID'])
-            character_obj.load_discovered_rooms_from_database()
-            all_discovered_rooms_ids_by_character = character_obj.discovered_rooms
+        def character_joined_room(sid, data):
+            character = self.sio.get_session(sid)['character']
+            character.load_discovered_rooms_from_database()
+            all_discovered_rooms_ids_by_character = character.discovered_rooms
             all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
-                                                                               character['dungeonID'])
+                                                                               character.dungeon_id)
             self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
 
         @self.sio.event
