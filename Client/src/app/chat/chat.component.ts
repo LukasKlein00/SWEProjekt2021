@@ -28,8 +28,9 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.sub1 = this.socket.getChat().subscribe(msg => {
-      this.chatMessages.push(msg);
+    this.sub1 = this.socket.getChat().subscribe((msg: string) => {
+      console.log("received msg: ", msg)
+      this.chatMessages.push(JSON.parse(msg));
       const messageBody = document.querySelector('#messageBody');
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     });
@@ -159,11 +160,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   roomChat() {
     this.socket.sendMessageToRoom(this.dungeonID, this.userID, this.roomID, this.text)
-    //zum Testen
-    this.chatMessages.push({
-      pre: this.userName + " :",
-      msg: this.text,
-    });
   }
 
   allChat() {
