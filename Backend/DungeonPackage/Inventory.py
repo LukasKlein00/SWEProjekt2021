@@ -30,20 +30,26 @@ __maintainer__ = "Lukas Klein"
 __email__ = "mudcake@gmail.com"
 __status__ = "Development"
 
-from DatabaseHandler.DatabaseHandler import *
+from DatabaseHandler.DatabaseHandler import DatabaseHandler
+from DungeonPackage.Item import Item
 
 
 class Inventory:
-    def __init__(self, dungeon_id: str = None, user_id: str = None, inventory_id: str= None, item_ids: [int] = None):
+    def __init__(self, dungeon_id: str = None, user_id: str = None, inventory_id: str= None, items: [Item] = []):
         self.inventory_id = inventory_id
         self.dungeon_id = dungeon_id
         self.user_id = user_id
-        self.item_ids = item_ids
+        self.items = items
+        self.db_handler = DatabaseHandler()
 
-    def load_data(self, dungeon_id: str, user_id: str):
-        db_handler = DatabaseHandler()
-        database_inventory = db_handler.get_inventory_by_dungeon_user_id(dungeon_id, user_id)
-        self.inventory_id = database_inventory[0]
-        self.item_ids.append(database_inventory[1])
-        self.dungeon_id = dungeon_id
-        self.user_id = user_id
+    def add_item_to_inventory(self, item_id: str):
+        self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)
+
+    def remove_item_from_inventory(self, item_id: str):
+        self.db_handler.remove_item_from_inventory(item_id, self.user_id, self.dungeon_id)
+
+    def get_inventory(self):
+        all_items = self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)
+        for item in all_items:
+            self.items.append(
+                Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))

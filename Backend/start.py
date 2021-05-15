@@ -65,6 +65,9 @@ def start_WS():
 
 
 if __name__ == '__main__':
+    logging.getLogger('mysql').setLevel(logging.ERROR)
+    logging.getLogger('mysql-connector-python').setLevel(logging.ERROR)
+    logging.getLogger('mysqlclient').setLevel(logging.ERROR)
     logging.getLogger('socketio').setLevel(logging.ERROR)
     logging.getLogger('engineio').setLevel(logging.ERROR)
     Thread(target=start_HTTP).start()
