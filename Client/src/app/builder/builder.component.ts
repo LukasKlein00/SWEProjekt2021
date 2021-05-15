@@ -15,6 +15,7 @@ import { WebsocketService } from '../services/websocket.service';
 })
 export class BuilderComponent implements OnInit, OnDestroy {
 
+  chatMessages = 0;
   loading = false;
   sub1: Subscription;
   requests: requestForMaster[] = [
@@ -78,6 +79,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
     }
     );
   }
+  receiveMessage(e){
+    console.log("query:" ,document.querySelector('#nav-chat-tab'));
+    console.log("checked:" ,document.querySelector('#nav-chat-tab').getAttribute('aria-selected'));
+    if (document.querySelector('#nav-chat-tab').getAttribute('aria-selected') == 'false') {
+      this.chatMessages = e
+    }
+  }
+
 
   newClass() {
     return this.DungeonService.createNewClass();
