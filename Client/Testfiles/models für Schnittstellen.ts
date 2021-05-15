@@ -12,6 +12,7 @@ export class Dungeon {
     npcs?: Npc[];
     private?: boolean;
     accessList?: Access[];
+    deletedRooms?: string[];
 }
 
 export class Access {

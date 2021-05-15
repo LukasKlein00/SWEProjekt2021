@@ -185,12 +185,18 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
 
     const safeDungeon: Dungeon = JSON.parse(JSON.stringify(this.dungeon))
+    const deletedRooms = [];
+    safeDungeon.rooms.filter(room => !room.isActive && room.roomID).forEach(r => deletedRooms.push(r.roomID));
+    console.log("deletedRooms:", deletedRooms);
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
+
+    safeDungeon['deletedRooms'] = deletedRooms;
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     console.log("gesavter Dungeon: ", safeDungeon);
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon).pipe(first())
       .subscribe(response => {
+        this.getRooms(this.dungeon.dungeonID);
         console.log("safeDungeon Response", response)
         if (response) {
           this.dungeon.dungeonID = response.toString(); //setzt die von Backend erstellte DungeonID
