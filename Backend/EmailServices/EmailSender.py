@@ -57,7 +57,6 @@ class EmailSender:
 
         :param msg: preconfigured message in external method - EmailMessage
         """
-        print("email send to:" + msg['To'])
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context()) as server:
             server.login(self.e_mail, bytes(b'$9PLnJ5NsB#!').decode('utf8', 'strict'))
             server.send_message(msg)
@@ -69,7 +68,6 @@ class EmailSender:
         """
         host_name = socket.gethostname()
         local_ip = socket.gethostbyname(host_name)
-        print(local_ip)
 
         if m_type == MessageType.registration:
             content_reader = FileReader("EmailServices/confirmationEmailTemplates/content")

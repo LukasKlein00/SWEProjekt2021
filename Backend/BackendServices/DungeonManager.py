@@ -63,7 +63,7 @@ class DungeonManager:
                                     - List of all Classes which are saved as an dictionary
                                     - List of all Items which are saved as an dictionary
                                     - List of all Npcs which are saved as an dictionary
-                                    - Accesslist which contains all users which are saved on there
+                                    - AccessList which contains all users which are saved on there
         """
         self.managed_dungeon = DungeonData()
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
@@ -118,7 +118,6 @@ class DungeonManager:
         room_data = self.data['rooms']
         class_data = self.data['classes']
         accesslist_data = self.data['accessList']
-        print(class_data)
 
         for race in race_data:
             logging.debug(race)
@@ -209,9 +208,9 @@ class DungeonManager:
 
             self.room_list.append(new_room)
 
-            for ac_l in accesslist_data:
-                self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['name'],
-                                                                            is_allowed=ac_l['isAllowed'])
+        for ac_l in accesslist_data:
+            self.managed_dungeon.access_list.add_user_to_access_list(user_name=ac_l['name'],
+                                                                     is_allowed=ac_l['isAllowed'])
 
     def write_dungeon_to_database(self):
         """ Writes the dungeon to the database.
@@ -233,7 +232,6 @@ class DungeonManager:
             logging.debug("Classes saved")
             self.__write_npcs_to_database()
             logging.debug("Npcs saved")
-            print(self.room_list)
             self.__write_rooms_to_database()
             logging.debug("Rooms saved")
             logging.debug("write dungeon to database: self.managed_dungeon.dungeon_id")
@@ -464,7 +462,6 @@ class DungeonManager:
             All Rooms in the dungeon as list
         """
         rooms_dict = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=data)
-        print(rooms_dict)
         room_list = []
         for room_dict in rooms_dict:
             room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],

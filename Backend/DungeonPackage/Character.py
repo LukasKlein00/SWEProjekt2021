@@ -66,7 +66,6 @@ class Character:
             self.dungeon_id = dungeon_id
             return self
         except:
-            print("Ich bin eine exception")
             return None
 
     def add_item_to_inventory(self, item_id: str):

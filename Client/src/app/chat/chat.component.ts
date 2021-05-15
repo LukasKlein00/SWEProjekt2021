@@ -30,6 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub1 = this.socket.getChat().subscribe(msg => {
       this.chatMessages.push(msg);
+      console.log("MSG: ", msg);
       const messageBody = document.querySelector('#messageBody');
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     });

@@ -71,7 +71,6 @@ class AccountManager:
 
         new_user = User(user_id, first_name, last_name, user_name, e_mail, password, is_confirmed)
         check_method = self.db_handler.register_user(new_user)
-        print(check_method)
         if check_method:
             return True
         else:
@@ -89,7 +88,6 @@ class AccountManager:
             userID (str): User id of the user who is supposed to be receiving the email
 
         """
-        print(email)
         email_sender = EmailSender(user_email=email, user_id=userID)
         email_sender.send_email(MessageType.registration)
 
