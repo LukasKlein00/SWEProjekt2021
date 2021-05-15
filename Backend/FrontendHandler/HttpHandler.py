@@ -90,7 +90,6 @@ class HTTPHandler(BaseHTTPRequestHandler):
             except:
                 pass
 
-
         if self.path == '/login':
             self.__set_response()
             try:
