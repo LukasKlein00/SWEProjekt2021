@@ -477,9 +477,10 @@ class SocketIOHandler:
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
 
         @self.sio.event
-        def dungeon_master_request_answer_to_user(sid, data):
-            character = self.sio.get_session(sid)['character']
+        def dungeon_master_request_answer_to_user(sid, data, character):
             new_health = data['health']
+            #session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
+            #character = session['character']
             received_character_inventory = data['character']['inventory']
             character_inventory = Inventory(character.inventory)
             character_inventory.get_inventory()
@@ -492,10 +493,16 @@ class SocketIOHandler:
                 if item not in received_character_inventory:
                     character_inventory.remove_item_from_inventory(item['itemID'])
 
-            character.set_health(new_health)
+            character.life_points = new_health
+
+            self.sio.emit('get_character_data', )
 
         # @self.sio.event
         # def send_whisper_to_player(sid, data):
         #    session = self.sio.get_session(sid)
         #    receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
         #    for user_session in self.activeDungeonHandler.active_dungeons[data['dungeonID']]
+
+if __name__ == '__main__':
+    character = Character().load_data('a3f79b86-b83c-471c-a778-8f0414e56746', 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596')
+    {'health': 50, 'character': {'charname':'Peopel', 'inventory':  [{'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4'}, {'itemID': '32a2c836-462e-4571-9e1d-858a2ef3f3e3'}]}}
