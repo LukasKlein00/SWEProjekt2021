@@ -227,7 +227,7 @@ class SocketIOHandler:
                     self.dungeon_manager.write_character_to_database(character_obj)
                     character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
-                    self.sio.emit('current_room', json.dumps(room), to=sid)
+                    self.sio.emit('current_room', json.dumps(starting_room), to=sid)
             # endregion
             session["character"] = character_obj
 

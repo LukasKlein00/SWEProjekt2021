@@ -62,6 +62,7 @@ class DatabaseHandler:
         :param user: a user object
         :return: nothing
         """
+        self.database_path.commit()
         self.cursor.execute("""
                                 INSERT INTO mudcake.User
                                 (UserID ,FirstName, LastName, UserName, Password, Email, isConfirmed)
@@ -82,7 +83,7 @@ class DatabaseHandler:
         :param user: user object
         :return: returns the user from database if the user is exists in database
         """
-
+        self.database_path.commit()
         self.cursor.execute("""
                                 SELECT UserName, UserID, isConfirmed
                                 From mudcake.User
@@ -96,6 +97,7 @@ class DatabaseHandler:
             return None
 
     def save_or_update_dungeon(self, dungeon):
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 INSERT INTO mudcake.Dungeon
                                     (DungeonID, DungeonName, DungeonDescription, MaxPlayers, DungeonMasterID, Private)
@@ -125,7 +127,7 @@ class DatabaseHandler:
         :param email: email
         :return: returns the userid of the query 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 SELECT UserID
                                 From mudcake.User
@@ -144,7 +146,7 @@ class DatabaseHandler:
         :param dungeonID: id of the dungeon
         :return: value of query -> dungeonID, dungeonName, dungeonDescription 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT DungeonID, DungeonName, DungeonDescription
                     From mudcake.Dungeon
@@ -164,7 +166,7 @@ class DatabaseHandler:
         :param password: UserPassword
         :return: true if transaction is successful
         """
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                         UPDATE mudcake.User
                         SET Password = '{password}'
@@ -183,7 +185,7 @@ class DatabaseHandler:
         deletes the dungeon that belongs to the given dungeonid
         :param dungeonID: id of the dungeon
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                             DELETE
                             From mudcake.Dungeon
@@ -202,7 +204,7 @@ class DatabaseHandler:
         :param user_id: id of the user
         :return: true if transaction is successful
         """
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                             DELETE
                             From mudcake.User
@@ -222,7 +224,7 @@ class DatabaseHandler:
         :param race: race object
         :param dungeon_id: id of dungeon 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 INSERT INTO mudcake.Race
                                     (DungeonID, RaceID, RaceName, RaceDescription)
@@ -245,7 +247,7 @@ class DatabaseHandler:
         :param class_object: class object
         :param dungeon_id: id of dungeon 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                         INSERT INTO mudcake.Class
                           (DungeonID, ClassID, ClassName, ClassDescription, ItemID)
@@ -268,6 +270,7 @@ class DatabaseHandler:
         :param room: room object
         :param dungeon_id: id of dungeon 
         '''
+        self.database_path.commit()
         self.cursor.execute(f"""
                              INSERT INTO mudcake.Room
                                  (DungeonID, RoomID, RoomName, RoomDescription, CoordinateX, CoordinateY, 
@@ -294,7 +297,7 @@ class DatabaseHandler:
         :param user_id: id of user
         :return: true if transaction was successful, false if not 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     UPDATE mudcake.User
                     SET isConfirmed = 1
@@ -309,6 +312,7 @@ class DatabaseHandler:
             return False
 
     def write_character_to_database(self, character, dungeon_id):
+        self.database_path.commit()
         self.cursor.execute(f"""
                             INSERT INTO mudcake.Character 
                             (DungeonID, UserID, Lifepoints, CharacterName, CharacterDescription, 
@@ -337,7 +341,7 @@ class DatabaseHandler:
         :param npc: npc object
         :param dungeon_id: id of dungeon 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 INSERT INTO mudcake.Npc
                                   (DungeonID, NpcID, NpcName, NpcDescription, ItemID)
@@ -359,7 +363,7 @@ class DatabaseHandler:
         :param item: item object
         :param dungeon_id: id of dungeon 
         '''
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                                       INSERT INTO mudcake.Item
                                           (DungeonID, ItemID, ItemName, ItemDescription)
@@ -375,7 +379,7 @@ class DatabaseHandler:
             pass
 
     def get_character_by_dungeon_ID(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT Lifepoints, CharacterName, CharacterDescription, ClassID, RaceID, UserID, RoomID
                     From mudcake.Character
@@ -388,6 +392,7 @@ class DatabaseHandler:
             pass
 
     def get_character_by_user_id(self, user_id: str, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT 
                                     Character.CharacterID characterID,
@@ -415,7 +420,7 @@ class DatabaseHandler:
             pass
 
     def get_class_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT ClassID, ClassName, ClassDescription
                     From mudcake.Class
@@ -429,7 +434,7 @@ class DatabaseHandler:
             pass
 
     def get_race_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT RaceID, RaceName, RaceDescription
                     From mudcake.Race
@@ -443,7 +448,7 @@ class DatabaseHandler:
             pass
 
     def get_npc_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT NpcID, NpcName, NpcDescription, ItemID
                     From mudcake.Npc
@@ -457,7 +462,7 @@ class DatabaseHandler:
             pass
 
     def get_room_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT RoomID, RoomName, RoomDescription, CoordinateX, CoordinateY, North, East, South, West, 
                     isStartingRoom, NpcID, ItemID
@@ -472,7 +477,7 @@ class DatabaseHandler:
             pass
 
     def get_item_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT ItemID, ItemName, ItemDescription
                     From mudcake.Item
@@ -486,7 +491,7 @@ class DatabaseHandler:
             pass
 
     def get_access_list_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                     SELECT  UserName userName, 
                             isAllowed
@@ -501,7 +506,7 @@ class DatabaseHandler:
             pass
 
     def get_dungeon_data_by_dungeon_id(self, dungeon_id: str):
-
+        self.database_path.commit()
         self.cursor.execute(f"""
                     SELECT DungeonID, DungeonMasterID, DungeonName, DungeonDescription, Private, MaxPlayers
                     From mudcake.Dungeon
@@ -517,7 +522,7 @@ class DatabaseHandler:
             pass
 
     def get_discovered_rooms_by_user_dungeon_id(self, dungeon_id: str, user_id: str):
-
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                         SELECT  UserID userID,
                                 DungeonID dungeonID,
@@ -548,7 +553,7 @@ class DatabaseHandler:
             pass
 
     def get_inventory_by_dungeon_user_id(self, dungeon_id: str, user_id: str):
-
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                     SELECT
                     InventoryItem.ItemID itemID, 
@@ -571,7 +576,7 @@ class DatabaseHandler:
         :param user: user object
         :return: returns true if credentials are still correct
         """
-
+        self.database_path.commit()
         self.cursor.execute(f"""
             SELECT * 
             From mudcake.User
@@ -604,6 +609,7 @@ class DatabaseHandler:
     #################### NEW #######################
 
     def get_all_rooms_by_dungeon_id_as_dict(self, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(
                                    f"""
                                     Select
@@ -644,6 +650,7 @@ class DatabaseHandler:
             print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))
 
     def get_room_by_room_id_as_dict(self, dungeon_id: str, room_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(
                                    f"""
                                     Select
@@ -684,6 +691,7 @@ class DatabaseHandler:
             print(colored(f'DB: get rooms as dict failed. dungeonID "{dungeon_id}"', 'red'))
 
     def get_all_classes_by_dungeon_id_as_dict(self, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT ClassID classID,
                                            ClassName name,
@@ -702,6 +710,7 @@ class DatabaseHandler:
             print(colored(f'DB: get classes as dict failed. dungeonID "{dungeon_id}"', 'red'))
 
     def get_all_races_by_dungeon_id_as_dict(self, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT RaceID raceID,
                                            RaceName name,
@@ -717,6 +726,7 @@ class DatabaseHandler:
             print(colored(f'DB: get races as dict failed. dungeonID: "{dungeon_id}"', 'red'))
 
     def get_all_item_by_dungeon_id_as_dict(self, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT ItemID itemID,
                                            ItemDescription description,
@@ -731,6 +741,7 @@ class DatabaseHandler:
             print(colored(f'DB: get items as dict failed. dungeonID: "{dungeon_id}"', 'red'))
 
     def get_all_npc_by_dungeon_id_as_dict(self, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT NpcID npcID,
                                            NpcName name,
@@ -749,6 +760,7 @@ class DatabaseHandler:
             print(colored(f'DB: get npcs as dict failed. dungeonID: "{dungeon_id}"', 'red'))
 
     def get_access_list_by_dungeon_id_as_dict(self, dungeon_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT IsAllowed isAllowed,
                                            UserName name
@@ -762,6 +774,7 @@ class DatabaseHandler:
             print(colored(f'DB: get accesslist as dict failed. dungeonID: "{dungeon_id}"', 'red'))
 
     def write_user_to_acceslist(self, access_list_user, dungeon_id):
+        self.database_path.commit()
         self.cursor.execute(f"""
                                         INSERT INTO mudcake.AccessList
                                         (DungeonID, UserName, IsAllowed)
@@ -779,6 +792,7 @@ class DatabaseHandler:
             print(colored(f'DB: write accesslist to database failed. dungeonID: "{dungeon_id}"', 'red'))
 
     def get_item_by_class_id(self, class_id: str):
+        self.database_path.commit()
         self.dictionary_cursor.execute(f"""
                                     SELECT Item.ItemID itemID, 
                                     Item.ItemName itemName, 
@@ -798,6 +812,7 @@ class DatabaseHandler:
             pass
 
     def add_item_to_inventory(self, item_id: str, user_id: str, dungeon_id: str):
+        self.database_path.commit()
         self.cursor.execute(f"""
                          INSERT INTO mudcake.Inventory
                          (ItemID, UserID, DungeonID)
@@ -815,6 +830,7 @@ class DatabaseHandler:
             pass
 
     def delete_user_from_accesslist(self, username, dungeon_id):
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 DELETE 
                                 FROM mudcake.AccessList
@@ -827,6 +843,7 @@ class DatabaseHandler:
             pass
 
     def remove_item_from_inventory(self, item_id: str, user_id: str, dungeon_id: str):
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 DELETE
                                 FROM mudcake.Inventory
@@ -838,6 +855,7 @@ class DatabaseHandler:
             pass
 
     def set_character_health(self, lifepoints: int, user_id: str, dungeon_id: str):
+        self.database_path.commit()
         self.cursor.execute(f"""
                                 UPDATE mudcake.Character
                                 SET Lifepoints = '{lifepoints}'
