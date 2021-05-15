@@ -77,7 +77,6 @@ class Character:
 
     def load_discovered_rooms_from_database(self):
         rooms = self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)
-        print(rooms)
         for room in self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id):
             self.discovered_rooms.append(room['roomID'])
 
