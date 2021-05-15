@@ -748,8 +748,8 @@ class DatabaseHandler:
                          VALUES
                          ('{item_id}', '{user_id}', '{dungeon_id}')
                          ON DUPLICATE KEY UPDATE
-                         ItemID = VALUES(ItemID)
-                         UserID = VALUES(UserID)
+                         ItemID = VALUES(ItemID),
+                         UserID = VALUES(UserID),
                          DungeonID = VALUES(DungeonID)
                         """)
         try:

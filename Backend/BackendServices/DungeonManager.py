@@ -63,7 +63,7 @@ class DungeonManager:
                                     - List of all Classes which are saved as an dictionary
                                     - List of all Items which are saved as an dictionary
                                     - List of all Npcs which are saved as an dictionary
-                                    - Accesslist which contains all users which are saved on there
+                                    - AccessList which contains all users which are saved on there
         """
         self.managed_dungeon = DungeonData()
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
