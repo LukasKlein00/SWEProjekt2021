@@ -465,10 +465,10 @@ class DungeonManager:
         room_list = []
         for room_dict in rooms_dict:
             room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
-                    'isStartRoom': room_dict['isStartRoom'],
+                    'isStartRoom': bool(room_dict['isStartRoom']),
                      'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
-                     'north': room_dict['north'], 'east': room_dict['east'], 'south': room_dict['south'],
-                     'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                     'north': bool(room_dict['north']), 'east': bool(room_dict['east']), 'south': bool(room_dict['south']),
+                     'west': bool(room_dict['west']), 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
                                                         'description': room_dict['npcDescription'],
                                                         'equipment': {'itemID': room_dict['npcItemID'],
                                                                       'name': room_dict['npcItemName'],
