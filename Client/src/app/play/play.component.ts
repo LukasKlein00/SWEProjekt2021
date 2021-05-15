@@ -19,6 +19,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   sub1: Subscription;
   sub2: Subscription;
   sub3: Subscription;
+  sub4: Subscription;
 
   world: Dungeon = {};
   loading;
@@ -50,6 +51,10 @@ export class PlayComponent implements OnInit, OnDestroy {
     //auf privat prüfen -> Request
 
   ngOnInit(): void {
+    this.sub4 = this.socketService.getCurrentRoom().subscribe((res: string) => {
+      console.log("currentRoom", res);
+      this.currentRoom = JSON.parse(res);
+    })
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.world['dungeonID'] = id;
@@ -97,7 +102,6 @@ export class PlayComponent implements OnInit, OnDestroy {
       console.log("rooms res", res)
       this.rooms = JSON.parse(res)
       this.rooms.forEach(r => r['isActive'] = true);
-      this.currentRoom = this.rooms.slice(-1)[0] 
       console.log("rooms variable", this.rooms)
     })
   }
