@@ -56,9 +56,9 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.checkCharakter(id);
     }
     this.currentRoom = {
-      name: "NewRoom 5 5",
-      x: 5,
-      y: 5,
+      name: "loading Room...",
+      x: 0,
+      y: 0,
       north: true,
       south: true,
       east: true,
@@ -68,7 +68,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       players: [],
       isStartRoom: true,
       isActive: true,
-      description: "Starting Room Description"
+      description: "loading Room Description..."
     }
   }
 
@@ -97,6 +97,7 @@ export class PlayComponent implements OnInit, OnDestroy {
       console.log("rooms res", res)
       this.rooms = JSON.parse(res)
       this.rooms.forEach(r => r['isActive'] = true);
+      this.currentRoom = this.rooms.slice(-1)[0] 
       console.log("rooms variable", this.rooms)
     })
   }
