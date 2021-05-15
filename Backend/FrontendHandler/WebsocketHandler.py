@@ -31,12 +31,19 @@ __email__ = "mudcake@gmail.com"
 __status__ = "Development"
 
 import json
+import random
 import uuid
+import re
 
+
+import socketio
 from termcolor import colored
+
 from BackendServices.AccessManager import AccessManager
 from BackendServices.DungeonManager import DungeonManager
+from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
 from DungeonPackage.ActiveDungeon import ActiveDungeon
+from DungeonPackage.Character import Character
 from DungeonPackage.Class import Class
 from DungeonPackage.DungeonData import DungeonData
 from DungeonPackage.Character import Character
@@ -239,6 +246,7 @@ class SocketIOHandler:
                     character.room_id = room.room_id
                     character.discovered_rooms.append(room.room_id)
                     character.discovered_rooms_to_database()
+                    self.sio.enter_room(sid, room.room_id)
             # endregion
 
             self.dungeon_manager.write_character_to_database(character_obj)
@@ -338,6 +346,7 @@ class SocketIOHandler:
             if character:
                 print("HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB")
                 print(character.to_dict())
+                self.sio.enter_room(sid, character.room_id)
                 self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid)
             else:
                 print("Kein bock :)")
@@ -369,6 +378,8 @@ class SocketIOHandler:
         @self.sio.event
         def move_to_room(sid, data):
             # data = {dungeonID, userID, direction}
+            #TODO: (self.sio.leave_room(sid, oldroom.room_id)
+            #       self.sio.enter_room(sid, newroom.room_id)
             character = self.sio.get_session(sid)['character']
             current_room = character.room_id
 
@@ -397,21 +408,41 @@ class SocketIOHandler:
             raise NotImplementedError
 
         @self.sio.event
-        def dungeon_master_request(data):
-            raise NotImplementedError
+        def dungeon_master_request(sid, data):  # dungeonID, userID, message
+            session = self.sio.get_session(sid)
+            character_object = session['character']
+            dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
+            request = {'userName': session['userName'], 'message': data['message'],
+                       'character': character_object.to_dict()}
+            self.sio.emit("send_request_to_dm", json.dumps(request), to=dungeon_master_sid)
 
+        @self.sio.event
+        def send_message_to_master(sid, data):
+            print("send_message_to_master")
+            session = self.sio.get_session(sid)
+            dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
+            msg = {'pre': session['character'].name, 'msg': data['message']}
+            self.sio.emit('get_chat', json.dumps(msg), to=dungeon_master_sid)
 
-if __name__ == '__main__':
-    dungeon_manager = DungeonManager()
-    character = {'health': 100, 'name': 'JackBoi', 'description': 'ein cooler Char',
-                 'userID': '609f121b-e5d5-4eeb-a9c1-6713bffe4a15', 'dungeonID': '1b01d7cf-bf8a-44a2-b7a6-26aca1fd5690'}
-    character_obj = Character(life_points=character["health"],
-                              name=character["name"], description=character["description"],
-                              user_id=character["userID"], dungeon_id=character['dungeonID'])
-    character_obj.discovered_rooms_to_database()
-    character_obj.load_discovered_rooms_from_database()
-    all_discovered_rooms_ids_by_character = character_obj.discovered_rooms
-    all_discovered_rooms = dungeon_manager.get_data_for_room_list(all_discovered_rooms_ids_by_character,
-                                                                       character['dungeonID'])
-    print('character_joined_room', json.dumps(all_discovered_rooms))
-    # self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
+        @self.sio.event
+        def send_message_to_room(sid, data):
+            print("send_message_to_room")
+            session = self.sio.get_session(sid)
+            character = session['character']
+            room_to_send = character.room_id
+            msg = {'pre': character.name, 'msg': data['message']}
+            self.sio.emit('get_chat', json.dumps(msg), room=room_to_send)
+
+        @self.sio.event
+        def send_message_to_all(sid, data):
+            print("send_message_to_all")
+            session = self.sio.get_session(sid)
+            msg = {'pre': session['userName'], 'msg': data['message']}
+            self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
+
+        #@self.sio.event
+        #def send_whisper_to_player(sid, data):
+        #    session = self.sio.get_session(sid)
+        #    receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
+        #    for user_session in self.activeDungeonHandler.active_dungeons[data['dungeonID']]
+
