@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Class, Dungeon, Player, Race, Room } from 'Testfiles/models für Schnittstellen';
 import { CreateCharacterComponent } from '../create-character/create-character.component';
 import { DungeonService } from '../services/dungeon.service';
@@ -16,12 +17,13 @@ import { WebsocketService } from '../services/websocket.service';
 })
 export class PlayComponent implements OnInit, OnDestroy {
 
+
   sub1: Subscription;
   sub2: Subscription;
   sub3: Subscription;
   sub4: Subscription;
   sub5: Subscription;
-  
+
   world: Dungeon = {};
   loading;
   rooms: Room[];
@@ -59,8 +61,9 @@ export class PlayComponent implements OnInit, OnDestroy {
     })
     this.sub5 = this.socketService.kickOut().subscribe((res: string) => {
       console.log("kick Out", res);
-      window.alert(res);
-      this.router.navigate(['/']);
+      this.router.navigate(['/']).then(()=>{
+        window.alert(res);
+      });
     })
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -112,7 +115,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   checkCharakter(dID) {
     this.loading = true;
     console.log("checking Char...")
-    let check = this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res) => {
+    this.socketService.getCharacter(dID, JSON.parse(localStorage.getItem('currentUser')).userID).pipe(first()).subscribe((res) => {
       console.log("get Char Response", res);
       if (res != "false") {
         this.loading = false;
@@ -120,7 +123,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         this.player['dungeonID'] = this.world.dungeonID;
         
       } else {
-        this.socketService.getCharConfig(dID).subscribe((res: string) => {
+        this.socketService.getCharConfig(dID).pipe(first()).subscribe((res: string) => {
           console.log("get CharConf", res)
           if (res != null) {
             this.loading = false;
@@ -147,12 +150,12 @@ export class PlayComponent implements OnInit, OnDestroy {
             });
             console.log(this.world)
             this.openDialog();
-
           }
+          
         })
       }
-      this.getDiscoveredRooms();
     });
+    this.getDiscoveredRooms();
   }
 
   ngOnDestroy(){

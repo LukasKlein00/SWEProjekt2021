@@ -50,8 +50,8 @@ class DatabaseHandler:
             user="jack",
             password="123123"
         ))
-        self.cursor = self.database_path.cursor()
-        self.dictionary_cursor = self.database_path.cursor(dictionary=True)
+        self.cursor = self.database_path.cursor(buffered=True)
+        self.dictionary_cursor = self.database_path.cursor(dictionary=True, buffered=True)
 
     # print(colored('DB:', 'yellow'), 'xxx')
 
