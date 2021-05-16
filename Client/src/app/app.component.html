@@ -1,6 +1,6 @@
 <header>
     <ul>
-      <li><a routerLink="" style="margin-right:2rem;">MUD CAKE</a></li>
+      <li><a routerLink='/' style="margin-right:2rem;">MUD CAKE</a></li>
       <li *ngIf="!currentUser" style="float:right"><a class="hover" routerLink="/login">Login</a></li>
       <li *ngIf="currentUser" style="float:right"><a class="hover" (click)="logout()">Logout</a></li>
       <li *ngIf="currentUser" style="float:right"><a class="hover" routerLink="/profil">Profile</a></li>

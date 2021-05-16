@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Console } from 'node:console';
 import { map } from 'rxjs/operators';
 import { Class, Race } from 'Testfiles/models für Schnittstellen';
 

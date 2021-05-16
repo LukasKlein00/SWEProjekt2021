@@ -97,11 +97,13 @@ $roomway: white;
 
 .viewedRoom {
     animation: glow-green infinite 2s ease-in;
-    background-color: lightgreen;
+    background-color: #FF6F61;
+    outline: 4px solid red;
+
 }
 
 @keyframes glow-green {
-    from {background-color: lightgreen;}
+    from {background-color: #FF6F61;}
     to {background-color: white;}
   }
 

@@ -19,6 +19,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   loading = false;
   sub1: Subscription;
   sub2: Subscription;
+  viewedRoom;
   requests: requestForMaster[] = [
     {
       request: 'kill Spider',
@@ -34,8 +35,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
           name: 'salty Potatos',
           description: '',
         }],
-        race: null,
-        class: null,
+        race: {
+          name: "Banger",
+          description: "bum"
+        },
+        class: {
+          name: "Mother",
+          description: "bum",
+          equipment: null
+        },
         dungeonID: null,
       },
       answer: '',
@@ -73,7 +81,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       res = JSON.parse(res);
       this.toastService.show(`${res[1]} wants to join`, {
         classname: 'toast',
-        delay: 20000,
+        delay: 20000, 
         autohide: true,
         userID: res[0]
       });
@@ -266,6 +274,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   submitRequest(req: requestForMaster) {
+    console.log("gesendete Req", req)
     this.websocketService.sendAnsweredDMRequest(req);
     this.requests.splice(this.requests.indexOf(req), 1);
   }
@@ -360,10 +369,22 @@ export class BuilderComponent implements OnInit, OnDestroy {
     }
   }
 
+  enterRequest(req){
+    this.viewedRoom = this.rooms.find(r => r.x == req.x && r.y == req.y);
+  }
+
+  leaveRequest(){
+    this.viewedRoom = null;
+  }
+
   ngOnDestroy() {
     this.saveDungeon();
-    this.sub1.unsubscribe()
-    this.sub2.unsubscribe()
+    if (this.sub1) {
+      this.sub1.unsubscribe()
+    }
+    if (this.sub2) {
+      this.sub2.unsubscribe()
+    }
   }
 }
 
