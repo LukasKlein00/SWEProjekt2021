@@ -78,13 +78,6 @@ export class WebsocketService {
     }))
   }
 
-  getCharacterData(dungeonID, userID) {
-    this.socket.emit('get_character_data', { dungeonID, userID })
-    return this.socket.fromEvent('get_character_data').pipe(map((data) => {
-      return data
-    }))
-  }
-
   sendDirection(dungeonID, userID, direction) {
     this.socket.emit('move_to_room', { dungeonID, userID, direction })
   }

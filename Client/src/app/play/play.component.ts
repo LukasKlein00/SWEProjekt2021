@@ -98,11 +98,6 @@ export class PlayComponent implements OnInit, OnDestroy {
     });
   }
 
-  getCharacterOverwiew() {
-    console.log("requesting char data...")
-    this.sub1 = this.socketService.getCharacterData(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe(res => console.log("character overview", res))
-  }
-
   getDiscoveredRooms() {
     console.log("requesting room data...")
     this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res: string) => {
@@ -156,14 +151,17 @@ export class PlayComponent implements OnInit, OnDestroy {
           }
         })
       }
-      this.getCharacterOverwiew();
       this.getDiscoveredRooms();
     });
   }
 
   ngOnDestroy(){
-    this.sub1.unsubscribe();
-    this.sub2.unsubscribe();
+    if (this.sub1) {
+      this.sub1.unsubscribe();
+    }
+    if (this.sub2) {
+      this.sub2.unsubscribe();
+    }
   }
 }
 

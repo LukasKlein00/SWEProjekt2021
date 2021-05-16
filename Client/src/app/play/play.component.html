@@ -26,28 +26,33 @@
             <div class="row">
                 <div class="col-lg-6 col-12">
                     <div class="roomInfo card bg-dark card-border col-12 m-1">
-                        <h3>Room: {{currentRoom?.name}} </h3>
-                        <p>Discription: {{currentRoom?.description}}</p>
-                        <p>Item: {{currentRoom?.item?.name}}</p>
-                        <p>NPC: {{currentRoom?.npc?.name}}</p>
-                        <p>Players: {{currentRoom?.players}}</p>
+                        <div class="card-body">
+                            <h3>Room: {{currentRoom?.name}} </h3>
+                            <p>Discription: {{currentRoom?.description}}</p>
+                            <p>Item: {{currentRoom?.item?.name}}</p>
+                            <p>NPC: {{currentRoom?.npc?.name}}</p>
+                            <span>Players: </span>
+                            <span *ngFor="let p of currentRoom?.players" style="margin-right: 1em;" [title]="p.description">{{p.name}}>p.name</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-lg-6 col-12">
                     <div class="playerInfo card bg-dark card-border col-12 m-1">
-                        <div class="row">
-                            <h3 class="col-12">PlayerInfo</h3>
-                            <div class="col-5">
-                            <p>Name: {{player?.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{player.health}}"></meter></p>
-                            <p>Description: {{player.description}}</p>
-                            <p>Race: {{player.race?.name}}</p>
-                            <p>Class: {{player.class?.name}}</p>
-                            </div>
-                            <div class="col-5">
-                                <p>Inventory:</p>
-                                <span *ngFor="let item of player.inventory" style="margin-right: 1em;">Item: {{item.name}}</span>
-
+                        <div class="card-body">
+                            <div class="row">
+                                <h3 class="col-12">PlayerInfo</h3>
+                                <div class="col-5">
+                                <p>Name: {{player?.name}} <meter id="health" min="0" max="100" low="30" high="75" optimum="80" value="{{player.health}}"></meter></p>
+                                <p>Description: {{player.description}}</p>
+                                <p [title]="player.race?.description">Race: {{player.race?.name}}</p>
+                                <p [title]="player.class?.description">Class: {{player.class?.name}}</p>
+                                </div>
+                                <div class="col-5">
+                                    <p>Inventory:</p>
+                                    <span *ngFor="let item of player.inventory" style="margin-right: 1em;" [title]="item.description">{{item.name}}</span>
+    
+                                </div>
                             </div>
                         </div>
                     </div>
