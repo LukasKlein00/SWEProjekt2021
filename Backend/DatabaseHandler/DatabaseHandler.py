@@ -903,3 +903,11 @@ class DatabaseHandler:
             return self.dictionary_cursor.fetchone()
         except IOError:
             pass
+
+    def delete_character(self, user_id: str, dungeon_id: str):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                            DELETE
+                            FROM mudcake.Character
+                            WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                        """)
