@@ -46,6 +46,8 @@
                             </div>
                             <div class="col-5">
                                 <p>Inventory:</p>
+                                <span *ngFor="let item of player.inventory" style="margin-right: 1em;">Item: {{item.name}}</span>
+
                             </div>
                         </div>
                     </div>

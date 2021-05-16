@@ -27,7 +27,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
         name: 'Tom',
         userID: '1',
         health: 79,
-        inventar: [{
+        inventory: [{
           name: 'gold nugget',
           description: '',
         },

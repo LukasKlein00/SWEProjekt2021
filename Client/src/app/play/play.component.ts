@@ -40,7 +40,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     },
     userID: '1',
     health: 100,
-    inventar: []
+    inventory: []
   };
 
   constructor(public dialog: MatDialog,
