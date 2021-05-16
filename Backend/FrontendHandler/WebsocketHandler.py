@@ -68,14 +68,6 @@ class SocketIOHandler:
         self.access_manager = AccessManager()
 
         @self.sio.event
-        def move_to_room(sid, data):
-            raise NotImplementedError
-
-        @self.sio.event
-        def dungeon_master_request(sid, data):
-            raise NotImplementedError
-
-        @self.sio.event
         def send_join_request_answer(sid, data):
             answer = data["isAllowed"]
             session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
@@ -236,6 +228,7 @@ class SocketIOHandler:
                     self.dungeon_manager.write_character_to_database(character_obj)
                     character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
+                    self.sio.emit('current_room', json.dumps(starting_room), to=sid)
             # endregion
             session["character"] = character_obj
 
@@ -291,6 +284,8 @@ class SocketIOHandler:
             elif user_status is False:
                 self.sio.emit("on_join_request_answer", json.dumps(False), to=sid)
             elif not user_status:
+                count = self.activeDungeonHandler.user_count_in_dungeon[data['dungeonID']]
+                self.activeDungeonHandler.user_count_in_dungeon[data['dungeonID']] = count + 1
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
                               to=self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']])
 
@@ -395,8 +390,14 @@ class SocketIOHandler:
                                 self.sio.leave_room(sid, character.room_id)
                                 character.room_id = room['roomID']
                                 self.sio.enter_room(sid, character.room_id)
-                                discovered_rooms.append(room)
-                                # self.sio.emit('') TODO: highlighting
+                                already_discovered = False
+                                for discovered_room in discovered_rooms:
+                                    if room['roomID'] == discovered_room['roomID']:
+                                        already_discovered = True
+                                if already_discovered is False:
+                                    discovered_rooms.append(room)
+
+                                self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
                                 pass
@@ -407,7 +408,14 @@ class SocketIOHandler:
                                 self.sio.leave_room(sid, character.room_id)
                                 character.room_id = room['roomID']
                                 self.sio.enter_room(sid, character.room_id)
-                                discovered_rooms.append(room)
+                                already_discovered = False
+                                for discovered_room in discovered_rooms:
+                                    if room['roomID'] == discovered_room['roomID']:
+                                        already_discovered = True
+                                if already_discovered is False:
+                                    discovered_rooms.append(room)
+
+                                self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
                                 pass
@@ -417,7 +425,14 @@ class SocketIOHandler:
                                 self.sio.leave_room(sid, character.room_id)
                                 character.room_id = room['roomID']
                                 self.sio.enter_room(sid, character.room_id)
-                                discovered_rooms.append(room)
+                                already_discovered = False
+                                for discovered_room in discovered_rooms:
+                                    if room['roomID'] == discovered_room['roomID']:
+                                        already_discovered = True
+                                if already_discovered is False:
+                                    discovered_rooms.append(room)
+
+                                self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
                                 pass
@@ -427,7 +442,14 @@ class SocketIOHandler:
                                 self.sio.leave_room(sid, character.room_id)
                                 character.room_id = room['roomID']
                                 self.sio.enter_room(sid, character.room_id)
-                                discovered_rooms.append(room)
+                                already_discovered = False
+                                for discovered_room in discovered_rooms:
+                                    if room['roomID'] == discovered_room['roomID']:
+                                        already_discovered = True
+                                if already_discovered is False:
+                                    discovered_rooms.append(room)
+
+                                self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
                                 pass

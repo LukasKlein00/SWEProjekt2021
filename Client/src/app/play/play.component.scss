@@ -15,14 +15,14 @@ $roomway: white;
 }
 
 .isInRoom{
-    background-color: rgb(243, 138, 0);
+    background-color: rgb(243, 138, 0) !important;
 }
 
 .roomCell{
     margin: auto;
     width: 25px;
     height: 25px;
-    border: 1px solid black;
+    outline: 1px solid black;
 }
 
 .chat {

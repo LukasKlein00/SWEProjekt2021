@@ -114,6 +114,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             self.__set_response()
             dungeon_manager = DungeonManager()
             rooms = dungeon_manager.get_all_from_room_as_json(data)
+            print("getRooms: " , rooms)
             rooms_json = json.dumps(rooms).encode(encoding='utf_8')
             self.wfile.write(rooms_json)
 
@@ -149,8 +150,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         if self.path == '/saveDungeon':
             self.__set_response()
+            print("data: ", data)
             dungeon_manager = DungeonManager(data)
             dungeon_id = dungeon_manager.write_dungeon_to_database()
+            dungeon_manager.remove_config_data(data)
             try:
                 self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
             except IOError:

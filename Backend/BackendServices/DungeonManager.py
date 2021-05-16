@@ -465,15 +465,15 @@ class DungeonManager:
         room_list = []
         for room_dict in rooms_dict:
             room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
-                    'isStartRoom': room_dict['isStartRoom'],
+                    'isStartRoom': bool(room_dict['isStartRoom']),
                      'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
-                     'north': room_dict['north'], 'east': room_dict['east'], 'south': room_dict['south'],
-                     'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                     'north': bool(room_dict['north']), 'east': bool(room_dict['east']), 'south': bool(room_dict['south']),
+                     'west': bool(room_dict['west']), 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
                                                         'description': room_dict['npcDescription'],
                                                         'equipment': {'itemID': room_dict['npcItemID'],
                                                                       'name': room_dict['npcItemName'],
                                                                       'description': room_dict['npcItemDesc']}},
-                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'],
+                     'item': {'itemID': room_dict['roomItemID'], 'name': room_dict['roomItemName'],
                               'description': room_dict['roomItemDescription']}}
             room_list.append(room)
         logging.debug(room_list)
@@ -492,15 +492,15 @@ class DungeonManager:
         for id in room_ids:
             room_dict = self.db_handler.get_room_by_room_id_as_dict(dungeon_id=dungeon_id, room_id=id)
             room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
-                    'isStartRoom': room_dict['isStartRoom'],
+                    'isStartRoom': bool(room_dict['isStartRoom']),
                      'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
-                     'north': room_dict['north'], 'east': room_dict['east'], 'south': room_dict['south'],
-                     'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                     'north': bool(room_dict['north']), 'east': bool(room_dict['east']), 'south': bool(room_dict['south']),
+                     'west': bool(room_dict['west']), 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
                                                         'description': room_dict['npcDescription'],
                                                         'equipment': {'itemID': room_dict['npcItemID'],
                                                                       'name': room_dict['npcItemName'],
                                                                       'description': room_dict['npcItemDesc']}},
-                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'],
+                     'item': {'itemID': room_dict['roomItemID'], 'name': room_dict['roomItemName'],
                               'description': room_dict['roomItemDescription']}}
             room_list.append(room)
         return room_list
@@ -611,4 +611,13 @@ class DungeonManager:
         try:
             self.db_handler.delete_user_from_accesslist(username=data['userName'], dungeon_id=data['dungeonID'])
         except IOError:
+            pass
+
+    def remove_config_data(self, data):
+        try:
+            if 'deletedRooms' in data:
+                deleted_room_ids = data['deletedRooms']
+                for room_id in deleted_room_ids:
+                    self.db_handler.remove_room_by_room_id(room_id)
+        except AttributeError:
             pass

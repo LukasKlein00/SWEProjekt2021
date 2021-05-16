@@ -123,14 +123,14 @@ class ActiveDungeon:
     def load_rooms(self, dungeon_id):
         rooms_dict = self.db_handler.get_all_rooms_by_dungeon_id_as_dict(dungeon_id=dungeon_id)
         for room_dict in rooms_dict:
-            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'], 'isStartRoom': room_dict['isStartRoom'],
+            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'], 'isStartRoom': bool(room_dict['isStartRoom']),
                      'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
-                     'north': room_dict['north'],'east':room_dict['east'], 'south':room_dict['south'],
-                     'west': room_dict['west'], 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                     'north': bool(room_dict['north']),'east':bool(room_dict['east']), 'south':bool(room_dict['south']),
+                     'west': bool(room_dict['west']), 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
                                                         'description': room_dict['npcDescription'], 'equipment': {'itemID': room_dict['npcItemID'],
                                                                                                                   'name': room_dict['npcItemName'],
                                                                                                                   'description': room_dict['npcItemDesc']}},
-                     'item': {'itemID': room_dict['roomItemID'], 'name': ['roomItemName'], 'description': room_dict['roomItemDescription']}}
+                     'item': {'itemID': room_dict['roomItemID'], 'name': room_dict['roomItemName'], 'description': room_dict['roomItemDescription']}}
             self.room_dick_list.append(room)
 
         self.__parse_rooms(rooms_dict)
