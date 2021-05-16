@@ -90,11 +90,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   checkDungeonMasterAction() {
-    let entry = this.text.slice(1).toLowerCase()
+    let orignalMsg = this.text.slice(1);
+    let entry = this.text.slice(1).toLowerCase();
     console.log("DMcommand", entry)
 
     if (entry.startsWith("whisper ")) {
-      entry = entry.slice(8);
+      entry = orignalMsg.slice(8);
       console.log("whisper:", entry);
       this.socket.sendWhisperToPlayer(this.dungeonID, entry);
     } else if (entry == "help" || entry == "h") {
@@ -108,14 +109,15 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   checkAction() {
+    let orignalMsg = this.text.slice(1);
     let entry = this.text.slice(1).toLowerCase()
     console.log("command", entry)
     if (entry.startsWith("dm ")) {
-      entry = entry.slice(3);
+      entry = orignalMsg.slice(3);
       console.log("dm:", entry);
       this.socket.sendMessageToMaster(this.dungeonID, this.userName, entry);
     } else if (entry.startsWith("whisper ")) {
-      entry = entry.slice(8);
+      entry = orignalMsg.slice(8);
       console.log("whisper:", entry);
       this.socket.sendWhisperToRoom(this.dungeonID, this.userName, entry);
     } else if (entry == "help" || entry == "h") {
