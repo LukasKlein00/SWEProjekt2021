@@ -14,7 +14,7 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   saveOrUpdateDungeon(dungeon: Dungeon) {
-    console.log(dungeon)
+    
     return this.http.post(`${this.apiUrl}/saveDungeon`, dungeon);
   }
 
@@ -63,7 +63,7 @@ export class HttpService {
   }
 
   deleteAccess(userName, dungeonID){
-    console.log("deleAccess entered")
+    
     return this.http.post(`${this.apiUrl}/deleteAccess`, {userName, dungeonID});
   }
 

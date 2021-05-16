@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.WebSocketService.sendPublishedDungeonRequest();
     this.sub1 = this.WebSocketService.getPublishedDungeons().subscribe((r: string) => {
       this.availableMUDs = JSON.parse(r);
-      console.log("availableMuds", this.availableMUDs);
+      
     });
   }
 
@@ -75,14 +75,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.joinLoad = true;
         this.WebSocketService.sendJoinRequest(dungeon.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID );
         this.WebSocketService.getJoinRequestAnswer().pipe(first()).subscribe( (res: string) => {
-          console.log("joinRes:", res)
+          
           let check: boolean = JSON.parse(res)
-          console.log("type:",typeof(check))
+          
           if (check == false){
-            console.log("res is false")
+            
           }
           if (check == true) {
-            console.log("res is true")
+            
             this.router.navigate(['/play',{id: dungeon.dungeonID}])
           } 
           this.joinLoad = false;

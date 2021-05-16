@@ -42,7 +42,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.dungeon = this.DungeonService.createNewDungeon(this.dungeonSize);
-    console.log("init", this.dungeon);
+    
     this.rooms = this.dungeon.rooms;
     if (id) {
       this.getDungeon(id);
@@ -60,15 +60,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
     );
     this.sub1 = this.websocketService.getDMRequests().subscribe((res: string) => {
       let req: requestForMaster = JSON.parse(res);
-      console.log("dmReq Res", res)
-      console.log("DMRes Object", req)
+      
+      
       this.requests.push(req);
       });
   }
 
   receiveMessage(e){
-    console.log("query:" ,document.querySelector('#nav-chat-tab'));
-    console.log("checked:" ,document.querySelector('#nav-chat-tab').getAttribute('aria-selected'));
+    
+    
     if (document.querySelector('#nav-chat-tab').getAttribute('aria-selected') == 'false') {
       this.chatMessages = e
     }
@@ -118,19 +118,19 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   newNpc() {
-    console.log("new Npcs", this.dungeon);
+    
     return this.DungeonService.createNewNpc();
   }
 
   addNpc() {
-    console.log("add Npcs", this.dungeon);
+    
     this.dungeon.npcs.push(this.selectedNpc);
-    console.log("npcs list", this.dungeon.npcs)
+    
     this.selectedNpc = this.newNpc()
   }
 
   editNpc(n: Npc) {
-    console.log("edit Npcs", this.dungeon);
+    
     this.selectedNpc = n;
     this.dungeon.npcs.splice(this.dungeon.npcs.indexOf(n), 1);
   }
@@ -174,16 +174,16 @@ export class BuilderComponent implements OnInit, OnDestroy {
     const safeDungeon: Dungeon = JSON.parse(JSON.stringify(this.dungeon))
     const deletedRooms = [];
     safeDungeon.rooms.filter(room => !room.isActive && room.roomID).forEach(r => deletedRooms.push(r.roomID));
-    console.log("deletedRooms:", deletedRooms);
+    
     safeDungeon.rooms = safeDungeon.rooms.filter(room => room.isActive == true);   //speichert nur die Räume ab, die aktiviert wurden
 
     safeDungeon['deletedRooms'] = deletedRooms;
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
-    console.log("gesavter Dungeon: ", safeDungeon);
+    
     //sende dungeon an Server!
     this.httpService.saveOrUpdateDungeon(safeDungeon).pipe(first())
       .subscribe(response => {
-        console.log("safeDungeon Response", response)
+        
         
         if (response) {
           this.dungeon.dungeonID = response.toString();
@@ -197,7 +197,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
             }
           })
           if (hasStartRoom) {
-            console.log("publishing...")
+            
             this.websocketService.sendPublish(this.dungeon.dungeonID);
           } else {
             window.alert("You Need To Add At Least 1 Start Room Before Publishing")
@@ -245,20 +245,20 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   submitRequest(req: requestForMaster) {
-    console.log("gesendete Req", req)
+    
     this.websocketService.sendAnsweredDMRequest(req);
     this.requests.splice(this.requests.indexOf(req), 1);
   }
   onItemSelect(item: any) {
-    console.log(item);
+    
   }
   onSelectAll(items: any) {
-    console.log(items);
+    
   }
 
   getRooms(id) {
     this.httpService.getRooms(id).pipe(first()).subscribe(res => {
-      console.log("rooms response", res);
+      
       res.map(r => {
         const index = this.dungeon.rooms.findIndex(oldRoom => oldRoom.x == r.x && oldRoom.y == r.y);
         r['isActive'] = true;
@@ -282,14 +282,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
   getItems() {
     if (this.dungeon.items.length == 0) {
-      console.log("load items");
+      
       this.httpService.getItems(this.dungeon.dungeonID).pipe(first()).subscribe(res => this.dungeon.items = res)
     }
   }
 
   getNpcs() {
     if (this.dungeon.npcs.length == 0) {
-      console.log("npcs ist leer")
+      
       this.httpService.getNpcs(this.dungeon.dungeonID).pipe(first()).subscribe(res => this.dungeon.npcs = res);
     }
   }
@@ -297,7 +297,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   getAccessList() {
     if (this.dungeon.accessList.length == 0) {
       this.httpService.getAccessList(this.dungeon.dungeonID).pipe(first()).subscribe(res => {
-        console.log("accesList", res)
+        
         if (res) {
           this.dungeon.accessList = res
         }
@@ -316,7 +316,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       this.dungeon.private = Boolean(res[0][4]).valueOf();
       this.dungeon.maxPlayers = res[0][5];
 
-      console.log("after get Dungeon", this.dungeon);
+      
     })
   }
 
