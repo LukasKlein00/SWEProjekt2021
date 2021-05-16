@@ -350,6 +350,8 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             character = Character().load_data(session["userID"], data["dungeonID"])
             if character:
+                inventory = Inventory(dungeon_id=data['dungeonID'], user_id=session['userID'])
+                character.inventory = inventory
                 session['character'] = character
                 self.sio.enter_room(sid, character.room_id)
                 self.sio.enter_room(sid, data["dungeonID"])
