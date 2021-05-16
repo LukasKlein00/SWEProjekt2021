@@ -69,6 +69,7 @@ html, body {
 	height: 20vmin;
 	z-index: $z-index-dog;
     animation: spin 3s infinite;
+	cursor: grab;
     
 }
 
@@ -180,6 +181,37 @@ html, body {
 		}
 	}
 }
+.dog:hover > .body > .tail {
+	animation: dog-tail 300ms $easing infinite;
+	@keyframes dog-tail {
+		from, to {
+		  transform: rotate(10deg);
+		}
+		50%, 60% {
+		  transform: rotate(70deg) translateX(10px) translateY(2px);
+		}
+		}
+		&:before {
+			position: absolute;
+			content: '';
+			top: -8%;
+			left: -7%;
+			width: 100%;
+			height: 50%;
+		  background-color: $main-color;
+			border-radius: 50%;
+		  animation: dog-tail-before 160ms $easing infinite;
+			@keyframes dog-tail-before {
+				from, to {
+					transform: translateX(0);
+				}
+				50% {
+					transform:  translateX(3px);
+				}
+			}
+		}
+}
+
 .tail {
 	position: absolute;
 	top: -14%;
@@ -193,34 +225,8 @@ html, body {
 	border-bottom-left-radius: 40% 40%;
 	z-index: $z-index-tail;
 	transform: rotate(20deg);
-	animation: dog-tail 300ms $easing infinite;
-  @keyframes dog-tail {
-    from, to {
-      transform: rotate(10deg);
-    }
-    50%, 60% {
-      transform: rotate(70deg) translateX(10px) translateY(2px);
-    }
-	}
-	&:before {
-		position: absolute;
-		content: '';
-		top: -8%;
-		left: -7%;
-		width: 100%;
-		height: 50%;
-	  background-color: $main-color;
-		border-radius: 50%;
-	  animation: dog-tail-before 160ms $easing infinite;
-		@keyframes dog-tail-before {
-			from, to {
-				transform: translateX(0);
-			}
-			50% {
-				transform:  translateX(3px);
-			}
-		}
-	}
+	//animation: dog-tail 300ms $easing infinite;
+  
 }
 .legs {
 	position: absolute;
@@ -361,7 +367,12 @@ html, body {
 	border-right-color: transparent;
 	border-top-right-radius: 50%;
 	border-left-color: transparent;
-	transform: rotate(-41deg);
+	//transform: rotate(-41deg);
+	transform: rotate(10deg);
+}
+
+.dog:hover > .head > .face > .mouth {
+	transform: rotate(-30deg);
 }
 .year {
 	position: absolute;
@@ -469,8 +480,3 @@ html, body {
       text-shadow:
         .25em 0 0 white,
         .5em 0 0 white;}}
-
-
-.corgi {
-	cursor: grab;
-	}
