@@ -18,6 +18,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   chatMessages = 0;
   loading = false;
   sub1: Subscription;
+  sub2: Subscription;
   requests: requestForMaster[] = [
     {
       request: 'kill Spider',
@@ -78,7 +79,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
       });
     }
     );
+    this.sub1 = this.websocketService.getDMRequests().subscribe((res: string) => {
+      let req: requestForMaster = JSON.parse(res);
+      console.log("dmReq Res", res)
+      console.log("DMRes Object", req)
+      this.requests.push(req);
+      });
   }
+
   receiveMessage(e){
     console.log("query:" ,document.querySelector('#nav-chat-tab'));
     console.log("checked:" ,document.querySelector('#nav-chat-tab').getAttribute('aria-selected'));
@@ -258,6 +266,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   submitRequest(req: requestForMaster) {
+    this.websocketService.sendAnsweredDMRequest(req);
     this.requests.splice(this.requests.indexOf(req), 1);
   }
   onItemSelect(item: any) {
@@ -352,7 +361,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.saveDungeon();
     this.sub1.unsubscribe()
+    this.sub2.unsubscribe()
   }
 }
 

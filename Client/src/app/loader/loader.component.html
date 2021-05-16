@@ -1,9 +1,9 @@
 <div class="load-wrapper corgi">
-    <div class="dog">
-        <div class="heart heart--1"></div>
-        <div class="heart heart--2"></div>
-        <div class="heart heart--3"></div>
-        <div class="heart heart--4"></div>
+    <div class="dog" (mouseenter)="hearts = true" (mouseleave) ="hearts = false">
+        <div *ngIf="hearts" class="heart heart--1"></div>
+        <div *ngIf="hearts" class="heart heart--2"></div>
+        <div *ngIf="hearts" class="heart heart--3"></div>
+        <div *ngIf="hearts" class="heart heart--4"></div>
         <div class="head">
                 <div class="year year--left"></div>
                 <div class="year year--right"></div>

@@ -124,6 +124,22 @@ export class WebsocketService {
       return data
     }))
   }
+
+  kickOut() {
+    return this.socket.fromEvent('kick_out').pipe(map((data) => {
+      return data
+    }))
+  }
+
+  getDMRequests(){
+    return this.socket.fromEvent('send_request_to_dm').pipe(map((data) => {
+      return data
+    }))
+  }
+
+  sendAnsweredDMRequest(req) {
+    this.socket.emit('dungeon_master_request_answer_to_user', req)
+  }
 }
 
 
