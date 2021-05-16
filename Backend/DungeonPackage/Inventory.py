@@ -45,8 +45,12 @@ class Inventory:
     def delete_inventory(self):
         self.db_handler.remove_inventory_by_userid_dungeonid(self.dungeon_id, self.user_id)
 
-    def add_item_to_inventory(self, item_id: str):
-        self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)
+    def add_item_to_inventory(self, item_id: str, item: Item = None):
+        if item:
+            self.items.append(item)
+            self.db_handler.add_item_to_inventory(item.item_id, self.user_id, self.dungeon_id)
+        else:
+            self.db_handler.add_item_to_inventory(item_id, self.user_id, self.dungeon_id)
 
     def remove_item_from_inventory(self, item_id: str):
         self.db_handler.remove_item_from_inventory(item_id, self.user_id, self.dungeon_id)
