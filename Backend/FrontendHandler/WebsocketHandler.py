@@ -48,6 +48,7 @@ from DungeonPackage.Class import Class
 from DungeonPackage.DungeonData import DungeonData
 from DungeonPackage.Character import Character
 from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
+from DungeonPackage.Item import Item
 import socketio
 import random
 
@@ -250,6 +251,16 @@ class SocketIOHandler:
                 session = self.sio.get_session(sid)
                 character = session['character']
                 character.load_discovered_rooms_from_database()
+                # region adding sid into dungeon
+                temp_list = []
+                if not character.dungeon_id in self.activeDungeonHandler.user_sids_in_dungeon:
+                    temp_list.append(sid)
+                    self.activeDungeonHandler.user_sids_in_dungeon[character.dungeon_id] = temp_list
+                else:
+                    temp_list = self.activeDungeonHandler.user_sids_in_dungeon[character.dungeon_id]
+                    temp_list.append(sid)
+                    self.activeDungeonHandler.user_sids_in_dungeon[character.dungeon_id] = temp_list
+                # endregion
                 all_discovered_rooms_ids_by_character = character.discovered_rooms
                 all_discovered_rooms = self.dungeon_manager.get_data_for_room_list(
                     all_discovered_rooms_ids_by_character,
@@ -472,12 +483,13 @@ class SocketIOHandler:
             # geb zurück neue koordinaten für frontend
 
         @self.sio.event
-        def dungeon_master_request(sid, data):  # dungeonID, userID, message
+        def dungeon_master_request(sid, data):
             session = self.sio.get_session(sid)
             character_object = session['character']
+            room = self.dungeon_manager.load_room_coordinates(character_object.room_id)
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
-            request = {'userName': session['userName'], 'message': data['message'],
-                       'character': character_object.to_dict()}
+            request = {'userID': session['userID'], 'dungeonID': data['dungeonID'], 'request': data['message'],
+                       'requester': character_object.to_dict(), 'answer': "", 'x': room['x'], 'y': room['y']}
             self.sio.emit("send_request_to_dm", json.dumps(request), to=dungeon_master_sid)
 
         @self.sio.event
@@ -520,19 +532,27 @@ class SocketIOHandler:
             self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient)
 
         @self.sio.event
-        def dungeon_master_request_answer_to_user(sid, data):
-            character = self.sio.get_session(sid)['character']
+        def dungeon_master_request_answer_to_user(sid, data):  # data = dungeonID, userID, health, character with inventory
             new_health = data['health']
+            character = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']])['character']
             received_character_inventory = data['character']['inventory']
-            character_inventory = Inventory(character.inventory)
-            character_inventory.get_inventory()
+
+            inventory = Inventory(dungeon_id=data['dungeonID'],
+                                  user_id=data['userID'])
+            inventory.delete_inventory()
 
             for item in received_character_inventory:
-                if item not in character_inventory:
-                    character_inventory.add_item_to_inventory(item['itemID'])
+                inventory.add_item_to_inventory(item['itemID'])
 
-            for item in character_inventory.items:
-                if item not in received_character_inventory:
-                    character_inventory.remove_item_from_inventory(item['itemID'])
+            character.inventory = inventory
+            if new_health == 0:
+                self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
+                self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['msg']}'"), to=sid)
+            else:
+                character.life_points = new_health
 
-            character.set_health(new_health)
+        @self.sio.event
+        def delete_dungeon(sid, data):       # data = dungeonID
+            for user_sid in self.activeDungeonHandler.user_sids_in_dungeon[data['dungeonID']]:
+                self.sio.emit('kick_out', json.dumps("The Dungeon you were playing in was deleted", to=user_sid))
+            self.dungeon_manager.delete_dungeon(data['dungeonID'])
