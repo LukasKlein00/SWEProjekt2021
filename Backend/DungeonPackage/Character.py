@@ -90,9 +90,13 @@ class Character:
             self.discovered_rooms.append(room['roomID'])
 
     def to_dict(self):
+        item_list = []
+        for item in self.inventory.items:
+            item_list.append(item.to_dict())
+
         return {'characterID': self.character_id, 'name': self.name, 'description': self.description,
                 'health': self.life_points, 'class': {'classID': self.class_obj.class_id, 'name': self.class_obj.name,
                                                       'description': self.class_obj.description},
                 'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},
                 'userID': self.user_id, 'roomID': self.room_id,
-                'inventory': self.inventory.to_dict()}
+                'inventory': item_list}
