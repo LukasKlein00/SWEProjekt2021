@@ -58,8 +58,13 @@ class Inventory:
     def get_inventory(self):
         all_items = self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)
         for item in all_items:
-            self.items.append(
-                Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
+            if self.items.__len__() == 0:
+                self.items.append(
+                    Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
+            for existing_item in self.items:
+                if not item['itemID'] in existing_item.item_id:
+                    self.items.append(
+                        Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
         return self
 
     def to_dict(self):
