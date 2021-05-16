@@ -237,16 +237,14 @@ class SocketIOHandler:
                     self.sio.enter_room(sid, room.room_id)
                     self.sio.emit('current_room', json.dumps(starting_room), to=sid)
             # endregion
-            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
 
+            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
             if item.item_id:
-                character_obj.inventory.add_item_to_inventory(item.item_id)
+                character_obj.inventory.add_item_to_inventory(item.item_id, item)
+
+            self.sio.emit("get_character_in_dungeon", json.dumps(character_obj.to_dict()), to=sid)
 
             session["character"] = character_obj
-
-            # region Adding class startitem to user inventory when first joining
-
-            # endregion
 
         @self.sio.event
         def character_joined_room(sid, data):
