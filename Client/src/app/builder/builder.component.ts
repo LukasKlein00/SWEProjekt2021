@@ -20,36 +20,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   sub1: Subscription;
   sub2: Subscription;
   viewedRoom;
-  requests: requestForMaster[] = [
-    {
-      request: 'kill Spider',
-      requester: {
-        name: 'Tom',
-        userID: '1',
-        health: 79,
-        inventory: [{
-          name: 'gold nugget',
-          description: '',
-        },
-        {
-          name: 'salty Potatos',
-          description: '',
-        }],
-        race: {
-          name: "Banger",
-          description: "bum"
-        },
-        class: {
-          name: "Mother",
-          description: "bum",
-          equipment: null
-        },
-        dungeonID: null,
-      },
-      answer: '',
-      x: 1,
-      y: 4,
-    }]
+  requests: requestForMaster[] = []
   insertedUsername;
   dungeonSize = 13;
   dungeon: Dungeon;
