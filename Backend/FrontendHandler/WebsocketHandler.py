@@ -555,7 +555,10 @@ class SocketIOHandler:
                 self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
                 self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['msg']}'"), to=sid)
             else:
+                msg = {'msg': data['answer'], 'color': '#FF6F61', 'dmRequest': True, 'pre': 'consequence:'}
                 character.life_points = new_health
+                sid_of_recipient = self.activeDungeonHandler.user_sid[data['requester']['userID']]
+                self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0])
 
         @self.sio.event
         def delete_dungeon(sid, data):       # data = dungeonID
