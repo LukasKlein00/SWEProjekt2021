@@ -48,6 +48,7 @@ from DungeonPackage.Class import Class
 from DungeonPackage.DungeonData import DungeonData
 from DungeonPackage.Character import Character
 from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
+from DungeonPackage.Item import Item
 import socketio
 import random
 
@@ -510,24 +511,23 @@ def dungeon_master_request_answer_to_user(sid, data,
     # session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
     # character = session['character']
     received_character_inventory = data['character']['inventory']
+
     inventory = Inventory(dungeon_id=data['dungeonID'],
                           user_id=data['userID'])
     inventory.get_inventory()
     character.inventory = inventory
     temp_inventory = dict()
 
-    # for item_object in character.inventory.items:
-    #if {'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4',
-    #    'description': 'wirklich groß :O', 'name': 'Großer Stock'} in character.inventory.items:
-    #    print("Hallo oder so")
-
-    for item in received_character_inventory:
-        if item['itemID'] not in character.inventory.items:
-            character.inventory.add_item_to_inventory(item['itemID'])
-
-    for item in character.inventory.items:
-        if item not in received_character_inventory:
-            character.inventory.remove_item_from_inventory(item['itemID'])
+    #for item in received_character_inventory:
+    #    for existing_item in character.inventory.items:
+    #        if item['itemID']
+    #
+    #    if item['itemID'] not in character.inventory.items:
+    #        character.inventory.add_item_to_inventory(item['itemID'])
+#
+    #for item in character.inventory.items:
+    #    if item not in received_character_inventory:
+    #        character.inventory.remove_item_from_inventory(item['itemID'])
 
     character.life_points = new_health
 
@@ -537,5 +537,6 @@ if __name__ == '__main__':
     input = {'dungeonID': 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596', 'userID': 'a3f79b86-b83c-471c-a778-8f0414e56746',
              'health': 50, 'character': {'charname': 'Peopel',
                                          'inventory': [{'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4',
-                                                        'description': 'wirklich groß :O', 'name': 'Großer Stock'}]}}
+                                                        'description': 'wirklich groß :O', 'name': 'Großer Stock',
+                                                        'dungeonID': 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596'}]}}
     dungeon_master_request_answer_to_user(None, input, character)
