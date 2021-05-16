@@ -623,10 +623,13 @@ class DungeonManager:
             pass
 
     def get_userid_by_character_name(self, character_name: str, dungeon_id: str):
-        user = self.db_handler.get_userid_by_character_name(character_name=character_name, dungeon_id=dungeon_id)
-        print("user: ", user)
-        userID = user['userID']
-        return userID
+        try:
+            user = self.db_handler.get_userid_by_character_name(character_name=character_name, dungeon_id=dungeon_id)
+            print("user: ", user)
+            userID = user['userID']
+            return userID
+        except TypeError:
+            pass
 
     def load_room_coordinates(self, room_id):
         return self.db_handler.get_coordinates_by_room_id(room_id)

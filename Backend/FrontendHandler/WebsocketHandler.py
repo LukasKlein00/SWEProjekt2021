@@ -508,39 +508,40 @@ class SocketIOHandler:
             room_to_send = character.room_id
             msg = {'pre': character.name + ": ", 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), room=room_to_send)
-            print("send_message_to_ROOONMR WURDE EMITTET YO")
 
         @self.sio.event
         def send_message_to_all(sid, data):
-            print("this is se data: ", data)
-            session = self.sio.get_session(sid)
-            msg = {'pre': ("DM: "), 'msg': data['message'], 'color': '#FF6F61' }
-            print("rooms: ",  self.sio.rooms(sid))
+            msg = {'pre': ("DM: "), 'msg': data['message'], 'color': '#FF6F61'}
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
 
 
         @self.sio.event
         def send_whisper_to_player(sid, data):
-            print("sis is the DM whisper data:) : ", data)
-            session = self.sio.get_session(sid)
             receiver = re.search(r'".*"', data['message']).group()[1:-1]
-            sid_of_recipient = self.activeDungeonHandler.user_sid_username[receiver]
-            msg = {'pre': "DM whispered: ", 'msg': data['message'], 'color': '#D65076'}
+            message = re.split(r'".*"', data['message'])[1]
+            user_id_of_recipient = self.dungeon_manager.get_userid_by_character_name(receiver, data['dungeonID'])
+            sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
+            msg = {'pre': "DM whispered: ", 'msg': message, 'color': '#D65076'}
             self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0])
 
         @self.sio.event
         def send_whisper_to_room(sid, data):
-            print("sis is the whisper data:) : ", data)
             session = self.sio.get_session(sid)
+            character = session['character']
             receiver = re.search(r'".*"', data['message']).group()[1:-1]
-            message = re.search(r'.*', data['message']).group()
-            print("parsed receiver: ", receiver)
-            print("parsed rest of message: ", message)
+            message = re.split(r'".*"', data['message'])[1]
             user_id_of_recipient = self.dungeon_manager.get_userid_by_character_name(receiver, data['dungeonID'])
-            sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
-            print("sid_of_recipient: ", sid_of_recipient)
-            msg = {'pre': session['userName'] + " whispered: ", 'msg': data['message'], 'color': '#D65076'}
-            self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0])
+            try:
+                sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
+                if self.sio.rooms(sid_of_recipient[0]).__contains__(character.room_id):
+                    msg = {'pre': session['userName'] + " whispered: ", 'msg': message, 'color': '#D65076'}
+                    self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0], room=character.room_id)
+                else:
+                    msg = {'pre': "error:", 'msg': "the character you're trying to message is not in the same room (•_•)", 'color': "#DD4124"}
+                    self.sio.emit('get_chat', json.dumps(msg), to=sid)
+            except KeyError:
+                msg = {'pre': "error:", 'msg': "the character you're trying to message does not exist (•_•)", 'color': "#DD4124"}
+                self.sio.emit('get_chat', json.dumps(msg), to=sid)
 
         @self.sio.event
         def dungeon_master_request_answer_to_user(sid, data):  # data = dungeonID, userID, health, character with inventory
