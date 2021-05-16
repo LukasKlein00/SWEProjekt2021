@@ -95,4 +95,4 @@ class Character:
                                                       'description': self.class_obj.description},
                 'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},
                 'userID': self.user_id, 'roomID': self.room_id,
-                'inventory': self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)}
+                'inventory': self.inventory.to_dict()}
