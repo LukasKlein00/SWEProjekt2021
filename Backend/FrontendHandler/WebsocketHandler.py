@@ -101,7 +101,7 @@ class SocketIOHandler:
             array.append(sid)
             usernamearr.append(sid)
             self.activeDungeonHandler.user_sid[data['userID']] = array
-            self.activeDungeonHandler.user_sid[data['username']]  = usernamearr
+            self.activeDungeonHandler.user_sid[data['username']] = usernamearr
 
         @self.sio.event
         def on_home(sid):
@@ -267,12 +267,15 @@ class SocketIOHandler:
                     character.dungeon_id)
                 session['discovered_rooms'] = all_discovered_rooms
                 self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
+                self.sio.emit('current_room', json.dumps(
+                    self.dungeon_manager.get_data_for_room_list(dungeon_id=character.dungeon_id,
+                                                                room_ids=[character.room_id])[0]), to=sid)
             except KeyError:
                 logging.error("Character couldn't be loaded first time")
 
         @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
-            #self.sio.enter_room(sid, data['dungeonID'])
+            # self.sio.enter_room(sid, data['dungeonID'])
             session = self.sio.get_session(sid)
             user_status = self.access_manager.user_status_on_access_list(data['dungeonID'], session['userName'])
             session['dungeonID'] = data['dungeonID']
@@ -514,10 +517,9 @@ class SocketIOHandler:
         def send_message_to_all(sid, data):
             print("this is se data: ", data)
             session = self.sio.get_session(sid)
-            msg = {'pre': ("DM: "), 'msg': data['message'], 'color': '#FF6F61' }
-            print("rooms: ",  self.sio.rooms(sid))
+            msg = {'pre': ("DM: "), 'msg': data['message'], 'color': '#FF6F61'}
+            print("rooms: ", self.sio.rooms(sid))
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
-
 
         @self.sio.event
         def send_whisper_to_player(sid, data):
@@ -538,7 +540,8 @@ class SocketIOHandler:
             self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient)
 
         @self.sio.event
-        def dungeon_master_request_answer_to_user(sid, data):  # data = dungeonID, userID, health, character with inventory
+        def dungeon_master_request_answer_to_user(sid,
+                                                  data):  # data = dungeonID, userID, health, character with inventory
             new_health = data['health']
             character = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']])['character']
             received_character_inventory = data['character']['inventory']
@@ -558,7 +561,7 @@ class SocketIOHandler:
                 character.life_points = new_health
 
         @self.sio.event
-        def delete_dungeon(sid, data):       # data = dungeonID
+        def delete_dungeon(sid, data):  # data = dungeonID
             for user_sid in self.activeDungeonHandler.user_sids_in_dungeon[data['dungeonID']]:
                 self.sio.emit('kick_out', json.dumps("The Dungeon you were playing in was deleted", to=user_sid))
             self.dungeon_manager.delete_dungeon(data['dungeonID'])
