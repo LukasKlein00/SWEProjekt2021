@@ -14,7 +14,8 @@ import { WebsocketService } from "../services/websocket.service";
 })
 export class HomeComponent implements OnInit, OnDestroy {
   loading = false;
-  joinLoad = false;
+  //joinLoad = false;
+  joinLoad = true;
   availableMUDs: Dungeon[];
   myMUDs: Dungeon[];
   sub1: Subscription;
