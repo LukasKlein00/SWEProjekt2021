@@ -476,6 +476,20 @@ class DatabaseHandler:
             print(colored(f'DB: getting room by dungeonID. dungeonID: "{dungeon_id}"', 'red'))
             pass
 
+    def remove_inventory_by_userid_dungeonid(self, dungeon_id: str, user_id: str):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                        DELETE  
+                        FROM mudcake.Inventory
+                        WHERE (DungeonID = '{dungeon_id}' AND UserID = '{user_id}')
+                        """)
+        try:
+            print(colored('DB: ', 'yellow'), f'remove inventory by user/dungeonID "{dungeon_id}"')
+            self.database_path.commit()
+        except IOError:
+            print(colored(f'DB: remove inventory didnt work, dungeonID: "{dungeon_id}"', 'red'))
+            pass
+
     def get_item_by_dungeon_id(self, dungeon_id: str):
         self.database_path.commit()
         self.cursor.execute(f"""
@@ -875,5 +889,17 @@ class DatabaseHandler:
                             """)
         try:
             self.database_path.commit()
+        except IOError:
+            pass
+
+    def get_coordinates_by_room_id(self, room_id: str):
+        self.database_path.commit()
+        self.dictionary_cursor.execute(f"""
+                                SELECT CoordinateX x, CoordinateY y
+                                FROM mudcake.Room
+                                WHERE RoomID = '{room_id}'
+                            """)
+        try:
+            return self.dictionary_cursor.fetchone()
         except IOError:
             pass

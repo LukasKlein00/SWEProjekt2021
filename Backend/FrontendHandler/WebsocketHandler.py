@@ -472,9 +472,10 @@ class SocketIOHandler:
         def dungeon_master_request(sid, data):  # dungeonID, userID, message
             session = self.sio.get_session(sid)
             character_object = session['character']
+            room = self.dungeon_manager.load_room_coordinates(character_object.room_id)
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
-            request = {'userName': session['userName'], 'message': data['message'],
-                       'character': character_object.to_dict()}
+            request = {'userID': session['userID'], 'dungeonID': session['dungeonID'], 'request': data['message'],
+                       'requester': character_object.to_dict(), 'answer': "", 'x': room['x'], 'y': room['y']}
             self.sio.emit("send_request_to_dm", json.dumps(request), to=dungeon_master_sid)
 
         @self.sio.event
@@ -500,58 +501,31 @@ class SocketIOHandler:
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
 
         @self.sio.event
-        def dungeon_master_request_answer_to_user(sid, data, character):
+        def dungeon_master_request_answer_to_user(sid, data,
+                                                  character):  # data = dungeonID, userID, health, character with inventory
             new_health = data['health']
             # session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
             # character = session['character']
             received_character_inventory = data['character']['inventory']
-            character_inventory = Inventory(character.inventory)
-            character_inventory.get_inventory()
+
+            inventory = Inventory(dungeon_id=data['dungeonID'],
+                                  user_id=data['userID'])
+            inventory.delete_inventory()
 
             for item in received_character_inventory:
-                if item not in character_inventory:
-                    character_inventory.add_item_to_inventory(item['itemID'])
+                inventory.add_item_to_inventory(item['itemID'])
 
-            for item in character_inventory.items:
-                if item not in received_character_inventory:
-                    character_inventory.remove_item_from_inventory(item['itemID'])
-
-            character.life_points = new_health
-
-            self.sio.emit('get_character_data', )
+            character.inventory = inventory
+            if new_health == 0:
+                self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['msg']}'"), to=sid)
+            else:
+                character.life_points = new_health
 
         # @self.sio.event
         # def send_whisper_to_player(sid, data):
         #    session = self.sio.get_session(sid)
         #    receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
         #    for user_session in self.activeDungeonHandler.active_dungeons[data['dungeonID']]
-
-
-def dungeon_master_request_answer_to_user(sid, data,
-                                          character):  # data = dungeonID, userID, health, character with inventory
-    new_health = data['health']
-    # session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
-    # character = session['character']
-    received_character_inventory = data['character']['inventory']
-
-    inventory = Inventory(dungeon_id=data['dungeonID'],
-                          user_id=data['userID'])
-    inventory.get_inventory()
-    character.inventory = inventory
-    temp_inventory = dict()
-
-    #for item in received_character_inventory:
-    #    for existing_item in character.inventory.items:
-    #        if item['itemID']
-    #
-    #    if item['itemID'] not in character.inventory.items:
-    #        character.inventory.add_item_to_inventory(item['itemID'])
-#
-    #for item in character.inventory.items:
-    #    if item not in received_character_inventory:
-    #        character.inventory.remove_item_from_inventory(item['itemID'])
-
-    character.life_points = new_health
 
 
 if __name__ == '__main__':
