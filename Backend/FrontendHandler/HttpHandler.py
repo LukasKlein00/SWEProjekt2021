@@ -153,6 +153,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
             print("data: ", data)
             dungeon_manager = DungeonManager(data)
             dungeon_id = dungeon_manager.write_dungeon_to_database()
+            dungeon_manager.remove_config_data(data)
             try:
                 self.wfile.write(json.dumps(dungeon_id).encode(encoding='utf_8'))
             except IOError:
