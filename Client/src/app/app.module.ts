@@ -29,6 +29,7 @@ import { ErrorComponent } from './error/error.component';
 import { LoaderComponent } from './loader/loader.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { CorgiComponent } from './corgi/corgi.component';
 
 const config: SocketIoConfig = { url: environment.websocketUrl, options: {} };
 
@@ -51,6 +52,7 @@ const config: SocketIoConfig = { url: environment.websocketUrl, options: {} };
     ForgotComponent,
     ErrorComponent,
     LoaderComponent,
+    CorgiComponent,
   ],
   imports: [
     BrowserModule,
