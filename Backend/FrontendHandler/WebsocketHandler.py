@@ -351,10 +351,14 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             character = Character().load_data(session["userID"], data["dungeonID"])
             if character:
+                inventory = Inventory(dungeon_id=data['dungeonID'], user_id=session['userID']).get_inventory()
+                character.inventory = inventory
                 session['character'] = character
                 self.sio.enter_room(sid, character.room_id)
                 self.sio.enter_room(sid, data["dungeonID"])
-                self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid)
+                char_dict = character.to_dict()
+                print(char_dict)
+                self.sio.emit("get_character_in_dungeon", json.dumps(char_dict), to=sid)
             else:
                 self.sio.emit("get_character_in_dungeon", json.dumps(False), to=sid)
 
