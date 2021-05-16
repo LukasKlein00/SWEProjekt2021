@@ -94,9 +94,13 @@ class SocketIOHandler:
 
             self.sio.save_session(sid, {'userID': data['userID'], 'userName': data['username']})
             self.activeDungeonHandler.user_sid[data['userID']] = []
+            self.activeDungeonHandler.user_sid[data['username']] = []
             array = self.activeDungeonHandler.user_sid[data['userID']]
+            usernamearr = self.activeDungeonHandler.user_sid[data['username']]
             array.append(sid)
+            usernamearr.append(sid)
             self.activeDungeonHandler.user_sid[data['userID']] = array
+            self.activeDungeonHandler.user_sid[data['username']]  = usernamearr
 
         @self.sio.event
         def on_home(sid):
@@ -499,6 +503,22 @@ class SocketIOHandler:
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
 
         @self.sio.event
+        def send_whisper_to_player(sid, data):
+            session = self.sio.get_session(sid)
+            receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
+            sid_of_recipient = self.activeDungeonHandler.user_sid[receiver]
+            msg = {'pre': session['userName'] + "whispered: ", 'msg': data['msg']}
+            self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient)
+
+        @self.sio.event
+        def send_whisper_to_room(sid, data):
+            session = self.sio.get_session(sid)
+            receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
+            sid_of_recipient = self.activeDungeonHandler.user_sid[receiver]
+            msg = {'pre': session['userName'] + "whispered: ", 'msg': data['msg']}
+            self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient)
+
+        @self.sio.event
         def dungeon_master_request_answer_to_user(sid, data):
             character = self.sio.get_session(sid)['character']
             new_health = data['health']
@@ -516,8 +536,3 @@ class SocketIOHandler:
 
             character.set_health(new_health)
 
-        # @self.sio.event
-        # def send_whisper_to_player(sid, data):
-        #    session = self.sio.get_session(sid)
-        #    receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
-        #    for user_session in self.activeDungeonHandler.active_dungeons[data['dungeonID']]
