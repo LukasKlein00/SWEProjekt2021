@@ -352,6 +352,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.saveDungeon();
     this.sub1.unsubscribe()
   }
 }

@@ -124,6 +124,12 @@ export class WebsocketService {
       return data
     }))
   }
+
+  kickOut() {
+    return this.socket.fromEvent('kick_out').pipe(map((data) => {
+      return data
+    }))
+  }
 }
 
 

@@ -1,7 +1,7 @@
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Class, Dungeon, Player, Race, Room } from 'Testfiles/models für Schnittstellen';
 import { CreateCharacterComponent } from '../create-character/create-character.component';
@@ -20,7 +20,8 @@ export class PlayComponent implements OnInit, OnDestroy {
   sub2: Subscription;
   sub3: Subscription;
   sub4: Subscription;
-
+  sub5: Subscription;
+  
   world: Dungeon = {};
   loading;
   rooms: Room[];
@@ -44,6 +45,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   constructor(public dialog: MatDialog,
     private route: ActivatedRoute,
+    private router: Router,
     private DungeonService: DungeonService,
     private httpService: HttpService,
     private socketService: WebsocketService) { }
@@ -54,6 +56,11 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.sub4 = this.socketService.getCurrentRoom().subscribe((res: string) => {
       console.log("currentRoom", res);
       this.currentRoom = JSON.parse(res);
+    })
+    this.sub5 = this.socketService.kickOut().subscribe((res: string) => {
+      console.log("kick Out", res);
+      window.alert(res);
+      this.router.navigate['/'];
     })
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
