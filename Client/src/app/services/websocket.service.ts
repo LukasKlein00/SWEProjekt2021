@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { Console } from 'node:console';
 import { map } from 'rxjs/operators';
 import { Class, Race } from 'Testfiles/models für Schnittstellen';
 
@@ -138,6 +139,7 @@ export class WebsocketService {
   }
 
   sendAnsweredDMRequest(req) {
+    console.log("Request", req)
     this.socket.emit('dungeon_master_request_answer_to_user', req)
   }
 }

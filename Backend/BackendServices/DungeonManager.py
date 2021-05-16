@@ -624,3 +624,6 @@ class DungeonManager:
 
     def load_room_coordinates(self, room_id):
         return self.db_handler.get_coordinates_by_room_id(room_id)
+
+    def delete_character(self, user_id: str, dungeon_id: str):
+        self.db_handler.delete_character(user_id, dungeon_id)
