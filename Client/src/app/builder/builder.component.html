@@ -9,7 +9,7 @@
           class="roomCell" (dblclick)="toggleRoom(room)" (click)="selectRoom(room)" [ngClass]="{
             activeRoom: room.isActive && !room.isStartRoom,
             startRoom: room.isActive && room.isStartRoom,
-            viewedRoom: room.isViewed,
+            viewedRoom: (room.x == viewedRoom?.x && room.y == viewedRoom?.y),
             selectedRoom: room == selectedRoom
           }">
           <div class="north" *ngIf="room.north"></div>
@@ -266,7 +266,7 @@
           <h5 *ngIf="!requests || requests.length == 0">Waiting For Player Requests...</h5>
           <div class="row">
             <div class="col-12 col-lg-4 p-0" *ngFor="let request of requests; let i = index">
-              <div class="card m-2 bg-dark card-border">
+              <div class="card m-2 bg-dark card-border" (mouseenter) ="enterRequest(request)"  (mouseleave) ="leaveRequest()">
                 <div class="card-body">
                   <nav>
                     <div class="nav nav-tabs" id="{{ 'nav-tab' + i }}" role="tablist">
@@ -288,11 +288,11 @@
                           }}</span>
                         <meter id="health" min="0" max="100" low="30" high="75" optimum="80"
                           value="{{ request.requester.health }}" style="margin-left: 10px"></meter>
-                        <button class="btn-success float-right m-2" (click)="submitRequest(request)">
+                        <button class="btn-success float-right m-2" (click)="submitRequest(request); leaveRequest()">
                           Submit
                         </button>
                       </div>
-                      <div>Mensch, Scout</div>
+                      <div>{{ request.requester?.class?.name }}, {{ request.requester?.race?.name }}</div>
                       <div>
                         <span class="font-weight-bold">wants to: </span>
                         <span class="font-italic m-4">{{

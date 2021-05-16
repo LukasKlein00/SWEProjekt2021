@@ -11,6 +11,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   text = '';
   chatMessages = [];
+  loadingReq = false;
 
   @Input() styles: any = {};
 
@@ -33,7 +34,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sub1 = this.socket.getChat().subscribe((msg: string) => {
       console.log("received msg: ", msg)
-      this.chatMessages.push(JSON.parse(msg));
+      const m =JSON.parse(msg)
+      if (m.dmRequest) {
+        this.loadingReq = false;
+      }
+      this.chatMessages.push(m);
       this.inscreaseChatNumber();
       const messageBody = document.querySelector('#messageBody');
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
@@ -104,34 +109,42 @@ export class ChatComponent implements OnInit, OnDestroy {
       console.log("whisper:", entry);
       this.socket.sendWhisperToRoom(this.dungeonID, this.userName, entry);
     } else {
-      switch (entry) {
-        case "north":
-        case "n":
-          console.log("go north")
-          this.socket.sendDirection(this.dungeonID, this.userID, "north");
-          break;
-        case "south":
-        case "s":
-          console.log("go south")
-          this.socket.sendDirection(this.dungeonID, this.userID, "south");
-          break;
-        case "west":
-        case "w":
-          console.log("go west")
-          this.socket.sendDirection(this.dungeonID, this.userID, "west");
-          break;
-        case "east":
-        case "e":
-          console.log("go east")
-          this.socket.sendDirection(this.dungeonID, this.userID, "east");
-          break;
-        case "help":
-        case "h":
-          this.writeHelp();
-          break;
-        default:
-          console.log("request to master")
-          this.socket.sendMasterRequest(this.dungeonID, this.userName, entry);
+      if (!this.loadingReq) {
+        switch (entry) {
+          case "north":
+          case "n":
+            console.log("go north")
+            this.socket.sendDirection(this.dungeonID, this.userID, "north");
+            break;
+          case "south":
+          case "s":
+            console.log("go south")
+            this.socket.sendDirection(this.dungeonID, this.userID, "south");
+            break;
+          case "west":
+          case "w":
+            console.log("go west")
+            this.socket.sendDirection(this.dungeonID, this.userID, "west");
+            break;
+          case "east":
+          case "e":
+            console.log("go east")
+            this.socket.sendDirection(this.dungeonID, this.userID, "east");
+            break;
+          case "help":
+          case "h":
+            this.writeHelp();
+            break;
+          default:
+            console.log("request to master")
+            this.socket.sendMasterRequest(this.dungeonID, this.userName, entry);
+            this.loadingReq = true;
+        }
+      } else {
+        this.chatMessages.push({
+          msg: "Cannot Perform Actions during a DM Request",
+          color: "red"
+        })
       }
     }
 

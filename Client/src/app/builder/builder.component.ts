@@ -19,6 +19,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   loading = false;
   sub1: Subscription;
   sub2: Subscription;
+  viewedRoom;
   requests: requestForMaster[] = [
     {
       request: 'kill Spider',
@@ -34,8 +35,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
           name: 'salty Potatos',
           description: '',
         }],
-        race: null,
-        class: null,
+        race: {
+          name: "Banger",
+          description: "bum"
+        },
+        class: {
+          name: "Mother",
+          description: "bum",
+          equipment: null
+        },
         dungeonID: null,
       },
       answer: '',
@@ -358,6 +366,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
     if (index > -1) {
       this.dungeon.accessList.splice(index, 1);
     }
+  }
+
+  enterRequest(req){
+    this.viewedRoom = this.rooms.find(r => r.x == req.x && r.y == req.y);
+  }
+
+  leaveRequest(){
+    this.viewedRoom = null;
   }
 
   ngOnDestroy() {
