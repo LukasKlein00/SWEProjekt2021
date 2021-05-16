@@ -100,6 +100,15 @@ export class HomeComponent implements OnInit {
     'Aufwandserfassung_MUDCAKE_Woche9.xlsx',
   ];
 
+  files10 = [
+    'Storyplanung_MUDCAKE_Version1.xlsx',
+    'Designbeschreibung_MUDCAKE_Version3_kommentiert.pdf',
+  ];
+  files10p = [
+    'Statusbericht_MUDCAKE_Woche10.pdf',
+    'Aufwandserfassung_MUDCAKE_Woche10.xlsx',
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
