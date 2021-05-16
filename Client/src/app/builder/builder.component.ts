@@ -73,7 +73,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       res = JSON.parse(res);
       this.toastService.show(`${res[1]} wants to join`, {
         classname: 'toast',
-        delay: 20000,
+        delay: 20000, 
         autohide: true,
         userID: res[0]
       });
@@ -362,8 +362,12 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.saveDungeon();
-    this.sub1.unsubscribe()
-    this.sub2.unsubscribe()
+    if (this.sub1) {
+      this.sub1.unsubscribe()
+    }
+    if (this.sub2) {
+      this.sub2.unsubscribe()
+    }
   }
 }
 
