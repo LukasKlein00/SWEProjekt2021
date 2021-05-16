@@ -898,7 +898,7 @@ class DatabaseHandler:
                                 SELECT CoordinateX x, CoordinateY y
                                 FROM mudcake.Room
                                 WHERE RoomID = '{room_id}'
-                            """)
+                                """)
         try:
             return self.dictionary_cursor.fetchone()
         except IOError:

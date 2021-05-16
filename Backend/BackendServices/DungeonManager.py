@@ -623,4 +623,4 @@ class DungeonManager:
             pass
 
     def load_room_coordinates(self, room_id):
-        self.db_handler.get_coordinates_by_room_id(room_id)
+        return self.db_handler.get_coordinates_by_room_id(room_id)

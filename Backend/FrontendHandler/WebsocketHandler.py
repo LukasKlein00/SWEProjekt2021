@@ -473,12 +473,12 @@ class SocketIOHandler:
             # geb zurück neue koordinaten für frontend
 
         @self.sio.event
-        def dungeon_master_request(sid, data):  # dungeonID, userID, message
+        def dungeon_master_request(sid, data):
             session = self.sio.get_session(sid)
             character_object = session['character']
             room = self.dungeon_manager.load_room_coordinates(character_object.room_id)
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
-            request = {'userID': session['userID'], 'dungeonID': session['dungeonID'], 'request': data['message'],
+            request = {'userID': session['userID'], 'dungeonID': data['dungeonID'], 'request': data['message'],
                        'requester': character_object.to_dict(), 'answer': "", 'x': room['x'], 'y': room['y']}
             self.sio.emit("send_request_to_dm", json.dumps(request), to=dungeon_master_sid)
 
