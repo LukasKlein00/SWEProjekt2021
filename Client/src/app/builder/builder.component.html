@@ -252,7 +252,7 @@
 
           <div class="tab-pane fade" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab">
             <div *ngIf="dungeon" class="chat">
-              <app-chat [styles]="{'grid-template-rows': '236px 44px','border': 'none'}" [isDungeonMaster]="true" [unreadMessages]="chatMessages" (ChatMessageEvent)="receiveMessage($event)"></app-chat>
+              <app-chat [styles]="{'grid-template-rows': '236px 44px','border': 'none'}" [dungeonID] ="this.dungeon.dungeonID" [isDungeonMaster]="true" [unreadMessages]="chatMessages" (ChatMessageEvent)="receiveMessage($event)"></app-chat>
             </div>
           </div>
         </div>
