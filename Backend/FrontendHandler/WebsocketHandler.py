@@ -226,12 +226,6 @@ class SocketIOHandler:
                                       dungeon_id=dungeon_id,
                                       character_id=str(uuid.uuid4()))
 
-            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
-            try:
-                character_obj.inventory.add_item_to_inventory(item.item_id)
-            except AttributeError:
-                print("Da war das item wohl none ¯\_(ツ)_/¯")
-                pass
 
             for room in all_room_objects_in_dungeon[1:]:
                 if room.room_id == starting_room['roomID']:
@@ -243,6 +237,11 @@ class SocketIOHandler:
                     self.sio.enter_room(sid, room.room_id)
                     self.sio.emit('current_room', json.dumps(starting_room), to=sid)
             # endregion
+            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
+
+            if item.item_id:
+                character_obj.inventory.add_item_to_inventory(item.item_id)
+
             session["character"] = character_obj
 
             # region Adding class startitem to user inventory when first joining
@@ -567,7 +566,8 @@ class SocketIOHandler:
             character.inventory = inventory
             if new_health == 0:
                 self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
-                self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['msg']}'"), to=sid)
+
+                self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['answer']}'"), to=sid)
             else:
                 msg = {'msg': data['answer'], 'color': '#FF6F61', 'dmRequest': True, 'pre': 'consequence:'}
                 character.life_points = new_health
