@@ -170,6 +170,15 @@ class HTTPHandler(BaseHTTPRequestHandler):
             if not delete_transaction:
                 self.__set_response(400)
 
+        if self.path == '/deleteAccess':
+            self.__set_response()
+            dungeon_manager = DungeonManager()
+            try:
+                dungeon_manager.delete_user_from_accesslist(data)
+                self.wfile.write(json.dumps("worked:))").encode(encoding='utf_8'))
+            except IOError:
+                pass
+
         if self.path == '/copyDungeon':
             self.__set_response()
             dungeon_manager = DungeonManager()

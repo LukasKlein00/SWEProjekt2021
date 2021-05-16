@@ -484,7 +484,7 @@ class SocketIOHandler:
         def send_message_to_master(sid, data):
             session = self.sio.get_session(sid)
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
-            msg = {'pre': session['character'].name, 'msg': data['message']}
+            msg = {'pre': session['character'].name + '+', 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), to=dungeon_master_sid)
 
         @self.sio.event
@@ -498,6 +498,7 @@ class SocketIOHandler:
 
         @self.sio.event
         def send_message_to_all(sid, data):
+            print("this is se data: ", data)
             session = self.sio.get_session(sid)
             msg = {'pre': session['userName'], 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
@@ -535,4 +536,3 @@ class SocketIOHandler:
                     character_inventory.remove_item_from_inventory(item['itemID'])
 
             character.set_health(new_health)
-
