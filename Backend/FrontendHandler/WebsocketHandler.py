@@ -262,7 +262,7 @@ class SocketIOHandler:
 
         @self.sio.event
         def join_dungeon(sid, data):  # Data = Dict aus DungeonID und UserID/Name
-            self.sio.enter_room(sid, data['dungeonID'])
+            #self.sio.enter_room(sid, data['dungeonID'])
             session = self.sio.get_session(sid)
             user_status = self.access_manager.user_status_on_access_list(data['dungeonID'], session['userName'])
             session['dungeonID'] = data['dungeonID']
@@ -288,6 +288,7 @@ class SocketIOHandler:
             elif user_status is False:
                 self.sio.emit("on_join_request_answer", json.dumps(False), to=sid)
             elif not user_status:
+
                 count = self.activeDungeonHandler.user_count_in_dungeon[data['dungeonID']]
                 self.activeDungeonHandler.user_count_in_dungeon[data['dungeonID']] = count + 1
                 self.sio.emit('JoinRequest', json.dumps([data['userID'], session['userName']]),
@@ -335,6 +336,7 @@ class SocketIOHandler:
             if character:
                 session['character'] = character
                 self.sio.enter_room(sid, character.room_id)
+                self.sio.enter_room(sid, data["dungeonID"])
                 self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid)
             else:
                 self.sio.emit("get_character_in_dungeon", json.dumps(False), to=sid)
@@ -385,7 +387,7 @@ class SocketIOHandler:
                 if bool(room_data[data['direction']]) is True:
                     move_message = {'msg': f"moved {data['direction']}",
                                     'pre': "success:",
-                                    'color': "green"
+                                    'color': "#88B04B"
                                     }
                     # region North
                     if data['direction'] == 'north':
@@ -460,7 +462,7 @@ class SocketIOHandler:
                 else:
                     msg = {'msg': "couldn't move in this direction",
                            'pre': "error:",
-                           'color': "red"
+                           'color': "#DD4124"
                            }
 
                     self.sio.emit('get_chat', json.dumps(msg), to=sid)
@@ -486,7 +488,7 @@ class SocketIOHandler:
         def send_message_to_master(sid, data):
             session = self.sio.get_session(sid)
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
-            msg = {'pre': session['character'].name + '+', 'msg': data['message']}
+            msg = {'pre': session['character'].name + ':', 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), to=dungeon_master_sid)
 
         @self.sio.event
@@ -502,23 +504,27 @@ class SocketIOHandler:
         def send_message_to_all(sid, data):
             print("this is se data: ", data)
             session = self.sio.get_session(sid)
-            msg = {'pre': session['userName'], 'msg': data['message']}
+            msg = {'pre': ("DM: "), 'msg': data['message'], 'color': '#FF6F61' }
+            print("rooms: ",  self.sio.rooms(sid))
             self.sio.emit('get_chat', json.dumps(msg), room=data['dungeonID'])
+
 
         @self.sio.event
         def send_whisper_to_player(sid, data):
+            print("sis is the DM whisper data:) : ", data)
             session = self.sio.get_session(sid)
-            receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
+            receiver = re.findall(r'".*"', data['message'])[0][1:-1]
             sid_of_recipient = self.activeDungeonHandler.user_sid[receiver]
-            msg = {'pre': session['userName'] + "whispered: ", 'msg': data['msg']}
+            msg = {'pre': "DM whispered: ", 'msg': data['message'], 'color': '#D65076'}
             self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient)
 
         @self.sio.event
         def send_whisper_to_room(sid, data):
+            print("sis is the whisper data:) : ", data)
             session = self.sio.get_session(sid)
-            receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
+            receiver = re.findall(r'".*"', data['message'])[0][1:-1]
             sid_of_recipient = self.activeDungeonHandler.user_sid[receiver]
-            msg = {'pre': session['userName'] + "whispered: ", 'msg': data['msg']}
+            msg = {'pre': session['userName'] + "whispered: ", 'msg': data['message'], 'color': '#D65076'}
             self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient)
 
         @self.sio.event
