@@ -612,3 +612,12 @@ class DungeonManager:
             self.db_handler.delete_user_from_accesslist(username=data['userName'], dungeon_id=data['dungeonID'])
         except IOError:
             pass
+
+    def remove_config_data(self, data):
+        try:
+            if 'deletedRooms' in data:
+                deleted_room_ids = data['deletedRooms']
+                for room_id in deleted_room_ids:
+                    self.db_handler.remove_room_by_room_id(room_id)
+        except AttributeError:
+            pass

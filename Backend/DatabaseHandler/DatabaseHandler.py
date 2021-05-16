@@ -53,8 +53,7 @@ class DatabaseHandler:
         self.cursor = self.database_path.cursor()
         self.dictionary_cursor = self.database_path.cursor(dictionary=True)
 
-
-# print(colored('DB:', 'yellow'), 'xxx')
+    # print(colored('DB:', 'yellow'), 'xxx')
 
     def register_user(self, user):
         """
@@ -74,7 +73,7 @@ class DatabaseHandler:
             print(colored('DB:', 'yellow'), f"registered User '{user.user_id}'")
             self.database_path.commit()
         except IOError:
-            print(colored('DB: register User failed' , 'red'))
+            print(colored('DB: register User failed', 'red'))
             pass
 
     def login_user(self, user):
@@ -256,7 +255,8 @@ class DatabaseHandler:
                         ON DUPLICATE KEY UPDATE
                         DungeonID = VALUES(DungeonID), ClassID=VALUES(ClassID), ClassName=VALUES(ClassName), 
                             ClassDescription=VALUES(ClassDescription), ItemID = VALUES(ItemID)
-                      """, (dungeon_id, class_object.class_id, class_object.name, class_object.description, class_object.item_id))
+                      """, (
+        dungeon_id, class_object.class_id, class_object.name, class_object.description, class_object.item_id))
         try:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"added class to db '{dungeon_id}'")
@@ -326,14 +326,14 @@ class DatabaseHandler:
                             RaceID=VALUES(RaceID), ClassID=VALUES(ClassID), RoomID=VALUES(RoomID), 
                             CharacterID=VALUES(CharacterID)""",
                             (dungeon_id, character.user_id, character.life_points, character.name,
-                             character.description, character.race.race_id, character.class_obj.class_id, character.room_id,
+                             character.description, character.race.race_id, character.class_obj.class_id,
+                             character.room_id,
                              character.character_id))
         try:
             self.database_path.commit()
             print(colored('DB:', 'yellow'), f"write character to database '{character}'")
         except IOError:
             pass
-
 
     def write_npc_to_database(self, npc, dungeon_id):
         '''
@@ -611,7 +611,7 @@ class DatabaseHandler:
     def get_all_rooms_by_dungeon_id_as_dict(self, dungeon_id: str):
         self.database_path.commit()
         self.dictionary_cursor.execute(
-                                   f"""
+            f"""
                                     Select
                                         RoomID roomID,
                                         RoomName roomName,
@@ -652,7 +652,7 @@ class DatabaseHandler:
     def get_room_by_room_id_as_dict(self, dungeon_id: str, room_id: str):
         self.database_path.commit()
         self.dictionary_cursor.execute(
-                                   f"""
+            f"""
                                     Select
                                         RoomID roomID,
                                         RoomName roomName,
@@ -861,3 +861,19 @@ class DatabaseHandler:
                                 SET Lifepoints = '{lifepoints}'
                                 WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
                             """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            pass
+
+    def remove_room_by_room_id(self, room_id: str):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                                DELETE
+                                FROM mudcake.Room
+                                WHERE RoomID = '{room_id}'
+                            """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            pass
