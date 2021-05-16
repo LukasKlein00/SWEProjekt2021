@@ -35,7 +35,7 @@ from DungeonPackage.Item import Item
 
 
 class Inventory:
-    def __init__(self, dungeon_id: str = None, user_id: str = None, inventory_id: str= None, items: [Item] = []):
+    def __init__(self, dungeon_id: str = None, user_id: str = None, inventory_id: str = None, items: [Item] = []):
         self.inventory_id = inventory_id
         self.dungeon_id = dungeon_id
         self.user_id = user_id
@@ -44,6 +44,7 @@ class Inventory:
 
     def delete_inventory(self):
         self.db_handler.remove_inventory_by_userid_dungeonid(self.dungeon_id, self.user_id)
+        self.items = []
 
     def add_item_to_inventory(self, item_id: str, item: Item = None):
         if item:
@@ -56,15 +57,16 @@ class Inventory:
         self.db_handler.remove_item_from_inventory(item_id, self.user_id, self.dungeon_id)
 
     def get_inventory(self):
+        self.items = []
         all_items = self.db_handler.get_inventory_by_dungeon_user_id(self.dungeon_id, self.user_id)
         for item in all_items:
-            if self.items.__len__() == 0:
-                self.items.append(
-                    Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
-            for existing_item in self.items:
-                if not item['itemID'] in existing_item.item_id:
-                    self.items.append(
-                        Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
+            # if self.items.__len__() == 0:
+            #    self.items.append(
+            #        Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
+            # for existing_item in all_items:
+            # if not item['itemID'] in existing_item.item_id:
+            self.items.append(
+                Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
         return self
 
     def to_dict(self):

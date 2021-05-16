@@ -100,3 +100,6 @@ class Character:
                 'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},
                 'userID': self.user_id, 'roomID': self.room_id,
                 'inventory': item_list}
+
+    def __del__(self):
+        print("deleted the Character")
