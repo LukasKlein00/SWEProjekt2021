@@ -533,8 +533,9 @@ class SocketIOHandler:
             print("sis is the whisper data:) : ", data)
             session = self.sio.get_session(sid)
             receiver = re.search(r'".*"', data['message']).group()[1:-1]
-            message = re.search(r'.*', data['message'])
+            message = re.search(r'.*', data['message']).group()
             print("parsed receiver: ", receiver)
+            print("parsed rest of message: ", message)
             user_id_of_recipient = self.dungeon_manager.get_userid_by_character_name(receiver, data['dungeonID'])
             sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
             print("sid_of_recipient: ", sid_of_recipient)
