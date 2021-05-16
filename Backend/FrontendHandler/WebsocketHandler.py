@@ -72,6 +72,7 @@ class SocketIOHandler:
             answer = data["isAllowed"]
             session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
             for socket in self.activeDungeonHandler.user_sid[data['userID']]:
+                print("poopyheads for life")
                 self.sio.emit("on_join_request_answer", answer, to=socket)
             count = self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']]
             self.activeDungeonHandler.user_count_in_dungeon[session['dungeonID']] = count + 1
@@ -235,12 +236,13 @@ class SocketIOHandler:
                     self.dungeon_manager.write_character_to_database(character_obj)
                     character_obj.discovered_rooms_to_database()
                     self.sio.enter_room(sid, room.room_id)
-                    self.sio.emit('current_room', json.dumps(starting_room), to=sid)
+            self.sio.emit('current_room', json.dumps(starting_room), to=sid)
             # endregion
 
-            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
-            if item.item_id:
-                character_obj.inventory.add_item_to_inventory(item.item_id, item)
+            outer_item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
+
+            if not character_obj.inventory.items.__contains__(outer_item):
+                character_obj.inventory.add_item_to_inventory(outer_item.item_id, outer_item)
 
             self.sio.emit("get_character_in_dungeon", json.dumps(character_obj.to_dict()), to=sid)
 
@@ -555,24 +557,30 @@ class SocketIOHandler:
                                                   data):  # data = dungeonID, userID, health, character with inventory
             new_health = data['requester']['health']
             session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
-            character = session['character']
-            received_character_inventory = data['requester']['inventory']
-
-            inventory = Inventory(dungeon_id=data['dungeonID'],
-                                  user_id=data['userID'])
-            inventory.delete_inventory()
-
-            for item in received_character_inventory:
-                inventory.add_item_to_inventory(item['itemID'])
-
             sid_of_recipient = self.activeDungeonHandler.user_sid[data['requester']['userID']]
-            character.inventory = inventory
 
             if new_health == 0:
+                print("health is zero")
+                self.dungeon_manager.delete_inventory(data['userID'], data['dungeonID'])
                 self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
 
+                del session['character']
                 self.sio.emit('kick_out', json.dumps(f"you died 😎 '{data['answer']}'"), to=sid_of_recipient[0])
+
             else:
+                character = session['character']
+                received_character_inventory = data['requester']['inventory']
+                print("received inventory", data['requester']['inventory'])
+                inventory = Inventory(dungeon_id=data['dungeonID'],
+                                      user_id=data['userID'])
+                inventory.delete_inventory()
+                for item in received_character_inventory:
+                    print("okay lets go")
+                    item_object = Item(item_id=item['itemID'], name=item['name'], description=item['description'])
+                    inventory.add_item_to_inventory(item['itemID'], item_object)
+
+                character.inventory = inventory
+                print("health is not zero")
                 msg = {'msg': data['answer'], 'color': '#FF6F61', 'dmRequest': True, 'pre': 'consequence:'}
                 character.life_points = new_health
                 self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid_of_recipient[0])

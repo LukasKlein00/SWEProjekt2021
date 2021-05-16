@@ -927,3 +927,15 @@ class DatabaseHandler:
             return self.dictionary_cursor.fetchone()
         except IOError:
             pass
+
+    def delete_inventory(self, user_id, dungeon_id):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                                    DELETE
+                                    FROM mudcake.Inventory
+                                    WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                                """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            pass

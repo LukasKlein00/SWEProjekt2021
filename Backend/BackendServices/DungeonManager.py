@@ -636,3 +636,6 @@ class DungeonManager:
 
     def delete_character(self, user_id: str, dungeon_id: str):
         self.db_handler.delete_character(user_id, dungeon_id)
+
+    def delete_inventory(self, user_id, dungeon_id):
+        self.db_handler.delete_inventory(user_id, dungeon_id)
