@@ -158,5 +158,7 @@ export class requestForMaster {
     answer: string;
     x: number;
     y: number;
+    dungeonID?
+    userID?
 }
 

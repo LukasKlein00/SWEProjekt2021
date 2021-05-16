@@ -9,6 +9,8 @@ export class LoaderComponent implements OnInit {
 
   constructor() { }
 
+  hearts = false;
+
   @Input() loadingText = "Loading";
 
   ngOnInit(): void {
