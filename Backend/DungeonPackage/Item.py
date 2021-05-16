@@ -46,3 +46,6 @@ class Item:
         self.item_id = database_item[0]
         self.description = database_item[1]
         self.name = database_item[2]
+
+    def to_dict(self):
+        return {'itemID': self.item_id, 'name': self.name, 'description': self.description, 'dungeonID': self.dungeon_id}

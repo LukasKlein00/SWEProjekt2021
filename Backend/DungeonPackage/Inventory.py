@@ -56,3 +56,10 @@ class Inventory:
         for item in all_items:
             self.items.append(
                 Item(item_id=item['itemID'], description=item['itemDescription'], name=item['itemName']))
+        return self
+
+    def to_dict(self):
+        items_dict = []
+        for item in self.items:
+            items_dict.append(item.to_dict())
+        return {'dugneonID': self.dungeon_id, 'user_id': self.user_id, 'items': items_dict}
