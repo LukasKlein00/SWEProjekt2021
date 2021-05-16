@@ -911,3 +911,7 @@ class DatabaseHandler:
                             FROM mudcake.Character
                             WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
                         """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            pass
