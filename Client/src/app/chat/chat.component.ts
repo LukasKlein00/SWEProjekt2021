@@ -12,6 +12,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   text = '';
   chatMessages = [];
   loadingReq = false;
+  messageBody;
 
   @Input() styles: any = {};
 
@@ -32,21 +33,31 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.messageBody = document.querySelector('#messageBody');
     this.sub1 = this.socket.getChat().subscribe((msg: string) => {
       console.log("received msg: ", msg)
-      const m =JSON.parse(msg)
+      const m = JSON.parse(msg)
       if (m.dmRequest) {
         this.loadingReq = false;
       }
       this.chatMessages.push(m);
       this.inscreaseChatNumber();
-      const messageBody = document.querySelector('#messageBody');
-      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+      this.autoScroll();
     });
   }
 
   inscreaseChatNumber() {
     this.ChatMessageEvent.emit(this.unreadMessages + 1);
+  }
+
+  autoScroll(){
+    setTimeout(()=>{                        
+      this.messageBody.scroll({
+        top: this.messageBody.scrollHeight,
+        left: 0,
+        behavior: 'smooth'
+      });
+ }, 100);
   }
 
   chat(event) {
@@ -59,8 +70,7 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
       this.text = '';
     }
-    const messageBody = document.querySelector('#messageBody');
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    this.autoScroll();
   }
 
   checkChatEvent() {
@@ -108,6 +118,8 @@ export class ChatComponent implements OnInit, OnDestroy {
       entry = entry.slice(8);
       console.log("whisper:", entry);
       this.socket.sendWhisperToRoom(this.dungeonID, this.userName, entry);
+    } else if (entry == "help" || entry == "h") {
+      this.writeHelp();
     } else {
       if (!this.loadingReq) {
         switch (entry) {
@@ -130,10 +142,6 @@ export class ChatComponent implements OnInit, OnDestroy {
           case "e":
             console.log("go east")
             this.socket.sendDirection(this.dungeonID, this.userID, "east");
-            break;
-          case "help":
-          case "h":
-            this.writeHelp();
             break;
           default:
             console.log("request to master")
@@ -158,7 +166,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         { msg: "help | h: return the HELP menu" },
         {},
         { msg: 'whisper "name" <message>: chat with <name> in the same room' },
-        { msg: "<<< HELP MENU >>>", color: "yellow" });
+        );
     } else {
       this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
         { msg: "use '/' followed by text to execute a command" },
@@ -174,7 +182,6 @@ export class ChatComponent implements OnInit, OnDestroy {
         { msg: 'whisper "name" <message>: chat with <name> in the same room' },
         {},
         { msg: "<your action>: sends <your action> as an action request to the Dungeon Master" },
-        { msg: "<<< HELP MENU >>>", color: "yellow" },
       )
     }
   }

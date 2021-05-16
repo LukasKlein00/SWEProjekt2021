@@ -274,6 +274,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   submitRequest(req: requestForMaster) {
+    console.log("gesendete Req", req)
     this.websocketService.sendAnsweredDMRequest(req);
     this.requests.splice(this.requests.indexOf(req), 1);
   }
