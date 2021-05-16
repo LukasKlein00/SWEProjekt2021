@@ -212,7 +212,6 @@ class SocketIOHandler:
             current_dungeon = ActiveDungeon(
                 self.activeDungeonHandler.active_dungeons[dungeon_id]['active_dungeon_object'])
             current_dungeon.load_rooms(dungeon_id)
-            all_rooms_in_dungeon = current_dungeon.rooms
             all_room_objects_in_dungeon = current_dungeon.rooms_objects
 
             session = self.sio.get_session(sid)
@@ -221,8 +220,18 @@ class SocketIOHandler:
                                       name=character["name"], description=character["description"],
                                       class_obj=Class(class_id=character["class"]["classID"]),
                                       race=Race(race_id=character["race"]["raceID"]),
-                                      user_id=character["userID"], dungeon_id=dungeon_id,
+                                      user_id=character["userID"],
+                                      inventory=Inventory(dungeon_id=character['dungeonID'],
+                                                          user_id=character['userID']),
+                                      dungeon_id=dungeon_id,
                                       character_id=str(uuid.uuid4()))
+
+            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
+            try:
+                character_obj.inventory.add_item_to_inventory(item.item_id)
+            except AttributeError:
+                print("Da war das item wohl none ¯\_(ツ)_/¯")
+                pass
 
             for room in all_room_objects_in_dungeon[1:]:
                 if room.room_id == starting_room['roomID']:
@@ -237,12 +246,6 @@ class SocketIOHandler:
             session["character"] = character_obj
 
             # region Adding class startitem to user inventory when first joining
-            item = self.dungeon_manager.get_item_by_class_id(character["class"]["classID"])
-            try:
-                character_obj.inventory.add_item_to_inventory(item.item_id)
-            except AttributeError:
-                print("Da war das item wohl none ¯\_(ツ)_/¯")
-                pass
             # endregion
 
         @self.sio.event
@@ -542,9 +545,10 @@ class SocketIOHandler:
         @self.sio.event
         def dungeon_master_request_answer_to_user(sid,
                                                   data):  # data = dungeonID, userID, health, character with inventory
-            new_health = data['health']
-            character = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']])['character']
-            received_character_inventory = data['character']['inventory']
+            new_health = data['requester']['health']
+            session = self.sio.get_session(self.activeDungeonHandler.user_sid[data['userID']][0])
+            character = session['character']
+            received_character_inventory = data['requester']['inventory']
 
             inventory = Inventory(dungeon_id=data['dungeonID'],
                                   user_id=data['userID'])
