@@ -40,6 +40,7 @@ class ActiveDungeonHandler:
         self.sid_of_dungeon_master = dict()                         #sid_of_dungeon_master['dungeonID'] -> sidOfDungeonMaster
         self.active_dungeons = dict()                               #active_dungeons['dungeonID'] -> activeDungeon
         self.user_sid = dict()                                      #user_sid['user_id'] -> [user_sid]
+        self.user_sid_username = dict()
         self.user_count_in_dungeon = dict()                         #user_count_in_dungeon['dungeonID'] -> numberOfUsers
         self.user_sids_in_dungeon = dict()                          #user_sids_in_dungeon['dungeonID'] -> [user_sids]
 
