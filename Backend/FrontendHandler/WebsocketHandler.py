@@ -526,13 +526,3 @@ class SocketIOHandler:
         #    session = self.sio.get_session(sid)
         #    receiver = re.findall(r'".*"', data['msg'])[0][1:-1]
         #    for user_session in self.activeDungeonHandler.active_dungeons[data['dungeonID']]
-
-
-if __name__ == '__main__':
-    character = Character().load_data('a3f79b86-b83c-471c-a778-8f0414e56746', 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596')
-    input = {'dungeonID': 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596', 'userID': 'a3f79b86-b83c-471c-a778-8f0414e56746',
-             'health': 50, 'character': {'charname': 'Peopel',
-                                         'inventory': [{'itemID': '336d462e-8f65-48c6-8165-b9850cf825d4',
-                                                        'description': 'wirklich groß :O', 'name': 'Großer Stock',
-                                                        'dungeonID': 'fc1d4bc8-ef57-4ac4-bd8a-5ebb70883596'}]}}
-    dungeon_master_request_answer_to_user(None, input, character)
