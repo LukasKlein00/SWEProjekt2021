@@ -536,6 +536,7 @@ class SocketIOHandler:
 
             character.inventory = inventory
             if new_health == 0:
+                self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
                 self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['msg']}'"), to=sid)
             else:
                 character.life_points = new_health
