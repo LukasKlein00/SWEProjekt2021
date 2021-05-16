@@ -565,15 +565,17 @@ class SocketIOHandler:
             for item in received_character_inventory:
                 inventory.add_item_to_inventory(item['itemID'])
 
+            sid_of_recipient = self.activeDungeonHandler.user_sid[data['requester']['userID']]
             character.inventory = inventory
+
             if new_health == 0:
                 self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
 
-                self.sio.emit('kick_out', json.dumps(f"you died ¯\_(ツ)_/¯ '{data['answer']}'"), to=sid)
+                self.sio.emit('kick_out', json.dumps(f"you died 😎 '{data['answer']}'"), to=sid_of_recipient[0])
             else:
                 msg = {'msg': data['answer'], 'color': '#FF6F61', 'dmRequest': True, 'pre': 'consequence:'}
                 character.life_points = new_health
-                sid_of_recipient = self.activeDungeonHandler.user_sid[data['requester']['userID']]
+                self.sio.emit("get_character_in_dungeon", json.dumps(character.to_dict()), to=sid_of_recipient[0])
                 self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0])
 
         @self.sio.event

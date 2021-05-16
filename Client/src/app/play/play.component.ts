@@ -60,7 +60,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.sub5 = this.socketService.kickOut().subscribe((res: string) => {
       console.log("kick Out", res);
       window.alert(res);
-      this.router.navigate['/'];
+      this.router.navigate(['/']);
     })
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
