@@ -911,3 +911,15 @@ class DatabaseHandler:
                             FROM mudcake.Character
                             WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
                         """)
+
+    def get_userid_by_character_name(self, character_name: str, dungeon_id: str):
+        self.database_path.commit()
+        self.dictionary_cursor.execute(f"""
+                                        SELECT UserID userID
+                                        From mudcake.Character
+                                        WHERE CharacterName = '{character_name}' AND DungeonID = '{dungeon_id}'
+                                    """)
+        try:
+            return self.dictionary_cursor.fetchone()
+        except IOError:
+            pass
