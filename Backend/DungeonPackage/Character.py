@@ -79,8 +79,8 @@ class Character:
 
     def discovered_rooms_to_database(self):
         try:
-            for room_id in self.discovered_rooms:
-                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room_id)
+            for room in self.discovered_rooms:
+                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room['roomID'])
         except IOError:
             pass
 
@@ -100,3 +100,6 @@ class Character:
                 'race': {'raceID': self.race.race_id, 'name': self.race.name, 'description': self.race.description},
                 'userID': self.user_id, 'roomID': self.room_id,
                 'inventory': item_list}
+
+    def update_current_room(self):
+        self.db_handler.update_room_id_in_character(self.user_id, self.dungeon_id, self.room_id)

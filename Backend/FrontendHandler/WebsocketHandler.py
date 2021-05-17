@@ -421,6 +421,9 @@ class SocketIOHandler:
                                 if already_discovered is False:
                                     discovered_rooms.append(room)
 
+                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms_to_database()
+                                character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
@@ -439,6 +442,9 @@ class SocketIOHandler:
                                 if already_discovered is False:
                                     discovered_rooms.append(room)
 
+                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms_to_database()
+                                character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
@@ -456,6 +462,9 @@ class SocketIOHandler:
                                 if already_discovered is False:
                                     discovered_rooms.append(room)
 
+                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms_to_database()
+                                character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
@@ -473,6 +482,9 @@ class SocketIOHandler:
                                 if already_discovered is False:
                                     discovered_rooms.append(room)
 
+                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms_to_database()
+                                character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
                                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
                                 self.sio.emit('get_chat', json.dumps(move_message), to=sid)
