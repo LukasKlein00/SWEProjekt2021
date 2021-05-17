@@ -611,6 +611,7 @@ class SocketIOHandler:
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
             msg = {'pre': session['character'].name + ':', 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), to=dungeon_master_sid)
+            self.sio.emit('get_chat', json.dumps(msg), to=sid)
 
         @self.sio.event
         def send_message_to_room(sid, data):
@@ -644,7 +645,7 @@ class SocketIOHandler:
             try:
                 sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
                 if self.sio.rooms(sid_of_recipient[0]).__contains__(character.room_id):
-                    msg = {'pre': session['userName'] + " whispered: ", 'msg': message, 'color': '#D65076'}
+                    msg = {'pre': character.name + " whispered: ", 'msg': message, 'color': '#D65076'}
                     self.sio.emit('get_chat', json.dumps(msg), room=character.room_id)
                 else:
                     msg = {'pre': "error:",
