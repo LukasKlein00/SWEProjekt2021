@@ -385,7 +385,7 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             character = session['character']
             discovered_rooms = session['discovered_rooms']
-            current_room = character.room_id  # None
+            current_room = character.room_id
 
             current_dungeon = ActiveDungeon(
                 self.activeDungeonHandler.active_dungeons[data['dungeonID']]['active_dungeon_object'])
