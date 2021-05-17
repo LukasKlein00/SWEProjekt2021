@@ -951,3 +951,11 @@ class DatabaseHandler:
             self.database_path.commit()
         except IOError:
             pass
+
+    def delete_discovered_rooms(self, user_id: str, dungeon_id: str):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                        DELETE
+                        FROM mudcake.DiscoveredRoom
+                        WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                        """)

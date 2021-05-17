@@ -433,7 +433,7 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room)
+                                    discovered_rooms.append(room['roomID'])
 
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
@@ -477,7 +477,7 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room)
+                                    discovered_rooms.append(room['roomID'])
 
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
@@ -520,7 +520,7 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room)
+                                    discovered_rooms.append(room['roomID'])
 
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
@@ -563,7 +563,7 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room)
+                                    discovered_rooms.append(room['roomID'])
 
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
@@ -685,6 +685,7 @@ class SocketIOHandler:
 
             if new_health == 0:
                 print("health is zero")
+                self.dungeon_manager.delete_discovered_rooms(data['userID'], data['dungeonID'])
                 self.dungeon_manager.delete_inventory(data['userID'], data['dungeonID'])
                 self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
 

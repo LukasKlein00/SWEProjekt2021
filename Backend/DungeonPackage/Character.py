@@ -80,12 +80,11 @@ class Character:
     def discovered_rooms_to_database(self):
         try:
             for room in self.discovered_rooms:
-                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room['roomID'])
+                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room)
         except IOError:
             pass
 
     def load_discovered_rooms_from_database(self):
-        rooms = self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)
         for room in self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id):
             self.discovered_rooms.append(room['roomID'])
 
