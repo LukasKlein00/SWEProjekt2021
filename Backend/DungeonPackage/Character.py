@@ -52,7 +52,7 @@ class Character:
         self.inventory = inventory
         self.dungeon_id = dungeon_id
         self.character_id = character_id
-        self.discovered_rooms = discovered_rooms
+        self.discovered_rooms: [str] = discovered_rooms
         self.db_handler = DatabaseHandler()
 
     def load_data(self, user_id: str, dungeon_id: str):

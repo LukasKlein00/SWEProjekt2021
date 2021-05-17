@@ -123,8 +123,6 @@ class SocketIOHandler:
 
                     # len(self.sio.manager.get_participants(namespace="main", room=dungeon_data.dungeon_id))
                     dungeon_data_list.append(dungeon_dict)
-            self.sio.emit('players_in_my_dungeon', json.dumps(
-                sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])), room=dungeon_ID)
             self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), to=sid)
             # endregion
 
@@ -249,8 +247,8 @@ class SocketIOHandler:
                     self.sio.enter_room(sid, room.room_id)
             self.sio.emit('current_room', json.dumps(starting_room), to=sid)
             try:
-                discovered_rooms = [];
-                discovered_rooms.append(starting_room);
+                discovered_rooms = []
+                discovered_rooms.append(starting_room)
                 session['discovered_rooms'] = discovered_rooms
                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
             except:
@@ -425,6 +423,7 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             character = session['character']
             discovered_rooms = session['discovered_rooms']
+            discovered_room_ids = list(map(lambda x: x['roomID'], discovered_rooms))
             current_room = character.room_id  # None
 
             current_dungeon = ActiveDungeon(
@@ -457,8 +456,8 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room['roomID'])
-
+                                    discovered_rooms.append(room)
+                                    discovered_room_ids.append(room['roomID'])
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
                                 players = []
@@ -482,7 +481,7 @@ class SocketIOHandler:
                                 except:
                                     pass
 
-                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms = discovered_room_ids
                                 character.discovered_rooms_to_database()
                                 character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
@@ -501,8 +500,8 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room['roomID'])
-
+                                    discovered_rooms.append(room)
+                                    discovered_room_ids.append(room['roomID'])
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
                                 players = []
@@ -526,7 +525,7 @@ class SocketIOHandler:
                                 except:
                                     pass
 
-                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms = discovered_room_ids
                                 character.discovered_rooms_to_database()
                                 character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
@@ -544,8 +543,8 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room['roomID'])
-
+                                    discovered_rooms.append(room)
+                                    discovered_room_ids.append(room['roomID'])
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
                                 players = []
@@ -569,7 +568,7 @@ class SocketIOHandler:
                                 except:
                                     pass
 
-                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms = discovered_room_ids
                                 character.discovered_rooms_to_database()
                                 character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)
@@ -587,8 +586,8 @@ class SocketIOHandler:
                                     if room['roomID'] == discovered_room['roomID']:
                                         already_discovered = True
                                 if already_discovered is False:
-                                    discovered_rooms.append(room['roomID'])
-
+                                    discovered_rooms.append(room)
+                                    discovered_room_ids.append(room['roomID'])
                                 # fügt die aktuellen Spieler dem Current Room hinzu
                                 playersSIDList = self.sio.manager.rooms['/'][character.room_id]
                                 players = []
@@ -612,7 +611,7 @@ class SocketIOHandler:
                                 except:
                                     pass
 
-                                character.discovered_rooms = discovered_rooms
+                                character.discovered_rooms = discovered_room_ids
                                 character.discovered_rooms_to_database()
                                 character.update_current_room()
                                 self.sio.emit('current_room', json.dumps(room), to=sid)

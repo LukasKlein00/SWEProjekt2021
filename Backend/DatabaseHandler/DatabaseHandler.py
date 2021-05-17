@@ -555,12 +555,12 @@ class DatabaseHandler:
                         INSERT INTO mudcake.DiscoveredRoom
                             (RoomID, UserID, DungeonID)
                         VALUES
-                            ('{room_id}', '{user_id}', '{dungeon_id}')
+                            (%s, %s, %s)
                         ON DUPLICATE KEY UPDATE
                             RoomID=VALUES(RoomID),
                             UserID=VALUES(UserID),
                             DungeonID=VALUES(DungeonID)
-                        """)
+                        """, (room_id, user_id, dungeon_id))
         try:
             self.database_path.commit()
         except IOError:
