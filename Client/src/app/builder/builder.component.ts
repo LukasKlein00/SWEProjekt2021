@@ -153,6 +153,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       delete r.npc;
     } else {
       r['isActive'] = true;
+      this.selectRoom(r);
     }
   }
 
@@ -250,8 +251,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   selectRoom(r: Room) {
-    this.selectedRoom = r;
-    document.getElementById('nav-room-tab').click();
+    if (r.isActive) {
+      this.selectedRoom = r;
+      document.getElementById('nav-room-tab').click();
+    }
   }
 
   submitRequest(req: requestForMaster) {
