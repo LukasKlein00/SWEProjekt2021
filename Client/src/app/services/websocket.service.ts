@@ -75,6 +75,7 @@ export class WebsocketService {
   getDiscoveredMap(dungeonID, userID) {
     this.socket.emit('character_joined_room', { dungeonID, userID })
     return this.socket.fromEvent('character_joined_room').pipe(map((data) => {
+      console.log("räume: ", data)
       return data
     }))
   }
