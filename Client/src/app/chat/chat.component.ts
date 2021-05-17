@@ -35,7 +35,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.messageBody = document.querySelector('#messageBody');
     this.sub1 = this.socket.getChat().subscribe((msg: string) => {
-      console.log("received msg: ", msg)
+      
       const m = JSON.parse(msg)
       if (m.dmRequest) {
         this.loadingReq = false;
@@ -92,11 +92,11 @@ export class ChatComponent implements OnInit, OnDestroy {
   checkDungeonMasterAction() {
     let orignalMsg = this.text.slice(1);
     let entry = this.text.slice(1).toLowerCase();
-    console.log("DMcommand", entry)
+    
 
     if (entry.startsWith("whisper ")) {
       entry = orignalMsg.slice(8);
-      console.log("whisper:", entry);
+      
       this.socket.sendWhisperToPlayer(this.dungeonID, entry);
     } else if (entry == "help" || entry == "h") {
       this.writeHelp(true);
@@ -111,14 +111,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   checkAction() {
     let orignalMsg = this.text.slice(1);
     let entry = this.text.slice(1).toLowerCase()
-    console.log("command", entry)
+    
     if (entry.startsWith("dm ")) {
       entry = orignalMsg.slice(3);
-      console.log("dm:", entry);
+      
       this.socket.sendMessageToMaster(this.dungeonID, this.userName, entry);
     } else if (entry.startsWith("whisper ")) {
       entry = orignalMsg.slice(8);
-      console.log("whisper:", entry);
+      
       this.socket.sendWhisperToRoom(this.dungeonID, this.userName, entry);
     } else if (entry == "help" || entry == "h") {
       this.writeHelp();
@@ -127,26 +127,26 @@ export class ChatComponent implements OnInit, OnDestroy {
         switch (entry) {
           case "north":
           case "n":
-            console.log("go north")
+            
             this.socket.sendDirection(this.dungeonID, this.userID, "north");
             break;
           case "south":
           case "s":
-            console.log("go south")
+            
             this.socket.sendDirection(this.dungeonID, this.userID, "south");
             break;
           case "west":
           case "w":
-            console.log("go west")
+            
             this.socket.sendDirection(this.dungeonID, this.userID, "west");
             break;
           case "east":
           case "e":
-            console.log("go east")
+            
             this.socket.sendDirection(this.dungeonID, this.userID, "east");
             break;
           default:
-            console.log("request to master")
+            
             this.socket.sendMasterRequest(this.dungeonID, this.userName, entry);
             this.loadingReq = true;
         }
@@ -193,7 +193,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   allChat() {
-    console.log("send to all: ", this.text)
+    
     this.socket.sendMessageToAll(this.dungeonID, this.text)
   }
 

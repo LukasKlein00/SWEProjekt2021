@@ -21,7 +21,7 @@ export class ToastService {
 
   // Callback method to remove Toast DOM element from view
   remove(toast, isAllowed: boolean) {
-    console.log("allowing user", isAllowed);
+    
     this.toasts = this.toasts.filter(t => t !== toast);
     this.socket.sendRequestAnswer(toast.userID, isAllowed);
   }

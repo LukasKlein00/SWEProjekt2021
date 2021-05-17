@@ -29,10 +29,10 @@
                         <div class="card-body">
                             <h3>Room: {{currentRoom?.name}} </h3>
                             <p>Discription: {{currentRoom?.description}}</p>
-                            <p>Item: {{currentRoom?.item?.name}}</p>
-                            <p>NPC: {{currentRoom?.npc?.name}}</p>
+                            <p [title]="'Description: ' + currentRoom?.item?.description">Item: {{currentRoom?.item?.name}}</p>
+                            <p [title]="'Description: ' + currentRoom?.npc?.description">NPC: {{currentRoom?.npc?.name}}</p>
                             <span>Players: </span>
-                            <span *ngFor="let p of currentRoom?.players" style="margin-right: 1em;" [title]="p.description">{{p.name}}>p.name</span>
+                            <span *ngFor="let p of currentRoom?.players" style="margin-right: 1em;" [title]="'Description: ' + p.description + ' \nRace: ' + p.race?.name + ' \nClass: ' + p.class?.name">{{p.name}}</span>
                         </div>
                     </div>
                 </div>

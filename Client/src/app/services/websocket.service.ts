@@ -15,9 +15,9 @@ export class WebsocketService {
   ) { }
 
   sendUserID(user) {
-    console.log("sending UserID to connect")
+    
     this.socket.emit('on_login', user);
-    console.log("sending User", user);
+    
   }
 
   sendPublish(id) {
@@ -33,12 +33,13 @@ export class WebsocketService {
   }
 
   sendJoinRequest(dungeonID, userID) {
-    console.log("sending Request")
+    
     this.socket.emit('join_dungeon', { dungeonID, userID });
   }
 
   sendCharacter(player) {
     this.socket.emit('send_character_config', player)
+    return this.socket.fromEvent('send_character_config').pipe(map((data) => data))
   }
 
   getJoinRequests() {
@@ -131,7 +132,7 @@ export class WebsocketService {
   }
 
   sendAnsweredDMRequest(req) {
-    console.log("Request", req)
+    
     this.socket.emit('dungeon_master_request_answer_to_user', req)
   }
 }

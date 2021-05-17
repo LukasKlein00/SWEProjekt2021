@@ -50,8 +50,8 @@ class DatabaseHandler:
             user="jack",
             password="123123"
         ))
-        self.cursor = self.database_path.cursor()
-        self.dictionary_cursor = self.database_path.cursor(dictionary=True)
+        self.cursor = self.database_path.cursor(buffered=True)
+        self.dictionary_cursor = self.database_path.cursor(dictionary=True, buffered=True)
 
     # print(colored('DB:', 'yellow'), 'xxx')
 
@@ -925,6 +925,18 @@ class DatabaseHandler:
                                     """)
         try:
             return self.dictionary_cursor.fetchone()
+        except IOError:
+            pass
+
+    def delete_inventory(self, user_id, dungeon_id):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                                    DELETE
+                                    FROM mudcake.Inventory
+                                    WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                                """)
+        try:
+            self.database_path.commit()
         except IOError:
             pass
 
