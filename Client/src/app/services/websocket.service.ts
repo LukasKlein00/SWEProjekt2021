@@ -39,6 +39,7 @@ export class WebsocketService {
 
   sendCharacter(player) {
     this.socket.emit('send_character_config', player)
+    return this.socket.fromEvent('send_character_config').pipe(map((data) => data))
   }
 
   getJoinRequests() {

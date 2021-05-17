@@ -96,8 +96,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       this.player = result;
       
-      this.socketService.sendCharacter(this.player);
-      this.getDiscoveredRooms()
+      this.socketService.sendCharacter(this.player).pipe(first()).subscribe(x => this.getDiscoveredRooms());
     });
   }
 
