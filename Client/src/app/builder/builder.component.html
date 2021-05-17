@@ -331,7 +331,7 @@
   <div class="cardbody">
     <button (click)="saveDungeon()" class="btn btn-primary m-1">Save</button>
     <button (click)="publishDungeon()" class="btn btn-success m-1">
-      Publish
+      Publish <span *ngIf="currentPlayers">Online: {{currentPlayers}}</span>
     </button>
   </div>
 </div>

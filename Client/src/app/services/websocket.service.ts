@@ -132,6 +132,13 @@ export class WebsocketService {
     }))
   }
 
+  getPlayersInMyDungeon() {
+    return this.socket.fromEvent('players_in_my_dungeon').pipe(map((data) => {
+      console.log("currentPl", data)
+      return data
+    }))
+  }
+
   sendAnsweredDMRequest(req) {
     
     this.socket.emit('dungeon_master_request_answer_to_user', req)

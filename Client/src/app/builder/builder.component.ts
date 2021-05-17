@@ -19,6 +19,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
   loading = false;
   sub1: Subscription;
   sub2: Subscription;
+  sub3: Subscription;  
+
+  currentPlayers;
+
   viewedRoom;
   requests: requestForMaster[] = []
   insertedUsername;
@@ -191,6 +195,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
         }
         if (publish) {
           let hasStartRoom = false;
+          this.sub3 = this.websocketService.getPlayersInMyDungeon().subscribe((res) => {
+            this.currentPlayers = res;
+          })
           this.rooms.forEach(room => {
             if (room.isStartRoom) {
               hasStartRoom = true;
@@ -355,6 +362,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
     }
     if (this.sub2) {
       this.sub2.unsubscribe()
+    }
+    if (this.sub3) {
+      this.sub3.unsubscribe()
     }
   }
 }
