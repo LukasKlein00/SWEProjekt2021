@@ -193,8 +193,6 @@ class SocketIOHandler:
                                     "currentPlayers": sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])}
                     dungeon_data_list.append(dungeon_dict)
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
-                self.sio.emit('players_in_my_dungeon', json.dumps(
-                    sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])), room=dungeon_ID)
                 # endregion
             except IOError:
                 pass
