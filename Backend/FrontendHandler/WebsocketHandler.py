@@ -241,6 +241,7 @@ class SocketIOHandler:
             try:
                 discovered_rooms = [];
                 discovered_rooms.append(starting_room);
+                session['discovered_rooms'] = discovered_rooms
                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
             except:
                 print("ohh ohh")
