@@ -97,11 +97,11 @@ export class PlayComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       this.player = result;
       
-      this.socketService.sendCharacter(this.player).pipe(first()).subscribe(x => this.getDiscoveredRooms());
+      this.socketService.sendCharacter(this.player).pipe(first()).subscribe(x => this.getPlayerSubscriptions());
     });
   }
 
-  getDiscoveredRooms() {
+  getPlayerSubscriptions() {
     
     // schaut nach neuen Raum Werten
     this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res: string) => {
@@ -161,7 +161,7 @@ export class PlayComponent implements OnInit, OnDestroy {
         })
       }
     });
-    this.getDiscoveredRooms();
+    this.getPlayerSubscriptions();
   }
 
   ngOnDestroy(){
