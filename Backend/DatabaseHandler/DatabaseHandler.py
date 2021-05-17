@@ -939,3 +939,23 @@ class DatabaseHandler:
             self.database_path.commit()
         except IOError:
             pass
+
+    def update_room_id_in_character(self, user_id: str, dungeon_id: str, room_id: str):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                            UPDATE mudcake.Character
+                            SET RoomID = '{room_id}'
+                            WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                        """)
+        try:
+            self.database_path.commit()
+        except IOError:
+            pass
+
+    def delete_discovered_rooms(self, user_id: str, dungeon_id: str):
+        self.database_path.commit()
+        self.cursor.execute(f"""
+                        DELETE
+                        FROM mudcake.DiscoveredRoom
+                        WHERE UserID = '{user_id}' AND DungeonID = '{dungeon_id}'
+                        """)

@@ -79,13 +79,12 @@ class Character:
 
     def discovered_rooms_to_database(self):
         try:
-            for room_id in self.discovered_rooms:
-                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room_id)
+            for room in self.discovered_rooms:
+                self.db_handler.write_discovered_room_to_database(self.dungeon_id, self.user_id, room)
         except IOError:
             pass
 
     def load_discovered_rooms_from_database(self):
-        rooms = self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id)
         for room in self.db_handler.get_discovered_rooms_by_user_dungeon_id(self.dungeon_id, self.user_id):
             self.discovered_rooms.append(room['roomID'])
 
@@ -101,5 +100,5 @@ class Character:
                 'userID': self.user_id, 'roomID': self.room_id,
                 'inventory': item_list}
 
-    def __del__(self):
-        print("deleted the Character")
+    def update_current_room(self):
+        self.db_handler.update_room_id_in_character(self.user_id, self.dungeon_id, self.room_id)

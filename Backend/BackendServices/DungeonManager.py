@@ -639,3 +639,6 @@ class DungeonManager:
 
     def delete_inventory(self, user_id, dungeon_id):
         self.db_handler.delete_inventory(user_id, dungeon_id)
+
+    def delete_discovered_rooms(self, user_id: str, dungeon_id: str):
+        self.db_handler.delete_discovered_rooms(user_id, dungeon_id)
