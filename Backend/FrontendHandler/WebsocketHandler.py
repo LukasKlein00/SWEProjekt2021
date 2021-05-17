@@ -309,7 +309,8 @@ class SocketIOHandler:
                                     "dungeonDescription": dungeon_data.description,
                                     "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
                                     "private": dungeon_data.private,
-                                    "currentPlayers": self.activeDungeonHandler.user_count_in_dungeon[dungeon_ID]}
+                                    #"currentPlayers": self.activeDungeonHandler.user_count_in_dungeon[dungeon_ID]}
+                                    "currentPlayers": sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID]) }
                     dungeon_data_list.append(dungeon_dict)
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
                 self.sio.emit("on_join_request_answer", json.dumps(True), to=sid)
