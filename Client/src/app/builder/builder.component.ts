@@ -86,6 +86,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addClass() {
     this.dungeon.classes.push(this.selectedClass);
     this.selectedClass = this.newClass()
+    this.saveDungeon();
   }
 
   editClass(c: Class) {
@@ -100,6 +101,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addRace() {
     this.dungeon.races.push(this.selectedRace);
     this.selectedRace = this.newRace()
+    this.saveDungeon();
   }
 
   editRace(r: Race) {
@@ -114,6 +116,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addItem() {
     this.dungeon.items = [...this.dungeon.items, this.selectedItem];
     this.selectedItem = this.newItem()
+    this.saveDungeon();
   }
 
   editItem(i: Item) {
@@ -129,8 +132,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addNpc() {
     
     this.dungeon.npcs.push(this.selectedNpc);
-    
     this.selectedNpc = this.newNpc()
+    this.saveDungeon();
   }
 
   editNpc(n: Npc) {
