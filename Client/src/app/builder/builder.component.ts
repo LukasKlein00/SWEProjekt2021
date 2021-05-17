@@ -273,6 +273,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
     });
+    console.log("räume", this.dungeon.rooms);
   }
 
   getRaces() {

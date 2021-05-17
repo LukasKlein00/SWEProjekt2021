@@ -114,16 +114,18 @@
                 </div>
                 <div class="col-12 col-xl-7">
                   Items:
-                  <ng-select [(ngModel)]="selectedRoom.item" appendTo="body">
-                    <ng-option [value]="item" *ngFor="let item of dungeon.items">{{
-                      item.name
-                      }}</ng-option>
-                  </ng-select><br />
+                  <ng-select [items]="dungeon.items"
+                   bindLabel="name"
+                   [(ngModel)]="selectedRoom.item"
+                   appendTo="body">
+                  </ng-select>
+                  
+                  <br />
                   NPC:
-                  <ng-select [(ngModel)]="selectedRoom.npc" notFoundText="no npcs found" appendTo="body">
-                    <ng-option [value]="npc" *ngFor="let npc of dungeon.npcs">{{
-                      npc.name
-                      }}</ng-option>
+                  <ng-select [items]="dungeon.npcs"
+                   bindLabel="name"
+                   [(ngModel)]="selectedRoom.npc"
+                   appendTo="body">
                   </ng-select>
                 </div>
               </div>
