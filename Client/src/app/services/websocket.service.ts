@@ -68,6 +68,7 @@ export class WebsocketService {
   getCharacter(dungeonID, userID) {
     this.socket.emit('get_character_in_dungeon', { dungeonID, userID })
     return this.socket.fromEvent('get_character_in_dungeon').pipe(map((data) => {
+      console.log("char data", data)
       return data
     }))
   }

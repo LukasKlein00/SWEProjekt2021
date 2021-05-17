@@ -189,6 +189,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     
     //sende dungeon an Server!
+    console.log("dg: ", safeDungeon)
     this.httpService.saveOrUpdateDungeon(safeDungeon).pipe(first())
       .subscribe(response => {
         
