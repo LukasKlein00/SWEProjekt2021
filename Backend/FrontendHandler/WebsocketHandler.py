@@ -610,8 +610,9 @@ class SocketIOHandler:
             session = self.sio.get_session(sid)
             dungeon_master_sid = self.activeDungeonHandler.sid_of_dungeon_master[data['dungeonID']]
             msg = {'pre': session['character'].name + ':', 'msg': data['message']}
+            user_msg = {'pre': "message to DM: ", 'msg': data['message']}
             self.sio.emit('get_chat', json.dumps(msg), to=dungeon_master_sid)
-            self.sio.emit('get_chat', json.dumps(msg), to=sid)
+            self.sio.emit('get_chat', json.dumps(user_msg), to=sid)
 
         @self.sio.event
         def send_message_to_room(sid, data):
@@ -633,7 +634,9 @@ class SocketIOHandler:
             user_id_of_recipient = self.dungeon_manager.get_userid_by_character_name(receiver, data['dungeonID'])
             sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
             msg = {'pre': "DM whispered: ", 'msg': message, 'color': '#D65076'}
+            dm_msg = {'pre': f"whispered to '{receiver}' :", 'msg': message}
             self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0])
+            self.sio.emit('get_chat', json.dumps(dm_msg), to=sid)
 
         @self.sio.event
         def send_whisper_to_room(sid, data):
