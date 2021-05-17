@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Route } from '@angular/compiler/src/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -102,12 +103,18 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   getDiscoveredRooms() {
     
+    // schaut nach neuen Raum Werten
     this.sub2 = this.socketService.getDiscoveredMap(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe((res: string) => {
-      
       this.rooms = JSON.parse(res)
       this.rooms.forEach(r => r['isActive'] = true);
-      
     })
+
+    // schaut nach neuen Charakter Werten
+    this.sub3 = this.socketService.getCharacter(this.world.dungeonID, JSON.parse(localStorage.getItem('currentUser')).userID).subscribe( (res: string) => {
+      if (res != "false") {
+        this.player = JSON.parse(res as string);        
+      }
+    });
   }
 
 
@@ -163,6 +170,10 @@ export class PlayComponent implements OnInit, OnDestroy {
     }
     if (this.sub2) {
       this.sub2.unsubscribe();
+    }
+
+    if (this.sub3) {
+      this.sub3.unsubscribe();
     }
   }
 }
