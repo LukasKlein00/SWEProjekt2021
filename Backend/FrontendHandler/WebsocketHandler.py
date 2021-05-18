@@ -127,12 +127,17 @@ class SocketIOHandler:
             for dungeon_ID in self.activeDungeonHandler.active_dungeon_ids:
                 if self.activeDungeonHandler.sid_of_dungeon_master[dungeon_ID] != sid:
                     dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
+                    try:
+                        player_count = sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])
+                    except:
+                        player_count = 0
+
                     dungeon_dict = {"dungeonID": dungeon_data.dungeon_id,
                                     "dungeonMasterID": dungeon_data.dungeon_master_id,
                                     "dungeonName": dungeon_data.name, "dungeonDescription": dungeon_data.description,
                                     "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
                                     "private": dungeon_data.private,
-                                    "currentPlayers": sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])}
+                                    "currentPlayers": player_count}
 
                     dungeon_data_list.append(dungeon_dict)
             if len(dungeon_data_list) != 0:
