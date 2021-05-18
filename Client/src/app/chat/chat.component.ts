@@ -9,7 +9,6 @@ import { WebsocketService } from '../services/websocket.service';
 })
 export class ChatComponent implements OnInit, OnDestroy {
 
-  text = '';
   chatMessages = [];
   loadingReq = false;
   messageBody;
@@ -18,6 +17,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   @Input() dungeonID: any;
   @Input() roomID: any;
+  @Input() text = '';
   @Input() isDungeonMaster: boolean = false;
 
   @Input() unreadMessages: number = 0;
