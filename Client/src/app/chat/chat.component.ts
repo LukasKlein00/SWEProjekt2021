@@ -173,7 +173,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         {},
         { msg: "help | h: return the HELP menu" },
         {},
-        { msg: 'whisper "name" <message>: chat with <name> in the same room' },
+        { msg: 'whisper "name" <message>: chat with <name>' },
         );
     } else {
       this.chatMessages.push({ msg: "<<< HELP MENU >>>", color: "yellow" },
