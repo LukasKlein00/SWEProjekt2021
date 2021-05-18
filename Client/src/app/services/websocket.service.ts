@@ -147,9 +147,13 @@ export class WebsocketService {
   }
 
   sendAnsweredDMRequest(req) {
-    
     this.socket.emit('dungeon_master_request_answer_to_user', req)
   }
+
+  deleteDungeon(dungeonID) {
+    this.socket.emit('delete_dungeon', {dungeonID})
+  }
+
 }
 
 

@@ -67,6 +67,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.httpService.deleteDungeon(d.dungeonID).pipe(first()).subscribe((response) => {
       this.getCreatedDungeons();
     });
+    this.WebSocketService.deleteDungeon(d.dungeonID);
   }
 
   joinDungeon(dungeon) {

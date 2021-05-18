@@ -252,6 +252,8 @@ class SocketIOHandler:
                 discovered_rooms.append(starting_room)
                 session['discovered_rooms'] = discovered_rooms
                 self.sio.emit('character_joined_room', json.dumps(discovered_rooms), to=sid)
+                self.sio.emit('players_in_my_dungeon', json.dumps(
+                    sum(1 for e in self.sio.manager.rooms['/'][dungeon_id])), room=dungeon_id)
             except:
                 print("ohh ohh")
             # endregion
@@ -303,6 +305,9 @@ class SocketIOHandler:
 
                 self.sio.emit('character_joined_room', json.dumps(all_discovered_rooms), sid)
                 self.sio.emit('current_room', json.dumps(room), room=character.room_id)
+
+                self.sio.emit('players_in_my_dungeon', json.dumps(
+                    sum(1 for e in self.sio.manager.rooms['/'][character.dungeon_id])), room=character.dungeon_id)
             except KeyError:
                 logging.error("Character couldn't be loaded first time")
 
@@ -747,5 +752,5 @@ class SocketIOHandler:
         @self.sio.event
         def delete_dungeon(sid, data):  # data = dungeonID
             for user_sid in self.activeDungeonHandler.user_sids_in_dungeon[data['dungeonID']]:
-                self.sio.emit('kick_out', json.dumps("The Dungeon you were playing in was deleted", to=user_sid))
+                self.sio.emit('kick_out', json.dumps("The Dungeon you were playing in was deleted"), to=user_sid)
             self.dungeon_manager.delete_dungeon(data['dungeonID'])
