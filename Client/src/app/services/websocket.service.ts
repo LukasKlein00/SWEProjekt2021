@@ -68,6 +68,7 @@ export class WebsocketService {
   getCharacter(dungeonID, userID) {
     this.socket.emit('get_character_in_dungeon', { dungeonID, userID })
     return this.socket.fromEvent('get_character_in_dungeon').pipe(map((data) => {
+      
       return data
     }))
   }
@@ -75,7 +76,7 @@ export class WebsocketService {
   getDiscoveredMap(dungeonID, userID) {
     this.socket.emit('character_joined_room', { dungeonID, userID })
     return this.socket.fromEvent('character_joined_room').pipe(map((data) => {
-      console.log("räume: ", data)
+      
       return data
     }))
   }
@@ -134,7 +135,7 @@ export class WebsocketService {
 
   getPlayersInMyDungeon() {
     return this.socket.fromEvent('players_in_my_dungeon').pipe(map((data) => {
-      console.log("currentPl", data)
+      
       return data
     }))
   }

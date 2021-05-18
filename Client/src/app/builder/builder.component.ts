@@ -86,6 +86,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addClass() {
     this.dungeon.classes.push(this.selectedClass);
     this.selectedClass = this.newClass()
+    this.saveDungeon();
   }
 
   editClass(c: Class) {
@@ -100,6 +101,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addRace() {
     this.dungeon.races.push(this.selectedRace);
     this.selectedRace = this.newRace()
+    this.saveDungeon();
   }
 
   editRace(r: Race) {
@@ -114,6 +116,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addItem() {
     this.dungeon.items = [...this.dungeon.items, this.selectedItem];
     this.selectedItem = this.newItem()
+    this.saveDungeon();
   }
 
   editItem(i: Item) {
@@ -129,8 +132,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   addNpc() {
     
     this.dungeon.npcs.push(this.selectedNpc);
-    
     this.selectedNpc = this.newNpc()
+    this.saveDungeon();
   }
 
   editNpc(n: Npc) {
@@ -150,6 +153,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       delete r.npc;
     } else {
       r['isActive'] = true;
+      this.selectRoom(r);
     }
   }
 
@@ -185,6 +189,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     
     //sende dungeon an Server!
+    
     this.httpService.saveOrUpdateDungeon(safeDungeon).pipe(first())
       .subscribe(response => {
         
@@ -247,8 +252,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   selectRoom(r: Room) {
-    this.selectedRoom = r;
-    document.getElementById('nav-room-tab').click();
+    if (r.isActive) {
+      this.selectedRoom = r;
+      document.getElementById('nav-room-tab').click();
+    }
   }
 
   submitRequest(req: requestForMaster) {
@@ -273,7 +280,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
     });
-    console.log("räume", this.dungeon.rooms);
+    
   }
 
   getRaces() {

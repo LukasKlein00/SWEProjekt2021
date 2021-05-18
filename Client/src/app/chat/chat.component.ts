@@ -23,8 +23,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   @Input() unreadMessages: number = 0;
   @Output() ChatMessageEvent = new EventEmitter<number>();
 
-  userID = JSON.parse(localStorage.getItem("currentUser")).userID;
-  userName = JSON.parse(localStorage.getItem("currentUser")).username;
+  userID;
+  userName;
 
   sub1: Subscription;
 
@@ -33,6 +33,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+
+    if (JSON.parse(localStorage.getItem("currentUser"))) {
+      this.userID = JSON.parse(localStorage.getItem("currentUser")).userID;
+      this.userName = JSON.parse(localStorage.getItem("currentUser")).username;
+    }
+
     this.messageBody = document.querySelector('#messageBody');
     this.sub1 = this.socket.getChat().subscribe((msg: string) => {
       

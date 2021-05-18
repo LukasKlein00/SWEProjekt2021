@@ -33,11 +33,10 @@ __status__ = "Development"
 import json
 import logging
 import random
-import uuid
 import re
+import uuid
 
 import socketio
-from termcolor import colored
 
 from BackendServices.AccessManager import AccessManager
 from BackendServices.DungeonManager import DungeonManager
@@ -46,14 +45,9 @@ from DungeonPackage.ActiveDungeon import ActiveDungeon
 from DungeonPackage.Character import Character
 from DungeonPackage.Class import Class
 from DungeonPackage.DungeonData import DungeonData
-from DungeonPackage.Character import Character
-from DungeonDirector.ActiveDungeonHandler import ActiveDungeonHandler
-from DungeonPackage.Item import Item
-import socketio
-import random
-
 # TODO: user access management
 from DungeonPackage.Inventory import Inventory
+from DungeonPackage.Item import Item
 from DungeonPackage.Race import Race
 
 
@@ -119,7 +113,6 @@ class SocketIOHandler:
                                     "maxPlayers": dungeon_data.max_players, "accessList": dungeon_data.access_list,
                                     "private": dungeon_data.private,
                                     "currentPlayers": sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])}
-
 
                     # len(self.sio.manager.get_participants(namespace="main", room=dungeon_data.dungeon_id))
                     dungeon_data_list.append(dungeon_dict)
@@ -234,8 +227,11 @@ class SocketIOHandler:
             # TODO: inventory (class startitem)
             character_obj = Character(room_id=starting_room['roomID'], life_points=character["health"],
                                       name=character["name"], description=character["description"],
-                                      class_obj=Class(class_id=character["class"]["classID"]),
-                                      race=Race(race_id=character["race"]["raceID"]),
+                                      class_obj=Class(class_id=character["class"]["classID"],
+                                                      name=character['class']['name'],
+                                                      description=character['class']['description']),
+                                      race=Race(race_id=character["race"]["raceID"], name=character['race']['name'],
+                                                description=character['race']['name']),
                                       user_id=character["userID"],
                                       inventory=Inventory(dungeon_id=character['dungeonID'],
                                                           user_id=character['userID']),
@@ -727,7 +723,8 @@ class SocketIOHandler:
                 self.dungeon_manager.delete_character(data['userID'], data['dungeonID'])
 
                 del session['character']
-                self.sio.emit('kick_out', json.dumps(f"you died ._., response: '{data['answer']}'"), to=sid_of_recipient)
+                self.sio.emit('kick_out', json.dumps(f"you died ._., response: '{data['answer']}'"),
+                              to=sid_of_recipient)
 
             else:
                 received_character_inventory = data['requester']['inventory']

@@ -195,13 +195,13 @@ class DungeonManager:
                 new_room.is_start_room = False
 
             check_for_npc = 'npc' in room
-            if check_for_npc:
+            if check_for_npc and room['npc']:
                 new_room.npc_id = room['npc']['npcID']
             else:
                 new_room.npc_id = None
 
             check_for_item = 'item' in room
-            if check_for_item:
+            if check_for_item and room['item']:
                 new_room.item_id = room['item']['itemID']
             else:
                 new_room.item_id = None
