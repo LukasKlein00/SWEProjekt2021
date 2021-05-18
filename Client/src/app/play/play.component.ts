@@ -24,9 +24,11 @@ export class PlayComponent implements OnInit, OnDestroy {
   sub3: Subscription;
   sub4: Subscription;
   sub5: Subscription;
+  sub6: Subscription;
 
   world: Dungeon = {};
   loading;
+  loadingDMLeaving;
   rooms: Room[];
   currentRoom: Room;
   player: Player = {
@@ -65,6 +67,16 @@ export class PlayComponent implements OnInit, OnDestroy {
       this.router.navigate(['/']).then(()=>{
         window.alert(res);
       });
+    })
+
+    this.sub6 = this.socketService.getIsActive().subscribe((res: string) => {
+      let check = JSON.parse(res);
+      console.log(check);
+      if (check) {
+        this.loadingDMLeaving = false
+      } else {
+        this.loadingDMLeaving = true;
+      }
     })
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
