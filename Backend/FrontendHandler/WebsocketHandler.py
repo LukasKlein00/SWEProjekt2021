@@ -200,6 +200,7 @@ class SocketIOHandler:
         @self.sio.event
         def send_character_config(sid, character):
             dungeon_id = character["dungeonID"]
+            self.sio.enter_room(sid, dungeon_id)
 
             # region Adding user to starting room in active dungeon
             all_start_rooms = self.dungeon_manager.get_start_rooms_in_dungeon(dungeon_id=dungeon_id)
