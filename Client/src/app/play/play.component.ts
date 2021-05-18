@@ -31,6 +31,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   loadingDMLeaving;
   rooms: Room[];
   currentRoom: Room;
+  whisperText;
   player: Player = {
     name: '',
     dungeonID: '1',
@@ -71,7 +72,6 @@ export class PlayComponent implements OnInit, OnDestroy {
 
     this.sub6 = this.socketService.getIsActive().subscribe((res: string) => {
       let check = JSON.parse(res);
-      console.log(check);
       if (check) {
         this.loadingDMLeaving = false
       } else {
@@ -174,6 +174,10 @@ export class PlayComponent implements OnInit, OnDestroy {
       }
     });
     this.getPlayerSubscriptions();
+  }
+
+  setWhisper(playerName) {
+    this.whisperText = `/whisper "${playerName}" `
   }
 
   ngOnDestroy(){

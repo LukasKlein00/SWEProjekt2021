@@ -1,7 +1,7 @@
 <div class="fluid-container m-5 row justify-content-center">
     <div class="col-xl-4 col-md-6 col-10">
         <h2>Login</h2>
-        <p style="color: blue;" *ngIf="emailConfirm">Please confirm your email if you want to log in to your account! </p>
+        <p style="color: yellow;" *ngIf="emailConfirm">Please confirm your email if you want to log in to your account! </p>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="username">Username</label>
