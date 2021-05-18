@@ -140,6 +140,12 @@ export class WebsocketService {
     }))
   }
 
+  getIsActive() {
+    return this.socket.fromEvent('dungeon_is_active').pipe(map((data) => {
+      return data
+    }))
+  }
+
   sendAnsweredDMRequest(req) {
     
     this.socket.emit('dungeon_master_request_answer_to_user', req)
