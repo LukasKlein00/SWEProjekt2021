@@ -159,7 +159,7 @@ class SocketIOHandler:
                 dungeon_id = self.sio.get_session(sid)['dungeonID']
 
                 self.activeDungeonHandler.active_dungeons_for_reconnect[dungeon_id] = False
-                self.sio.emit('dungeon_master_disconnected', room=dungeon_id)
+                self.sio.emit('dungeon_is_active', json.dumps(False), room=dungeon_id)
                 print('emitted dungeon_master_disconnected to :', dungeon_id)
                 self.activeDungeonHandler.dungeon_leave(dungeon_id)
                 # region UpdateDungeon
@@ -365,7 +365,7 @@ class SocketIOHandler:
             if data in self.activeDungeonHandler.active_dungeons_for_reconnect:
                 if not self.activeDungeonHandler.active_dungeons_for_reconnect[data]:
                     self.activeDungeonHandler.active_dungeons_for_reconnect[data] = True
-                    self.sio.emit('dungeon_is_active', room=data)
+                    self.sio.emit('dungeon_is_active', json.dumps(True), room=data)
                     print('emitted dungeon_is_active to', data)
             else:
                 self.activeDungeonHandler.active_dungeons_for_reconnect[data] = True
