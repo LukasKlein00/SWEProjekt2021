@@ -35,7 +35,9 @@ export class CreateCharacterComponent implements OnInit, AfterViewChecked {
 
   ngOnInit(): void {
     this.player.dungeonID = this.World.dungeonID;
-    this.player.userID = JSON.parse(localStorage.getItem('currentUser')).userID;
+    if (JSON.parse(localStorage.getItem('currentUser'))) {
+      this.player.userID = JSON.parse(localStorage.getItem('currentUser')).userID;
+    }
   }
 
   ngAfterViewChecked() {
