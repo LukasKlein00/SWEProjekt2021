@@ -189,6 +189,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     localStorage.setItem('blub', JSON.stringify(safeDungeon));
     
     //sende dungeon an Server!
+    
     this.httpService.saveOrUpdateDungeon(safeDungeon).pipe(first())
       .subscribe(response => {
         
@@ -279,7 +280,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
     });
-    console.log("räume", this.dungeon.rooms);
+    
   }
 
   getRaces() {

@@ -7,16 +7,21 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { AuthentificationService } from './services/authentification.service';
 import { By } from '@angular/platform-browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
 
 describe('AppComponent', () => {
   let authentificationService: AuthentificationService
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+  const config: SocketIoConfig = { url: environment.websocketUrl, options: {} };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
+        SocketIoModule.forRoot(config),
       ],
       declarations: [
         AppComponent

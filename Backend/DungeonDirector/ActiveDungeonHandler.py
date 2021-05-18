@@ -43,6 +43,7 @@ class ActiveDungeonHandler:
         self.user_sid_username = dict()
         self.user_count_in_dungeon = dict()                         #user_count_in_dungeon['dungeonID'] -> numberOfUsers
         self.user_sids_in_dungeon = dict()                          #user_sids_in_dungeon['dungeonID'] -> [user_sids]
+        self.active_dungeons_for_reconnect = dict()                 #active_dungeons_for_reconnect['dungeonID'} -> True/False
 
     def __init_dungeon(self, dungeon_id: str):
         return dict({'dungeon_data_object': DungeonData().load_data(dungeon_id),

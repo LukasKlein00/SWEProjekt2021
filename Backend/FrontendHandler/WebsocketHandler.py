@@ -149,9 +149,15 @@ class SocketIOHandler:
             # self.sio.leave_room(sid, self.sio.get_session(sid)['dungeonID'])
 
             if sid in self.activeDungeonHandler.sid_of_dungeon_master.values():
-                dungeon_data_list = []
-                self.activeDungeonHandler.dungeon_leave(self.sio.get_session(sid)['dungeonID'])
+                dungeon_id = self.sio.get_session(sid)['dungeonID']
+
+                self.activeDungeonHandler.active_dungeons_for_reconnect[dungeon_id] = False
+                self.sio.emit('dungeon_is_active', json.dumps(False), room=dungeon_id)
+                print('emitted dungeon_master_disconnected to :', dungeon_id)
+                self.activeDungeonHandler.dungeon_leave(dungeon_id)
                 # region UpdateDungeon
+
+                dungeon_data_list = []
                 if self.activeDungeonHandler.active_dungeon_ids.__len__() != 0:
                     for dungeon_ID in self.activeDungeonHandler.active_dungeon_ids:
                         dungeon_data = DungeonData(dungeon_id=dungeon_ID).load_data(dungeon_id=dungeon_ID)
@@ -163,9 +169,12 @@ class SocketIOHandler:
                                         "private": dungeon_data.private,
                                         "currentPlayers": sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])}
                         dungeon_data_list.append(dungeon_dict)
+
                     self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
                 else:
                     self.sio.emit('make_dungeon_available', json.dumps([]), broadcast=True)
+                    # self.sio.emit('players_in_my_dungeon', json.dumps(
+                    #     sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])), room=dungeon_ID)
                 # endregion
 
             try:
@@ -186,6 +195,8 @@ class SocketIOHandler:
                                     "currentPlayers": sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])}
                     dungeon_data_list.append(dungeon_dict)
                 self.sio.emit('make_dungeon_available', json.dumps(dungeon_data_list), broadcast=True)
+                # self.sio.emit('players_in_my_dungeon', json.dumps(
+                #     sum(1 for e in self.sio.manager.rooms['/'][dungeon_ID])), room=dungeon_ID)
                 # endregion
             except IOError:
                 pass
@@ -347,6 +358,15 @@ class SocketIOHandler:
         @self.sio.event
         def publish(sid, data):
             self.sio.enter_room(sid, data)
+
+            if data in self.activeDungeonHandler.active_dungeons_for_reconnect:
+                if not self.activeDungeonHandler.active_dungeons_for_reconnect[data]:
+                    self.activeDungeonHandler.active_dungeons_for_reconnect[data] = True
+                    self.sio.emit('dungeon_is_active', json.dumps(True), room=data)
+                    print('emitted dungeon_is_active to', data)
+            else:
+                self.activeDungeonHandler.active_dungeons_for_reconnect[data] = True
+
             self.activeDungeonHandler.dungeon_join(data)
             self.activeDungeonHandler.sid_of_dungeon_master[data] = sid
             session = self.sio.get_session(sid)
@@ -401,10 +421,10 @@ class SocketIOHandler:
             json_obj = json.dumps(self.dungeon_manager.get_all_from_races_as_json(data))
             self.sio.emit('racesData', json_obj, sid)
 
-        @self.sio.event
-        def change_dungeonmaster(sid, data):
-            session = self.sio.get_session()
-            self.sio.emit("make_dungeonmaster", None, to=data['userID'])
+        # @self.sio.event
+        # def change_dungeonmaster(sid, data):
+        #     session = self.sio.get_session()
+        #     self.sio.emit("make_dungeonmaster", None, to=data['userID'])
 
         @self.sio.event
         def move_to_room(sid, data):

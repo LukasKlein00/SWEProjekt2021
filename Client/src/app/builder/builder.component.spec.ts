@@ -7,17 +7,21 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { environment } from 'src/environments/environment';
 
 import { BuilderComponent } from './builder.component';
 
 describe('BuilderComponent', () => {
   let component: BuilderComponent;
   let fixture: ComponentFixture<BuilderComponent>;
+  const config: SocketIoConfig = { url: environment.websocketUrl, options: {} };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BuilderComponent ],
       imports: [
+        SocketIoModule.forRoot(config),
         FormsModule,
         NgSelectModule,
         MatSliderModule,
