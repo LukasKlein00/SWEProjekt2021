@@ -488,21 +488,25 @@ class DungeonManager:
         Returns:
             All Rooms in the dungeon as list
         """
+
         room_list = []
         for id in room_ids:
-            room_dict = self.db_handler.get_room_by_room_id_as_dict(dungeon_id=dungeon_id, room_id=id)
-            room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
-                    'isStartRoom': bool(room_dict['isStartRoom']),
-                     'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
-                     'north': bool(room_dict['north']), 'east': bool(room_dict['east']), 'south': bool(room_dict['south']),
-                     'west': bool(room_dict['west']), 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
-                                                        'description': room_dict['npcDescription'],
-                                                        'equipment': {'itemID': room_dict['npcItemID'],
-                                                                      'name': room_dict['npcItemName'],
-                                                                      'description': room_dict['npcItemDesc']}},
-                     'item': {'itemID': room_dict['roomItemID'], 'name': room_dict['roomItemName'],
-                              'description': room_dict['roomItemDescription']}}
-            room_list.append(room)
+            try:
+                room_dict = self.db_handler.get_room_by_room_id_as_dict(dungeon_id=dungeon_id, room_id=id)
+                room = {'roomID': room_dict['roomID'], 'name': room_dict['roomName'],
+                        'isStartRoom': bool(room_dict['isStartRoom']),
+                         'description': room_dict['roomDescription'], 'x': room_dict['x'], 'y': room_dict['y'],
+                         'north': bool(room_dict['north']), 'east': bool(room_dict['east']), 'south': bool(room_dict['south']),
+                         'west': bool(room_dict['west']), 'npc': {'npcID': room_dict['npcID'], 'name': room_dict['npcName'],
+                                                            'description': room_dict['npcDescription'],
+                                                            'equipment': {'itemID': room_dict['npcItemID'],
+                                                                          'name': room_dict['npcItemName'],
+                                                                          'description': room_dict['npcItemDesc']}},
+                         'item': {'itemID': room_dict['roomItemID'], 'name': room_dict['roomItemName'],
+                                  'description': room_dict['roomItemDescription']}}
+                room_list.append(room)
+            except TypeError:
+                print("TypeError bei get_data_for_room_list")
         return room_list
 
     def get_all_from_classes_as_json(self, data):
