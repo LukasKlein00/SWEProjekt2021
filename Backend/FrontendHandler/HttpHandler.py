@@ -164,11 +164,15 @@ class HTTPHandler(BaseHTTPRequestHandler):
             dungeon_manager = DungeonManager()
             dungeon_manager.delete_dungeon(data)
 
-        if self.path == '/delete_user':
+        if self.path == '/deleteUser':
             self.__set_response()
             delete_transaction = self.acc_manager.delete_user(user_id=data)
             if not delete_transaction:
                 self.__set_response(400)
+            try:
+                self.wfile.write(json.dumps("deleted").encode(encoding='utf_8'))
+            except IOError:
+                pass
 
         if self.path == '/deleteAccess':
             self.__set_response()
