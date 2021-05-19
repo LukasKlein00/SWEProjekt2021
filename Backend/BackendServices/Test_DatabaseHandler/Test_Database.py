@@ -3,7 +3,8 @@ from Test_DatabaseHandler_Mock import MockDB
 from unittest import mock
 
 
-class TestDatabaseHandler(unittest.TestCase):
+class TestDatabaseHandler(MockDB):
 
-    def test_register_user(self, mock_db_config):
-        self.assertEqual(True, False)
+    def test_register_user(self):
+        with self.mock_db_config:
+            self.assertEqual(True, False)
