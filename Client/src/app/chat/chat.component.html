@@ -1,7 +1,7 @@
 <div class="card col-12 m-0 p-0 bg-dark card-border chat-container" [ngStyle]="styles">
     <div class="chat" id='messageBody'>
         <app-corgi *ngIf="loadingReq"></app-corgi>
-        <ng-container *ngFor="let c of chatMessages" ><div [ngStyle]="{color: c.color}"><span style="margin-right: 2rem;">{{c.pre}}</span>{{c.msg}}</div></ng-container>
+        <ng-container *ngFor="let c of chatMessages" ><div [ngStyle]="{color: c.color}"><span style="margin-right: 2rem;" (click)="clickForWhisper(c.pre)">{{c.pre}}</span>{{c.msg}}</div></ng-container>
     </div>
     <div class="chatinput"><input [(ngModel)]="text" (keypress)="chat($event)" placeholder="start your adventure..."></div>
 </div>

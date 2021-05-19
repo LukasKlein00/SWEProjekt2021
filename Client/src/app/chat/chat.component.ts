@@ -203,6 +203,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.socket.sendMessageToAll(this.dungeonID, this.text)
   }
 
+  clickForWhisper(input){
+    const name = input.slice(0,-1)
+    this.text =`/whisper "${name}"`
+  }
+
   ngOnDestroy() {
     this.sub1.unsubscribe();
   }
