@@ -708,7 +708,7 @@ class SocketIOHandler:
                 sid_of_recipient = self.activeDungeonHandler.user_sid[user_id_of_recipient]
                 if self.sio.rooms(sid_of_recipient[0]).__contains__(character.room_id):
                     msg = {'pre': character.name + " whispered:", 'msg': message, 'color': '#D65076'}
-                    self.sio.emit('get_chat', json.dumps(msg), room=character.room_id)
+                    self.sio.emit('get_chat', json.dumps(msg), to=sid_of_recipient[0])
                 else:
                     msg = {'pre': "error:",
                            'msg': "the character you're trying to message is not in the same room (•_•)",
